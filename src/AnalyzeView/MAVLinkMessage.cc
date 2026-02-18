@@ -1,13 +1,13 @@
 #include "MAVLinkMessage.h"
 #include "MAVLinkMessageField.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "QmlObjectListModel.h"
 
 #include <QtCore/QTimeZone>
 
-QGC_LOGGING_CATEGORY(MAVLinkMessageLog, "AnalyzeView.MAVLinkMessage")
+beeCopter_LOGGING_CATEGORY(MAVLinkMessageLog, "AnalyzeView.MAVLinkMessage")
 
-QGCMAVLinkMessage::QGCMAVLinkMessage(const mavlink_message_t &message, QObject *parent)
+beeCopterMAVLinkMessage::beeCopterMAVLinkMessage(const mavlink_message_t &message, QObject *parent)
     : QObject(parent)
     , _message(message)
     , _fields(new QmlObjectListModel(this))
@@ -17,7 +17,7 @@ QGCMAVLinkMessage::QGCMAVLinkMessage(const mavlink_message_t &message, QObject *
 
     const mavlink_message_info_t *const msgInfo = mavlink_get_message_info(&message);
     if (!msgInfo) {
-        qCWarning(MAVLinkMessageLog) << QStringLiteral("QGCMAVLinkMessage NULL msgInfo msgid(%1)").arg(message.msgid);
+        qCWarning(MAVLinkMessageLog) << QStringLiteral("beeCopterMAVLinkMessage NULL msgInfo msgid(%1)").arg(message.msgid);
         return;
     }
 
@@ -40,24 +40,24 @@ QGCMAVLinkMessage::QGCMAVLinkMessage(const mavlink_message_t &message, QObject *
             case MAVLINK_TYPE_INT64_T:  type = QString("int64_t");  break;
         }
 
-        QGCMAVLinkMessageField *const field = new QGCMAVLinkMessageField(msgInfo->fields[i].name, type, this);
+        beeCopterMAVLinkMessageField *const field = new beeCopterMAVLinkMessageField(msgInfo->fields[i].name, type, this);
         _fields->append(field);
     }
 }
 
-QGCMAVLinkMessage::~QGCMAVLinkMessage()
+beeCopterMAVLinkMessage::~beeCopterMAVLinkMessage()
 {
     _fields->clearAndDeleteContents();
 
     qCDebug(MAVLinkMessageLog) << this;
 }
 
-void QGCMAVLinkMessage::updateFieldSelection()
+void beeCopterMAVLinkMessage::updateFieldSelection()
 {
     bool sel = false;
 
     for (int i = 0; i < _fields->count(); ++i) {
-        const QGCMAVLinkMessageField *const field = qobject_cast<const QGCMAVLinkMessageField*>(_fields->get(i));
+        const beeCopterMAVLinkMessageField *const field = qobject_cast<const beeCopterMAVLinkMessageField*>(_fields->get(i));
         if (field && field->selected()) {
             sel = true;
             break;
@@ -70,7 +70,7 @@ void QGCMAVLinkMessage::updateFieldSelection()
     }
 }
 
-void QGCMAVLinkMessage::updateFreq()
+void beeCopterMAVLinkMessage::updateFreq()
 {
     const quint64 msgCount = _count - _lastCount;
     const qreal lastRateHz = _actualRateHz;
@@ -81,7 +81,7 @@ void QGCMAVLinkMessage::updateFreq()
     }
 }
 
-void QGCMAVLinkMessage::setSelected(bool sel)
+void beeCopterMAVLinkMessage::setSelected(bool sel)
 {
     if (sel != _selected) {
         _selected = sel;
@@ -90,7 +90,7 @@ void QGCMAVLinkMessage::setSelected(bool sel)
     }
 }
 
-void QGCMAVLinkMessage::setTargetRateHz(int32_t rate)
+void beeCopterMAVLinkMessage::setTargetRateHz(int32_t rate)
 {
     if (rate != _targetRateHz) {
         _targetRateHz = rate;
@@ -98,7 +98,7 @@ void QGCMAVLinkMessage::setTargetRateHz(int32_t rate)
     }
 }
 
-void QGCMAVLinkMessage::update(const mavlink_message_t &message)
+void beeCopterMAVLinkMessage::update(const mavlink_message_t &message)
 {
     _count++;
     _message = message;
@@ -110,22 +110,22 @@ void QGCMAVLinkMessage::update(const mavlink_message_t &message)
     emit countChanged();
 }
 
-void QGCMAVLinkMessage::_updateFields()
+void beeCopterMAVLinkMessage::_updateFields()
 {
     const mavlink_message_info_t *msgInfo = mavlink_get_message_info(&_message);
     if (!msgInfo) {
-        qCWarning(MAVLinkMessageLog) << "QGCMAVLinkMessage::update NULL msgInfo msgid" << _message.msgid;
+        qCWarning(MAVLinkMessageLog) << "beeCopterMAVLinkMessage::update NULL msgInfo msgid" << _message.msgid;
         return;
     }
 
     if (_fields->count() != static_cast<int>(msgInfo->num_fields)) {
-        qCWarning(MAVLinkMessageLog) << "QGCMAVLinkMessage::update msgInfo field count mismatch msgid" << _message.msgid;
+        qCWarning(MAVLinkMessageLog) << "beeCopterMAVLinkMessage::update msgInfo field count mismatch msgid" << _message.msgid;
         return;
     }
 
     uint8_t *const msg = reinterpret_cast<uint8_t*>(&_message.payload64[0]);
     for (unsigned int i = 0; i < msgInfo->num_fields; ++i) {
-        QGCMAVLinkMessageField *const field = qobject_cast<QGCMAVLinkMessageField*>(_fields->get(static_cast<int>(i)));
+        beeCopterMAVLinkMessageField *const field = qobject_cast<beeCopterMAVLinkMessageField*>(_fields->get(static_cast<int>(i)));
         if (!field) {
             continue;
         }

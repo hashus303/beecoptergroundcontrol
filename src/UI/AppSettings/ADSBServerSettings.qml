@@ -2,18 +2,18 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SettingsPage {
-    property var    _settingsManager:           QGroundControl.settingsManager
+    property var    _settingsManager:           beeCopter.settingsManager
     property var     _adsbSettings:             _settingsManager.adsbVehicleManagerSettings
     property Fact   _adsbServerConnectEnabled:  _adsbSettings.adsbServerConnectEnabled
 
     SettingsGroupLayout {
         Layout.fillWidth:   true
-        visible:            QGroundControl.settingsManager.adsbVehicleManagerSettings.visible
+        visible:            beeCopter.settingsManager.adsbVehicleManagerSettings.visible
 
         FactCheckBoxSlider {
             Layout.fillWidth:   true

@@ -2,14 +2,14 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Rectangle {
     id:     root
     height: _currentItem ? valuesRect.y + valuesRect.height + (_margin * 2) : titleBar.y - titleBar.height + _margin
-    color:  _currentItem ? qgcPal.buttonHighlight : qgcPal.windowShade
+    color:  _currentItem ? beeCopterPal.buttonHighlight : beeCopterPal.windowShade
     radius: _radius
 
     signal clicked()
@@ -18,13 +18,13 @@ Rectangle {
     property var controller ///< RallyPointController
 
     property bool   _currentItem:       rallyPoint ? rallyPoint === controller.currentRallyPoint : false
-    property color  _outerTextColor:    qgcPal.text // _currentItem ? "black" : qgcPal.text
+    property color  _outerTextColor:    beeCopterPal.text // _currentItem ? "black" : beeCopterPal.text
 
     readonly property real  _margin:            ScreenTools.defaultFontPixelWidth / 2
     readonly property real  _radius:            ScreenTools.defaultFontPixelWidth / 2
     readonly property real  _titleHeight:       ScreenTools.defaultFontPixelHeight * 2
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     Item {
         id:                 titleBar
@@ -42,7 +42,7 @@ Rectangle {
             checked:                true
         }
 
-        QGCLabel {
+        beeCopterLabel {
             anchors.leftMargin:     _margin
             anchors.left:           indicator.right
             anchors.verticalCenter: parent.verticalCenter
@@ -50,7 +50,7 @@ Rectangle {
             color:                  _outerTextColor
         }
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             id:                     hamburger
             anchors.rightMargin:    _margin
             anchors.right:          parent.right
@@ -59,16 +59,16 @@ Rectangle {
             height:                 width
             sourceSize.height:      height
             source:                 "qrc:/qmlimages/Hamburger.svg"
-            color:                  qgcPal.text
+            color:                  beeCopterPal.text
 
             MouseArea {
                 anchors.fill:   parent
                 onClicked:      hamburgerMenu.popup()
 
-                QGCMenu {
+                beeCopterMenu {
                     id: hamburgerMenu
 
-                    QGCMenuItem {
+                    beeCopterMenuItem {
                         text:           qsTr("Delete")
                         onTriggered:    controller.removePoint(rallyPoint)
                     }
@@ -84,7 +84,7 @@ Rectangle {
         anchors.right:      parent.right
         anchors.top:        titleBar.bottom
         height:             valuesGrid.height + (_margin * 2)
-        color:              qgcPal.windowShadeDark
+        color:              beeCopterPal.windowShadeDark
         visible:            _currentItem
         radius:             _radius
 
@@ -101,7 +101,7 @@ Rectangle {
 
             Repeater {
                 model: rallyPoint ? rallyPoint.textFieldFacts : 0
-                QGCLabel {
+                beeCopterLabel {
                     text: modelData.name + ":"
                 }
             }

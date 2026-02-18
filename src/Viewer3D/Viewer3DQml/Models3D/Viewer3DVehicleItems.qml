@@ -1,5 +1,5 @@
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 import QtQuick3D
 import QtQuick3D.Helpers
 
@@ -13,7 +13,7 @@ Node {
     property var _planMasterController: null
     property bool _rtlActive: false
     property var _vehicle: null
-    property var _viewer3DSetting: QGroundControl.settingsManager.viewer3DSettings
+    property var _viewer3DSetting: beeCopter.settingsManager.viewer3DSettings
     property alias waypointConeModel: _waypointConeModel
     property alias waypointInstancing: waypointInstancing
 
@@ -204,7 +204,7 @@ Node {
                 position.z: 30
                 target: _camera
 
-                QGCLabel {
+                beeCopterLabel {
                     color: "black"
                     font.pixelSize: 20
                     text: (model.itemName === "W") ? String(model.index) : model.itemName

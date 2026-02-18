@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Item {
     id:                     control
@@ -14,7 +14,7 @@ Item {
     property bool   waitForParameters:      true   // UI won't show until parameters are ready
 
     property real fontPointSize:    ScreenTools.largeFontPointSize
-    property var  activeVehicle:    QGroundControl.multiVehicleManager.activeVehicle
+    property var  activeVehicle:    beeCopter.multiVehicleManager.activeVehicle
     property bool allowEditMode:    true
     property bool editMode:         false
 
@@ -22,32 +22,32 @@ Item {
     property bool _vtolInFWDFlight: activeVehicle ? activeVehicle.vtolInFwdFlight : false
     property var  _vehicleInAir:    activeVehicle ? activeVehicle.flying || activeVehicle.landing : false
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     RowLayout {
         id:                     mainLayout
         anchors.verticalCenter: parent.verticalCenter
         spacing:                ScreenTools.defaultFontPixelWidth / 2
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             id:                     flightModeIcon
             Layout.preferredWidth:  ScreenTools.defaultFontPixelWidth * 3
             Layout.preferredHeight: ScreenTools.defaultFontPixelHeight
             fillMode:               Image.PreserveAspectFit
             mipmap:                 true
-            color:                  qgcPal.windowTransparentText
+            color:                  beeCopterPal.windowTransparentText
             source:                 "/qmlimages/FlightModesComponentIcon.png"
         }
 
-        QGCLabel {
+        beeCopterLabel {
             id:                 flightModeLabel
             text:               activeVehicle ? activeVehicle.flightMode : qsTr("N/A", "No data to display")
-            color:              qgcPal.windowTransparentText
+            color:              beeCopterPal.windowTransparentText
             font.pointSize:     fontPointSize
 
         }
 
-        QGCLabel {
+        beeCopterLabel {
             id:                     vtolModeLabel
             Layout.alignment:       Qt.AlignVCenter
             horizontalAlignment:    Text.AlignHCenter
@@ -88,8 +88,8 @@ Item {
             id:         modeColumn
             spacing:    ScreenTools.defaultFontPixelWidth / 2
 
-            property var    activeVehicle:            QGroundControl.multiVehicleManager.activeVehicle
-            property var    flightModeSettings:       QGroundControl.settingsManager.flightModeSettings
+            property var    activeVehicle:            beeCopter.multiVehicleManager.activeVehicle
+            property var    flightModeSettings:       beeCopter.settingsManager.flightModeSettings
             property var    hiddenFlightModesFact:    null
             property var    hiddenFlightModesList:    []
 
@@ -132,7 +132,7 @@ Item {
                 }
             }
 
-            QGCDelayButton {
+            beeCopterDelayButton {
                 id:                 vtolTransitionButton
                 Layout.fillWidth:   true
                 text:               _vtolInFWDFlight ? qsTr("Transition to Multi-Rotor") : qsTr("Transition to Fixed Wing")
@@ -152,7 +152,7 @@ Item {
                     spacing: ScreenTools.defaultFontPixelWidth
                     visible: editMode || !hiddenFlightModesList.find(item => { return item === modelData } )
 
-                    QGCDelayButton {
+                    beeCopterDelayButton {
                         id:                 modeButton
                         text:               modelData
                         delay:              flightModeSettings.requireModeChangeConfirmation.rawValue ? defaultDelay : 0
@@ -171,7 +171,7 @@ Item {
                         }
                     }
 
-                    QGCCheckBoxSlider {
+                    beeCopterCheckBoxSlider {
                         visible: editMode
 
                         onClicked: {
@@ -189,7 +189,7 @@ Item {
                 }
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                     hiddenModesLabel
                 text:                   qsTr("Some Modes Hidden")
                 Layout.fillWidth:       true
@@ -211,9 +211,9 @@ Item {
             Layout.preferredWidth:  ScreenTools.defaultFontPixelWidth * 60
             spacing:                margins / 2
 
-            property var  qgcPal:               QGroundControl.globalPalette
+            property var  beeCopterPal:               beeCopter.globalPalette
             property real margins:              ScreenTools.defaultFontPixelHeight
-            property var  flightModeSettings:   QGroundControl.settingsManager.flightModeSettings
+            property var  flightModeSettings:   beeCopter.settingsManager.flightModeSettings
 
             Loader {
                 Layout.fillWidth:   true
@@ -233,12 +233,12 @@ Item {
                     Layout.fillWidth:   true
                     enabled:            control.allowEditMode
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.fillWidth:   true
                         text:               qsTr("Edit Displayed Flight Modes")
                     }
 
-                    QGCCheckBoxSlider {
+                    beeCopterCheckBoxSlider {
                         onClicked: control.editMode = checked
                     }
                 }
@@ -248,7 +248,7 @@ Item {
                     label:              qsTr("Flight Modes")
                     buttonText:         qsTr("Configure")
                     visible:            _activeVehicle.autopilotPlugin.knownVehicleComponentAvailable(AutoPilotPlugin.KnownFlightModesVehicleComponent) &&
-                                            QGroundControl.corePlugin.showAdvancedUI
+                                            beeCopter.corePlugin.showAdvancedUI
 
                     onClicked: {
                         mainWindow.showKnownVehicleComponentConfigPage(AutoPilotPlugin.KnownFlightModesVehicleComponent)

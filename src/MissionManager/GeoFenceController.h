@@ -11,8 +11,8 @@
 Q_DECLARE_LOGGING_CATEGORY(GeoFenceControllerLog)
 
 class GeoFenceManager;
-class QGCFenceCircle;
-class QGCFencePolygon;
+class beeCopterFenceCircle;
+class beeCopterFencePolygon;
 class Vehicle;
 
 class GeoFenceController : public PlanElementController
@@ -20,8 +20,8 @@ class GeoFenceController : public PlanElementController
     Q_OBJECT
     QML_ELEMENT
     QML_UNCREATABLE("")
-    Q_MOC_INCLUDE("QGCFencePolygon.h")
-    Q_MOC_INCLUDE("QGCFenceCircle.h")
+    Q_MOC_INCLUDE("beeCopterFencePolygon.h")
+    Q_MOC_INCLUDE("beeCopterFenceCircle.h")
 
 public:
     GeoFenceController(PlanMasterController* masterController, QObject* parent = nullptr);
@@ -90,7 +90,7 @@ signals:
 private slots:
     void _polygonDirtyChanged       (bool dirty);
     void _setDirty                  (void);
-    void _setFenceFromManager       (const QList<QGCFencePolygon>& polygons, const QList<QGCFenceCircle>&  circles);
+    void _setFenceFromManager       (const QList<beeCopterFencePolygon>& polygons, const QList<beeCopterFenceCircle>&  circles);
     void _setReturnPointFromManager (QGeoCoordinate breachReturnPoint);
     void _managerLoadComplete       (void);
     void _managerSendComplete       (bool error);

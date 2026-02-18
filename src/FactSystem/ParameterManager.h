@@ -141,7 +141,7 @@ private:
     void _checkInitialLoadComplete();
     void _ftpDownloadComplete(const QString &fileName, const QString &errorMsg);
     void _ftpDownloadProgress(float progress);
-    /// Parse the binary parameter file and inject the parameters in the qgc fact system.
+    /// Parse the binary parameter file and inject the parameters in the beeCopter fact system.
     /// See: https://github.com/ArduPilot/ardupilot/tree/master/libraries/AP_Filesystem
     bool _parseParamFile(const QString &filename);
     void _incrementPendingWriteCount();

@@ -1,8 +1,8 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.AutoPilotPlugins.PX4
+import beeCopter
+import beeCopter.Controls
+import beeCopter.AutoPilotPlugins.PX4
 
 SetupPage {
     pageComponent:  pageComponent

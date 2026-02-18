@@ -1,5 +1,5 @@
 #include "GPSProvider.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "RTCMMavlink.h"
 
 #include <ashtech.h>
@@ -15,8 +15,8 @@
 #include <QtSerialPort/QSerialPort>
 #endif
 
-QGC_LOGGING_CATEGORY(GPSProviderLog, "GPS.GPSProvider")
-QGC_LOGGING_CATEGORY(GPSDriversLog, "GPS.Drivers")
+beeCopter_LOGGING_CATEGORY(GPSProviderLog, "GPS.GPSProvider")
+beeCopter_LOGGING_CATEGORY(GPSDriversLog, "GPS.Drivers")
 
 GPSProvider::GPSProvider(const QString &device, GPSType type, const rtk_data_s &rtkData, const std::atomic_bool &requestStop, QObject *parent)
     : QThread(parent)

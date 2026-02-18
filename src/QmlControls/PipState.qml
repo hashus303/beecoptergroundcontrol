@@ -1,6 +1,6 @@
 import QtQuick
 
-// Used to manage state for itesm using with QGCPipOveral
+// Used to manage state for itesm using with beeCopterPipOveral
 Item {
     id:     control
     state:  initState

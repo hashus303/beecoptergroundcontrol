@@ -45,13 +45,13 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_
 # Serial Port Communication
 # ----------------------------------------------------------------------------
 
-if(QGC_NO_SERIAL_LINK)
-    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE QGC_NO_SERIAL_LINK)
+if(beeCopter_NO_SERIAL_LINK)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE beeCopter_NO_SERIAL_LINK)
 else()
     target_sources(${CMAKE_PROJECT_NAME}
         PRIVATE
-            QGCSerialPortInfo.cc
-            QGCSerialPortInfo.h
+            beeCopterSerialPortInfo.cc
+            beeCopterSerialPortInfo.h
             SerialLink.cc
             SerialLink.h
             UdpIODevice.cc
@@ -67,7 +67,7 @@ endif()
 # ----------------------------------------------------------------------------
 # Bluetooth Communication
 # ----------------------------------------------------------------------------
-if(QGC_ENABLE_BLUETOOTH)
+if(beeCopter_ENABLE_BLUETOOTH)
     target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt6::Bluetooth)
     target_sources(${CMAKE_PROJECT_NAME}
         PRIVATE
@@ -75,13 +75,13 @@ if(QGC_ENABLE_BLUETOOTH)
             BluetoothLink.h
     )
 
-    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE QGC_ENABLE_BLUETOOTH)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE beeCopter_ENABLE_BLUETOOTH)
 endif()
 
 # ----------------------------------------------------------------------------
 # ZeroConf/mDNS Service Discovery
 # ----------------------------------------------------------------------------
-if(QGC_ZEROCONF_ENABLED)
+if(beeCopter_ZEROCONF_ENABLED)
     CPMAddPackage(
         NAME qmdnsengine
         GITHUB_REPOSITORY nitroshare/qmdnsengine
@@ -93,11 +93,11 @@ if(QGC_ZEROCONF_ENABLED)
     )
 
     if(TARGET qmdnsengine)
-        qgc_disable_dependency_warnings(qmdnsengine)
+        beeCopter_disable_dependency_warnings(qmdnsengine)
         target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE qmdnsengine)
-        target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE QGC_ZEROCONF_ENABLED)
+        target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE beeCopter_ZEROCONF_ENABLED)
     else()
-        message(WARNING "QGC: qmdnsengine target not created, ZeroConf will be disabled")
+        message(WARNING "beeCopter: qmdnsengine target not created, ZeroConf will be disabled")
     endif()
 endif()
 

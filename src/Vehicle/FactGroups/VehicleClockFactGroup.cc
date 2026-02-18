@@ -1,5 +1,5 @@
 #include "VehicleClockFactGroup.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 
 VehicleClockFactGroup::VehicleClockFactGroup(QObject *parent)
     : FactGroup(1000, QStringLiteral(":/json/Vehicle/ClockFact.json"), parent)
@@ -17,7 +17,7 @@ void VehicleClockFactGroup::_updateAllValues()
 {
     currentTime()->setRawValue(QTime::currentTime().toString());
     currentUTCTime()->setRawValue(QDateTime::currentDateTimeUtc().time().toString());
-    currentDate()->setRawValue(QDateTime::currentDateTime().toString(qgcApp()->getCurrentLanguage().dateFormat(QLocale::ShortFormat)));
+    currentDate()->setRawValue(QDateTime::currentDateTime().toString(beeCopterApp()->getCurrentLanguage().dateFormat(QLocale::ShortFormat)));
 
     _setTelemetryAvailable(true);
 

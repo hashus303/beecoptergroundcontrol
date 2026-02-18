@@ -1,8 +1,8 @@
 # ============================================================================
-# QGroundControl Module Library
+# beeCopter Module Library
 # ============================================================================
 
-qt_add_library(QGroundControlModule STATIC)
+qt_add_library(beeCopterModule STATIC)
 
 # ----------------------------------------------------------------------------
 # QML Resources
@@ -12,14 +12,14 @@ set_source_files_properties(UI/MainWindow.qml
         QT_RESOURCE_ALIAS MainWindow.qml
 )
 
-qt_add_qml_module(QGroundControlModule
-    URI QGroundControl
+qt_add_qml_module(beeCopterModule
+    URI beeCopter.Core
     VERSION 1.0
     RESOURCE_PREFIX /qml
     QML_FILES
         UI/MainWindow.qml
     IMPORTS
-        QGC
+        beeCopter
     NO_PLUGIN
 )
 
@@ -68,8 +68,8 @@ target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE
         main.cc
         pch.h
-        QGCApplication.cc
-        QGCApplication.h
+        beeCopterApplication.cc
+        beeCopterApplication.h
 )
 
 
@@ -122,7 +122,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         Qt6::Multimedia
         Qt6::MultimediaQuickPrivate
 
-        # QGC Modules
+        # beeCopter Modules
         AnalyzeViewModule
         AppSettingsModule
         AutoPilotPluginsCommonModule
@@ -130,8 +130,8 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         FirstRunPromptDialogsModule
         FlyViewModule
         FlightMapModule
-        QGroundControlControlsModule
-        QGroundControlModule
+        beeCopterControlsModule
+        beeCopterModule
         ToolbarModule
         VehicleSetupModule
 )
@@ -139,11 +139,11 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 # ----------------------------------------------------------------------------
 # Optional/Conditional Modules
 # ----------------------------------------------------------------------------
-if(NOT QGC_DISABLE_APM_PLUGIN)
+if(NOT beeCopter_DISABLE_APM_PLUGIN)
     target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE AutoPilotPluginsAPMModule)
 endif()
 
-if(NOT QGC_DISABLE_PX4_PLUGIN)
+if(NOT beeCopter_DISABLE_PX4_PLUGIN)
     target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE AutoPilotPluginsPX4Module)
 endif()
 
@@ -153,18 +153,18 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Viewer3DModule)
 # Compile Definitions
 # ============================================================================
 
-# Application metadata (version macros provided via generated qgc_version.h)
+# Application metadata (version macros provided via generated beeCopter_version.h)
 target_compile_definitions(${CMAKE_PROJECT_NAME}
     PRIVATE
-        $<$<NOT:$<BOOL:${QGC_STABLE_BUILD}>>:QGC_DAILY_BUILD>
-        $<$<BOOL:${QGC_DISABLE_APM_MAVLINK}>:QGC_NO_ARDUPILOT_DIALECT>
+        $<$<NOT:$<BOOL:${beeCopter_STABLE_BUILD}>>:beeCopter_DAILY_BUILD>
+        $<$<BOOL:${beeCopter_DISABLE_APM_MAVLINK}>:beeCopter_NO_ARDUPILOT_DIALECT>
 )
 
 # Build configuration-specific definitions
 target_compile_definitions(${CMAKE_PROJECT_NAME}
     PRIVATE
-        QT_DISABLE_DEPRECATED_UP_TO=${QGC_QT_DISABLE_DEPRECATED_UP_TO}
-        QT_ENABLE_STRICT_MODE_UP_TO=${QGC_QT_ENABLE_STRICT_MODE_UP_TO}
+        QT_DISABLE_DEPRECATED_UP_TO=${beeCopter_QT_DISABLE_DEPRECATED_UP_TO}
+        QT_ENABLE_STRICT_MODE_UP_TO=${beeCopter_QT_ENABLE_STRICT_MODE_UP_TO}
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -177,7 +177,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 else()
     target_compile_definitions(${CMAKE_PROJECT_NAME}
         PRIVATE
-            $<$<BOOL:${QGC_DEBUG_QML}>:QT_QML_DEBUG>
+            $<$<BOOL:${beeCopter_DEBUG_QML}>:QT_QML_DEBUG>
     )
 endif()
 
@@ -200,7 +200,7 @@ target_precompile_headers(${CMAKE_PROJECT_NAME} PRIVATE pch.h)
 # Custom Build Configuration
 # ============================================================================
 
-if(QGC_CUSTOM_BUILD)
+if(beeCopter_CUSTOM_BUILD)
     if(CUSTOM_QT_COMPONENTS)
         find_package(Qt6 REQUIRED COMPONENTS ${CUSTOM_QT_COMPONENTS})
     endif()
@@ -221,5 +221,5 @@ if(QGC_CUSTOM_BUILD)
         target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE ${CUSTOM_DEFINITIONS})
     endif()
 
-    message(STATUS "QGC: Custom build configuration applied")
+    message(STATUS "beeCopter: Custom build configuration applied")
 endif()

@@ -1,5 +1,5 @@
 #include "MotorAssignment.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "ActuatorOutputs.h"
 #include "QmlObjectListModel.h"
 
@@ -199,7 +199,7 @@ void MotorAssignment::ackHandler(MAV_RESULT commandResult, Vehicle::MavCmdResult
     _commandInProgress = false;
     if (failureCode != Vehicle::MavCmdResultFailureNoResponseToCommand && commandResult != MAV_RESULT_ACCEPTED) {
         abort();
-        qgcApp()->showAppMessage(tr("Actuator test command failed"));
+        beeCopterApp()->showAppMessage(tr("Actuator test command failed"));
     }
 }
 

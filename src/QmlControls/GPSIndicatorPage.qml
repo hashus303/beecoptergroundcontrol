@@ -1,19 +1,19 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 // This indicator page is used both when showing RTK status only with no vehicle connect and when showing GPS/RTK status with a vehicle connected
 
 ToolIndicatorPage {
     showExpand: true
 
-    property var    activeVehicle:      QGroundControl.multiVehicleManager.activeVehicle
+    property var    activeVehicle:      beeCopter.multiVehicleManager.activeVehicle
     property string na:                 qsTr("N/A", "No data to display")
     property string valueNA:            qsTr("–.––", "No data to display")
-    property var    rtkSettings:        QGroundControl.settingsManager.rtkSettings
+    property var    rtkSettings:        beeCopter.settingsManager.rtkSettings
     property var    useFixedPosition:           rtkSettings.useFixedBasePosition.rawValue
     property var    manufacturer:       rtkSettings.baseReceiverManufacturers.rawValue
 
@@ -121,26 +121,26 @@ ToolIndicatorPage {
 
             SettingsGroupLayout {
                 heading:    qsTr("RTK GPS Status")
-                visible:    QGroundControl.gpsRtk.connected.value
+                visible:    beeCopter.gpsRtk.connected.value
 
-                QGCLabel {
-                    text: (QGroundControl.gpsRtk.active.value) ? qsTr("Survey-in Active") : qsTr("RTK Streaming")
+                beeCopterLabel {
+                    text: (beeCopter.gpsRtk.active.value) ? qsTr("Survey-in Active") : qsTr("RTK Streaming")
                 }
 
                 LabelledLabel {
                     label:      qsTr("Satellites")
-                    labelText:  QGroundControl.gpsRtk.numSatellites.value
+                    labelText:  beeCopter.gpsRtk.numSatellites.value
                 }
 
                 LabelledLabel {
                     label:      qsTr("Duration")
-                    labelText:  QGroundControl.gpsRtk.currentDuration.value + ' s'
+                    labelText:  beeCopter.gpsRtk.currentDuration.value + ' s'
                 }
 
                 LabelledLabel {
-                    label:      QGroundControl.gpsRtk.valid.value ? qsTr("Accuracy") : qsTr("Current Accuracy")
-                    labelText:  QGroundControl.gpsRtk.currentAccuracy.valueString + " " + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString
-                    visible:    QGroundControl.gpsRtk.currentAccuracy.value > 0
+                    label:      beeCopter.gpsRtk.valid.value ? qsTr("Accuracy") : qsTr("Current Accuracy")
+                    labelText:  beeCopter.gpsRtk.currentAccuracy.valueString + " " + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString
+                    visible:    beeCopter.gpsRtk.currentAccuracy.value > 0
                 }
             }
         }
@@ -155,32 +155,32 @@ ToolIndicatorPage {
             FactCheckBoxSlider {
                 Layout.fillWidth:   true
                 text:               qsTr("AutoConnect")
-                fact:               QGroundControl.settingsManager.autoConnectSettings.autoConnectRTKGPS
+                fact:               beeCopter.settingsManager.autoConnectSettings.autoConnectRTKGPS
                 visible:            fact.visible
             }
 
             GridLayout {
                 columns: 2
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("Settings displayed")
                 }
                 FactComboBox {
                     Layout.fillWidth:   true
-                    fact:               QGroundControl.settingsManager.rtkSettings.baseReceiverManufacturers
-                    visible:            QGroundControl.settingsManager.rtkSettings.baseReceiverManufacturers.visible
+                    fact:               beeCopter.settingsManager.rtkSettings.baseReceiverManufacturers
+                    visible:            beeCopter.settingsManager.rtkSettings.baseReceiverManufacturers.visible
                 }
             }
 
             RowLayout {
-                QGCRadioButton {
+                beeCopterRadioButton {
                     text:       qsTr("Survey-In")
                     checked:    useFixedPosition == BaseModeDefinition.BaseSurveyIn
                     onClicked:  rtkSettings.useFixedBasePosition.rawValue = BaseModeDefinition.BaseSurveyIn
                     visible:    settingsDisplayId & _all
                 }
 
-                QGCRadioButton {
+                beeCopterRadioButton {
                     text: qsTr("Specify position")
                     checked:    useFixedPosition == BaseModeDefinition.BaseFixed
                     onClicked:  rtkSettings.useFixedBasePosition.rawValue = BaseModeDefinition.BaseFixed
@@ -192,7 +192,7 @@ ToolIndicatorPage {
                 Layout.fillWidth:       true
                 Layout.preferredWidth:  sliderWidth
                 label:                  qsTr("Accuracy")
-                fact:                   QGroundControl.settingsManager.rtkSettings.surveyInAccuracyLimit
+                fact:                   beeCopter.settingsManager.rtkSettings.surveyInAccuracyLimit
                 majorTickStepSize:      0.1
                 visible:                (
                     useFixedPosition == BaseModeDefinition.BaseSurveyIn
@@ -254,13 +254,13 @@ ToolIndicatorPage {
                 label:              qsTr("Current Base Position")
                 buttonText:         enabled ? qsTr("Save") : qsTr("Not Yet Valid")
                 visible:            useFixedPosition == BaseModeDefinition.BaseFixed
-                enabled:            QGroundControl.gpsRtk.valid.value
+                enabled:            beeCopter.gpsRtk.valid.value
 
                 onClicked: {
-                    rtkSettings.fixedBasePositionLatitude.rawValue  = QGroundControl.gpsRtk.currentLatitude.rawValue
-                    rtkSettings.fixedBasePositionLongitude.rawValue = QGroundControl.gpsRtk.currentLongitude.rawValue
-                    rtkSettings.fixedBasePositionAltitude.rawValue  = QGroundControl.gpsRtk.currentAltitude.rawValue
-                    rtkSettings.fixedBasePositionAccuracy.rawValue  = QGroundControl.gpsRtk.currentAccuracy.rawValue
+                    rtkSettings.fixedBasePositionLatitude.rawValue  = beeCopter.gpsRtk.currentLatitude.rawValue
+                    rtkSettings.fixedBasePositionLongitude.rawValue = beeCopter.gpsRtk.currentLongitude.rawValue
+                    rtkSettings.fixedBasePositionAltitude.rawValue  = beeCopter.gpsRtk.currentAltitude.rawValue
+                    rtkSettings.fixedBasePositionAccuracy.rawValue  = beeCopter.gpsRtk.currentAccuracy.rawValue
                 }
             }
         }

@@ -10,7 +10,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE VideoItemStub.h)
 # GStreamer Detection and Configuration
 # ============================================================================
 
-if(QGC_ENABLE_GST_VIDEOSTREAMING)
+if(beeCopter_ENABLE_GST_VIDEOSTREAMING)
     if(NOT MACOS)
         # NOTE: Using FindGStreamer.cmake is currently bypassed on macOS
         # Using hardwired framework path as a workaround until FindGStreamer works on macOS
@@ -45,10 +45,10 @@ if(TARGET gstqml6gl)
             GstVideoReceiver.h
     )
 
-    # Build custom GStreamer QGC plugin
-    add_subdirectory(gstqgc)
+    # Build custom GStreamer beeCopter plugin
+    add_subdirectory(gstbeeCopter)
 
-    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE QGC_GST_STREAMING)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE beeCopter_GST_STREAMING)
 
     # ============================================================================
     # Platform-Specific GStreamer Installation

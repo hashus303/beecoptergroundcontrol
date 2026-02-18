@@ -1,8 +1,8 @@
 #include "ComponentInformationTranslation.h"
-#include "QGCCachedFileDownload.h"
+#include "beeCopterCachedFileDownload.h"
 #include "JsonParsing.h"
-#include "QGCCompression.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterCompression.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QStandardPaths>
 #include <QtCore/QDir>
@@ -10,10 +10,10 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QXmlStreamReader>
 
-QGC_LOGGING_CATEGORY(ComponentInformationTranslationLog, "ComponentInformation.ComponentInformationTranslation")
+beeCopter_LOGGING_CATEGORY(ComponentInformationTranslationLog, "ComponentInformation.ComponentInformationTranslation")
 
 ComponentInformationTranslation::ComponentInformationTranslation(QObject* parent,
-                                                                 QGCCachedFileDownload* cachedFileDownload)
+                                                                 beeCopterCachedFileDownload* cachedFileDownload)
     : QObject(parent), _cachedFileDownload(cachedFileDownload)
 {
 }
@@ -30,10 +30,10 @@ bool ComponentInformationTranslation::downloadAndTranslate(const QString& summar
     }
 
     // Download file
-    connect(_cachedFileDownload, &QGCCachedFileDownload::finished, this, &ComponentInformationTranslation::onDownloadCompleted);
+    connect(_cachedFileDownload, &beeCopterCachedFileDownload::finished, this, &ComponentInformationTranslation::onDownloadCompleted);
     if (!_cachedFileDownload->download(url, maxCacheAgeSec)) {
         qCWarning(ComponentInformationTranslationLog) << "Metadata translation download failed";
-        disconnect(_cachedFileDownload, &QGCCachedFileDownload::finished, this, &ComponentInformationTranslation::onDownloadCompleted);
+        disconnect(_cachedFileDownload, &beeCopterCachedFileDownload::finished, this, &ComponentInformationTranslation::onDownloadCompleted);
         return false;
     }
     return true;
@@ -65,13 +65,13 @@ QString ComponentInformationTranslation::getUrlFromSummaryJson(const QString &su
 
 void ComponentInformationTranslation::onDownloadCompleted(bool success, const QString &localFile, QString errorMsg, [[maybe_unused]] bool fromCache)
 {
-    disconnect(_cachedFileDownload, &QGCCachedFileDownload::finished, this, &ComponentInformationTranslation::onDownloadCompleted);
+    disconnect(_cachedFileDownload, &beeCopterCachedFileDownload::finished, this, &ComponentInformationTranslation::onDownloadCompleted);
 
     QString tsFileName = localFile;
     bool deleteFile = false;
     if (success) {
-        const QString tempPath = QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).absoluteFilePath("qgc_translation_file_decompressed.ts");
-        tsFileName = QGCCompression::decompressIfNeeded(localFile, tempPath, false);
+        const QString tempPath = QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).absoluteFilePath("beeCopter_translation_file_decompressed.ts");
+        tsFileName = beeCopterCompression::decompressIfNeeded(localFile, tempPath, false);
         if (tsFileName.isEmpty()) {
             const QString remoteFile = _cachedFileDownload->url().toString();
             errorMsg = "Decompression of translation file failed: " + remoteFile;
@@ -190,7 +190,7 @@ QString ComponentInformationTranslation::translateJsonUsingTS(const QString &toT
     jsonDoc.setObject(translate(translationObj, translations, jsonDoc.object()));
 
     // Write to file
-    QString translatedFileName = QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).absoluteFilePath("qgc_translated_metadata.json");
+    QString translatedFileName = QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).absoluteFilePath("beeCopter_translated_metadata.json");
 
     QFile translatedFile(translatedFileName);
     if (!translatedFile.open(QFile::WriteOnly|QFile::Truncate)) {

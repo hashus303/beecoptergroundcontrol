@@ -2,18 +2,18 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
-    color:          qgcPal.window
+    color:          beeCopterPal.window
     anchors.fill:   parent
 
     readonly property real _margins: ScreenTools.defaultFontPixelHeight
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
-    QGCFlickable {
+    beeCopterFlickable {
         anchors.fill:   parent
         contentWidth:   column.width  + (_margins * 2)
         contentHeight:  column.height + (_margins * 2)
@@ -26,52 +26,52 @@ Rectangle {
             anchors.top:        parent.top
             spacing:            ScreenTools.defaultFontPixelHeight / 4
 
-            QGCCheckBox {
+            beeCopterCheckBox {
                 id:             sendStatusText
                 text:           qsTr("Send status text + voice")
             }
-            QGCCheckBox {
+            beeCopterCheckBox {
                 id:             enableCamera
                 text:           qsTr("Enable camera")
             }
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("PX4 Vehicle")
                 Layout.fillWidth:   true
-                onClicked:          QGroundControl.startPX4MockLink(sendStatusText.checked, enableCamera.checked)
+                onClicked:          beeCopter.startPX4MockLink(sendStatusText.checked, enableCamera.checked)
             }
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("APM ArduCopter Vehicle")
-                visible:            QGroundControl.hasAPMSupport
+                visible:            beeCopter.hasAPMSupport
                 Layout.fillWidth:   true
-                onClicked:          QGroundControl.startAPMArduCopterMockLink(sendStatusText.checked, enableCamera.checked)
+                onClicked:          beeCopter.startAPMArduCopterMockLink(sendStatusText.checked, enableCamera.checked)
             }
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("APM ArduPlane Vehicle")
-                visible:            QGroundControl.hasAPMSupport
+                visible:            beeCopter.hasAPMSupport
                 Layout.fillWidth:   true
-                onClicked:          QGroundControl.startAPMArduPlaneMockLink(sendStatusText.checked, enableCamera.checked)
+                onClicked:          beeCopter.startAPMArduPlaneMockLink(sendStatusText.checked, enableCamera.checked)
             }
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("APM ArduSub Vehicle")
-                visible:            QGroundControl.hasAPMSupport
+                visible:            beeCopter.hasAPMSupport
                 Layout.fillWidth:   true
-                onClicked:          QGroundControl.startAPMArduSubMockLink(sendStatusText.checked, enableCamera.checked)
+                onClicked:          beeCopter.startAPMArduSubMockLink(sendStatusText.checked, enableCamera.checked)
             }
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("APM ArduRover Vehicle")
-                visible:            QGroundControl.hasAPMSupport
+                visible:            beeCopter.hasAPMSupport
                 Layout.fillWidth:   true
-                onClicked:          QGroundControl.startAPMArduRoverMockLink(sendStatusText.checked, enableCamera.checked)
+                onClicked:          beeCopter.startAPMArduRoverMockLink(sendStatusText.checked, enableCamera.checked)
             }
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("Generic Vehicle")
                 Layout.fillWidth:   true
-                onClicked:          QGroundControl.startGenericMockLink(sendStatusText.checked, enableCamera.checked)
+                onClicked:          beeCopter.startGenericMockLink(sendStatusText.checked, enableCamera.checked)
             }
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("Stop One MockLink")
                 Layout.fillWidth:   true
-                onClicked:          QGroundControl.stopOneMockLink()
+                onClicked:          beeCopter.stopOneMockLink()
             }
         }
     }

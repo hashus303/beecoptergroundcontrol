@@ -2,20 +2,20 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     id:     setupView
-    color:  qgcPal.window
-    z:      QGroundControl.zOrderTopMost
+    color:  beeCopterPal.window
+    z:      beeCopter.zOrderTopMost
 
     // This need to block click event leakage to underlying map.
     DeadMouseArea {
         anchors.fill: parent
     }
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     readonly property real      _defaultTextHeight: ScreenTools.defaultFontPixelHeight
     readonly property real      _defaultTextWidth:  ScreenTools.defaultFontPixelWidth
@@ -24,11 +24,11 @@ Rectangle {
     readonly property real      _buttonWidth:       _defaultTextWidth * 18
     readonly property string    _armedVehicleText:  qsTr("This operation cannot be performed while the vehicle is armed.")
 
-    property var    _activeVehicle:                 QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle:                 beeCopter.multiVehicleManager.activeVehicle
     property bool   _vehicleArmed:                  _activeVehicle ? _activeVehicle.armed : false
     property string _messagePanelText:              qsTr("missing message panel text")
-    property bool   _fullParameterVehicleAvailable: QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable && !_activeVehicle.parameterManager.missingParameters
-    property var    _corePlugin:                    QGroundControl.corePlugin
+    property bool   _fullParameterVehicleAvailable: beeCopter.multiVehicleManager.parameterReadyVehicleAvailable && !_activeVehicle.parameterManager.missingParameters
+    property var    _corePlugin:                    beeCopter.corePlugin
 
     function showSummaryPanel() {
         if (mainWindow.allowViewSwitch()) {
@@ -41,9 +41,9 @@ Rectangle {
             if (_activeVehicle.autopilotPlugin.vehicleComponents.length === 0) {
                 panelLoader.setSourceComponent(noComponentsVehicleSummaryComponent)
             } else {
-                panelLoader.setSource("qrc:/qml/QGroundControl/VehicleSetup/VehicleSummary.qml")
+                panelLoader.setSource("qrc:/qml/beeCopter/VehicleSetup/VehicleSummary.qml")
             }
-        } else if (QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable) {
+        } else if (beeCopter.multiVehicleManager.parameterReadyVehicleAvailable) {
             panelLoader.setSourceComponent(missingParametersVehicleSummaryComponent)
         } else {
             panelLoader.setSourceComponent(disconnectedVehicleAndParamsSummaryComponent)
@@ -82,14 +82,14 @@ Rectangle {
     function showParametersPanel() {
         if (mainWindow.allowViewSwitch()) {
             parametersButton.checked = true
-            panelLoader.setSource("qrc:/qml/QGroundControl/VehicleSetup/SetupParameterEditor.qml")
+            panelLoader.setSource("qrc:/qml/beeCopter/VehicleSetup/SetupParameterEditor.qml")
         }
     }
 
     Component.onCompleted: _showSummaryPanel()
 
     Connections {
-        target: QGroundControl.corePlugin
+        target: beeCopter.corePlugin
         function onShowAdvancedUIChanged(showAdvancedUI) {
             if (!showAdvancedUI) {
                 _showSummaryPanel()
@@ -98,7 +98,7 @@ Rectangle {
     }
 
     Connections {
-        target: QGroundControl.multiVehicleManager
+        target: beeCopter.multiVehicleManager
         function onParameterReadyVehicleAvailableChanged(parametersReady) {
             if (parametersReady || summaryButton.checked || !firmwareButton.checked) {
                 // Show/Reload the Summary panel when:
@@ -114,15 +114,15 @@ Rectangle {
     Component {
         id: noComponentsVehicleSummaryComponent
         Rectangle {
-            color: qgcPal.windowShade
-            QGCLabel {
+            color: beeCopterPal.windowShade
+            beeCopterLabel {
                 anchors.margins:        _defaultTextWidth * 2
                 anchors.fill:           parent
                 verticalAlignment:      Text.AlignVCenter
                 horizontalAlignment:    Text.AlignHCenter
                 wrapMode:               Text.WordWrap
                 font.pointSize:         ScreenTools.mediumFontPointSize
-                text:                   qsTr("%1 does not currently support configuration of your vehicle. ").arg(QGroundControl.appName) +
+                text:                   qsTr("%1 does not currently support configuration of your vehicle. ").arg(beeCopter.appName) +
                                         "If your vehicle is already configured you can still Fly."
             }
         }
@@ -131,8 +131,8 @@ Rectangle {
     Component {
         id: disconnectedVehicleAndParamsSummaryComponent
         Rectangle {
-            color: qgcPal.windowShade
-            QGCLabel {
+            color: beeCopterPal.windowShade
+            beeCopterLabel {
                 anchors.margins:        _defaultTextWidth * 2
                 anchors.fill:           parent
                 verticalAlignment:      Text.AlignVCenter
@@ -148,9 +148,9 @@ Rectangle {
         id: missingParametersVehicleSummaryComponent
 
         Rectangle {
-            color: qgcPal.windowShade
+            color: beeCopterPal.windowShade
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.margins:        _defaultTextWidth * 2
                 anchors.fill:           parent
                 verticalAlignment:      Text.AlignVCenter
@@ -167,7 +167,7 @@ Rectangle {
         id: messagePanelComponent
 
         Item {
-            QGCLabel {
+            beeCopterLabel {
                 anchors.margins:        _defaultTextWidth * 2
                 anchors.fill:           parent
                 verticalAlignment:      Text.AlignVCenter
@@ -179,7 +179,7 @@ Rectangle {
         }
     }
 
-    QGCFlickable {
+    beeCopterFlickable {
         id:                 buttonScroll
         width:              buttonColumn.width
         anchors.topMargin:  _defaultTextHeight / 2
@@ -209,7 +209,7 @@ Rectangle {
                 visible:            _activeVehicle ? _activeVehicle.flowImageIndex > 0 : false
                 text:               qsTr("Optical Flow")
                 Layout.fillWidth:   true
-                onClicked:          showPanel(this, "qrc:/qml/QGroundControl/VehicleSetup/OpticalFlowSensor.qml");
+                onClicked:          showPanel(this, "qrc:/qml/beeCopter/VehicleSetup/OpticalFlowSensor.qml");
             }
 
             Repeater {
@@ -230,13 +230,13 @@ Rectangle {
 
             ConfigButton {
                 id:                 parametersButton
-                visible:            QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable &&
+                visible:            beeCopter.multiVehicleManager.parameterReadyVehicleAvailable &&
                                     !_activeVehicle.usingHighLatencyLink &&
                                     _corePlugin.showAdvancedUI
                 text:               qsTr("Parameters")
                 Layout.fillWidth:   true
                 icon.source:        "/qmlimages/subMenuButtonImage.png"
-                onClicked:          showPanel(this, "qrc:/qml/QGroundControl/VehicleSetup/SetupParameterEditor.qml")
+                onClicked:          showPanel(this, "qrc:/qml/beeCopter/VehicleSetup/SetupParameterEditor.qml")
             }
 
             ConfigButton {
@@ -246,7 +246,7 @@ Rectangle {
                 text:               qsTr("Firmware")
                 Layout.fillWidth:   true
 
-                onClicked: showPanel(this, "qrc:/qml/QGroundControl/VehicleSetup/FirmwareUpgrade.qml")
+                onClicked: showPanel(this, "qrc:/qml/beeCopter/VehicleSetup/FirmwareUpgrade.qml")
             }
         }
     }
@@ -260,7 +260,7 @@ Rectangle {
         anchors.top:            parent.top
         anchors.bottom:         parent.bottom
         width:                  1
-        color:                  qgcPal.windowShade
+        color:                  beeCopterPal.windowShade
     }
 
     Loader {

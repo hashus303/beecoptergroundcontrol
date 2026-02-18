@@ -1,7 +1,7 @@
 import QtQuick
 import QtMultimedia
 
-import QGroundControl
+import beeCopter
 
 Rectangle {
     id:                 _root
@@ -12,7 +12,7 @@ Rectangle {
     anchors.centerIn:   parent
     visible:            _videoManager.isUvc
 
-    property var _videoManager: QGroundControl.videoManager
+    property var _videoManager: beeCopter.videoManager
 
     function adjustAspectRatio() {
         //-- Set aspect ratio

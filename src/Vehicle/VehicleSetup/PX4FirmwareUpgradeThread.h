@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "QGCSerialPortInfo.h"
+#include "beeCopterSerialPortInfo.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QTime>
@@ -25,7 +25,7 @@ public:
 
 signals:
     void updateProgress         (int curr, int total);
-    void foundBoard             (bool firstAttempt, const QGCSerialPortInfo& portInfo, int type, QString boardName);
+    void foundBoard             (bool firstAttempt, const beeCopterSerialPortInfo& portInfo, int type, QString boardName);
     void noBoardFound           (void);
     void boardGone              (void);
     void foundBoardInfo         (int bootloaderVersion, int boardID, int flashSize);
@@ -45,7 +45,7 @@ private slots:
     void _cancel            (void);
 
 private:
-    bool _findBoardFromPorts(QGCSerialPortInfo& portInfo, QGCSerialPortInfo::BoardType_t& boardType, QString& boardName);
+    bool _findBoardFromPorts(beeCopterSerialPortInfo& portInfo, beeCopterSerialPortInfo::BoardType_t& boardType, QString& boardName);
     bool _erase             (void);
 
     PX4FirmwareUpgradeThreadController* _controller;
@@ -56,7 +56,7 @@ private:
     bool                _foundBoard             = false;
     bool                _boardIsSiKRadio        = false;
     bool                _findBoardFirstAttempt  = true;     ///< true: we found the board right away, it needs to be unplugged and plugged back in
-    QGCSerialPortInfo   _foundBoardPortInfo;                ///< port info for found board
+    beeCopterSerialPortInfo   _foundBoardPortInfo;                ///< port info for found board
 };
 
 /// @brief Provides methods to interact with the bootloader. The commands themselves are signalled
@@ -83,7 +83,7 @@ public:
     const FirmwareImage* image(void) { return _image; }
 
 signals:
-    void foundBoard     (bool firstAttempt, const QGCSerialPortInfo &portInfo, int boardType, QString boardName);
+    void foundBoard     (bool firstAttempt, const beeCopterSerialPortInfo &portInfo, int boardType, QString boardName);
     void noBoardFound   (void);
     void boardGone      (void);
     void foundBoardInfo (int bootloaderVersion, int boardID, int flashSize);
@@ -102,7 +102,7 @@ signals:
     void _cancel                    (void);
 
 private slots:
-    void _foundBoard            (bool firstAttempt, const QGCSerialPortInfo& portInfo, int type, QString name) { emit foundBoard(firstAttempt, portInfo, type, name); }
+    void _foundBoard            (bool firstAttempt, const beeCopterSerialPortInfo& portInfo, int type, QString name) { emit foundBoard(firstAttempt, portInfo, type, name); }
     void _noBoardFound          (void) { emit noBoardFound(); }
     void _boardGone             (void) { emit boardGone(); }
     void _foundBoardInfo        (int bootloaderVersion, int boardID, int flashSize) { emit foundBoardInfo(bootloaderVersion, boardID, flashSize); }

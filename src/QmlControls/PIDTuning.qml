@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtCharts
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 RowLayout {
     spacing: _margins
@@ -230,12 +230,12 @@ RowLayout {
             RowLayout {
                 spacing: _margins
 
-                QGCButton {
+                beeCopterButton {
                     text:       qsTr("Clear")
                     onClicked:  resetGraphs()
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:       dataTimer.running ? qsTr("Stop") : qsTr("Start")
                     onClicked: {
                         dataTimer.running = !dataTimer.running
@@ -256,7 +256,7 @@ RowLayout {
                 }
             }
 
-            QGCCheckBox {
+            beeCopterCheckBox {
                 visible: showAutoModeChange
                 id:     autoModeChange
                 text:   qsTr("Automatic Flight Mode Switching")
@@ -268,12 +268,12 @@ RowLayout {
 
             Column {
                 visible: autoModeChange.checked
-                QGCLabel {
+                beeCopterLabel {
                     text:            qsTr("Switches to 'Stabilized' when you click Start.")
                     font.pointSize:     ScreenTools.smallFontPointSize
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:            qsTr("Switches to '%1' when you click Stop.").arg(globals.activeVehicle.pauseFlightMode)
                     font.pointSize:     ScreenTools.smallFontPointSize
                 }
@@ -288,13 +288,13 @@ RowLayout {
         RowLayout {
             visible: showAutoTuning
 
-            QGCRadioButton {
+            beeCopterRadioButton {
                 id:         useAutoTuningRadio
                 text:       qsTr("Use auto-tuning")
                 checked:    useAutoTuning
                 onClicked:  useAutoTuning = true
             }
-            QGCRadioButton {
+            beeCopterRadioButton {
                 id:         useManualTuningRadio
                 text:       qsTr("Use manual tuning")
                 checked:    !useAutoTuning
@@ -314,11 +314,11 @@ RowLayout {
                     spacing: _margins
                     visible: axis.length > 1
 
-                    QGCLabel { text: qsTr("Select Tuning:") }
+                    beeCopterLabel { text: qsTr("Select Tuning:") }
 
                     Repeater {
                         model: axis
-                        QGCRadioButton {
+                        beeCopterRadioButton {
                             text:           modelData.name
                             checked:        index == _currentAxis
                             onClicked: _currentAxis = index
@@ -354,7 +354,7 @@ RowLayout {
             }
 
             Column {
-                QGCLabel { text: qsTr("Clipboard Values:") }
+                beeCopterLabel { text: qsTr("Clipboard Values:") }
 
                 GridLayout {
                     rows:           savedRepeater.model.length
@@ -365,13 +365,13 @@ RowLayout {
                     Repeater {
                         model: axis[_currentAxis].params
 
-                        QGCLabel { text: param }
+                        beeCopterLabel { text: param }
                     }
 
                     Repeater {
                         id: savedRepeater
 
-                        QGCLabel { text: modelData }
+                        beeCopterLabel { text: modelData }
                     }
                 }
             }
@@ -379,12 +379,12 @@ RowLayout {
             RowLayout {
                 spacing: _margins
 
-                QGCButton {
+                beeCopterButton {
                     text:       qsTr("Save To Clipboard")
                     onClicked:  saveTuningParamValues()
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:       qsTr("Restore From Clipboard")
                     onClicked:  resetToSavedTuningParamValues()
                 }

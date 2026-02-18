@@ -110,9 +110,9 @@ void CameraCalc::_cameraNameChanged(void)
     }
 
     _recalcTriggerDistance();
-    if (!isManualCamera() && distanceMode() == QGroundControlQmlGlobal::AltitudeModeAbsolute) {
+    if (!isManualCamera() && distanceMode() == beeCopterQmlGlobal::AltitudeModeAbsolute) {
         // Manual grids support absolute alts whereas nothing else does. Make sure we are not left in absolute
-        setDistanceMode(QGroundControlQmlGlobal::AltitudeModeRelative);
+        setDistanceMode(beeCopterQmlGlobal::AltitudeModeRelative);
     }
 }
 
@@ -205,9 +205,9 @@ bool CameraCalc::load(const QJsonObject& originalJson, bool deprecatedFollowTerr
         //  - _jsonDistanceToSurfaceRelativeKeyDeprecated changed to distanceMode
         //  - deprecatedFollowTerrain value was loaded from upper level callers and represents AltitudeModeCalcAboveTerrain. AtitudeModeTerrainFrame was not supported yet.
         if (deprecatedFollowTerrain) {
-            json[distanceModeName] = QGroundControlQmlGlobal::AltitudeModeCalcAboveTerrain;
+            json[distanceModeName] = beeCopterQmlGlobal::AltitudeModeCalcAboveTerrain;
         } else {
-            json[distanceModeName] = json[_jsonDistanceToSurfaceRelativeKeyDeprecated].toBool() ? QGroundControlQmlGlobal::AltitudeModeRelative : QGroundControlQmlGlobal::AltitudeModeAbsolute;
+            json[distanceModeName] = json[_jsonDistanceToSurfaceRelativeKeyDeprecated].toBool() ? beeCopterQmlGlobal::AltitudeModeRelative : beeCopterQmlGlobal::AltitudeModeAbsolute;
         }
         json.remove(_jsonDistanceToSurfaceRelativeKeyDeprecated);
         version = 2;
@@ -235,7 +235,7 @@ bool CameraCalc::load(const QJsonObject& originalJson, bool deprecatedFollowTerr
     QString canonicalCameraName = _validCanonicalCameraName(json[cameraNameName].toString());
     _cameraNameFact.setRawValue(canonicalCameraName);
 
-    setDistanceMode(static_cast<QGroundControlQmlGlobal::AltMode>(json[distanceModeName].toInt()));
+    setDistanceMode(static_cast<beeCopterQmlGlobal::AltMode>(json[distanceModeName].toInt()));
 
     _adjustedFootprintSideFact.setRawValue      (json[adjustedFootprintSideName].toDouble());
     _adjustedFootprintFrontalFact.setRawValue   (json[adjustedFootprintFrontalName].toDouble());
@@ -293,7 +293,7 @@ QString CameraCalc::xlatManualCameraName(void)
     return tr("Manual (no camera specs)");
 }
 
-void CameraCalc::setDistanceMode(QGroundControlQmlGlobal::AltMode altMode)
+void CameraCalc::setDistanceMode(beeCopterQmlGlobal::AltMode altMode)
 {
     if (altMode != _distanceMode) {
         _distanceMode = altMode;

@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 /// Page for sensor calibration. This control is used within the SensorsComponent control and can also be used
 /// standalone for custom uis. When using standadalone you can use the various show* bools to show/hide what you want.
@@ -60,7 +60,7 @@ Item {
     property bool showCompass1Rot: cal_mag1_id.value > 0 && cal_mag1_rot.value >= 0
     property bool showCompass2Rot: cal_mag2_id.value > 0 && cal_mag2_rot.value >= 0
 
-    property bool   _sensorsHaveFixedOrientation:       QGroundControl.corePlugin.options.sensorsHaveFixedOrientation
+    property bool   _sensorsHaveFixedOrientation:       beeCopter.corePlugin.options.sensorsHaveFixedOrientation
     property int    _buttonWidth:                       ScreenTools.defaultFontPixelWidth * 15
     property string _calMagIdParamFormat:               "CAL_MAG#_ID"
     property string _calMagRotParamFormat:              "CAL_MAG#_ROT"
@@ -129,7 +129,7 @@ Item {
         }
     }
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     SensorsComponentController {
         id:                         controller
@@ -162,7 +162,7 @@ Item {
     Component {
         id: waitForCancelDialogComponent
 
-        QGCSimpleMessageDialog {
+        beeCopterSimpleMessageDialog {
             title:      qsTr("Calibration Cancel")
             text:       qsTr("Waiting for Vehicle to response to Cancel. This may take a few seconds.")
             buttons:    0
@@ -182,7 +182,7 @@ Item {
     Component {
         id: preCalibrationDialogComponent
 
-        QGCPopupDialog {
+        beeCopterPopupDialog {
             buttons: Dialog.Cancel | Dialog.Ok
 
             onAccepted: {
@@ -202,7 +202,7 @@ Item {
             ColumnLayout {
                 spacing: ScreenTools.defaultFontPixelHeight
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.minimumWidth:    ScreenTools.defaultFontPixelWidth * 50
                     Layout.preferredWidth:  innerColumn.width
                     wrapMode:               Text.WordWrap
@@ -213,7 +213,7 @@ Item {
                     id:         innerColumn
                     spacing:    parent.spacing
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:         boardRotationHelp
                         wrapMode:   Text.WordWrap
                         visible:    !_sensorsHaveFixedOrientation && (preCalibrationDialogType == "accel" || preCalibrationDialogType == "compass")
@@ -222,20 +222,20 @@ Item {
 
                     Column {
                         visible:    boardRotationHelp.visible
-                        QGCLabel { text: qsTr("Autopilot Orientation") }
+                        beeCopterLabel { text: qsTr("Autopilot Orientation") }
 
                         FactComboBox {
                             sizeToContents: true
                             fact:           sens_board_rot
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             wrapMode:   Text.WordWrap
                             text:       qsTr("ROTATION_NONE indicates component points in direction of flight.")
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         wrapMode:   Text.WordWrap
                         text:       qsTr("Click Ok to start calibration.")
                     }
@@ -249,7 +249,7 @@ Item {
     Component {
         id: setOrientationsDialogComponent
 
-        QGCPopupDialog {
+        beeCopterPopupDialog {
             buttons: Dialog.Ok
 
             property bool showRebootVehicleButton: true
@@ -257,18 +257,18 @@ Item {
             ColumnLayout {
                 spacing: ScreenTools.defaultFontPixelHeight
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("Reboot the vehicle prior to flight.")
                     visible:    showRebootVehicleButton
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:       qsTr("Reboot Vehicle")
                     visible:    showRebootVehicleButton
                     onClicked: { controller.vehicle.rebootVehicle(); close() }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("Adjust orientations as needed.\n\nROTATION_NONE indicates component points in direction of flight.")
                     visible:    _boardOrientationChangeAllowed || (_compassOrientationChangeAllowed && currentExternalMagCount() !== 0)
                 }
@@ -276,7 +276,7 @@ Item {
                 Column {
                     visible: _boardOrientationChangeAllowed
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text: qsTr("Autopilot Orientation")
                     }
 
@@ -296,7 +296,7 @@ Item {
                         property Fact calMagIdFact:     controller.getParameterFact(-1, _calMagIdParamFormat.replace("#", index))
                         property Fact calMagRotFact:    controller.getParameterFact(-1, _calMagRotParamFormat.replace("#", index))
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text: qsTr("Mag %1 Orientation").arg(index)
                         }
 
@@ -307,10 +307,10 @@ Item {
                     }
                 }
             } // Column
-        } // QGCPopupDialog
+        } // beeCopterPopupDialog
     } // Component - setOrientationsDialogComponent
 
-    QGCFlickable {
+    beeCopterFlickable {
         id:             buttonFlickable
         anchors.top:    parent.top
         anchors.bottom: parent.bottom
@@ -326,7 +326,7 @@ Item {
                 width:          _buttonWidth
                 text:           qsTr("Compass")
                 indicatorGreen: cal_mag0_id.value !== 0
-                visible:        !_allMagsDisabled && QGroundControl.corePlugin.options.showSensorCalibrationCompass && showSensorCalibrationCompass
+                visible:        !_allMagsDisabled && beeCopter.corePlugin.options.showSensorCalibrationCompass && showSensorCalibrationCompass
 
                 onClicked: {
                     preCalibrationDialogType = "compass"
@@ -340,7 +340,7 @@ Item {
                 width:          _buttonWidth
                 text:           qsTr("Gyroscope")
                 indicatorGreen: cal_gyro0_id.value !== 0
-                visible:        QGroundControl.corePlugin.options.showSensorCalibrationGyro && showSensorCalibrationGyro
+                visible:        beeCopter.corePlugin.options.showSensorCalibrationGyro && showSensorCalibrationGyro
 
                 onClicked: {
                     preCalibrationDialogType = "gyro"
@@ -354,7 +354,7 @@ Item {
                 width:          _buttonWidth
                 text:           qsTr("Accelerometer")
                 indicatorGreen: cal_acc0_id.value !== 0
-                visible:        QGroundControl.corePlugin.options.showSensorCalibrationAccel && showSensorCalibrationAccel
+                visible:        beeCopter.corePlugin.options.showSensorCalibrationAccel && showSensorCalibrationAccel
 
                 onClicked: {
                     preCalibrationDialogType = "accel"
@@ -369,7 +369,7 @@ Item {
                 text:           qsTr("Level Horizon")
                 indicatorGreen: true
                 enabled:        cal_acc0_id.value !== 0 && cal_gyro0_id.value !== 0
-                visible:        QGroundControl.corePlugin.options.showSensorCalibrationLevel && showSensorCalibrationLevel
+                visible:        beeCopter.corePlugin.options.showSensorCalibrationLevel && showSensorCalibrationLevel
 
                 onClicked: {
                     preCalibrationDialogType = "level"
@@ -383,7 +383,7 @@ Item {
                 width:          _buttonWidth
                 text:           qsTr("Airspeed")
                 visible:        vehicleComponent.airspeedCalSupported &&
-                                    QGroundControl.corePlugin.options.showSensorCalibrationAirspeed &&
+                                    beeCopter.corePlugin.options.showSensorCalibrationAirspeed &&
                                     showSensorCalibrationAirspeed
                 indicatorGreen: sens_dpres_off.value !== 0
 
@@ -394,7 +394,7 @@ Item {
                 }
             }
 
-            QGCButton {
+            beeCopterButton {
                 id:         cancelButton
                 width:      _buttonWidth
                 text:       qsTr("Cancel")
@@ -403,7 +403,7 @@ Item {
             }
 
 
-            QGCButton {
+            beeCopterButton {
                 id:         nextButton
                 width:      _buttonWidth
                 text:       qsTr("Next")
@@ -411,7 +411,7 @@ Item {
                 onClicked:  _root.nextButtonClicked()
             }
 
-            QGCButton {
+            beeCopterButton {
                 id:         setOrientationsButton
                 width:      _buttonWidth
                 text:       qsTr("Orientations")
@@ -423,7 +423,7 @@ Item {
                 }
             }
         } // Column - Buttons
-    } // QGCFLickable - Buttons
+    } // beeCopterFLickable - Buttons
 
     Column {
         anchors.leftMargin: ScreenTools.defaultFontPixelWidth / 2
@@ -452,8 +452,8 @@ Item {
                 height:         parent.height
                 readOnly:       true
                 text:           statusTextAreaDefaultText
-                color:          qgcPal.text
-                background: Rectangle { color: qgcPal.windowShade }
+                color:          beeCopterPal.text
+                background: Rectangle { color: beeCopterPal.windowShade }
             }
 
             Rectangle {
@@ -461,9 +461,9 @@ Item {
                 width:      parent.calDisplayAreaWidth
                 height:     parent.height
                 visible:    controller.showOrientationCalArea
-                color:      qgcPal.windowShade
+                color:      beeCopterPal.windowShade
 
-                QGCLabel {
+                beeCopterLabel {
                     id:                 orientationCalAreaHelpText
                     anchors.margins:    ScreenTools.defaultFontPixelWidth
                     anchors.top:        orientationCalArea.top
@@ -541,7 +541,7 @@ Item {
                 }
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:  qsTr("Factory reset")
                 width: _buttonWidth
 

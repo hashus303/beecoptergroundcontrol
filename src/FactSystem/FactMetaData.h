@@ -143,7 +143,7 @@ public:
     QString rawUnits() const { return _rawUnits; }
     QString cookedUnits() const { return _cookedUnits; }
     bool vehicleRebootRequired() const { return _vehicleRebootRequired; }
-    bool qgcRebootRequired() const { return _qgcRebootRequired; }
+    bool beeCopterRebootRequired() const { return _beeCopterRebootRequired; }
     bool hasControl() const { return _hasControl; }
     bool readOnly() const { return _readOnly; }
     bool writeOnly() const { return _writeOnly; }
@@ -181,7 +181,7 @@ public:
     void setShortDescription(const QString &shortDescription) { _shortDescription = shortDescription; }
     void setRawUnits(const QString &rawUnits);
     void setVehicleRebootRequired(bool rebootRequired) { _vehicleRebootRequired = rebootRequired; }
-    void setQGCRebootRequired(bool rebootRequired) { _qgcRebootRequired = rebootRequired; }
+    void setbeeCopterRebootRequired(bool rebootRequired) { _beeCopterRebootRequired = rebootRequired; }
     void setRawIncrement(double increment) { _rawIncrement = increment; }
     void setHasControl(bool bValue) { _hasControl = bValue; }
     void setReadOnly(bool bValue) { _readOnly = bValue; }
@@ -226,7 +226,7 @@ public:
 
     static constexpr const char *kDefaultCategory = QT_TRANSLATE_NOOP("FactMetaData", "Other");
     static constexpr const char *kDefaultGroup = QT_TRANSLATE_NOOP("FactMetaData", "Misc");
-    static constexpr const char *qgcFileType = "FactMetaData";
+    static constexpr const char *beeCopterFileType = "FactMetaData";
 
 private:
     QVariant _minForType() const { return minForType(_type); };
@@ -346,7 +346,7 @@ private:
     Translator _rawTranslator = _defaultTranslator;
     Translator _cookedTranslator = _defaultTranslator;
     bool _vehicleRebootRequired = false;
-    bool _qgcRebootRequired = false;
+    bool _beeCopterRebootRequired = false;
     double _rawIncrement = std::numeric_limits<double>::quiet_NaN();
     bool _hasControl = true;
     bool _readOnly = false;
@@ -381,8 +381,8 @@ private:
     static const BuiltInTranslation_s _rgBuiltInTranslations[];
     static const AppSettingsTranslation_s _rgAppSettingsTranslations[];
 
-    static constexpr const char *_jsonMetaDataDefinesName = "QGC.MetaData.Defines";
-    static constexpr const char *_jsonMetaDataFactsName = "QGC.MetaData.Facts";
+    static constexpr const char *_jsonMetaDataDefinesName = "beeCopter.MetaData.Defines";
+    static constexpr const char *_jsonMetaDataFactsName = "beeCopter.MetaData.Facts";
     static constexpr const char *_enumStringsJsonKey = "enumStrings";
     static constexpr const char *_enumValuesJsonKey = "enumValues";
 
@@ -442,7 +442,7 @@ private:
     static constexpr const char *_userMaxJsonKey = "userMax";
     static constexpr const char *_incrementJsonKey = "increment";
     static constexpr const char *_hasControlJsonKey = "control";
-    static constexpr const char *_qgcRebootRequiredJsonKey = "qgcRebootRequired";
+    static constexpr const char *_beeCopterRebootRequiredJsonKey = "beeCopterRebootRequired";
     static constexpr const char *_rebootRequiredJsonKey = "rebootRequired";
     static constexpr const char *_categoryJsonKey = "category";
     static constexpr const char *_groupJsonKey = "group";

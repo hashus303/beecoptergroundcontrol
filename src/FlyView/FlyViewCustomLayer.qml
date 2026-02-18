@@ -8,10 +8,10 @@ import QtPositioning
 import QtQuick.Window
 import QtQml.Models
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
+import beeCopter.FlightMap
 
 // To implement a custom overlay copy this code to your own control in your custom code source. Then override the
 // FlyViewCustomLayer.qml resource with your own qml. See the custom example and documentation for details.
@@ -23,7 +23,7 @@ Item {
     property var mapControl
 
     // since this file is a placeholder for the custom layer in a standard build, we will just pass through the parent insets
-    QGCToolInsets {
+    beeCopterToolInsets {
         id:                     _toolInsets
         leftEdgeTopInset:       parentToolInsets.leftEdgeTopInset
         leftEdgeCenterInset:    parentToolInsets.leftEdgeCenterInset

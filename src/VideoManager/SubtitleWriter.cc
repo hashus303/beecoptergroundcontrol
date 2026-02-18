@@ -4,13 +4,13 @@
 #include "HorizontalFactValueGrid.h"
 #include "InstrumentValueData.h"
 #include "MultiVehicleManager.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QFileInfo>
 #include <QtCore/QString>
 
-QGC_LOGGING_CATEGORY(SubtitleWriterLog, "Video.SubtitleWriter")
+beeCopter_LOGGING_CATEGORY(SubtitleWriterLog, "Video.SubtitleWriter")
 
 SubtitleWriter::SubtitleWriter(QObject *parent)
     : QObject(parent)
@@ -68,7 +68,7 @@ void SubtitleWriter::startCapturingTelemetry(const QString &videoFile, QSize siz
     // This is file header
     stream << QStringLiteral(
         "[Script Info]\n"
-        "Title: QGroundControl Subtitle Telemetry file\n"
+        "Title: beeCopter Subtitle Telemetry file\n"
         "ScriptType: v4.00+\n"
         "WrapStyle: 0\n"
         "ScaledBorderAndShadow: yes\n"

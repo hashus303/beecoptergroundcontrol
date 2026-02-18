@@ -1,9 +1,9 @@
 #include "GeoTagImageModel.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFileInfo>
 
-QGC_LOGGING_CATEGORY(GeoTagImageModelLog, "AnalyzeView.GeoTagImageModel")
+beeCopter_LOGGING_CATEGORY(GeoTagImageModelLog, "AnalyzeView.GeoTagImageModel")
 
 GeoTagImageModel::GeoTagImageModel(QObject *parent)
     : QAbstractListModel(parent)

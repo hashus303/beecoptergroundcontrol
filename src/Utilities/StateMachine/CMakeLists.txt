@@ -4,12 +4,12 @@
 
 target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE
-        QGCFinalState.cc
-        QGCFinalState.h
-        QGCState.cc
-        QGCState.h
-        QGCStateMachine.cc
-        QGCStateMachine.h
+        beeCopterFinalState.cc
+        beeCopterFinalState.h
+        beeCopterState.cc
+        beeCopterState.h
+        beeCopterStateMachine.cc
+        beeCopterStateMachine.h
         DelayState.cc
         DelayState.h
         FunctionState.cc

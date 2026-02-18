@@ -6,7 +6,7 @@
 qt_add_library(FlightMapModule STATIC)
 
 qt_add_qml_module(FlightMapModule
-    URI QGroundControl.FlightMap
+    URI beeCopter.FlightMap
     VERSION 1.0
     RESOURCE_PREFIX /qml
     QML_FILES
@@ -18,9 +18,9 @@ qt_add_qml_module(FlightMapModule
         MapItems/MissionLineView.qml
         MapItems/PlanMapItems.qml
         MapItems/ProximityRadarMapView.qml
-        MapItems/QGCMapCircleVisuals.qml
-        MapItems/QGCMapPolygonVisuals.qml
-        MapItems/QGCMapPolylineVisuals.qml
+        MapItems/beeCopterMapCircleVisuals.qml
+        MapItems/beeCopterMapPolygonVisuals.qml
+        MapItems/beeCopterMapPolylineVisuals.qml
         MapItems/SplitIndicator.qml
         MapItems/VehicleMapItem.qml
         Widgets/CenterMapDropButton.qml
@@ -32,10 +32,10 @@ qt_add_qml_module(FlightMapModule
         Widgets/IntegratedCompassAttitude.qml
         Widgets/MapFitFunctions.qml
         Widgets/PhotoVideoControl.qml
-        Widgets/QGCArtificialHorizon.qml
-        Widgets/QGCAttitudeWidget.qml
-        Widgets/QGCCompassWidget.qml
-        Widgets/QGCPitchIndicator.qml
+        Widgets/beeCopterArtificialHorizon.qml
+        Widgets/beeCopterAttitudeWidget.qml
+        Widgets/beeCopterCompassWidget.qml
+        Widgets/beeCopterPitchIndicator.qml
         Widgets/VerticalCompassAttitude.qml
         FlightMap.qml
         MapScale.qml

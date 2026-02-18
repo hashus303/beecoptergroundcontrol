@@ -1,7 +1,7 @@
 #pragma once
 
-#include "QGCState.h"
-#include "QGCMAVLink.h"
+#include "beeCopterState.h"
+#include "beeCopterMAVLink.h"
 
 #include <QtCore/QTimer>
 
@@ -12,7 +12,7 @@ class Vehicle;
 
 /// Waits for the specified MAVLink message from the vehicle
 ///     signals timeout() - if the message is not received within the specified timeout period
-class WaitForMavlinkMessageState : public QGCState
+class WaitForMavlinkMessageState : public beeCopterState
 {
     Q_OBJECT
 

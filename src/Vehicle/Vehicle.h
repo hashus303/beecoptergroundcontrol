@@ -13,8 +13,8 @@
 
 #include "HealthAndArmingCheckReport.h"
 #include "MAVLinkStreamConfig.h"
-#include "QGCMapCircle.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMapCircle.h"
+#include "beeCopterMAVLink.h"
 #include "QmlObjectListModel.h"
 #include "SysStatusSensorInfo.h"
 #include "VehicleLinkManager.h"
@@ -56,7 +56,7 @@ class LinkInterface;
 class MAVLinkLogManager;
 class MissionManager;
 class ParameterManager;
-class QGCCameraManager;
+class beeCopterCameraManager;
 class RallyPointManager;
 class RemoteIDManager;
 class RequestMessageTest;
@@ -214,7 +214,7 @@ public:
 
     // The following properties relate to Orbit status
     Q_PROPERTY(bool             orbitActive     READ orbitActive        NOTIFY orbitActiveChanged)
-    Q_PROPERTY(QGCMapCircle*    orbitMapCircle  READ orbitMapCircle     CONSTANT)
+    Q_PROPERTY(beeCopterMapCircle*    orbitMapCircle  READ orbitMapCircle     CONSTANT)
 
     // Vehicle state used for guided control
     Q_PROPERTY(bool     flying                  READ flying                                         NOTIFY flyingChanged)       ///< Vehicle is flying
@@ -436,7 +436,7 @@ public:
     int compId() const{ return _compID; }
     MAV_AUTOPILOT firmwareType() const { return _firmwareType; }
     MAV_TYPE vehicleType() const { return _vehicleType; }
-    QGCMAVLink::VehicleClass_t vehicleClass(void) const { return QGCMAVLink::vehicleClass(_vehicleType); }
+    beeCopterMAVLink::VehicleClass_t vehicleClass(void) const { return beeCopterMAVLink::vehicleClass(_vehicleType); }
     Q_INVOKABLE QString vehicleClassInternalName() const;
 
     /// Sends a message to the specified link
@@ -550,17 +550,17 @@ public:
     int             telemetryRNoise             () const{ return _telemetryRNoise; }
     bool            autoDisarm                  ();
     bool            orbitActive                 () const { return _orbitActive; }
-    QGCMapCircle*   orbitMapCircle              () { return &_orbitMapCircle; }
+    beeCopterMapCircle*   orbitMapCircle              () { return &_orbitMapCircle; }
     bool            readyToFlyAvailable         () const{ return _readyToFlyAvailable; }
     bool            readyToFly                  () const{ return _readyToFly; }
     bool            allSensorsHealthy           () const{ return _allSensorsHealthy; }
     QObject*        sysStatusSensorInfo         () { return &_sysStatusSensorInfo; }
-    bool            requiresGpsFix              () const { return static_cast<bool>(_onboardControlSensorsPresent & QGCMAVLink::SysStatusSensorGPS); }
+    bool            requiresGpsFix              () const { return static_cast<bool>(_onboardControlSensorsPresent & beeCopterMAVLink::SysStatusSensorGPS); }
     bool            hilMode                     () const { return _base_mode & MAV_MODE_FLAG_HIL_ENABLED; }
     Actuators*      actuators                   () const { return _actuators; }
     bool            mavlinkSigning          () const { return _mavlinkSigning; }
 
-    void startCalibration   (QGCMAVLink::CalibrationType calType);
+    void startCalibration   (beeCopterMAVLink::CalibrationType calType);
     void stopCalibration    (bool showError);
 
     void startUAVCANBusConfig(void);
@@ -619,7 +619,7 @@ public:
     /// timeout has not yet expired.
     ///
     ///     Or, said another way: if you call `sendMavCommand(compId, command, true, ...)`
-    /// will an error be shown because you (or another part of QGC) has already
+    /// will an error be shown because you (or another part of beeCopter) has already
     /// sent that command?
     ///
     /// \param targetCompId
@@ -794,7 +794,7 @@ public slots:
     void setVtolInFwdFlight                 (bool vtolInFwdFlight);
     void _offlineFirmwareTypeSettingChanged (QVariant varFirmwareType); // Should only be used by MissionControler to set firmware from Plan file
     void _offlineVehicleTypeSettingChanged  (QVariant varVehicleType);  // Should only be used by MissionController to set vehicle type from Plan file
-    Q_INVOKABLE void sendGripperAction(QGCMAVLink::GripperActions gripperOption);
+    Q_INVOKABLE void sendGripperAction(beeCopterMAVLink::GripperActions gripperOption);
 
 signals:
     void coordinateChanged              (QGeoCoordinate coordinate);
@@ -907,7 +907,7 @@ private slots:
     void _updateHomepoint                   ();
     void _updateHobbsMeter                  ();
     void _vehicleParamLoaded                (bool ready);
-    void _sendQGCTimeToVehicle              ();
+    void _sendbeeCopterTimeToVehicle              ();
     void _mavlinkMessageStatus              (int uasId, uint64_t totalSent, uint64_t totalReceived, uint64_t totalLoss, float lossPercent);
     void _orbitTelemetryTimeout             ();
     void _updateFlightTime                  ();
@@ -941,7 +941,7 @@ void _activeVehicleChanged          (Vehicle* newActiveVehicle);
     void _handleFenceStatus             (const mavlink_message_t& message);
     void _handleEvent(uint8_t comp_id, std::unique_ptr<events::parser::ParsedEvent> event);
     // ArduPilot dialect messages
-#if !defined(QGC_NO_ARDUPILOT_DIALECT)
+#if !defined(beeCopter_NO_ARDUPILOT_DIALECT)
     void _handleCameraFeedback          (const mavlink_message_t& message);
 #endif
     void _handleCameraImageCaptured     (const mavlink_message_t& message);
@@ -1112,7 +1112,7 @@ void _activeVehicleChanged          (Vehicle* newActiveVehicle);
 
     // Orbit status values
     bool            _orbitActive = false;
-    QGCMapCircle    _orbitMapCircle;
+    beeCopterMapCircle    _orbitMapCircle;
     QTimer          _orbitTelemetryTimer;
     static const int _orbitTelemetryTimeoutMsecs = 3000; // No telemetry for this amount and orbit will go inactive
 
@@ -1436,12 +1436,12 @@ private:
 /*                             Camera Manager                                */
 /*===========================================================================*/
 private:
-    Q_MOC_INCLUDE("QGCCameraManager.h")
-    Q_PROPERTY(QGCCameraManager *cameraManager READ cameraManager NOTIFY cameraManagerChanged)
+    Q_MOC_INCLUDE("beeCopterCameraManager.h")
+    Q_PROPERTY(beeCopterCameraManager *cameraManager READ cameraManager NOTIFY cameraManagerChanged)
     Q_PROPERTY(QVariantList staticCameraList READ staticCameraList CONSTANT)
 
 public:
-    QGCCameraManager *cameraManager() { return _cameraManager; }
+    beeCopterCameraManager *cameraManager() { return _cameraManager; }
     const QVariantList &staticCameraList() const;
 
 signals:
@@ -1450,7 +1450,7 @@ signals:
 private:
     void _createCameraManager();
 
-    QGCCameraManager *_cameraManager = nullptr;
+    beeCopterCameraManager *_cameraManager = nullptr;
 
 /*---------------------------------------------------------------------------*/
 };

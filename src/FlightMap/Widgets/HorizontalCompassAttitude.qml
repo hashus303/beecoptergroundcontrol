@@ -1,14 +1,14 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     id:     control
     width:  Math.min(_defaultWidth, _maxWidth)
     height: _outerRadius * 2
     radius: _outerRadius
-    color:  qgcPal.window
+    color:  beeCopterPal.window
 
     property real extraInset:           0
     property real extraValuesWidth:     _outerRadius
@@ -22,9 +22,9 @@ Rectangle {
 
     DeadMouseArea { anchors.fill: parent }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
-    QGCAttitudeWidget {
+    beeCopterAttitudeWidget {
         id:                     attitude
         anchors.leftMargin:     control._topBottomMargin
         anchors.left:           parent.left
@@ -33,7 +33,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
     }
 
-    QGCCompassWidget {
+    beeCopterCompassWidget {
         id:                     compass
         anchors.leftMargin:     control._spacing
         anchors.left:           attitude.right

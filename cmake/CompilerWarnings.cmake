@@ -1,13 +1,13 @@
 # ----------------------------------------------------------------------------
-# QGroundControl Compiler Warnings Configuration
-# Sets warning levels and treats warnings as errors for QGC source code
+# beeCopter Compiler Warnings Configuration
+# Sets warning levels and treats warnings as errors for beeCopter source code
 # while allowing more lenient settings for third-party dependencies
 # ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
-# QGC Warning Flags for Main Source Code
+# beeCopter Warning Flags for Main Source Code
 # ----------------------------------------------------------------------------
-function(qgc_set_warning_flags target)
+function(beeCopter_set_warning_flags target)
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         target_compile_options(${target} PRIVATE
             -Wall                       # Enable common warnings
@@ -29,7 +29,7 @@ function(qgc_set_warning_flags target)
             #-Wdouble-promotion          # Warn about float to double promotion
             #-Wswitch-enum               # Warn about missing enum cases in switch
 
-            # The following warnings are temporarily disabled due to known issues in QGC codebase that need to be addressed
+            # The following warnings are temporarily disabled due to known issues in beeCopter codebase that need to be addressed
             -Wno-switch
 
             # Qt-specific warnings to disable
@@ -66,7 +66,7 @@ function(qgc_set_warning_flags target)
             /W2                         # Warning level 2 (ultimate target is level 3)
             /WX                         # Treat warnings as errors
 
-            # The following warnings are temporarily disabled due to known issues in QGC codebase that need to be addressed
+            # The following warnings are temporarily disabled due to known issues in beeCopter codebase that need to be addressed
             /wd4996                     # deprecated functions (strncpy, etc)
             /wd4389                     # signed/unsigned mismatch
 
@@ -88,24 +88,24 @@ endfunction()
 #
 # DO NOT use this for header-only (INTERFACE) libraries. Because INTERFACE compile
 # options propagate to all consuming targets, calling this on an INTERFACE library
-# would silently suppress ALL warnings in QGC's own source code.
+# would silently suppress ALL warnings in beeCopter's own source code.
 #
 # For header-only dependencies, use SYSTEM include directories instead:
 #   target_include_directories(${CMAKE_PROJECT_NAME} SYSTEM PRIVATE ${dep_SOURCE_DIR}/include)
 # This tells the compiler to treat those headers as system headers, suppressing
-# warnings within them without affecting QGC source code.
+# warnings within them without affecting beeCopter source code.
 # ----------------------------------------------------------------------------
-function(qgc_disable_dependency_warnings target)
+function(beeCopter_disable_dependency_warnings target)
     # Check if target exists
     if(NOT TARGET ${target})
-        message(WARNING "qgc_disable_dependency_warnings: Target '${target}' does not exist")
+        message(WARNING "beeCopter_disable_dependency_warnings: Target '${target}' does not exist")
         return()
     endif()
 
     # Get target type
     get_target_property(_target_type ${target} TYPE)
     if(_target_type STREQUAL "INTERFACE_LIBRARY")
-        message(WARNING "qgc_disable_dependency_warnings: Target '${target}' is an INTERFACE library. "
+        message(WARNING "beeCopter_disable_dependency_warnings: Target '${target}' is an INTERFACE library. "
             "Warning flags would propagate to all consumers. Use SYSTEM include directories instead.")
         return()
     endif()
@@ -134,14 +134,14 @@ function(qgc_disable_dependency_warnings target)
 endfunction()
 
 # ----------------------------------------------------------------------------
-# Apply warning flags to QGC main target
+# Apply warning flags to beeCopter main target
 # Called from main CMakeLists.txt after target is created
 # ----------------------------------------------------------------------------
-function(qgc_apply_warning_flags)
-    if(QGC_ENABLE_WERROR)
-        message(STATUS "QGC: Enabling warnings as errors for main source code")
-        qgc_set_warning_flags(${CMAKE_PROJECT_NAME})
+function(beeCopter_apply_warning_flags)
+    if(beeCopter_ENABLE_WERROR)
+        message(STATUS "beeCopter: Enabling warnings as errors for main source code")
+        beeCopter_set_warning_flags(${CMAKE_PROJECT_NAME})
     else()
-        message(STATUS "QGC: Warnings as errors disabled (set QGC_ENABLE_WERROR=ON to enable)")
+        message(STATUS "beeCopter: Warnings as errors disabled (set beeCopter_ENABLE_WERROR=ON to enable)")
     endif()
 endfunction()

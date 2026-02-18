@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 //-------------------------------------------------------------------------
 //-- Battery Indicator
@@ -17,8 +17,8 @@ Item {
     property bool       waitForParameters:  true    // UI won't show until parameters are ready
     property Component  expandedPageComponent
 
-    property var    _activeVehicle:     QGroundControl.multiVehicleManager.activeVehicle
-    property var    _batterySettings:   QGroundControl.settingsManager.batteryIndicatorSettings
+    property var    _activeVehicle:     beeCopter.multiVehicleManager.activeVehicle
+    property var    _batterySettings:   beeCopter.settingsManager.batteryIndicatorSettings
     property Fact   _indicatorDisplay:  _batterySettings.valueDisplay
     property bool   _showPercentage:    _indicatorDisplay.rawValue === 0
     property bool   _showVoltage:       _indicatorDisplay.rawValue === 1
@@ -162,7 +162,7 @@ Item {
         function onCountChanged() {_recalcLowestBatteryId() }
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     RowLayout {
         id:             batteryIndicatorRow
@@ -211,24 +211,24 @@ Item {
                     case MAVLink.MAV_BATTERY_CHARGE_STATE_OK:
                         if (!isNaN(battery.percentRemaining.rawValue)) {
                             if (battery.percentRemaining.rawValue > threshold1) {
-                                return qgcPal.colorGreen
+                                return beeCopterPal.colorGreen
                             } else if (battery.percentRemaining.rawValue > threshold2) {
-                                return qgcPal.colorYellowGreen
+                                return beeCopterPal.colorYellowGreen
                             } else {
-                                return qgcPal.colorYellow
+                                return beeCopterPal.colorYellow
                             }
                         } else {
-                            return qgcPal.text
+                            return beeCopterPal.text
                         }
                     case MAVLink.MAV_BATTERY_CHARGE_STATE_LOW:
-                        return qgcPal.colorOrange
+                        return beeCopterPal.colorOrange
                     case MAVLink.MAV_BATTERY_CHARGE_STATE_CRITICAL:
                     case MAVLink.MAV_BATTERY_CHARGE_STATE_EMERGENCY:
                     case MAVLink.MAV_BATTERY_CHARGE_STATE_FAILED:
                     case MAVLink.MAV_BATTERY_CHARGE_STATE_UNHEALTHY:
-                        return qgcPal.colorRed
+                        return beeCopterPal.colorRed
                     default:
-                        return qgcPal.text
+                        return beeCopterPal.text
                 }
             }
 
@@ -309,7 +309,7 @@ Item {
                 }
             }
 
-            QGCColoredImage {
+            beeCopterColoredImage {
                 anchors.top:        parent.top
                 anchors.bottom:     parent.bottom
                 width:              height
@@ -325,19 +325,19 @@ Item {
                 anchors.bottom:         parent.bottom
                 spacing:                0
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.alignment:       Qt.AlignHCenter
                     verticalAlignment:      Text.AlignVCenter
-                    color:                  qgcPal.windowTransparentText
+                    color:                  beeCopterPal.windowTransparentText
                     text:                   getBatteryPercentageText()
                     font.pointSize:         _showBoth ? ScreenTools.defaultFontPointSize : ScreenTools.mediumFontPointSize
                     visible:                _showBoth || _showPercentage
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.alignment:       Qt.AlignHCenter
                     font.pointSize:         _showBoth ? ScreenTools.defaultFontPointSize : ScreenTools.mediumFontPointSize
-                    color:                  qgcPal.windowTransparentText
+                    color:                  beeCopterPal.windowTransparentText
                     text:                   getBatteryVoltageText()
                     visible:                _showBoth || _showVoltage
                 }
@@ -456,7 +456,7 @@ Item {
                 }
 
                 ColumnLayout {
-                    QGCLabel { text: qsTr("Coloring") }
+                    beeCopterLabel { text: qsTr("Coloring") }
 
                     RowLayout {
                         spacing: ScreenTools.defaultFontPixelWidth
@@ -464,25 +464,25 @@ Item {
                         // Battery 100%
                         RowLayout {
                             spacing: ScreenTools.defaultFontPixelWidth * 0.05  // Tighter spacing for icon and label
-                            QGCColoredImage {
+                            beeCopterColoredImage {
                                 source: "/qmlimages/BatteryGreen.svg"
                                 width: height
                                 height: batteryIconHeight
                                 fillMode: Image.PreserveAspectFit
-                                color: qgcPal.colorGreen
+                                color: beeCopterPal.colorGreen
                             }
-                            QGCLabel { text: qsTr("100%") }
+                            beeCopterLabel { text: qsTr("100%") }
                         }
 
                         // Threshold 1
                         RowLayout {
                             spacing: ScreenTools.defaultFontPixelWidth * 0.05  // Tighter spacing for icon and field
-                            QGCColoredImage {
+                            beeCopterColoredImage {
                                 source: "/qmlimages/BatteryYellowGreen.svg"
                                 width: height
                                 height: batteryIconHeight
                                 fillMode: Image.PreserveAspectFit
-                                color: qgcPal.colorYellowGreen
+                                color: beeCopterPal.colorYellowGreen
                             }
                             FactTextField {
                                 id: threshold1Field
@@ -500,12 +500,12 @@ Item {
                         // Threshold 2
                         RowLayout {
                             spacing: ScreenTools.defaultFontPixelWidth * 0.05  // Tighter spacing for icon and field
-                            QGCColoredImage {
+                            beeCopterColoredImage {
                                 source: "/qmlimages/BatteryYellow.svg"
                                 width: height
                                 height: batteryIconHeight
                                 fillMode: Image.PreserveAspectFit
-                                color: qgcPal.colorYellow
+                                color: beeCopterPal.colorYellow
                             }
                             FactTextField {
                                 fact: _batterySettings.threshold2
@@ -522,27 +522,27 @@ Item {
                         // Low state
                         RowLayout {
                             spacing: ScreenTools.defaultFontPixelWidth * 0.05  // Tighter spacing for icon and label
-                            QGCColoredImage {
+                            beeCopterColoredImage {
                                 source: "/qmlimages/BatteryOrange.svg"
                                 width: height
                                 height: batteryIconHeight
                                 fillMode: Image.PreserveAspectFit
-                                color: qgcPal.colorOrange
+                                color: beeCopterPal.colorOrange
                             }
-                            QGCLabel { text: qsTr("Low") }
+                            beeCopterLabel { text: qsTr("Low") }
                         }
 
                         // Critical state
                         RowLayout {
                             spacing: ScreenTools.defaultFontPixelWidth * 0.05  // Tighter spacing for icon and label
-                            QGCColoredImage {
+                            beeCopterColoredImage {
                                 source: "/qmlimages/BatteryCritical.svg"
                                 width: height
                                 height: batteryIconHeight
                                 fillMode: Image.PreserveAspectFit
-                                color: qgcPal.colorRed
+                                color: beeCopterPal.colorRed
                             }
-                            QGCLabel { text: qsTr("Critical") }
+                            beeCopterLabel { text: qsTr("Critical") }
                         }
                     }
                 }
@@ -555,7 +555,7 @@ Item {
 
             SettingsGroupLayout {
                 visible: _activeVehicle.autopilotPlugin.knownVehicleComponentAvailable(AutoPilotPlugin.KnownPowerVehicleComponent) &&
-                            QGroundControl.corePlugin.showAdvancedUI
+                            beeCopter.corePlugin.showAdvancedUI
 
                 LabelledButton {
                     label:      qsTr("Vehicle Power")

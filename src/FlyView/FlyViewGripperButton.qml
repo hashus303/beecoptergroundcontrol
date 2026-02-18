@@ -1,5 +1,5 @@
-import QGroundControl
-import QGroundControl.FlyView
+import beeCopter
+import beeCopter.FlyView
 
 ToolStripAction {
     id:         action
@@ -7,7 +7,7 @@ ToolStripAction {
     iconSource: "/res/Gripper.svg"
     visible:    _gripperAvailable
 
-    property var   _activeVehicle:      QGroundControl.multiVehicleManager.activeVehicle
+    property var   _activeVehicle:      beeCopter.multiVehicleManager.activeVehicle
     property bool  _gripperAvailable:   _activeVehicle ? _activeVehicle.hasGripper : false
 
     dropPanelComponent: Component {

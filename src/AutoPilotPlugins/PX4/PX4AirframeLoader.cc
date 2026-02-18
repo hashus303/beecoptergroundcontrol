@@ -1,6 +1,6 @@
 #include "PX4AirframeLoader.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "AirframeComponentAirframes.h"
 #include "AutoPilotPlugin.h"
 
@@ -11,7 +11,7 @@
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QSettings>
 
-QGC_LOGGING_CATEGORY(PX4AirframeLoaderLog, "AutoPilotPlugins.PX4AirframeLoader")
+beeCopter_LOGGING_CATEGORY(PX4AirframeLoaderLog, "AutoPilotPlugins.PX4AirframeLoader")
 
 bool PX4AirframeLoader::_airframeMetaDataLoaded = false;
 
@@ -47,7 +47,7 @@ void PX4AirframeLoader::loadAirframeMetaData(void)
     QString airframeFilename;
 
     // We want unit test builds to always use the resource based meta data to provide repeatable results
-    if (!qgcApp()->runningUnitTests()) {
+    if (!beeCopterApp()->runningUnitTests()) {
         // First look for meta data that comes from a firmware download. Fall back to resource if not there.
         airframeFilename = aiframeMetaDataFile();
     }

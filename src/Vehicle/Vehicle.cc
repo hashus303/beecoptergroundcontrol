@@ -22,13 +22,13 @@
 #include "ParameterManager.h"
 #include "PlanMasterController.h"
 #include "PositionManager.h"
-#include "QGC.h"
-#include "QGCApplication.h"
-#include "QGCCameraManager.h"
-#include "QGCCorePlugin.h"
-#include "QGCImageProvider.h"
-#include "QGCLoggingCategory.h"
-#include "QGCQGeoCoordinate.h"
+#include "beeCopter.h"
+#include "beeCopterApplication.h"
+#include "beeCopterCameraManager.h"
+#include "beeCopterCorePlugin.h"
+#include "beeCopterImageProvider.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterQGeoCoordinate.h"
 #include "RallyPointManager.h"
 #include "RemoteIDManager.h"
 #include "SettingsManager.h"
@@ -55,7 +55,7 @@
 
 #include <QtCore/QDateTime>
 
-QGC_LOGGING_CATEGORY(VehicleLog, "Vehicle.Vehicle")
+beeCopter_LOGGING_CATEGORY(VehicleLog, "Vehicle.Vehicle")
 
 #define UPDATE_TIMER 50
 #define DEFAULT_LAT  38.965767f
@@ -114,8 +114,8 @@ Vehicle::Vehicle(LinkInterface*             link,
     connect(this, &Vehicle::armedChanged,               this, &Vehicle::_announceArmedChanged);
     connect(this, &Vehicle::flyingChanged, this, [this](bool flying){
         if (flying) {
-            setInitialGCSPressure(QGCDeviceInfo::QGCPressure::instance()->pressure());
-            setInitialGCSTemperature(QGCDeviceInfo::QGCPressure::instance()->temperature());
+            setInitialGCSPressure(beeCopterDeviceInfo::beeCopterPressure::instance()->pressure());
+            setInitialGCSTemperature(beeCopterDeviceInfo::beeCopterPressure::instance()->temperature());
         }
     });
 
@@ -147,7 +147,7 @@ Vehicle::Vehicle(LinkInterface*             link,
 
     // MAV_TYPE_GENERIC is used by unit test for creating a vehicle which doesn't do the connect sequence. This
     // way we can test the methods that are used within the connect sequence.
-    if (!qgcApp()->runningUnitTests() || _vehicleType != MAV_TYPE_GENERIC) {
+    if (!beeCopterApp()->runningUnitTests() || _vehicleType != MAV_TYPE_GENERIC) {
         _initialConnectStateMachine->start();
     }
 
@@ -239,8 +239,8 @@ void Vehicle::_commonInit(LinkInterface* link)
     connect(this, &Vehicle::vehicleTypeChanged,     this, &Vehicle::inFwdFlightChanged);
     connect(this, &Vehicle::vtolInFwdFlightChanged, this, &Vehicle::inFwdFlightChanged);
 
-    connect(QGCPositionManager::instance(), &QGCPositionManager::gcsPositionChanged, this, &Vehicle::_updateDistanceHeadingGCS);
-    connect(QGCPositionManager::instance(), &QGCPositionManager::gcsPositionChanged, this, &Vehicle::_updateHomepoint);
+    connect(beeCopterPositionManager::instance(), &beeCopterPositionManager::gcsPositionChanged, this, &Vehicle::_updateDistanceHeadingGCS);
+    connect(beeCopterPositionManager::instance(), &beeCopterPositionManager::gcsPositionChanged, this, &Vehicle::_updateHomepoint);
 
     _missionManager = new MissionManager(this);
     connect(_missionManager, &MissionManager::error,                    this, &Vehicle::_missionManagerError);
@@ -296,7 +296,7 @@ void Vehicle::_commonInit(LinkInterface* link)
     _remoteIDManager = new RemoteIDManager(this);
 
     // Flight modes can differ based on advanced mode
-    connect(QGCCorePlugin::instance(), &QGCCorePlugin::showAdvancedUIChanged, this, &Vehicle::flightModesChanged);
+    connect(beeCopterCorePlugin::instance(), &beeCopterCorePlugin::showAdvancedUIChanged, this, &Vehicle::flightModesChanged);
 
     _gpsAggregateFactGroup.bindToGps(&_gpsFactGroup, &_gps2FactGroup);
 
@@ -443,7 +443,7 @@ void Vehicle::_offlineHoverSpeedSettingChanged(QVariant value)
 
 QString Vehicle::firmwareTypeString() const
 {
-    return QGCMAVLink::firmwareClassToString(_firmwareType);
+    return beeCopterMAVLink::firmwareClassToString(_firmwareType);
 }
 
 void Vehicle::resetCounters()
@@ -499,7 +499,7 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
     }
 
     // Give the Core Plugin access to all mavlink traffic
-    if (!QGCCorePlugin::instance()->mavlinkMessage(this, link, message)) {
+    if (!beeCopterCorePlugin::instance()->mavlinkMessage(this, link, message)) {
         return;
     }
 
@@ -622,7 +622,7 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
         break;
 
         // Following are ArduPilot dialect messages
-#if !defined(QGC_NO_ARDUPILOT_DIALECT)
+#if !defined(beeCopter_NO_ARDUPILOT_DIALECT)
     case MAVLINK_MSG_ID_CAMERA_FEEDBACK:
         _handleCameraFeedback(message);
         break;
@@ -659,7 +659,7 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
     emit mavlinkMessageReceived(message);
 }
 
-#if !defined(QGC_NO_ARDUPILOT_DIALECT)
+#if !defined(beeCopter_NO_ARDUPILOT_DIALECT)
 void Vehicle::_handleCameraFeedback(const mavlink_message_t& message)
 {
     mavlink_camera_feedback_t feedback;
@@ -668,7 +668,7 @@ void Vehicle::_handleCameraFeedback(const mavlink_message_t& message)
 
     QGeoCoordinate imageCoordinate((double)feedback.lat / qPow(10.0, 7.0), (double)feedback.lng / qPow(10.0, 7.0), feedback.alt_msl);
     qCDebug(VehicleLog) << "_handleCameraFeedback coord:index" << imageCoordinate << feedback.img_idx;
-    _cameraTriggerPoints.append(new QGCQGeoCoordinate(imageCoordinate, this));
+    _cameraTriggerPoints.append(new beeCopterQGeoCoordinate(imageCoordinate, this));
 }
 #endif
 
@@ -679,7 +679,7 @@ void Vehicle::_handleOrbitExecutionStatus(const mavlink_message_t& message)
     mavlink_msg_orbit_execution_status_decode(&message, &orbitStatus);
 
     double newRadius =  qAbs(static_cast<double>(orbitStatus.radius));
-    if (!QGC::fuzzyCompare(_orbitMapCircle.radius()->rawValue().toDouble(), newRadius)) {
+    if (!beeCopter::fuzzyCompare(_orbitMapCircle.radius()->rawValue().toDouble(), newRadius)) {
         _orbitMapCircle.radius()->setRawValue(newRadius);
     }
 
@@ -717,7 +717,7 @@ void Vehicle::_handleCameraImageCaptured(const mavlink_message_t& message)
     QGeoCoordinate imageCoordinate((double)feedback.lat / qPow(10.0, 7.0), (double)feedback.lon / qPow(10.0, 7.0), feedback.alt);
     qCDebug(VehicleLog) << "_handleCameraFeedback coord:index" << imageCoordinate << feedback.image_index << feedback.capture_result;
     if (feedback.capture_result == 1) {
-        _cameraTriggerPoints.append(new QGCQGeoCoordinate(imageCoordinate, this));
+        _cameraTriggerPoints.append(new beeCopterQGeoCoordinate(imageCoordinate, this));
     }
 }
 
@@ -867,7 +867,7 @@ void Vehicle::_handleHighLatency2(mavlink_message_t& message)
     _altitudeAMSLFact.setRawValue(highLatency2.altitude);
 
     // Map from MAV_FAILURE bits to standard SYS_STATUS message handling
-    const uint32_t newOnboardControlSensorsEnabled = QGCMAVLink::highLatencyFailuresToMavSysStatus(highLatency2);
+    const uint32_t newOnboardControlSensorsEnabled = beeCopterMAVLink::highLatencyFailuresToMavSysStatus(highLatency2);
     if (newOnboardControlSensorsEnabled != _onboardControlSensorsEnabled) {
         _onboardControlSensorsEnabled = newOnboardControlSensorsEnabled;
         _onboardControlSensorsPresent = newOnboardControlSensorsEnabled;
@@ -1483,7 +1483,7 @@ int Vehicle::motorCount()
     if (_vehicleType == MAV_TYPE_SUBMARINE) {
         frameType = parameterManager()->getParameter(_compID, "FRAME_CONFIG")->rawValue().toInt();
     }
-    return QGCMAVLink::motorCount(_vehicleType, frameType);
+    return beeCopterMAVLink::motorCount(_vehicleType, frameType);
 }
 
 bool Vehicle::coaxialMotors()
@@ -1667,19 +1667,19 @@ void Vehicle::sendMessageMultiple(mavlink_message_t message)
 void Vehicle::_missionManagerError(int errorCode, const QString& errorMsg)
 {
     Q_UNUSED(errorCode);
-    qgcApp()->showAppMessage(tr("Mission transfer failed. Error: %1").arg(errorMsg));
+    beeCopterApp()->showAppMessage(tr("Mission transfer failed. Error: %1").arg(errorMsg));
 }
 
 void Vehicle::_geoFenceManagerError(int errorCode, const QString& errorMsg)
 {
     Q_UNUSED(errorCode);
-    qgcApp()->showAppMessage(tr("GeoFence transfer failed. Error: %1").arg(errorMsg));
+    beeCopterApp()->showAppMessage(tr("GeoFence transfer failed. Error: %1").arg(errorMsg));
 }
 
 void Vehicle::_rallyPointManagerError(int errorCode, const QString& errorMsg)
 {
     Q_UNUSED(errorCode);
-    qgcApp()->showAppMessage(tr("Rally Point transfer failed. Error: %1").arg(errorMsg));
+    beeCopterApp()->showAppMessage(tr("Rally Point transfer failed. Error: %1").arg(errorMsg));
 }
 
 void Vehicle::_clearCameraTriggerPoints()
@@ -1742,9 +1742,9 @@ void Vehicle::_parametersReady(bool parametersReady)
     qCDebug(VehicleLog) << "_parametersReady" << parametersReady;
 
     // Try to set current unix time to the vehicle
-    _sendQGCTimeToVehicle();
+    _sendbeeCopterTimeToVehicle();
     // Send time twice, more likely to get to the vehicle on a noisy link
-    _sendQGCTimeToVehicle();
+    _sendbeeCopterTimeToVehicle();
     if (parametersReady) {
         disconnect(_parameterManager, &ParameterManager::parametersReadyChanged, this, &Vehicle::_parametersReady);
         _setupAutoDisarmSignalling();
@@ -1758,11 +1758,11 @@ void Vehicle::_parametersReady(bool parametersReady)
     emit haveFWSpeedLimChanged();
 }
 
-void Vehicle::_sendQGCTimeToVehicle()
+void Vehicle::_sendbeeCopterTimeToVehicle()
 {
     SharedLinkInterfacePtr sharedLink = vehicleLinkManager()->primaryLink().lock();
     if (!sharedLink) {
-        qCDebug(VehicleLog) << "_sendQGCTimeToVehicle: primary link gone!";
+        qCDebug(VehicleLog) << "_sendbeeCopterTimeToVehicle: primary link gone!";
         return;
     }
 
@@ -1828,37 +1828,37 @@ void Vehicle::_say(const QString& text)
 
 bool Vehicle::airship() const
 {
-    return QGCMAVLink::isAirship(vehicleType());
+    return beeCopterMAVLink::isAirship(vehicleType());
 }
 
 bool Vehicle::fixedWing() const
 {
-    return QGCMAVLink::isFixedWing(vehicleType());
+    return beeCopterMAVLink::isFixedWing(vehicleType());
 }
 
 bool Vehicle::rover() const
 {
-    return QGCMAVLink::isRoverBoat(vehicleType());
+    return beeCopterMAVLink::isRoverBoat(vehicleType());
 }
 
 bool Vehicle::sub() const
 {
-    return QGCMAVLink::isSub(vehicleType());
+    return beeCopterMAVLink::isSub(vehicleType());
 }
 
 bool Vehicle::spacecraft() const
 {
-    return QGCMAVLink::isSpacecraft(vehicleType());
+    return beeCopterMAVLink::isSpacecraft(vehicleType());
 }
 
 bool Vehicle::multiRotor() const
 {
-    return QGCMAVLink::isMultiRotor(vehicleType());
+    return beeCopterMAVLink::isMultiRotor(vehicleType());
 }
 
 bool Vehicle::vtol() const
 {
-    return QGCMAVLink::isVTOL(vehicleType());
+    return beeCopterMAVLink::isVTOL(vehicleType());
 }
 
 bool Vehicle::supportsThrottleModeCenterZero() const
@@ -1893,12 +1893,12 @@ bool Vehicle::supportsTerrainFrame() const
 
 QString Vehicle::vehicleTypeString() const
 {
-    return QGCMAVLink::mavTypeToString(_vehicleType);
+    return beeCopterMAVLink::mavTypeToString(_vehicleType);
 }
 
 QString Vehicle::vehicleClassInternalName() const
 {
-    return QGCMAVLink::vehicleClassToInternalString(vehicleClass());
+    return beeCopterMAVLink::vehicleClassToInternalString(vehicleClass());
 }
 
 /// Returns the string to speak to identify the vehicle
@@ -1986,7 +1986,7 @@ QString Vehicle::gotoFlightMode() const
 void Vehicle::guidedModeRTL(bool smartRTL)
 {
     if (!guidedModeSupported()) {
-        qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+        beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
         return;
     }
     _firmwarePlugin->guidedModeRTL(this, smartRTL);
@@ -1995,7 +1995,7 @@ void Vehicle::guidedModeRTL(bool smartRTL)
 void Vehicle::guidedModeLand()
 {
     if (!guidedModeSupported()) {
-        qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+        beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
         return;
     }
     _firmwarePlugin->guidedModeLand(this);
@@ -2004,7 +2004,7 @@ void Vehicle::guidedModeLand()
 void Vehicle::guidedModeTakeoff(double altitudeRelative)
 {
     if (!guidedModeSupported()) {
-        qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+        beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
         return;
     }
     _firmwarePlugin->guidedModeTakeoff(this, altitudeRelative);
@@ -2051,7 +2051,7 @@ void Vehicle::startMission()
 void Vehicle::guidedModeGotoLocation(const QGeoCoordinate& gotoCoord, double forwardFlightLoiterRadius)
 {
     if (!guidedModeSupported()) {
-        qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+        beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
         return;
     }
     if (!coordinate().isValid()) {
@@ -2059,7 +2059,7 @@ void Vehicle::guidedModeGotoLocation(const QGeoCoordinate& gotoCoord, double for
     }
     double maxDistance = SettingsManager::instance()->flyViewSettings()->maxGoToLocationDistance()->rawValue().toDouble();
     if (coordinate().distanceTo(gotoCoord) > maxDistance) {
-        qgcApp()->showAppMessage(QString("New location is too far. Must be less than %1 %2.").arg(qRound(FactMetaData::metersToAppSettingsHorizontalDistanceUnits(maxDistance).toDouble())).arg(FactMetaData::appSettingsHorizontalDistanceUnitsString()));
+        beeCopterApp()->showAppMessage(QString("New location is too far. Must be less than %1 %2.").arg(qRound(FactMetaData::metersToAppSettingsHorizontalDistanceUnits(maxDistance).toDouble())).arg(FactMetaData::appSettingsHorizontalDistanceUnitsString()));
         return;
     }
     _firmwarePlugin->guidedModeGotoLocation(this, gotoCoord, forwardFlightLoiterRadius);
@@ -2068,7 +2068,7 @@ void Vehicle::guidedModeGotoLocation(const QGeoCoordinate& gotoCoord, double for
 void Vehicle::guidedModeChangeAltitude(double altitudeChange, bool pauseVehicle)
 {
     if (!guidedModeSupported()) {
-        qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+        beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
         return;
     }
     _firmwarePlugin->guidedModeChangeAltitude(this, altitudeChange, pauseVehicle);
@@ -2078,7 +2078,7 @@ void
 Vehicle::guidedModeChangeGroundSpeedMetersSecond(double groundspeed)
 {
     if (!guidedModeSupported()) {
-        qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+        beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
         return;
     }
     _firmwarePlugin->guidedModeChangeGroundSpeedMetersSecond(this, groundspeed);
@@ -2088,7 +2088,7 @@ void
 Vehicle::guidedModeChangeEquivalentAirspeedMetersSecond(double airspeed)
 {
     if (!guidedModeSupported()) {
-        qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+        beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
         return;
     }
     _firmwarePlugin->guidedModeChangeEquivalentAirspeedMetersSecond(this, airspeed);
@@ -2097,7 +2097,7 @@ Vehicle::guidedModeChangeEquivalentAirspeedMetersSecond(double airspeed)
 void Vehicle::guidedModeOrbit(const QGeoCoordinate& centerCoord, double radius, double amslAltitude)
 {
     if (!orbitModeSupported()) {
-        qgcApp()->showAppMessage(QStringLiteral("Orbit mode not supported by Vehicle."));
+        beeCopterApp()->showAppMessage(QStringLiteral("Orbit mode not supported by Vehicle."));
         return;
     }
     if (capabilityBits() & MAV_PROTOCOL_CAPABILITY_COMMAND_INT) {
@@ -2132,7 +2132,7 @@ void Vehicle::guidedModeROI(const QGeoCoordinate& centerCoord)
         return;
     }
     if (!roiModeSupported()) {
-        qgcApp()->showAppMessage(QStringLiteral("ROI mode not supported by Vehicle."));
+        beeCopterApp()->showAppMessage(QStringLiteral("ROI mode not supported by Vehicle."));
         return;
     }
 
@@ -2221,7 +2221,7 @@ void Vehicle::_sendROICommand(const QGeoCoordinate& coord, MAV_FRAME frame, floa
 void Vehicle::stopGuidedModeROI()
 {
     if (!roiModeSupported()) {
-        qgcApp()->showAppMessage(QStringLiteral("ROI mode not supported by Vehicle."));
+        beeCopterApp()->showAppMessage(QStringLiteral("ROI mode not supported by Vehicle."));
         return;
     }
     if (capabilityBits() & MAV_PROTOCOL_CAPABILITY_COMMAND_INT) {
@@ -2255,7 +2255,7 @@ void Vehicle::stopGuidedModeROI()
 void Vehicle::guidedModeChangeHeading(const QGeoCoordinate &headingCoord)
 {
     if (!changeHeadingSupported()) {
-        qgcApp()->showAppMessage(tr("Change Heading not supported by Vehicle."));
+        beeCopterApp()->showAppMessage(tr("Change Heading not supported by Vehicle."));
         return;
     }
 
@@ -2265,7 +2265,7 @@ void Vehicle::guidedModeChangeHeading(const QGeoCoordinate &headingCoord)
 void Vehicle::pauseVehicle()
 {
     if (!pauseVehicleSupported()) {
-        qgcApp()->showAppMessage(QStringLiteral("Pause not supported by vehicle."));
+        beeCopterApp()->showAppMessage(QStringLiteral("Pause not supported by vehicle."));
         return;
     }
     _firmwarePlugin->pauseVehicle(this);
@@ -2534,13 +2534,13 @@ int Vehicle::_findMavCommandListEntryIndex(int targetCompId, MAV_CMD command)
 int Vehicle::_mavCommandResponseCheckTimeoutMSecs()
 {
     // Use shorter check interval during unit tests for faster test execution
-    return qgcApp()->runningUnitTests() ? 50 : 500;
+    return beeCopterApp()->runningUnitTests() ? 50 : 500;
 }
 
 int Vehicle::_mavCommandAckTimeoutMSecs()
 {
     // Use shorter ack timeout during unit tests for faster test execution
-    return qgcApp()->runningUnitTests() ? kTestMavCommandAckTimeoutMs : 3000;
+    return beeCopterApp()->runningUnitTests() ? kTestMavCommandAckTimeoutMs : 3000;
 }
 
 bool Vehicle::_sendMavCommandShouldRetry(MAV_CMD command)
@@ -2617,7 +2617,7 @@ void Vehicle::_sendMavCommandWorker(
             emit mavCommandResult(_systemID, targetCompId, command, MAV_RESULT_FAILED, failureCode);
         }
         if (showError) {
-            qgcApp()->showAppMessage(tr("Unable to send command: %1.").arg(compIdAll ? tr("Internal error - MAV_COMP_ID_ALL not supported") : tr("Waiting on previous response to same command.")));
+            beeCopterApp()->showAppMessage(tr("Unable to send command: %1.").arg(compIdAll ? tr("Internal error - MAV_COMP_ID_ALL not supported") : tr("Waiting on previous response to same command.")));
         }
 
         return;
@@ -2686,7 +2686,7 @@ void Vehicle::_sendMavCommandFromList(int index)
             emit mavCommandResult(_systemID, commandEntry.targetCompId, commandEntry.command, MAV_RESULT_FAILED, MavCmdResultFailureNoResponseToCommand);
         }
         if (commandEntry.showError) {
-            qgcApp()->showAppMessage(tr("Vehicle did not respond to command: %1").arg(friendlyName));
+            beeCopterApp()->showAppMessage(tr("Vehicle did not respond to command: %1").arg(friendlyName));
         }
         return;
     }
@@ -2783,16 +2783,16 @@ void Vehicle::showCommandAckError(const mavlink_command_ack_t& ack)
 
     switch (ack.result) {
         case MAV_RESULT_TEMPORARILY_REJECTED:
-            qgcApp()->showAppMessage(tr("%1 command temporarily rejected").arg(commandStr));
+            beeCopterApp()->showAppMessage(tr("%1 command temporarily rejected").arg(commandStr));
             break;
         case MAV_RESULT_DENIED:
-            qgcApp()->showAppMessage(tr("%1 command denied").arg(commandStr));
+            beeCopterApp()->showAppMessage(tr("%1 command denied").arg(commandStr));
             break;
         case MAV_RESULT_UNSUPPORTED:
-            qgcApp()->showAppMessage(tr("%1 command not supported").arg(commandStr));
+            beeCopterApp()->showAppMessage(tr("%1 command not supported").arg(commandStr));
             break;
         case MAV_RESULT_FAILED:
-            qgcApp()->showAppMessage(tr("%1 command failed").arg(commandStr));
+            beeCopterApp()->showAppMessage(tr("%1 command failed").arg(commandStr));
             break;
         default:
             // Do nothing
@@ -2806,7 +2806,7 @@ void Vehicle::_handleCommandAck(mavlink_message_t& message)
     mavlink_msg_command_ack_decode(&message, &ack);
 
     QString rawCommandName  = MissionCommandTree::instance()->rawName(static_cast<MAV_CMD>(ack.command));
-    QString logMsg = QStringLiteral("_handleCommandAck command(%1) result(%2)").arg(rawCommandName).arg(QGCMAVLink::mavResultToString(static_cast<MAV_RESULT>(ack.result)));
+    QString logMsg = QStringLiteral("_handleCommandAck command(%1) result(%2)").arg(rawCommandName).arg(beeCopterMAVLink::mavResultToString(static_cast<MAV_RESULT>(ack.result)));
 
     // For REQUEST_MESSAGE commands, also log which message was requested
     if (ack.command == MAV_CMD_REQUEST_MESSAGE) {
@@ -2840,9 +2840,9 @@ void Vehicle::_handleCommandAck(mavlink_message_t& message)
         emit sensorsParametersResetAck(result);
     }
 
-#if !defined(QGC_NO_ARDUPILOT_DIALECT)
+#if !defined(beeCopter_NO_ARDUPILOT_DIALECT)
     if (ack.command == MAV_CMD_FLASH_BOOTLOADER && ack.result == MAV_RESULT_ACCEPTED) {
-        qgcApp()->showAppMessage(tr("Bootloader flash succeeded"));
+        beeCopterApp()->showAppMessage(tr("Bootloader flash succeeded"));
     }
 #endif
 
@@ -2925,7 +2925,7 @@ void Vehicle::_waitForMavlinkMessageMessageReceivedHandler(const mavlink_message
 
         for (auto& compIdEntry : _requestMessageInfoMap) {
             for (auto requestMessageInfo : compIdEntry) {
-                if (requestMessageInfo->messageWaitElapsedTimer.isValid() && requestMessageInfo->messageWaitElapsedTimer.elapsed() > (qgcApp()->runningUnitTests() ? 50 : 1000)) {
+                if (requestMessageInfo->messageWaitElapsedTimer.isValid() && requestMessageInfo->messageWaitElapsedTimer.elapsed() > (beeCopterApp()->runningUnitTests() ? 50 : 1000)) {
                     auto resultHandler      = requestMessageInfo->resultHandler;
                     auto resultHandlerData  = requestMessageInfo->resultHandlerData;
 
@@ -3064,7 +3064,7 @@ void Vehicle::setFirmwareCustomVersion(int majorVersion, int minorVersion, int p
 
 QString Vehicle::firmwareVersionTypeString() const
 {
-    return QGCMAVLink::firmwareVersionTypeToString(_firmwareVersionType);
+    return beeCopterMAVLink::firmwareVersionTypeToString(_firmwareVersionType);
 }
 
 void Vehicle::_rebootCommandResultHandler(void* resultHandlerData, int /*compId*/, const mavlink_command_ack_t& ack, MavCmdResultFailureCode_t failureCode)
@@ -3083,7 +3083,7 @@ void Vehicle::_rebootCommandResultHandler(void* resultHandlerData, int /*compId*
             qCDebug(VehicleLog) << "MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN failed: duplicate command";
             break;
         }
-        qgcApp()->showAppMessage(tr("Vehicle reboot failed."));
+        beeCopterApp()->showAppMessage(tr("Vehicle reboot failed."));
     } else {
         vehicle->closeVehicle();
     }
@@ -3098,7 +3098,7 @@ void Vehicle::rebootVehicle()
     sendMavCommandWithHandler(&handlerInfo, _defaultComponentId, MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN, 1);
 }
 
-void Vehicle::startCalibration(QGCMAVLink::CalibrationType calType)
+void Vehicle::startCalibration(beeCopterMAVLink::CalibrationType calType)
 {
     SharedLinkInterfacePtr sharedLink = vehicleLinkManager()->primaryLink().lock();
     if (!sharedLink) {
@@ -3115,50 +3115,50 @@ void Vehicle::startCalibration(QGCMAVLink::CalibrationType calType)
     float param7 = 0;
 
     switch (calType) {
-    case QGCMAVLink::CalibrationGyro:
+    case beeCopterMAVLink::CalibrationGyro:
         param1 = 1;
         break;
-    case QGCMAVLink::CalibrationMag:
+    case beeCopterMAVLink::CalibrationMag:
         param2 = 1;
         break;
-    case QGCMAVLink::CalibrationRadio:
+    case beeCopterMAVLink::CalibrationRadio:
         param4 = 1;
         break;
-    case QGCMAVLink::CalibrationCopyTrims:
+    case beeCopterMAVLink::CalibrationCopyTrims:
         param4 = 2;
         break;
-    case QGCMAVLink::CalibrationAccel:
+    case beeCopterMAVLink::CalibrationAccel:
         param5 = 1;
         break;
-    case QGCMAVLink::CalibrationLevel:
+    case beeCopterMAVLink::CalibrationLevel:
         param5 = 2;
         break;
-    case QGCMAVLink::CalibrationEsc:
+    case beeCopterMAVLink::CalibrationEsc:
         param7 = 1;
         break;
-    case QGCMAVLink::CalibrationPX4Airspeed:
+    case beeCopterMAVLink::CalibrationPX4Airspeed:
         param6 = 1;
         break;
-    case QGCMAVLink::CalibrationPX4Pressure:
+    case beeCopterMAVLink::CalibrationPX4Pressure:
         param3 = 1;
         break;
-    case QGCMAVLink::CalibrationAPMCompassMot:
+    case beeCopterMAVLink::CalibrationAPMCompassMot:
         param6 = 1;
         break;
-    case QGCMAVLink::CalibrationAPMPressureAirspeed:
+    case beeCopterMAVLink::CalibrationAPMPressureAirspeed:
         param3 = 1;
         break;
-    case QGCMAVLink::CalibrationAPMPreFlight:
+    case beeCopterMAVLink::CalibrationAPMPreFlight:
         param3 = 1; // GroundPressure/Airspeed
         if (multiRotor() || rover()) {
             // Gyro cal for ArduCopter only
             param1 = 1;
         }
         break;
-    case QGCMAVLink::CalibrationAPMAccelSimple:
+    case beeCopterMAVLink::CalibrationAPMAccelSimple:
         param5 = 4;
         break;
-    case QGCMAVLink::CalibrationNone:
+    case beeCopterMAVLink::CalibrationNone:
     default:
         break;
     }
@@ -3462,7 +3462,7 @@ void Vehicle::_updateMissionItemIndex()
 
 void Vehicle::_updateDistanceHeadingGCS()
 {
-    QGeoCoordinate gcsPosition = QGCPositionManager::instance()->gcsPosition();
+    QGeoCoordinate gcsPosition = beeCopterPositionManager::instance()->gcsPosition();
     if (coordinate().isValid() && gcsPosition.isValid()) {
         _distanceToGCSFact.setRawValue(coordinate().distanceTo(gcsPosition));
         _headingFromGCSFact.setRawValue(gcsPosition.azimuthTo(coordinate()));
@@ -3477,7 +3477,7 @@ void Vehicle::_updateHomepoint()
     const bool setHomeCmdSupported = firmwarePlugin()->supportedMissionCommands(vehicleClass()).contains(MAV_CMD_DO_SET_HOME);
     const bool updateHomeActivated = SettingsManager::instance()->flyViewSettings()->updateHomePosition()->rawValue().toBool();
     if(setHomeCmdSupported && updateHomeActivated){
-        QGeoCoordinate gcsPosition = QGCPositionManager::instance()->gcsPosition();
+        QGeoCoordinate gcsPosition = beeCopterPositionManager::instance()->gcsPosition();
         if (coordinate().isValid() && gcsPosition.isValid()) {
             sendMavCommand(defaultComponentId(),
                            MAV_CMD_DO_SET_HOME, false,
@@ -3702,7 +3702,7 @@ void Vehicle::_doSetHomeTerrainReceived(bool success, QList<double> heights)
             qCDebug(VehicleLog) << "_doSetHomeTerrainReceived: internal error, cached home coordinate is not valid";
         }
     } else {
-        qgcApp()->showAppMessage(tr("Set Home failed, terrain data not available for selected coordinate"));
+        beeCopterApp()->showAppMessage(tr("Set Home failed, terrain data not available for selected coordinate"));
     }
     // Clean up
     _currentDoSetHomeTerrainAtCoordinateQuery = nullptr;
@@ -3717,7 +3717,7 @@ void Vehicle::_updateAltAboveTerrain()
     const float minimumAltitudeChanged  = 0.5f;
 
     // This is not super elegant but it works to limit the amount of queries we do. It seems more than 500ms is not possible to get
-    // serviced on time. It is not a big deal if it is not serviced on time as terrain queries can manage that just fine, but QGC would
+    // serviced on time. It is not a big deal if it is not serviced on time as terrain queries can manage that just fine, but beeCopter would
     // use resources to service those queries, and it is pointless, so this is a quick workaround to not waste that little computing time
     int altitudeAboveTerrQueryMinInterval = 500;
     if (_altitudeAboveTerrQueryTimer.elapsed() < altitudeAboveTerrQueryMinInterval) {
@@ -3935,7 +3935,7 @@ void Vehicle::triggerSimpleCamera()
                    1.0);                        // trigger camera
 }
 
-void Vehicle::sendGripperAction(QGCMAVLink::GripperActions gripperAction)
+void Vehicle::sendGripperAction(beeCopterMAVLink::GripperActions gripperAction)
 {
     sendMavCommand(
             _defaultComponentId,
@@ -4045,10 +4045,10 @@ void Vehicle::_requestOperatorControlAckHandler(void* resultHandlerData, int com
     // If duplicated or no response, show popup to user. Otherwise only log it.
     switch (failureCode) {
         case MavCmdResultFailureDuplicateCommand:
-            qgcApp()->showAppMessage(tr("Waiting for previous operator control request"));
+            beeCopterApp()->showAppMessage(tr("Waiting for previous operator control request"));
             return;
         case MavCmdResultFailureNoResponseToCommand:
-            qgcApp()->showAppMessage(tr("No response to operator control request"));
+            beeCopterApp()->showAppMessage(tr("No response to operator control request"));
             return;
         default:
             break;
@@ -4171,7 +4171,7 @@ void Vehicle::_requestMessageInterval(uint8_t compId, uint16_t msgId)
 
 int32_t Vehicle::getMessageRate(uint8_t compId, uint16_t msgId)
 {
-    // TODO: Use QGCMavlinkMessage
+    // TODO: Use beeCopterMavlinkMessage
     const MavCompMsgId compMsgId = {compId, msgId};
     int32_t rate = 0;
     if(_mavlinkMsgIntervals.contains(compMsgId))
@@ -4359,7 +4359,7 @@ void Vehicle::_textMessageReceived(MAV_COMPONENT componentid, MAV_SEVERITY sever
 void Vehicle::_errorMessageReceived(QString message)
 {
     if (_isActiveVehicle) {
-        qgcApp()->showCriticalVehicleMessage(message);
+        beeCopterApp()->showCriticalVehicleMessage(message);
     }
 }
 
@@ -4405,7 +4405,7 @@ void Vehicle::_createImageProtocolManager()
     _imageProtocolManager = new ImageProtocolManager(this);
     (void) connect(_imageProtocolManager, &ImageProtocolManager::flowImageIndexChanged, this, &Vehicle::flowImageIndexChanged);
     (void) connect(_imageProtocolManager, &ImageProtocolManager::imageReady, this, [this](const QImage &image) {
-        qgcApp()->qgcImageProvider()->setImage(image, _systemID);
+        beeCopterApp()->beeCopterImageProvider()->setImage(image, _systemID);
     });
 }
 

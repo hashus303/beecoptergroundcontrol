@@ -2,7 +2,7 @@
 #include "GStreamerHelpers.h"
 #include "AppSettings.h"
 #include "GstVideoReceiver.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "SettingsManager.h"
 #include "VideoSettings.h"
 
@@ -13,9 +13,9 @@
 
 #include <gst/gst.h>
 
-QGC_LOGGING_CATEGORY(GStreamerLog, "Video.GStreamer")
-QGC_LOGGING_CATEGORY(GStreamerDecoderRanksLog, "Video.GStreamerDecoderRanks")
-QGC_LOGGING_CATEGORY_ON(GStreamerAPILog, "Video.GStreamerAPI")
+beeCopter_LOGGING_CATEGORY(GStreamerLog, "Video.GStreamer")
+beeCopter_LOGGING_CATEGORY(GStreamerDecoderRanksLog, "Video.GStreamerDecoderRanks")
+beeCopter_LOGGING_CATEGORY_ON(GStreamerAPILog, "Video.GStreamerAPI")
 
 // TODO: Clean These up with Macros or CMake
 G_BEGIN_DECLS
@@ -50,7 +50,7 @@ GST_PLUGIN_STATIC_DECLARE(videoparsersbad);
 GST_PLUGIN_STATIC_DECLARE(vpx);
 GST_PLUGIN_STATIC_DECLARE(vulkan);
 
-GST_PLUGIN_STATIC_DECLARE(qgc);
+GST_PLUGIN_STATIC_DECLARE(beeCopter);
 G_END_DECLS
 
 namespace GStreamer
@@ -58,7 +58,7 @@ namespace GStreamer
 
 void _registerPlugins()
 {
-#ifdef QGC_GST_STATIC_BUILD
+#ifdef beeCopter_GST_STATIC_BUILD
     #ifdef GST_PLUGIN_androidmedia_FOUND
         GST_PLUGIN_STATIC_REGISTER(androidmedia);
     #endif
@@ -114,11 +114,11 @@ void _registerPlugins()
     #endif
 #endif
 
-// #if !defined(GST_PLUGIN_qml6_FOUND) && defined(QGC_GST_STATIC_BUILD)
+// #if !defined(GST_PLUGIN_qml6_FOUND) && defined(beeCopter_GST_STATIC_BUILD)
     GST_PLUGIN_STATIC_REGISTER(qml6);
 // #endif
 
-    GST_PLUGIN_STATIC_REGISTER(qgc);
+    GST_PLUGIN_STATIC_REGISTER(beeCopter);
 }
 
 void _qtGstLog(GstDebugCategory *category,
@@ -171,7 +171,7 @@ void _setGstEnvVars()
     const QString appDir = QCoreApplication::applicationDirPath();
     qCDebug(GStreamerLog) << "App Directory:" << appDir;
 
-#if defined(Q_OS_MACOS) && defined(QGC_GST_MACOS_FRAMEWORK)
+#if defined(Q_OS_MACOS) && defined(beeCopter_GST_MACOS_FRAMEWORK)
     const QString frameworkDir = QDir(appDir).filePath("../Frameworks/GStreamer.framework");
     const QString rootDir = QDir(frameworkDir).filePath("Versions/1.0");
     const QString libDir = QDir(rootDir).filePath("../lib");
@@ -241,7 +241,7 @@ bool _verifyPlugins()
     g_list_foreach(plugins, _logPlugin, NULL);
     g_list_free(plugins);
 
-    static constexpr const char *pluginNames[2] = {"qml6", "qgc"};
+    static constexpr const char *pluginNames[2] = {"qml6", "beeCopter"};
     for (const char *name : pluginNames) {
         GstPlugin *plugin = gst_registry_find_plugin(registry, name);
         if (!plugin) {
@@ -260,7 +260,7 @@ bool _verifyPlugins()
             pluginPath = qgetenv("GST_PLUGIN_PATH");
         }
 
-#ifdef QGC_GST_STATIC_BUILD
+#ifdef beeCopter_GST_STATIC_BUILD
         qCCritical(GStreamerLog) << "Please update the list of static plugins in GStreamer.cc";
 #else
         if (!pluginPath.isEmpty()) {
@@ -551,13 +551,13 @@ bool initialize()
 
 void *createVideoSink(QQuickItem *widget, QObject * /*parent*/)
 {
-    GstElement *videoSinkBin = gst_element_factory_make("qgcvideosinkbin", NULL);
+    GstElement *videoSinkBin = gst_element_factory_make("beeCoptervideosinkbin", NULL);
     if (videoSinkBin) {
         if (widget) {
             g_object_set(videoSinkBin, "widget", widget, NULL);
         }
     } else {
-        qCCritical(GStreamerLog) << "gst_element_factory_make('qgcvideosinkbin') failed";
+        qCCritical(GStreamerLog) << "gst_element_factory_make('beeCoptervideosinkbin') failed";
     }
 
     return videoSinkBin;

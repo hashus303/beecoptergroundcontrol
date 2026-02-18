@@ -1,15 +1,15 @@
 #include "RemoteControlCalibrationController.h"
 #include "Fact.h"
 #include "ParameterManager.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "Vehicle.h"
 
 #include <QtCore/QSettings>
 #include <algorithm>
 
-QGC_LOGGING_CATEGORY(RemoteControlCalibrationControllerLog, "RemoteControl.RemoteControlCalibrationController")
-QGC_LOGGING_CATEGORY(RemoteControlCalibrationControllerVerboseLog, "RemoteControl.RemoteControlCalibrationController:verbose")
+beeCopter_LOGGING_CATEGORY(RemoteControlCalibrationControllerLog, "RemoteControl.RemoteControlCalibrationController")
+beeCopter_LOGGING_CATEGORY(RemoteControlCalibrationControllerVerboseLog, "RemoteControl.RemoteControlCalibrationController:verbose")
 
 static constexpr const char *msgBeginThrottleDown = QT_TR_NOOP(
         "* Lower the Throttle stick all the way down as shown in diagram\n"
@@ -350,7 +350,7 @@ void RemoteControlCalibrationController::nextButtonClicked()
     if (_currentStep == -1) {
         // Need to have enough channels
         if (_chanCount < _chanMinimum) {
-            qgcApp()->showAppMessage(QStringLiteral("Detected %1 channels. To operate vehicle, you need at least %2 channels.").arg(_chanCount).arg(_chanMinimum));
+            beeCopterApp()->showAppMessage(QStringLiteral("Detected %1 channels. To operate vehicle, you need at least %2 channels.").arg(_chanCount).arg(_chanMinimum));
             return;
         }
         _startCalibration();
@@ -905,7 +905,7 @@ int RemoteControlCalibrationController::throttleDeadband()
 
 void RemoteControlCalibrationController::copyTrims()
 {
-    _vehicle->startCalibration(QGCMAVLink::CalibrationCopyTrims);
+    _vehicle->startCalibration(beeCopterMAVLink::CalibrationCopyTrims);
 }
 
 QString RemoteControlCalibrationController::_stickFunctionToString(StickFunction stickFunction)

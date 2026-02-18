@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             safetyPage
@@ -20,7 +20,7 @@ SetupPage {
 
             FactPanelController { id: controller; }
 
-            QGCPalette { id: ggcPal; colorGroupEnabled: true }
+            beeCopterPalette { id: ggcPal; colorGroupEnabled: true }
 
             property real _margins:     ScreenTools.defaultFontPixelHeight
             property bool _showIcon:    !ScreenTools.isTinyScreen
@@ -68,20 +68,20 @@ SetupPage {
             property Fact _hGyrGainAcro:    controller.getParameterFact(-1, "H_GYR_GAIN_ACRO")
             property Fact _hColYaw:         controller.getParameterFact(-1, "H_COLYAW")
 
-            QGCGroupBox {
+            beeCopterGroupBox {
                 title: qsTr("Servo Setup")
 
                 GridLayout {
                     columns: 6
 
-                    QGCLabel { text: qsTr("Servo") }
-                    QGCLabel { text: qsTr("Function") }
-                    QGCLabel { text: qsTr("Min") }
-                    QGCLabel { text: qsTr("Max") }
-                    QGCLabel { text: qsTr("Trim") }
-                    QGCLabel { text: qsTr("Reversed") }
+                    beeCopterLabel { text: qsTr("Servo") }
+                    beeCopterLabel { text: qsTr("Function") }
+                    beeCopterLabel { text: qsTr("Min") }
+                    beeCopterLabel { text: qsTr("Max") }
+                    beeCopterLabel { text: qsTr("Trim") }
+                    beeCopterLabel { text: qsTr("Reversed") }
 
-                    QGCLabel { text: qsTr("1") }
+                    beeCopterLabel { text: qsTr("1") }
                     FactComboBox {
                         fact:               controller.getParameterFact(-1, "SERVO1_FUNCTION")
                         indexModel:         false
@@ -104,7 +104,7 @@ SetupPage {
                         Layout.fillWidth:   true
                     }
 
-                    QGCLabel { text: qsTr("2") }
+                    beeCopterLabel { text: qsTr("2") }
                     FactComboBox {
                         fact:               controller.getParameterFact(-1, "SERVO2_FUNCTION")
                         indexModel:         false
@@ -127,7 +127,7 @@ SetupPage {
                         Layout.fillWidth:   true
                     }
 
-                    QGCLabel { text: qsTr("3") }
+                    beeCopterLabel { text: qsTr("3") }
                     FactComboBox {
                         fact:               controller.getParameterFact(-1, "SERVO3_FUNCTION")
                         indexModel:         false
@@ -150,7 +150,7 @@ SetupPage {
                         Layout.fillWidth:   true
                     }
 
-                    QGCLabel { text: qsTr("4") }
+                    beeCopterLabel { text: qsTr("4") }
                     FactComboBox {
                         fact:               controller.getParameterFact(-1, "SERVO4_FUNCTION")
                         indexModel:         false
@@ -173,7 +173,7 @@ SetupPage {
                         Layout.fillWidth:   true
                     }
 
-                    QGCLabel { text: qsTr("5") }
+                    beeCopterLabel { text: qsTr("5") }
                     FactComboBox {
                         fact:               controller.getParameterFact(-1, "SERVO5_FUNCTION")
                         indexModel:         false
@@ -196,7 +196,7 @@ SetupPage {
                         Layout.fillWidth:   true
                     }
 
-                    QGCLabel { text: qsTr("6") }
+                    beeCopterLabel { text: qsTr("6") }
                     FactComboBox {
                         fact:               controller.getParameterFact(-1, "SERVO6_FUNCTION")
                         indexModel:         false
@@ -219,7 +219,7 @@ SetupPage {
                         Layout.fillWidth:   true
                     }
 
-                    QGCLabel { text: qsTr("7") }
+                    beeCopterLabel { text: qsTr("7") }
                     FactComboBox {
                         fact:               controller.getParameterFact(-1, "SERVO7_FUNCTION")
                         indexModel:         false
@@ -242,7 +242,7 @@ SetupPage {
                         Layout.fillWidth:   true
                     }
 
-                    QGCLabel { text: qsTr("8") }
+                    beeCopterLabel { text: qsTr("8") }
                     FactComboBox {
                         fact:               controller.getParameterFact(-1, "SERVO8_FUNCTION")
                         indexModel:         false
@@ -267,178 +267,178 @@ SetupPage {
                 }
             }
 
-            QGCGroupBox {
+            beeCopterGroupBox {
                 title: qsTr("Swashplate Setup")
 
                 GridLayout {
                     columns: 2
 
-                    QGCLabel { text: _hSvMan.shortDescription }
+                    beeCopterLabel { text: _hSvMan.shortDescription }
                     FactComboBox {
                         fact:       _hSvMan
                         indexModel: false
                     }
 
-                    QGCLabel { text: _hSwType.shortDescription }
+                    beeCopterLabel { text: _hSwType.shortDescription }
                     FactComboBox {
                         fact:       _hSwType
                         indexModel: false
                     }
 
-                    QGCLabel { text: _hSwColDir.shortDescription }
+                    beeCopterLabel { text: _hSwColDir.shortDescription }
                     FactComboBox {
                         fact:       _hSwColDir
                         indexModel: false
                     }
 
-                    QGCLabel { text: _hSwLinSvo.shortDescription }
+                    beeCopterLabel { text: _hSwLinSvo.shortDescription }
                     FactComboBox {
                         fact:       _hSwLinSvo
                         indexModel: false
                     }
 
-                    QGCLabel { text: _hFlybarMode.shortDescription }
+                    beeCopterLabel { text: _hFlybarMode.shortDescription }
                     FactComboBox {
                         fact:       _hFlybarMode
                         indexModel: false
                     }
 
-                    QGCLabel { text: _hCycMax.shortDescription }
+                    beeCopterLabel { text: _hCycMax.shortDescription }
                     FactTextField { fact: _hCycMax }
 
-                    QGCLabel { text: _hColMax.shortDescription }
+                    beeCopterLabel { text: _hColMax.shortDescription }
                     FactTextField { fact: _hColMax }
 
-                    QGCLabel { text: _hColAngMax.shortDescription }
+                    beeCopterLabel { text: _hColAngMax.shortDescription }
                     FactTextField { fact: _hColAngMax }
 
-                    QGCLabel { text: _hColMin.shortDescription }
+                    beeCopterLabel { text: _hColMin.shortDescription }
                     FactTextField { fact: _hColMin }
 
-                    QGCLabel { text: _hColAngMin.shortDescription }
+                    beeCopterLabel { text: _hColAngMin.shortDescription }
                     FactTextField { fact: _hColAngMin }
 
-                    QGCLabel { text: _hColZeroThrst.shortDescription }
+                    beeCopterLabel { text: _hColZeroThrst.shortDescription }
                     FactTextField { fact: _hColZeroThrst }
 
-                    QGCLabel { text: _hColLandMin.shortDescription }
+                    beeCopterLabel { text: _hColLandMin.shortDescription }
                     FactTextField { fact: _hColLandMin }
                 }
             }
 
-            QGCGroupBox {
+            beeCopterGroupBox {
                 title: qsTr("Throttle Settings")
 
                 GridLayout {
                     columns: 2
 
-                    QGCLabel { text: _hRscMode.shortDescription }
+                    beeCopterLabel { text: _hRscMode.shortDescription }
                     FactComboBox {
                         fact:       _hRscMode
                         indexModel: false
                     }
 
-                    QGCLabel { text: _hRscCritical.shortDescription }
+                    beeCopterLabel { text: _hRscCritical.shortDescription }
                     FactTextField { fact: _hRscCritical }
 
-                    QGCLabel { text: _hRscRampTime.shortDescription }
+                    beeCopterLabel { text: _hRscRampTime.shortDescription }
                     FactTextField { fact: _hRscRampTime }
 
-                    QGCLabel { text: _hRscRunupTime.shortDescription }
+                    beeCopterLabel { text: _hRscRunupTime.shortDescription }
                     FactTextField { fact: _hRscRunupTime }
 
-                    QGCLabel { text: _hRscCldwnTime.shortDescription }
+                    beeCopterLabel { text: _hRscCldwnTime.shortDescription }
                     FactTextField { fact: _hRscCldwnTime }
 
-                    QGCLabel { text: _hRscSetpoint.shortDescription }
+                    beeCopterLabel { text: _hRscSetpoint.shortDescription }
                     FactTextField { fact: _hRscSetpoint }
 
-                    QGCLabel { text: _hRscIdle.shortDescription }
+                    beeCopterLabel { text: _hRscIdle.shortDescription }
                     FactTextField { fact: _hRscIdle }
 
-                    QGCLabel { text: _hRscThrcrv0.shortDescription }
+                    beeCopterLabel { text: _hRscThrcrv0.shortDescription }
                     FactTextField { fact: _hRscThrcrv0 }
 
-                    QGCLabel { text: _hRscThrcrv25.shortDescription }
+                    beeCopterLabel { text: _hRscThrcrv25.shortDescription }
                     FactTextField { fact: _hRscThrcrv25 }
 
-                    QGCLabel { text: _hRscThrcrv50.shortDescription }
+                    beeCopterLabel { text: _hRscThrcrv50.shortDescription }
                     FactTextField { fact: _hRscThrcrv50 }
 
-                    QGCLabel { text: _hRscThrcrv75.shortDescription }
+                    beeCopterLabel { text: _hRscThrcrv75.shortDescription }
                     FactTextField { fact: _hRscThrcrv75 }
 
-                    QGCLabel { text: _hRscThrcrv100.shortDescription }
+                    beeCopterLabel { text: _hRscThrcrv100.shortDescription }
                     FactTextField { fact: _hRscThrcrv100 }
                 }
             }
 
-            QGCGroupBox {
+            beeCopterGroupBox {
                 title: qsTr("Governor Settings")
 
                 GridLayout {
                     columns: 2
 
-                    QGCLabel { text: _hRscGovComp.shortDescription }
+                    beeCopterLabel { text: _hRscGovComp.shortDescription }
                     FactTextField { fact: _hRscGovComp }
 
-                    QGCLabel { text: _hRscGovDroop.shortDescription }
+                    beeCopterLabel { text: _hRscGovDroop.shortDescription }
                     FactTextField { fact: _hRscGovDroop }
 
-                    QGCLabel { text: _hRscGovFf.shortDescription }
+                    beeCopterLabel { text: _hRscGovFf.shortDescription }
                     FactTextField { fact: _hRscGovFf }
 
-                    QGCLabel { text: _hRscGovRange.shortDescription }
+                    beeCopterLabel { text: _hRscGovRange.shortDescription }
                     FactTextField { fact: _hRscGovRange }
 
-                    QGCLabel { text: _hRscGovRpm.shortDescription }
+                    beeCopterLabel { text: _hRscGovRpm.shortDescription }
                     FactTextField { fact: _hRscGovRpm }
 
-                    QGCLabel { text: _hRscGovTorque.shortDescription }
+                    beeCopterLabel { text: _hRscGovTorque.shortDescription }
                     FactTextField { fact: _hRscGovTorque }
                 }
             }
 
-            QGCGroupBox {
+            beeCopterGroupBox {
                 title: qsTr("Miscellaneous Settings")
 
                 GridLayout {
                     columns: 2
 
-                    QGCLabel { text: qsTr("* Stabilize Collective Curve *") }
-                    QGCLabel { text: qsTr("") }
+                    beeCopterLabel { text: qsTr("* Stabilize Collective Curve *") }
+                    beeCopterLabel { text: qsTr("") }
 
-                    QGCLabel { text: _imStbCol1.shortDescription }
+                    beeCopterLabel { text: _imStbCol1.shortDescription }
                     FactTextField { fact: _imStbCol1 }
 
-                    QGCLabel { text: _imStbCol2.shortDescription }
+                    beeCopterLabel { text: _imStbCol2.shortDescription }
                     FactTextField { fact: _imStbCol2 }
 
-                    QGCLabel { text: _imStbCol3.shortDescription }
+                    beeCopterLabel { text: _imStbCol3.shortDescription }
                     FactTextField { fact: _imStbCol3 }
 
-                    QGCLabel { text: _imStbCol4.shortDescription }
+                    beeCopterLabel { text: _imStbCol4.shortDescription }
                     FactTextField { fact: _imStbCol4 }
 
-                    QGCLabel { text: qsTr("* Tail & Gyros *") }
-                    QGCLabel { text: qsTr("") }
+                    beeCopterLabel { text: qsTr("* Tail & Gyros *") }
+                    beeCopterLabel { text: qsTr("") }
 
-                    QGCLabel { text: _hTailType.shortDescription }
+                    beeCopterLabel { text: _hTailType.shortDescription }
                     FactComboBox {
                         fact:       _hTailType
                         indexModel: false
                     }
 
-                    QGCLabel { text: _hTailSpeed.shortDescription }
+                    beeCopterLabel { text: _hTailSpeed.shortDescription }
                     FactTextField { fact: _hTailSpeed }
 
-                    QGCLabel { text: _hGyrGain.shortDescription }
+                    beeCopterLabel { text: _hGyrGain.shortDescription }
                     FactTextField { fact: _hGyrGain }
 
-                    QGCLabel { text: _hGyrGainAcro.shortDescription }
+                    beeCopterLabel { text: _hGyrGainAcro.shortDescription }
                     FactTextField { fact: _hGyrGainAcro }
 
-                    QGCLabel { text: _hColYaw.shortDescription }
+                    beeCopterLabel { text: _hColYaw.shortDescription }
                     FactTextField { fact: _hColYaw }
                 }
             }

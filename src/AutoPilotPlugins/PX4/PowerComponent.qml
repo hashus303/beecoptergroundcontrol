@@ -3,10 +3,10 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
-import QGroundControl.AutoPilotPlugins.PX4
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
+import beeCopter.AutoPilotPlugins.PX4
 
 // Note: Only the _SOURCE parameter can be assumed to be always available. The remainder of the parameters
 // may or may not be available depending on the _SOURCE setting.
@@ -21,7 +21,7 @@ SetupPage {
             width:  Math.max(availableWidth, innerColumn.width)
             height: innerColumn.height
 
-            readonly property string    _highlightPrefix:           "<font color=\"" + qgcPal.warningText + "\">"
+            readonly property string    _highlightPrefix:           "<font color=\"" + beeCopterPal.warningText + "\">"
             readonly property string    _highlightSuffix:           "</font>"
 
             property int    _textEditWidth:             ScreenTools.defaultFontPixelWidth * 8
@@ -40,8 +40,8 @@ SetupPage {
 
             PowerComponentController {
                 id:                     controller
-                onOldFirmware:          mainWindow.showMessageDialog(qsTr("ESC Calibration"),           qsTr("%1 cannot perform ESC Calibration with this version of firmware. You will need to upgrade to a newer firmware.").arg(QGroundControl.appName))
-                onNewerFirmware:        mainWindow.showMessageDialog(qsTr("ESC Calibration"),           qsTr("%1 cannot perform ESC Calibration with this version of firmware. You will need to upgrade %1.").arg(QGroundControl.appName))
+                onOldFirmware:          mainWindow.showMessageDialog(qsTr("ESC Calibration"),           qsTr("%1 cannot perform ESC Calibration with this version of firmware. You will need to upgrade to a newer firmware.").arg(beeCopter.appName))
+                onNewerFirmware:        mainWindow.showMessageDialog(qsTr("ESC Calibration"),           qsTr("%1 cannot perform ESC Calibration with this version of firmware. You will need to upgrade %1.").arg(beeCopter.appName))
                 onDisconnectBattery:    mainWindow.showMessageDialog(qsTr("ESC Calibration failed"),    qsTr("You must disconnect the battery prior to performing ESC Calibration. Disconnect your battery and try again."))
                 onConnectBattery:       escCalibrationDlgComponent.createObject(mainWindow).open()
             }
@@ -89,7 +89,7 @@ SetupPage {
                 }
 
 
-                QGCGroupBox {
+                beeCopterGroupBox {
                     Layout.fillWidth:   true
                     title:              qsTr("ESC PWM Minimum and Maximum Calibration")
 
@@ -98,18 +98,18 @@ SetupPage {
                         anchors.right:  parent.right
                         spacing:        ScreenTools.defaultFontPixelWidth
 
-                        QGCLabel {
-                            color:              qgcPal.warningText
+                        beeCopterLabel {
+                            color:              beeCopterPal.warningText
                             wrapMode:           Text.WordWrap
                             text:               qsTr("WARNING: Propellers must be removed from vehicle prior to performing ESC calibration.")
                             Layout.fillWidth:   true
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text: qsTr("You must use USB connection for this operation.")
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             text:       qsTr("Calibrate")
                             width:      ScreenTools.defaultFontPixelWidth * 20
                             onClicked:  controller.calibrateEsc()
@@ -117,13 +117,13 @@ SetupPage {
                     }
                 }
 
-                QGCCheckBox {
+                beeCopterCheckBox {
                     id:         showUAVCAN
                     text:       qsTr("Show UAVCAN Settings")
                     checked:    _uavcanEnable ? _uavcanEnable.rawValue !== 0 : false
                 }
 
-                QGCGroupBox {
+                beeCopterGroupBox {
                     Layout.fillWidth:       true
                     title:                  qsTr("UAVCAN Bus Configuration")
                     visible:                showUAVCAN.checked
@@ -139,14 +139,14 @@ SetupPage {
                             indexModel:         false
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.verticalCenter: parent.verticalCenter
                             text:                   qsTr("Change required restart")
                         }
                     }
                 }
 
-                QGCGroupBox {
+                beeCopterGroupBox {
                     Layout.fillWidth:       true
                     title:                  qsTr("UAVCAN Motor Index and Direction Assignment")
                     visible:                showUAVCAN.checked
@@ -156,32 +156,32 @@ SetupPage {
                         anchors.right:  parent.right
                         spacing:        ScreenTools.defaultFontPixelWidth
 
-                        QGCLabel {
+                        beeCopterLabel {
                             wrapMode:           Text.WordWrap
-                            color:              qgcPal.warningText
+                            color:              beeCopterPal.warningText
                             text:               qsTr("WARNING: Propellers must be removed from vehicle prior to performing UAVCAN ESC configuration.")
                             Layout.fillWidth:   true
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             wrapMode:           Text.WordWrap
                             text:               qsTr("ESC parameters will only be accessible in the editor after assignment.")
                             Layout.fillWidth:   true
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             wrapMode:           Text.WordWrap
                             text:               qsTr("Start the process, then turn each motor into its turn direction, in the order of their motor indices.")
                             Layout.fillWidth:   true
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             text:       qsTr("Start Assignment")
                             width:      ScreenTools.defaultFontPixelWidth * 20
                             onClicked:  controller.startBusConfigureActuators()
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             text:       qsTr("Stop Assignment")
                             width:      ScreenTools.defaultFontPixelWidth * 20
                             onClicked:  controller.stopBusConfigureActuators()
@@ -194,7 +194,7 @@ SetupPage {
             Component {
                 id: batterySetupComponent
 
-                QGCGroupBox {
+                beeCopterGroupBox {
                     Layout.fillWidth:   true
                     title:              qsTr("Battery ") + (showBatteryIndex ? batteryIndex : "")
 
@@ -240,7 +240,7 @@ SetupPage {
                             spacing: ScreenTools.defaultFontPixelWidth
                             visible: battSource.rawValue == -1
 
-                            QGCLabel { text:  qsTr("Source") }
+                            beeCopterLabel { text:  qsTr("Source") }
                             FactComboBox {
                                 width:          _textEditWidth
                                 fact:           battSource
@@ -255,7 +255,7 @@ SetupPage {
                             columnSpacing:  ScreenTools.defaultFontPixelWidth
                             visible:        battSource.rawValue != -1
 
-                            QGCLabel { text:  qsTr("Source") }
+                            beeCopterLabel { text:  qsTr("Source") }
                             FactComboBox {
                                 width:          _textEditWidth
                                 fact:           battSource
@@ -263,7 +263,7 @@ SetupPage {
                                 sizeToContents: true
                             }
 
-                            QGCColoredImage {
+                            beeCopterColoredImage {
                                 id:                     battImage
                                 Layout.rowSpan:         4
                                 width:                  height * 0.75
@@ -271,7 +271,7 @@ SetupPage {
                                 sourceSize.height:      height
                                 fillMode:               Image.PreserveAspectFit
                                 smooth:                 true
-                                color:                  qgcPal.text
+                                color:                  beeCopterPal.text
                                 cache:                  false
                                 source:                 getBatteryImage(batteryIndex)
                                 visible:                battNumCellsAvailable && battLowVoltAvailable && battHighVoltAvailable
@@ -283,7 +283,7 @@ SetupPage {
                                 Layout.columnSpan:  battImage.visible ? 2 : 3
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:  qsTr("Number of Cells (in Series)")
                                 visible: battNumCellsAvailable
                             }
@@ -293,11 +293,11 @@ SetupPage {
                                 showUnits:  true
                                 visible:    battNumCellsAvailable
                             }
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       qsTr("Battery Max:")
                                 visible:    battImage.visible
                             }
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       visible ? (battNumCells.value * battHighVolt.value).toFixed(1) + ' V' : ""
                                 visible:    battImage.visible
                             }
@@ -308,7 +308,7 @@ SetupPage {
                                 visible:            !battImage.visible
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       qsTr("Empty Voltage (per cell)")
                                 visible:    battLowVoltAvailable
                             }
@@ -318,11 +318,11 @@ SetupPage {
                                 showUnits:  true
                                 visible:    battLowVoltAvailable
                             }
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       qsTr("Battery Min:")
                                 visible:    battImage.visible
                             }
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       visible ? (battNumCells.value * battLowVolt.value).toFixed(1) + ' V' : ""
                                 visible:    battImage.visible
                             }
@@ -333,7 +333,7 @@ SetupPage {
                                 visible:            battLowVoltAvailable && !battImage.visible
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       qsTr("Full Voltage (per cell)")
                                 visible:    battHighVoltAvailable
                             }
@@ -350,7 +350,7 @@ SetupPage {
                                 visible:            battHighVoltAvailable
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       qsTr("Voltage divider")
                                 visible:    battVoltageDividerAvailable
                             }
@@ -358,14 +358,14 @@ SetupPage {
                                 fact:       battVoltageDivider
                                 visible:    battVoltageDividerAvailable
                             }
-                            QGCButton {
+                            beeCopterButton {
                                 text:       qsTr("Calculate")
                                 visible:    battVoltageDividerAvailable
                                 onClicked:  calcVoltageDividerDlgComponent.createObject(mainWindow, { batteryIndex: _batteryIndex }).open()
                             }
                             Item { width: 1; height: 1; Layout.columnSpan: 2; visible: battVoltageDividerAvailable }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 Layout.columnSpan:  batteryGrid.columns
                                 Layout.fillWidth:   true
                                 font.pointSize:     ScreenTools.smallFontPointSize
@@ -374,7 +374,7 @@ SetupPage {
                                                     qsTr("Click the Calculate button for help with calculating a new value.")
                                 visible:            battVoltageDividerAvailable
                             }
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       qsTr("Amps per volt")
                                 visible:    battAmpsPerVoltAvailable
                             }
@@ -382,14 +382,14 @@ SetupPage {
                                 fact:       battAmpsPerVolt
                                 visible:    battAmpsPerVoltAvailable
                             }
-                            QGCButton {
+                            beeCopterButton {
                                 text:       qsTr("Calculate")
                                 visible:    battAmpsPerVoltAvailable
                                 onClicked:  calcAmpsPerVoltDlgComponent.createObject(mainWindow, { batteryIndex: _batteryIndex }).open()
                             }
                             Item { width: 1; height: 1; Layout.columnSpan: 2; visible: battAmpsPerVoltAvailable }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 Layout.columnSpan:  batteryGrid.columns
                                 Layout.fillWidth:   true
                                 font.pointSize:     ScreenTools.smallFontPointSize
@@ -399,14 +399,14 @@ SetupPage {
                                 visible:            battAmpsPerVoltAvailable
                             }
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 id:                 showAdvanced
                                 Layout.columnSpan:  batteryGrid.columns
                                 text:               qsTr("Show Advanced Settings")
                                 visible:            battVoltLoadDropAvailable
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       qsTr("Voltage Drop on Full Load (per cell)")
                                 visible:    showAdvanced.checked
                             }
@@ -418,7 +418,7 @@ SetupPage {
                             }
                             Item { width: 1; height: 1; Layout.columnSpan: 3; visible: showAdvanced.checked }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 Layout.columnSpan:  batteryGrid.columns
                                 Layout.fillWidth:   true
                                 wrapMode:           Text.WordWrap
@@ -429,24 +429,24 @@ SetupPage {
                                 visible:            showAdvanced.checked
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       qsTr("Compensated Minimum Voltage:")
                                 visible:    showAdvanced.checked
                             }
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       visible ? ((battNumCells.value * battLowVolt.value) - (battNumCells.value * battVoltLoadDrop.value)).toFixed(1) + qsTr(" V") : ""
                                 visible:    showAdvanced.checked
                             }
                             Item { width: 1; height: 1; Layout.columnSpan: 3; visible: showAdvanced.checked }
                         } // Grid
                     }
-                } // QGCGroupBox - Battery settings
+                } // beeCopterGroupBox - Battery settings
             } // Component - batterySetupComponent
 
             Component {
                 id: calcVoltageDividerDlgComponent
 
-                QGCPopupDialog {
+                beeCopterPopupDialog {
                     title:      qsTr("Calculate Voltage Divider")
                     buttons:    Dialog.Close
 
@@ -463,7 +463,7 @@ SetupPage {
                     ColumnLayout {
                         spacing: ScreenTools.defaultFontPixelHeight
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.preferredWidth:  gridLayout.width
                             wrapMode:               Text.WordWrap
                             text:                   qsTr("Measure battery voltage using an external voltmeter and enter the value below. Click Calculate to set the new voltage multiplier.")
@@ -473,17 +473,17 @@ SetupPage {
                             id:         gridLayout
                             columns:    2
 
-                            QGCLabel { text: qsTr("Measured voltage:") }
-                            QGCTextField { id: measuredVoltage; numericValuesOnly: true }
+                            beeCopterLabel { text: qsTr("Measured voltage:") }
+                            beeCopterTextField { id: measuredVoltage; numericValuesOnly: true }
 
-                            QGCLabel { text: qsTr("Vehicle voltage:") }
-                            QGCLabel { text: _batteryFactGroup.voltage.valueString }
+                            beeCopterLabel { text: qsTr("Vehicle voltage:") }
+                            beeCopterLabel { text: _batteryFactGroup.voltage.valueString }
 
-                            QGCLabel { text: qsTr("Voltage divider:") }
+                            beeCopterLabel { text: qsTr("Voltage divider:") }
                             FactLabel { fact: batParams.battVoltageDivider }
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             text: qsTr("Calculate")
 
                             onClicked:  {
@@ -504,7 +504,7 @@ SetupPage {
             Component {
                 id: calcAmpsPerVoltDlgComponent
 
-                QGCPopupDialog {
+                beeCopterPopupDialog {
                     title:      qsTr("Calculate Amps per Volt")
                     buttons:    Dialog.Close
 
@@ -521,7 +521,7 @@ SetupPage {
                     ColumnLayout {
                         spacing: ScreenTools.defaultFontPixelHeight
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.preferredWidth:  gridLayout.width
                             wrapMode:               Text.WordWrap
                             text:                   qsTr("Measure current draw using an external current meter and enter the value below. Click Calculate to set the new amps per volt value.")
@@ -531,17 +531,17 @@ SetupPage {
                             id:         gridLayout
                             columns:    2
 
-                            QGCLabel { text: qsTr("Measured current:") }
-                            QGCTextField { id: measuredCurrent; numericValuesOnly: true }
+                            beeCopterLabel { text: qsTr("Measured current:") }
+                            beeCopterTextField { id: measuredCurrent; numericValuesOnly: true }
 
-                            QGCLabel { text: qsTr("Vehicle current:") }
-                            QGCLabel { text: _batteryFactGroup.current.valueString }
+                            beeCopterLabel { text: qsTr("Vehicle current:") }
+                            beeCopterLabel { text: _batteryFactGroup.current.valueString }
 
-                            QGCLabel { text: qsTr("Amps per volt:") }
+                            beeCopterLabel { text: qsTr("Amps per volt:") }
                             FactLabel { fact: batParams.battAmpsPerVolt }
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             text: qsTr("Calculate")
 
                             onClicked:  {
@@ -562,7 +562,7 @@ SetupPage {
             Component {
                 id: escCalibrationDlgComponent
 
-                QGCPopupDialog {
+                beeCopterPopupDialog {
                     id:                     escCalibrationDlg
                     title:                  qsTr("ESC Calibration")
                     buttons:                Dialog.Ok
@@ -577,7 +577,7 @@ SetupPage {
                     }
 
                     ColumnLayout {
-                        QGCLabel {
+                        beeCopterLabel {
                             id:                     textLabel
                             wrapMode:               Text.WordWrap
                             text:                   _highlightPrefix + qsTr("WARNING: Props must be removed from vehicle prior to performing ESC calibration.") + _highlightSuffix + qsTr(" Connect the battery now and calibration will begin.")

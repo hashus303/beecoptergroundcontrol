@@ -1,15 +1,15 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 ToolIndicatorPage {
     id:             control
     showExpand:     false
 
-    property var    activeVehicle:  QGroundControl.multiVehicleManager.activeVehicle
+    property var    activeVehicle:  beeCopter.multiVehicleManager.activeVehicle
     property string na:             qsTr("N/A", "No data to display")
     property string valueNA:        qsTr("–", "No data to display")
 
@@ -69,7 +69,7 @@ ToolIndicatorPage {
                 SettingsGroupLayout {
                     heading:            qsTr("Motor %1 %2").arg(object.id.rawValue + 1).arg( _isThisMotorHealthy ? "" : qsTr("- OFFLINE"))
                     headingPointSize:   ScreenTools.defaultFontPointSize * ScreenTools.smallFontPointRatio
-                    outerBorderColor:   _isThisMotorHealthy ? QGroundControl.globalPalette.colorGreen : QGroundControl.globalPalette.colorRed
+                    outerBorderColor:   _isThisMotorHealthy ? beeCopter.globalPalette.colorGreen : beeCopter.globalPalette.colorRed
 
                     property bool _isThisMotorHealthy: _isMotorHealthy(index)
 

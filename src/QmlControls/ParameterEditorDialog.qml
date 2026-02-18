@@ -3,11 +3,11 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
-QGCPopupDialog {
+beeCopterPopupDialog {
     id:         root
     title:      fact.componentId > 0 ? fact.name : qsTr("Value Editor")
 
@@ -22,13 +22,13 @@ QGCPopupDialog {
     property real   _editFieldWidth:            ScreenTools.defaultFontPixelWidth * 20
     property bool   _longDescriptionAvailable:  fact.longDescription != ""
     property bool   _editingParameter:          fact.componentId != 0
-    property bool   _allowForceSave:            QGroundControl.corePlugin.showAdvancedUI && _editingParameter
+    property bool   _allowForceSave:            beeCopter.corePlugin.showAdvancedUI && _editingParameter
     property bool   _allowDefaultReset:         fact.defaultValueAvailable
     property bool   _showCombo:                 fact.enumStrings.length !== 0 && fact.bitmaskStrings.length === 0 && !validate
 
     ParameterEditorController { id: controller; }
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     onAccepted: {
         if (bitmaskColumn.visible && !manualEntry.checked) {
@@ -78,11 +78,11 @@ QGCPopupDialog {
         width:      Math.min(mainWindow.width * .75, Math.max(ScreenTools.defaultFontPixelWidth * 60, editRow.width))
         spacing:    globals.defaultTextHeight
 
-        QGCLabel {
+        beeCopterLabel {
             id:                 validationError
             Layout.fillWidth:   true
             wrapMode:           Text.WordWrap
-            color:              qgcPal.warningText
+            color:              beeCopterPal.warningText
             visible:            text !== ""
         }
 
@@ -90,7 +90,7 @@ QGCPopupDialog {
             id:         editRow
             spacing:    ScreenTools.defaultFontPixelWidth
 
-            QGCTextField {
+            beeCopterTextField {
                 id:                 valueField
                 width:              _editFieldWidth
                 unitsLabel:         fact.units
@@ -102,7 +102,7 @@ QGCPopupDialog {
                 visible:            !_showCombo || validate || manualEntry.checked
             }
 
-            QGCComboBox {
+            beeCopterComboBox {
                 id:             factCombo
                 width:          _editFieldWidth
                 model:          fact.enumStrings
@@ -125,7 +125,7 @@ QGCPopupDialog {
                 }
             }
 
-            QGCButton {
+            beeCopterButton {
                 visible:    _allowDefaultReset
                 text:       qsTr("Reset To Default")
 
@@ -146,7 +146,7 @@ QGCPopupDialog {
                 id:     bitmaskRepeater
                 model:  fact.bitmaskStrings
 
-                delegate : QGCCheckBox {
+                delegate : beeCopterCheckBox {
                     text : modelData
                     checked : fact.value & fact.bitmaskValues[index]
 
@@ -157,14 +157,14 @@ QGCPopupDialog {
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             Layout.fillWidth:   true
             wrapMode:           Text.WordWrap
             visible:            !longDescriptionLabel.visible
             text:               fact.shortDescription
         }
 
-        QGCLabel {
+        beeCopterLabel {
             id:                 longDescriptionLabel
             Layout.fillWidth:   true
             wrapMode:           Text.WordWrap
@@ -175,34 +175,34 @@ QGCPopupDialog {
         Row {
             spacing: ScreenTools.defaultFontPixelWidth
 
-            QGCLabel {
+            beeCopterLabel {
                 id:         minValueDisplay
                 text:       qsTr("Min: ") + fact.minString
                 visible:    !fact.minIsDefaultForType
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 text:       qsTr("Max: ") + fact.maxString
                 visible:    !fact.maxIsDefaultForType
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 text:       qsTr("Default: ") + fact.defaultValueString
                 visible:    _allowDefaultReset
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             visible:    fact.vehicleRebootRequired
             text:       qsTr("Vehicle reboot required after change")
         }
 
-        QGCLabel {
-            visible:    fact.qgcRebootRequired
+        beeCopterLabel {
+            visible:    fact.beeCopterRebootRequired
             text:       qsTr("Application restart required after change")
         }
 
-        QGCLabel {
+        beeCopterLabel {
             Layout.fillWidth:   true
             wrapMode:   Text.WordWrap
             text:       qsTr("Warning: Modifying values while vehicle is in flight can lead to vehicle instability and possible vehicle loss. ") +
@@ -210,20 +210,20 @@ QGCPopupDialog {
             visible:    fact.componentId != -1
         }
 
-        QGCCheckBox {
+        beeCopterCheckBox {
             id:         forceSave
             visible:    false
             text:       qsTr("Force save (dangerous!)")
         }
 
-        QGCCheckBox {
+        beeCopterCheckBox {
             id:         _advanced
             text:       qsTr("Advanced settings")
             visible:    showRCToParam || factCombo.visible || bitmaskColumn.visible
         }
 
         // Checkbox to allow manual entry of enumerated or bitmask parameters
-        QGCCheckBox {
+        beeCopterCheckBox {
             id:         manualEntry
             visible:    _advanced.checked && (factCombo.visible || bitmaskColumn.visible)
             text:       qsTr("Manual Entry")
@@ -233,7 +233,7 @@ QGCPopupDialog {
             }
         }
 
-        QGCButton {
+        beeCopterButton {
             text:       qsTr("Set RC to Param")
             visible:    _advanced.checked && !validate && showRCToParam
             onClicked:  rcToParamDialog.createObject(mainWindow).open()

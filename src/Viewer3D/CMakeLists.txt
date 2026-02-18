@@ -39,7 +39,7 @@ set_source_files_properties(Viewer3DQml/Viewer3DSettings.qml PROPERTIES QT_RESOU
 set_source_files_properties(Viewer3DQml/Models3D/Viewer3DModel.qml PROPERTIES QT_RESOURCE_ALIAS Models3D/Viewer3DModel.qml)
 
 qt_add_qml_module(Viewer3DModule
-    URI QGroundControl.Viewer3D
+    URI beeCopter.Viewer3D
     VERSION 1.0
     RESOURCE_PREFIX /qml
     QML_FILES

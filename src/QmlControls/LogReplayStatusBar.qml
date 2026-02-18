@@ -3,12 +3,12 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     height: visible ? (rowLayout.height + (_margins * 2)) : 0
-    color: qgcPal.window
+    color: beeCopterPal.window
 
     property real _margins: ScreenTools.defaultFontPixelHeight / 4
     property var _logReplayLink: null
@@ -22,19 +22,19 @@ Rectangle {
         filePicker.openForLoad()
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
-    QGCFileDialog {
+    beeCopterFileDialog {
         id: filePicker
         title: qsTr("Select Telemetery Log")
         nameFilters: [ qsTr("Telemetry Logs (*.%1)").arg(_logFileExtension), qsTr("All Files (*)") ]
-        folder: QGroundControl.settingsManager.appSettings.telemetrySavePath
+        folder: beeCopter.settingsManager.appSettings.telemetrySavePath
         onAcceptedForLoad: (file) => {
-            controller.link = QGroundControl.linkManager.startLogReplay(file)
+            controller.link = beeCopter.linkManager.startLogReplay(file)
             close()
         }
 
-        property string _logFileExtension: QGroundControl.settingsManager.appSettings.telemetryFileExtension
+        property string _logFileExtension: beeCopter.settingsManager.appSettings.telemetryFileExtension
     }
 
     LogReplayLinkController {
@@ -52,13 +52,13 @@ Rectangle {
             right: parent.right
         }
 
-        QGCButton {
+        beeCopterButton {
             enabled: controller.link
             text: controller.isPlaying ? qsTr("Pause") : qsTr("Play")
             onClicked: controller.isPlaying = !controller.isPlaying
         }
 
-        QGCComboBox {
+        beeCopterComboBox {
             textRole: "text"
             currentIndex: 3
 
@@ -75,7 +75,7 @@ Rectangle {
             onActivated: (index) => { controller.playbackSpeed = model.get(currentIndex).value }
         }
 
-        QGCLabel { text: controller.playheadTime }
+        beeCopterLabel { text: controller.playheadTime }
 
         Slider {
             id: slider
@@ -99,22 +99,22 @@ Rectangle {
             }
         }
 
-        QGCLabel { text: controller.totalTime }
+        beeCopterLabel { text: controller.totalTime }
 
-        QGCButton {
+        beeCopterButton {
             text: qsTr("Load Telemetry Log")
             onClicked: pickLogFile()
             visible: !controller.link
         }
 
-        QGCButton {
+        beeCopterButton {
             text: qsTr("Close")
             onClicked: {
-                var activeVehicle = QGroundControl.multiVehicleManager.activeVehicle
+                var activeVehicle = beeCopter.multiVehicleManager.activeVehicle
                 if (activeVehicle) {
                     activeVehicle.closeVehicle()
                 }
-                QGroundControl.settingsManager.flyViewSettings.showLogReplayStatusBar.rawValue = false
+                beeCopter.settingsManager.flyViewSettings.showLogReplayStatusBar.rawValue = false
             }
         }
     }

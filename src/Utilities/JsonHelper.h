@@ -17,36 +17,36 @@ namespace JsonHelper
     QTranslator *translator();
 
     /// Saves the standard file header the json object
-    void saveQGCJsonFileHeader(QJsonObject &jsonObject,  ///< root json object
+    void savebeeCopterJsonFileHeader(QJsonObject &jsonObject,  ///< root json object
                                const QString &fileType,  ///< file type for file
                                int version);             ///< version number for file
 
-    /// Validates the standard parts of an external QGC json file (Plan file, ...):
+    /// Validates the standard parts of an external beeCopter json file (Plan file, ...):
     ///     jsonFileTypeKey - Required and checked to be equal to expectedFileType
     ///     jsonVersionKey - Required and checked to be below supportedMajorVersion, supportedMinorVersion
     ///     jsonGroundStationKey - Required and checked to be string type
     /// @return false: validation failed, errorString set
-    bool validateExternalQGCJsonFile(const QJsonObject &jsonObject,      ///< json object to validate
+    bool validateExternalbeeCopterJsonFile(const QJsonObject &jsonObject,      ///< json object to validate
                                      const QString &expectedFileType,    ///< correct file type for file
                                      int minSupportedVersion,            ///< minimum supported version
                                      int maxSupportedVersion,            ///< maximum supported major version
                                      int &version,                       ///< returned file version
                                      QString &errorString);              ///< returned error string if validation fails
 
-    /// Validates the standard parts of a internal QGC json file (FactMetaData, ...):
+    /// Validates the standard parts of a internal beeCopter json file (FactMetaData, ...):
     ///     jsonFileTypeKey - Required and checked to be equal to expectedFileType
     ///     jsonVersionKey - Required and checked to be below supportedMajorVersion, supportedMinorVersion
     /// @return false: validation failed, errorString set
-    bool validateInternalQGCJsonFile(const QJsonObject &jsonObject,      ///< json object to validate
+    bool validateInternalbeeCopterJsonFile(const QJsonObject &jsonObject,      ///< json object to validate
                                      const QString &expectedFileType,    ///< correct file type for file
                                      int minSupportedVersion,            ///< minimum supported version
                                      int maxSupportedVersion,            ///< maximum supported major version
                                      int &version,                       ///< returned file version
                                      QString &errorString);              ///< returned error string if validation fails
 
-    // Opens, validates and translates an internal QGC json file.
+    // Opens, validates and translates an internal beeCopter json file.
     // @return Json root object for file. Empty QJsonObject if error.
-    QJsonObject openInternalQGCJsonFile(const QString &jsonFilename,     ///< Json file to open
+    QJsonObject openInternalbeeCopterJsonFile(const QString &jsonFilename,     ///< Json file to open
                                         const QString &expectedFileType, ///< correct file type for file
                                         int minSupportedVersion,         ///< minimum supported version
                                         int maxSupportedVersion,         ///< maximum supported major version
@@ -99,7 +99,7 @@ namespace JsonHelper
     /// Loads a polygon from an array
     bool loadPolygon(const QJsonArray &polygonArray,    ///< Array of coordinates
                      QmlObjectListModel &list,          ///< Empty list to add vertices to
-                     QObject *parent,                   ///< parent for newly allocated QGCQGeoCoordinates
+                     QObject *parent,                   ///< parent for newly allocated beeCopterQGeoCoordinates
                      QString &errorString);             ///< returned error string if load failure
 
     /// Saves a polygon to a json array

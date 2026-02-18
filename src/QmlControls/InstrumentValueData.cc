@@ -1,6 +1,6 @@
 #include "InstrumentValueData.h"
 #include "FactValueGrid.h"
-#include "QGC.h"
+#include "beeCopter.h"
 #include "QmlObjectListModel.h"
 #include "MultiVehicleManager.h"
 #include "Vehicle.h"
@@ -284,7 +284,7 @@ void InstrumentValueData::_updateOpacity(void)
         newOpacity = _rangeOpacities[rangeIndex].toDouble();
     }
 
-    if (!QGC::fuzzyCompare(newOpacity, _currentOpacity)) {
+    if (!beeCopter::fuzzyCompare(newOpacity, _currentOpacity)) {
         _currentOpacity = newOpacity;
         emit currentOpacityChanged(newOpacity);
     }

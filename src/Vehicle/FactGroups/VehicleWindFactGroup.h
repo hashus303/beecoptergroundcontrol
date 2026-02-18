@@ -23,7 +23,7 @@ private:
     void _handleHighLatency(const mavlink_message_t &message);
     void _handleHighLatency2(const mavlink_message_t &message);
     void _handleWindCov(const mavlink_message_t &message);
-#ifndef QGC_NO_ARDUPILOT_DIALECT
+#ifndef beeCopter_NO_ARDUPILOT_DIALECT
     void _handleWind(const mavlink_message_t &message);
 #endif
 

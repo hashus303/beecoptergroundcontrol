@@ -1,11 +1,11 @@
 #include "FirmwarePluginManager.h"
 #include "FirmwarePlugin.h"
 #include "FirmwarePluginFactory.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QGlobalStatic>
 
-QGC_LOGGING_CATEGORY(FirmwarePluginManagerLog, "FirmwarePlugin.FirmwarePluginManager");
+beeCopter_LOGGING_CATEGORY(FirmwarePluginManagerLog, "FirmwarePlugin.FirmwarePluginManager");
 
 Q_GLOBAL_STATIC(FirmwarePluginManager, _firmwarePluginManagerInstance);
 
@@ -25,30 +25,30 @@ FirmwarePluginManager *FirmwarePluginManager::instance()
     return _firmwarePluginManagerInstance();
 }
 
-QList<QGCMAVLink::FirmwareClass_t> FirmwarePluginManager::supportedFirmwareClasses()
+QList<beeCopterMAVLink::FirmwareClass_t> FirmwarePluginManager::supportedFirmwareClasses()
 {
     if (_supportedFirmwareClasses.isEmpty()) {
         const QList<FirmwarePluginFactory*> factoryList = FirmwarePluginFactoryRegister::instance()->pluginFactories();
         for (const FirmwarePluginFactory *factory: factoryList) {
             _supportedFirmwareClasses.append(factory->supportedFirmwareClasses());
         }
-        _supportedFirmwareClasses.append(QGCMAVLink::FirmwareClassGeneric);
+        _supportedFirmwareClasses.append(beeCopterMAVLink::FirmwareClassGeneric);
     }
 
     return _supportedFirmwareClasses;
 }
 
-QList<QGCMAVLink::VehicleClass_t> FirmwarePluginManager::supportedVehicleClasses(QGCMAVLink::FirmwareClass_t firmwareClass)
+QList<beeCopterMAVLink::VehicleClass_t> FirmwarePluginManager::supportedVehicleClasses(beeCopterMAVLink::FirmwareClass_t firmwareClass)
 {
-    QList<QGCMAVLink::VehicleClass_t> vehicleClasses;
+    QList<beeCopterMAVLink::VehicleClass_t> vehicleClasses;
     const FirmwarePluginFactory *const factory = _findPluginFactory(firmwareClass);
 
     if (factory) {
         vehicleClasses = factory->supportedVehicleClasses();
-    } else if (firmwareClass == QGCMAVLink::FirmwareClassGeneric) {
+    } else if (firmwareClass == beeCopterMAVLink::FirmwareClassGeneric) {
         // Generic supports all specific vehicle class
-        vehicleClasses = QGCMAVLink::allVehicleClasses();
-        (void) vehicleClasses.removeOne(QGCMAVLink::VehicleClassGeneric);
+        vehicleClasses = beeCopterMAVLink::allVehicleClasses();
+        (void) vehicleClasses.removeOne(beeCopterMAVLink::VehicleClassGeneric);
     } else {
         qCWarning(FirmwarePluginManagerLog) << "Request for unknown firmware plugin factory" << firmwareClass;
     }
@@ -75,7 +75,7 @@ FirmwarePlugin *FirmwarePluginManager::firmwarePluginForAutopilot(MAV_AUTOPILOT 
     return plugin;
 }
 
-FirmwarePluginFactory *FirmwarePluginManager::_findPluginFactory(QGCMAVLink::FirmwareClass_t firmwareClass)
+FirmwarePluginFactory *FirmwarePluginManager::_findPluginFactory(beeCopterMAVLink::FirmwareClass_t firmwareClass)
 {
     const QList<FirmwarePluginFactory*> factoryList = FirmwarePluginFactoryRegister::instance()->pluginFactories();
 

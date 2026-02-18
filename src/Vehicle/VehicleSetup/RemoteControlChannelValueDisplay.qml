@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Displays the value of a single channel as an indicator within a value range bar
 Item {
@@ -37,14 +37,14 @@ Item {
         }
     }
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: control.enabled }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: control.enabled }
 
     Rectangle {
         id: fullValueRangeBar
         anchors.verticalCenter: parent.verticalCenter
         width: parent.width
         height: parent.height / 2
-        color: qgcPal.windowShade
+        color: beeCopterPal.windowShade
     }
 
     Rectangle {
@@ -54,7 +54,7 @@ Item {
         width: _deadbandWidth
         x: _deadbandOffset
         radius: ScreenTools.defaultFontPixelHeight / 4
-        color: qgcPal.buttonHighlight
+        color: beeCopterPal.buttonHighlight
         opacity: 0.35
         visible: control.deadbandEnabled && control.deadbandValue > 0
         readonly property real _rangeSpan: Math.max(1, control.channelValueMax - control.channelValueMin)
@@ -68,10 +68,10 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         width: 1
         height: parent.height
-        color: qgcPal.window
+        color: beeCopterPal.window
     }
 
-    QGCLabel {
+    beeCopterLabel {
         id: notMappedLabel
         anchors.centerIn: parent
         text: qsTr("Not Mapped")
@@ -89,7 +89,7 @@ Item {
             return (normalized * parent.width) - (width / 2)
         }
         radius: width / 2
-        color: qgcPal.text
+        color: beeCopterPal.text
         visible: control.mode === RemoteControlChannelValueDisplay.RawValue || control.channelMapped
     }
 }

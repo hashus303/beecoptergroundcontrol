@@ -4,19 +4,19 @@ import QtQuick.Dialogs
 import QtQml
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 /// Mission item edit control
 Rectangle {
     id:             _root
     height:         _currentItem ? (editorLoader.y + editorLoader.height + _innerMargin) : (topRowLayout.y + topRowLayout.height + _margin)
-    color:          _currentItem ? qgcPal.buttonHighlight : qgcPal.windowShade
+    color:          _currentItem ? beeCopterPal.buttonHighlight : beeCopterPal.windowShade
     radius:         _radius
     opacity:        _currentItem ? 1.0 : 0.7
     border.width:   _readyForSave ? 0 : 2
-    border.color:   qgcPal.warningText
+    border.color:   beeCopterPal.warningText
 
     property var    map                 ///< Map control
     property var    masterController
@@ -30,7 +30,7 @@ Rectangle {
     property var    _masterController:          masterController
     property var    _missionController:         _masterController.missionController
     property bool   _currentItem:               missionItem.isCurrentItem
-    property color  _outerTextColor:            _currentItem ? qgcPal.buttonHighlightText : qgcPal.text
+    property color  _outerTextColor:            _currentItem ? beeCopterPal.buttonHighlightText : beeCopterPal.text
     property bool   _noMissionItemsAdded:       ListView.view.model.count === 1
     property real   _sectionSpacer:             ScreenTools.defaultFontPixelWidth / 2  // spacing between section headings
     property bool   _singleComplexItem:         _missionController.complexMissionItemNames.length === 1
@@ -42,10 +42,10 @@ Rectangle {
     readonly property real  _radius:            ScreenTools.defaultFontPixelWidth / 2
     readonly property real  _hamburgerSize:     commandPicker.height * 0.75
     readonly property real  _trashSize:         commandPicker.height * 0.75
-    readonly property bool  _waypointsOnlyMode: QGroundControl.corePlugin.options.missionWaypointsOnly
+    readonly property bool  _waypointsOnlyMode: beeCopter.corePlugin.options.missionWaypointsOnly
 
-    QGCPalette {
-        id: qgcPal
+    beeCopterPalette {
+        id: beeCopterPal
         colorGroupEnabled: enabled
     }
 
@@ -86,22 +86,22 @@ Rectangle {
             width:                  _hamburgerSize
             height:                 width
             border.width:           1
-            border.color:           qgcPal.warningText
+            border.color:           beeCopterPal.warningText
             color:                  "white"
             radius:                 width / 2
             visible:                !_readyForSave
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                 readyForSaveLabel
                 anchors.centerIn:   parent
                 //: Indicator in Plan view to show mission item is not ready for save/send
                 text:               qsTr("?")
-                color:              qgcPal.warningText
+                color:              beeCopterPal.warningText
                 font.pointSize:     ScreenTools.smallFontPointSize
             }
         }
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             id:                     deleteButton
             anchors.verticalCenter: parent.verticalCenter
             height:                 _hamburgerSize
@@ -110,11 +110,11 @@ Rectangle {
             fillMode:               Image.PreserveAspectFit
             mipmap:                 true
             smooth:                 true
-            color:                  qgcPal.buttonHighlightText
+            color:                  beeCopterPal.buttonHighlightText
             visible:                _currentItem && missionItem.sequenceNumber !== 0
             source:                 "/res/TrashDelete.svg"
 
-            QGCMouseArea {
+            beeCopterMouseArea {
                 fillItem:   parent
                 onClicked:  remove()
             }
@@ -134,20 +134,20 @@ Rectangle {
 
                 property real _padding: ScreenTools.comboBoxPadding
 
-                QGCLabel { text: missionItem.commandName }
+                beeCopterLabel { text: missionItem.commandName }
 
-                QGCColoredImage {
+                beeCopterColoredImage {
                     height:             ScreenTools.defaultFontPixelWidth
                     width:              height
                     fillMode:           Image.PreserveAspectFit
                     smooth:             true
                     antialiasing:       true
-                    color:              qgcPal.text
+                    color:              beeCopterPal.text
                     source:             "/qmlimages/arrow-down.png"
                 }
             }
 
-            QGCMouseArea {
+            beeCopterMouseArea {
                 fillItem:   parent
                 onClicked:  commandDialog.createObject(mainWindow).open()
             }
@@ -165,7 +165,7 @@ Rectangle {
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             id:                     commandLabel
             anchors.verticalCenter: parent.verticalCenter
             width:                  commandPicker.width
@@ -187,7 +187,7 @@ Rectangle {
                 ColumnLayout {
                     spacing: ScreenTools.defaultFontPixelHeight / 2
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Move to vehicle position")
                         enabled:            _activeVehicle && missionItem.specifiesCoordinate
@@ -197,10 +197,10 @@ Rectangle {
                             hamburgerMenuDropPanel.close()
                         }
 
-                        property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+                        property var _activeVehicle: beeCopter.multiVehicleManager.activeVehicle
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Move to previous item position")
                         enabled:            _missionController.previousCoordinate.isValid
@@ -210,7 +210,7 @@ Rectangle {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Edit position...")
                         enabled:            missionItem.specifiesCoordinate
@@ -223,13 +223,13 @@ Rectangle {
                     Rectangle {
                         Layout.fillWidth:       true
                         Layout.preferredHeight: 1
-                        color:                  qgcPal.groupBorder
+                        color:                  beeCopterPal.groupBorder
                     }
 
-                    QGCCheckBoxSlider {
+                    beeCopterCheckBoxSlider {
                         Layout.fillWidth:   true
                         text:               qsTr("Show all values")
-                        visible:            QGroundControl.corePlugin.showAdvancedUI
+                        visible:            beeCopter.corePlugin.showAdvancedUI
                         checked:            missionItem.isSimpleItem ? missionItem.rawEdit : false
                         enabled:            missionItem.isSimpleItem && !_waypointsOnlyMode
 
@@ -247,10 +247,10 @@ Rectangle {
                     Rectangle {
                         Layout.fillWidth:       true
                         Layout.preferredHeight: 1
-                        color:                  qgcPal.groupBorder
+                        color:                  beeCopterPal.groupBorder
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:       qsTr("Item #%1").arg(missionItem.sequenceNumber)
                         enabled:    false
                     }
@@ -260,7 +260,7 @@ Rectangle {
     }
 
 
-    QGCColoredImage {
+    beeCopterColoredImage {
         id:                     hamburger
         anchors.margins:        _margin
         anchors.right:          parent.right
@@ -270,9 +270,9 @@ Rectangle {
         sourceSize.height:      _hamburgerSize
         source:                 "qrc:/qmlimages/Hamburger.svg"
         visible:                missionItem.isCurrentItem && missionItem.sequenceNumber !== 0
-        color:                  qgcPal.buttonHighlightText
+        color:                  beeCopterPal.buttonHighlightText
 
-        QGCMouseArea {
+        beeCopterMouseArea {
             fillItem:   hamburger
             onClicked: (position) => {
                 currentItemScope.focus = true
@@ -286,7 +286,7 @@ Rectangle {
     }
 
     /*
-    QGCLabel {
+    beeCopterLabel {
         id:                     notReadyForSaveLabel
         anchors.margins:        _margin
         anchors.left:           notReadyForSaveIndicator.right
@@ -298,7 +298,7 @@ Rectangle {
                                     qsTr("Incomplete: Item not fully specified.")
         wrapMode:               Text.WordWrap
         horizontalAlignment:    Text.AlignHCenter
-        color:                  qgcPal.warningText
+        color:                  beeCopterPal.warningText
     }
 
 */

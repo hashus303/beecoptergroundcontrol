@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QObject>
@@ -6,13 +6,13 @@
 #include <QtPositioning/QGeoPositionInfo>
 #include <QtQmlIntegration/QtQmlIntegration>
 
-Q_DECLARE_LOGGING_CATEGORY(QGCPositionManagerLog)
+Q_DECLARE_LOGGING_CATEGORY(beeCopterPositionManagerLog)
 
 class QGeoPositionInfoSource;
 class QNmeaPositionInfoSource;
-class QGCCompass;
+class beeCopterCompass;
 
-class QGCPositionManager : public QObject
+class beeCopterPositionManager : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
@@ -23,12 +23,12 @@ class QGCPositionManager : public QObject
     Q_PROPERTY(qreal          gcsPositionHorizontalAccuracy READ gcsPositionHorizontalAccuracy  NOTIFY gcsPositionHorizontalAccuracyChanged)
 
 public:
-    explicit QGCPositionManager(QObject *parent = nullptr);
-    ~QGCPositionManager();
+    explicit beeCopterPositionManager(QObject *parent = nullptr);
+    ~beeCopterPositionManager();
 
     /// Gets the singleton instance of AudioOutput.
     ///     @return The singleton instance.
-    static QGCPositionManager *instance();
+    static beeCopterPositionManager *instance();
 
     void init();
     QGeoCoordinate gcsPosition() const { return _gcsPosition; }
@@ -49,7 +49,7 @@ private slots:
     void _positionUpdated(const QGeoPositionInfo &update);
 
 private:
-    enum QGCPositionSource {
+    enum beeCopterPositionSource {
         Simulated,
         InternalGPS,
         Log,
@@ -57,7 +57,7 @@ private:
         ExternalGPS
     };
 
-    void _setPositionSource(QGCPositionSource source);
+    void _setPositionSource(beeCopterPositionSource source);
     void _setupPositionSources();
     void _handlePermissionStatus(Qt::PermissionStatus permissionStatus);
     void _checkPermission();
@@ -80,7 +80,7 @@ private:
     QNmeaPositionInfoSource *_nmeaSource = nullptr;
     QGeoPositionInfoSource *_simulatedSource = nullptr;
 
-    QGCCompass *_compass = nullptr;
+    beeCopterCompass *_compass = nullptr;
 
     static constexpr qreal kMinHorizonalAccuracyMeters = 100.;
     static constexpr qreal kMinVerticalAccuracyMeters = 10.;

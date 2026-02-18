@@ -2,7 +2,7 @@
 
 #include "VisualMissionItem.h"
 #include "MissionItem.h"
-#include "QGroundControlQmlGlobal.h"
+#include "beeCopterQmlGlobal.h"
 
 class SpeedSection;
 class CameraSection;
@@ -25,7 +25,7 @@ public:
     Q_PROPERTY(bool             rawEdit                 READ rawEdit                WRITE setRawEdit            NOTIFY rawEditChanged)              ///< true: raw item editing with all params
     Q_PROPERTY(bool             specifiesAltitude       READ specifiesAltitude                                  NOTIFY commandChanged)
     Q_PROPERTY(Fact*            altitude                READ altitude                                           CONSTANT)                           ///< Altitude as specified by altitudeMode. Not necessarily true mission item altitude
-    Q_PROPERTY(QGroundControlQmlGlobal::AltMode altitudeMode READ altitudeMode WRITE setAltitudeMode       NOTIFY altitudeModeChanged)
+    Q_PROPERTY(beeCopterQmlGlobal::AltMode altitudeMode READ altitudeMode WRITE setAltitudeMode       NOTIFY altitudeModeChanged)
     Q_PROPERTY(Fact*            amslAltAboveTerrain     READ amslAltAboveTerrain                                CONSTANT)                           ///< Actual AMSL altitude for item if altitudeMode == AltitudeAboveTerrain
     Q_PROPERTY(int              command                 READ command                WRITE setCommand            NOTIFY commandChanged)
     Q_PROPERTY(bool             isLoiterItem            READ isLoiterItem                                       NOTIFY isLoiterItemChanged)
@@ -64,7 +64,7 @@ public:
     bool            friendlyEditAllowed (void) const;
     bool            rawEdit             (void) const;
     bool            specifiesAltitude   (void) const;
-    QGroundControlQmlGlobal::AltMode altitudeMode(void) const { return _altitudeMode; }
+    beeCopterQmlGlobal::AltMode altitudeMode(void) const { return _altitudeMode; }
     Fact*           altitude            (void) { return &_altitudeFact; }
     Fact*           amslAltAboveTerrain (void) { return &_amslAltAboveTerrainFact; }
     bool            isLoiterItem        (void) const;
@@ -82,7 +82,7 @@ public:
     QmlObjectListModel* comboboxFactsAdvanced (void) { return &_comboboxFactsAdvanced; }
 
     void setRawEdit(bool rawEdit);
-    void setAltitudeMode(QGroundControlQmlGlobal::AltMode altitudeMode);
+    void setAltitudeMode(beeCopterQmlGlobal::AltMode altitudeMode);
 
     void setCommandByIndex(int index);
 
@@ -182,7 +182,7 @@ private:
 
     Fact                _supportedCommandFact;
 
-    QGroundControlQmlGlobal::AltMode    _altitudeMode = QGroundControlQmlGlobal::AltitudeModeRelative;
+    beeCopterQmlGlobal::AltMode    _altitudeMode = beeCopterQmlGlobal::AltitudeModeRelative;
     Fact                                _altitudeFact;
     Fact                                _amslAltAboveTerrainFact;
 

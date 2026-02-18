@@ -1,19 +1,19 @@
 /****************************************************************************
  *
- * (c) 2009-2024 QGROUNDCONTROL PROJECT <http://www.qgroundcontrol.org>
+ * (c) 2009-2024 beeCopter PROJECT <http://www.beeCopter.org>
  *
- * QGroundControl is licensed according to the terms in the file
+ * beeCopter is licensed according to the terms in the file
  * COPYING.md in the root of the source code directory.
  *
  ****************************************************************************/
 
 #include "ObjectListModelBase.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QDebug>
 #include <QtQml/QQmlEngine>
 
-QGC_LOGGING_CATEGORY(ObjectListModelBaseLog, "API.ObjectListModelBase")
+beeCopter_LOGGING_CATEGORY(ObjectListModelBaseLog, "API.ObjectListModelBase")
 
 ObjectListModelBase::ObjectListModelBase(QObject* parent)
     : QAbstractListModel        (parent)

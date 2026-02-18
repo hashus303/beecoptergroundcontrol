@@ -3,10 +3,10 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
+import beeCopter.FlightMap
 
 TransectStyleComplexItemEditor {
     transectAreaDefinitionComplete: _missionItem.corridorPolyline.isValid
@@ -30,13 +30,13 @@ TransectStyleComplexItemEditor {
             rowSpacing:     _margin
             columns:        2
 
-            QGCLabel { text: qsTr("Width") }
+            beeCopterLabel { text: qsTr("Width") }
             FactTextField {
                 fact:               _missionItem.corridorWidth
                 Layout.fillWidth:   true
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 text:       qsTr("Turnaround dist")
                 visible:    !forPresets
             }

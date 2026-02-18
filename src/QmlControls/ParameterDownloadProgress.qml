@@ -1,22 +1,22 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Provides UI for parameter download progress. This is overlayed on top of the FlyViewToolBar.
 
 Item {
     id: control
 
-    property var    _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle: beeCopter.multiVehicleManager.activeVehicle
 
     // Small parameter download progress bar
     Rectangle {
         anchors.bottom: parent.bottom
         height:         control.height * 0.05
         width:          _activeVehicle ? _activeVehicle.loadProgress * parent.width : 0
-        color:          QGroundControl.globalPalette.colorGreen
+        color:          beeCopter.globalPalette.colorGreen
         visible:        !largeProgressBar.visible
     }
 
@@ -27,15 +27,15 @@ Item {
         anchors.left:   parent.left
         anchors.right:  parent.right
         height:         parent.height
-        color:          QGroundControl.globalPalette.window
+        color:          beeCopter.globalPalette.window
         visible:        _showLargeProgress
 
         property bool _initialDownloadComplete: _activeVehicle ? _activeVehicle.initialConnectComplete : true
         property bool _userHide:                false
-        property bool _showLargeProgress:       !_initialDownloadComplete && !_userHide && QGroundControl.globalPalette.globalTheme === QGCPalette.Light
+        property bool _showLargeProgress:       !_initialDownloadComplete && !_userHide && beeCopter.globalPalette.globalTheme === beeCopterPalette.Light
 
         Connections {
-            target: QGroundControl.multiVehicleManager
+            target: beeCopter.multiVehicleManager
             function onActiveVehicleChanged(activeVehicle) { largeProgressBar._userHide = false }
         }
 
@@ -43,16 +43,16 @@ Item {
             anchors.top:    parent.top
             anchors.bottom: parent.bottom
             width:          _activeVehicle ? _activeVehicle.loadProgress * parent.width : 0
-            color:          QGroundControl.globalPalette.colorGreen
+            color:          beeCopter.globalPalette.colorGreen
         }
 
-        QGCLabel {
+        beeCopterLabel {
             anchors.centerIn:   parent
             text:               qsTr("Downloading")
             font.pointSize:     ScreenTools.largeFontPointSize
         }
 
-        QGCLabel {
+        beeCopterLabel {
             anchors.margins:    _margin
             anchors.right:      parent.right
             anchors.bottom:     parent.bottom

@@ -11,8 +11,8 @@ QUrl APMMotorComponent::setupSource() const
 {
     switch (_vehicle->vehicleType()) {
     case MAV_TYPE_SUBMARINE:
-        return QUrl::fromUserInput(QStringLiteral("qrc:/qml/QGroundControl/AutoPilotPlugins/APM/APMSubMotorComponent.qml"));
+        return QUrl::fromUserInput(QStringLiteral("qrc:/qml/beeCopter/AutoPilotPlugins/APM/APMSubMotorComponent.qml"));
     default:
-        return QUrl::fromUserInput(QStringLiteral("qrc:/qml/QGroundControl/AutoPilotPlugins/APM/APMMotorComponent.qml"));
+        return QUrl::fromUserInput(QStringLiteral("qrc:/qml/beeCopter/AutoPilotPlugins/APM/APMMotorComponent.qml"));
     }
 }

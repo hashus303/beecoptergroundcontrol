@@ -1,5 +1,5 @@
 #include "LandingComplexItem.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "JsonHelper.h"
 #include "MissionController.h"
 #include "MissionCommandTree.h"
@@ -11,9 +11,9 @@
 #include "Fact.h"
 #include "CameraSection.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(LandingComplexItemLog, "Plan.LandingComplexItem")
+beeCopter_LOGGING_CATEGORY(LandingComplexItemLog, "Plan.LandingComplexItem")
 
 LandingComplexItem::LandingComplexItem(PlanMasterController* masterController, bool flyView)
     : ComplexMissionItem        (masterController, flyView)
@@ -22,7 +22,7 @@ LandingComplexItem::LandingComplexItem(PlanMasterController* masterController, b
 
     // The following is used to compress multiple recalc calls in a row to into a single call.
     connect(this, &LandingComplexItem::_updateFlightPathSegmentsSignal, this, &LandingComplexItem::_updateFlightPathSegmentsDontCallDirectly,   Qt::QueuedConnection);
-    qgcApp()->addCompressedSignal(QMetaMethod::fromSignal(&LandingComplexItem::_updateFlightPathSegmentsSignal));
+    beeCopterApp()->addCompressedSignal(QMetaMethod::fromSignal(&LandingComplexItem::_updateFlightPathSegmentsSignal));
 }
 
 void LandingComplexItem::_init(void)
@@ -773,7 +773,7 @@ bool LandingComplexItem::_load(const QJsonObject& complexObject, int sequenceNum
         bool loiterAltitudeRelative = complexObject[_jsonDeprecatedLoiterAltitudeRelativeKey].toBool();
         bool landingAltitudeRelative = complexObject[_jsonDeprecatedLandingAltitudeRelativeKey].toBool();
         if (loiterAltitudeRelative != landingAltitudeRelative) {
-            qgcApp()->showAppMessage(tr("Fixed Wing Landing Pattern: "
+            beeCopterApp()->showAppMessage(tr("Fixed Wing Landing Pattern: "
                                         "Setting the loiter and landing altitudes with different settings for altitude relative is no longer supported. "
                                         "Both have been set to relative altitude. Be sure to adjust/check your plan prior to flight."));
             _altitudesAreRelative = true;

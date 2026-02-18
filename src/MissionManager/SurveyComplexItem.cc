@@ -1,20 +1,20 @@
 #include "SurveyComplexItem.h"
 #include "JsonHelper.h"
-#include "QGCGeo.h"
-#include "QGCQGeoCoordinate.h"
+#include "beeCopterGeo.h"
+#include "beeCopterQGeoCoordinate.h"
 #include "SettingsManager.h"
 #include "AppSettings.h"
 #include "PlanMasterController.h"
 #include "MissionItem.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtGui/QPolygonF>
 #include <QtCore/QJsonArray>
 #include <QtCore/QLineF>
 
-QGC_LOGGING_CATEGORY(SurveyComplexItemLog, "Plan.SurveyComplexItem")
+beeCopter_LOGGING_CATEGORY(SurveyComplexItemLog, "Plan.SurveyComplexItem")
 
 const QString SurveyComplexItem::name(SurveyComplexItem::tr("Survey"));
 
@@ -26,7 +26,7 @@ SurveyComplexItem::SurveyComplexItem(PlanMasterController* masterController, boo
     , _splitConcavePolygonsFact (settingsGroup, _metaDataMap[splitConcavePolygonsName])
     , _entryPoint               (EntryLocationTopLeft)
 {
-    _editorQml = "qrc:/qml/QGroundControl/Controls/SurveyItemEditor.qml";
+    _editorQml = "qrc:/qml/beeCopter/Controls/SurveyItemEditor.qml";
 
     if (_controllerVehicle && !(_controllerVehicle->fixedWing() || _controllerVehicle->vtol())) {
         // Only fixed wing flight paths support alternate transects
@@ -48,8 +48,8 @@ SurveyComplexItem::SurveyComplexItem(PlanMasterController* masterController, boo
     connect(&_splitConcavePolygonsFact, &Fact::valueChanged,                        this, &SurveyComplexItem::_rebuildTransects);
     connect(this,                       &SurveyComplexItem::refly90DegreesChanged,  this, &SurveyComplexItem::_rebuildTransects);
 
-    connect(&_surveyAreaPolygon,        &QGCMapPolygon::isValidChanged,             this, &SurveyComplexItem::_updateWizardMode);
-    connect(&_surveyAreaPolygon,        &QGCMapPolygon::traceModeChanged,           this, &SurveyComplexItem::_updateWizardMode);
+    connect(&_surveyAreaPolygon,        &beeCopterMapPolygon::isValidChanged,             this, &SurveyComplexItem::_updateWizardMode);
+    connect(&_surveyAreaPolygon,        &beeCopterMapPolygon::traceModeChanged,           this, &SurveyComplexItem::_updateWizardMode);
 
     if (!kmlOrShpFile.isEmpty()) {
         _surveyAreaPolygon.loadKMLOrSHPFile(kmlOrShpFile);
@@ -96,7 +96,7 @@ void SurveyComplexItem::loadPreset(const QString& presetName)
 
     QJsonObject presetObject = _loadPresetJson(presetName);
     if (!_loadV4V5(presetObject, 0, errorString, 5, true /* forPresets */)) {
-        qgcApp()->showAppMessage(QStringLiteral("Internal Error: Preset load failed. Name: %1 Error: %2").arg(presetName).arg(errorString));
+        beeCopterApp()->showAppMessage(QStringLiteral("Internal Error: Preset load failed. Name: %1 Error: %2").arg(presetName).arg(errorString));
     }
     _rebuildTransects();
 }
@@ -170,7 +170,7 @@ bool SurveyComplexItem::_loadV4V5(const QJsonObject& complexObject, int sequence
     QString itemType = complexObject[VisualMissionItem::jsonTypeKey].toString();
     QString complexType = complexObject[ComplexMissionItem::jsonComplexItemTypeKey].toString();
     if (itemType != VisualMissionItem::jsonTypeComplexItemValue || complexType != jsonComplexItemTypeValue) {
-        errorString = tr("%1 does not support loading this complex mission item type: %2:%3").arg(qgcApp()->applicationName()).arg(itemType).arg(complexType);
+        errorString = tr("%1 does not support loading this complex mission item type: %2:%3").arg(beeCopterApp()->applicationName()).arg(itemType).arg(complexType);
         return false;
     }
 
@@ -209,7 +209,7 @@ bool SurveyComplexItem::_loadV3(const QJsonObject& complexObject, int sequenceNu
     QList<JsonHelper::KeyValidateInfo> mainKeyInfoList = {
         { VisualMissionItem::jsonTypeKey,               QJsonValue::String, true },
         { ComplexMissionItem::jsonComplexItemTypeKey,   QJsonValue::String, true },
-        { QGCMapPolygon::jsonPolygonKey,                QJsonValue::Array,  true },
+        { beeCopterMapPolygon::jsonPolygonKey,                QJsonValue::Array,  true },
         { _jsonV3GridObjectKey,                         QJsonValue::Object, true },
         { _jsonV3CameraObjectKey,                       QJsonValue::Object, false },
         { _jsonV3CameraTriggerDistanceKey,              QJsonValue::Double, true },
@@ -226,7 +226,7 @@ bool SurveyComplexItem::_loadV3(const QJsonObject& complexObject, int sequenceNu
     QString itemType = complexObject[VisualMissionItem::jsonTypeKey].toString();
     QString complexType = complexObject[ComplexMissionItem::jsonComplexItemTypeKey].toString();
     if (itemType != VisualMissionItem::jsonTypeComplexItemValue || complexType != jsonV3ComplexItemTypeValue) {
-        errorString = tr("%1 does not support loading this complex mission item type: %2:%3").arg(qgcApp()->applicationName()).arg(itemType).arg(complexType);
+        errorString = tr("%1 does not support loading this complex mission item type: %2:%3").arg(beeCopterApp()->applicationName()).arg(itemType).arg(complexType);
         return false;
     }
 
@@ -239,7 +239,7 @@ bool SurveyComplexItem::_loadV3(const QJsonObject& complexObject, int sequenceNu
     _cameraTriggerInTurnAroundFact.setRawValue  (complexObject[_jsonV3CameraTriggerInTurnaroundKey].toBool(true));
 
     _cameraCalc.valueSetIsDistance()->setRawValue   (complexObject[_jsonV3FixedValueIsAltitudeKey].toBool(true));
-    _cameraCalc.setDistanceMode(complexObject[_jsonV3GridAltitudeRelativeKey].toBool(true) ? QGroundControlQmlGlobal::AltitudeModeRelative : QGroundControlQmlGlobal::AltitudeModeAbsolute);
+    _cameraCalc.setDistanceMode(complexObject[_jsonV3GridAltitudeRelativeKey].toBool(true) ? beeCopterQmlGlobal::AltitudeModeRelative : beeCopterQmlGlobal::AltitudeModeAbsolute);
 
     bool manualGrid = complexObject[_jsonV3ManualGridKey].toBool(true);
 
@@ -645,16 +645,16 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSinglePolygon(bool refly)
     // Convert polygon to NED
 
     QList<QPointF> polygonPoints;
-    QGeoCoordinate tangentOrigin = _surveyAreaPolygon.pathModel().value<QGCQGeoCoordinate*>(0)->coordinate();
+    QGeoCoordinate tangentOrigin = _surveyAreaPolygon.pathModel().value<beeCopterQGeoCoordinate*>(0)->coordinate();
     qCDebug(SurveyComplexItemLog) << "_rebuildTransectsPhase1 Convert polygon to NED - _surveyAreaPolygon.count():tangentOrigin" << _surveyAreaPolygon.count() << tangentOrigin;
     for (int i=0; i<_surveyAreaPolygon.count(); i++) {
         double y, x, down;
-        QGeoCoordinate vertex = _surveyAreaPolygon.pathModel().value<QGCQGeoCoordinate*>(i)->coordinate();
+        QGeoCoordinate vertex = _surveyAreaPolygon.pathModel().value<beeCopterQGeoCoordinate*>(i)->coordinate();
         if (i == 0) {
             // This avoids a nan calculation that comes out of convertGeoToNed
             x = y = 0;
         } else {
-            QGCGeo::convertGeoToNed(vertex, tangentOrigin, y, x, down);
+            beeCopterGeo::convertGeoToNed(vertex, tangentOrigin, y, x, down);
         }
         polygonPoints += QPointF(x, y);
         qCDebug(SurveyComplexItemLog) << "_rebuildTransectsPhase1 vertex:x:y" << vertex << polygonPoints.last().x() << polygonPoints.last().y();
@@ -745,9 +745,9 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSinglePolygon(bool refly)
         QGeoCoordinate          coord;
         QList<QGeoCoordinate>   transect;
 
-        QGCGeo::convertNedToGeo(line.p1().y(), line.p1().x(), 0, tangentOrigin, coord);
+        beeCopterGeo::convertNedToGeo(line.p1().y(), line.p1().x(), 0, tangentOrigin, coord);
         transect.append(coord);
-        QGCGeo::convertNedToGeo(line.p2().y(), line.p2().x(), 0, tangentOrigin, coord);
+        beeCopterGeo::convertNedToGeo(line.p2().y(), line.p2().x(), 0, tangentOrigin, coord);
         transect.append(coord);
 
         transects.append(transect);
@@ -864,11 +864,11 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSplitPolygons(bool refly)
     // Convert polygon to NED
 
     QList<QPointF> polygonPoints;
-    QGeoCoordinate tangentOrigin = _surveyAreaPolygon.pathModel().value<QGCQGeoCoordinate*>(0)->coordinate();
+    QGeoCoordinate tangentOrigin = _surveyAreaPolygon.pathModel().value<beeCopterQGeoCoordinate*>(0)->coordinate();
     qCDebug(SurveyComplexItemLog) << "_rebuildTransectsPhase1 Convert polygon to NED - _surveyAreaPolygon.count():tangentOrigin" << _surveyAreaPolygon.count() << tangentOrigin;
     for (int i=0; i<_surveyAreaPolygon.count(); i++) {
         double y, x, down;
-        QGeoCoordinate vertex = _surveyAreaPolygon.pathModel().value<QGCQGeoCoordinate*>(i)->coordinate();
+        QGeoCoordinate vertex = _surveyAreaPolygon.pathModel().value<beeCopterQGeoCoordinate*>(i)->coordinate();
         if (i == 0) {
             // This avoids a nan calculation that comes out of convertGeoToNed
             x = y = 0;
@@ -1142,7 +1142,7 @@ void SurveyComplexItem::_rebuildTransectsFromPolygon(bool refly, const QPolygonF
     if (transitionPoint != nullptr) {
         QList<QGeoCoordinate>   transect;
         QGeoCoordinate          coord;
-        QGCGeo::convertNedToGeo(transitionPoint->y(), transitionPoint->x(), 0, tangentOrigin, coord);
+        beeCopterGeo::convertNedToGeo(transitionPoint->y(), transitionPoint->x(), 0, tangentOrigin, coord);
         transect.append(coord);
         transect.append(coord); //TODO
         transects.append(transect);
@@ -1152,9 +1152,9 @@ void SurveyComplexItem::_rebuildTransectsFromPolygon(bool refly, const QPolygonF
         QList<QGeoCoordinate>   transect;
         QGeoCoordinate          coord;
 
-        QGCGeo::convertNedToGeo(line.p1().y(), line.p1().x(), 0, tangentOrigin, coord);
+        beeCopterGeo::convertNedToGeo(line.p1().y(), line.p1().x(), 0, tangentOrigin, coord);
         transect.append(coord);
-        QGCGeo::convertNedToGeo(line.p2().y(), line.p2().x(), 0, tangentOrigin, coord);
+        beeCopterGeo::convertNedToGeo(line.p2().y(), line.p2().x(), 0, tangentOrigin, coord);
         transect.append(coord);
 
         transects.append(transect);

@@ -1,8 +1,8 @@
 #include "Viewer3DTileQuery.h"
 
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "MapProvider.h"
-#include "QGCMapUrlEngine.h"
+#include "beeCopterMapUrlEngine.h"
 
 #include <QtGui/QPainter>
 #include <QtGui/QPixmap>
@@ -10,7 +10,7 @@
 
 #include <cmath>
 
-QGC_LOGGING_CATEGORY(Viewer3DTileQueryLog, "Viewer3d.Viewer3DTileQuery")
+beeCopter_LOGGING_CATEGORY(Viewer3DTileQueryLog, "Viewer3d.Viewer3DTileQuery")
 
 static constexpr int kMaxTileCounts = 200;
 static constexpr int kMaxZoomLevel  = 23;

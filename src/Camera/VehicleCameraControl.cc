@@ -1,18 +1,18 @@
 #include "VehicleCameraControl.h"
-#include "QGCCameraIO.h"
-#include "QGCApplication.h"
+#include "beeCopterCameraIO.h"
+#include "beeCopterApplication.h"
 #include "SettingsManager.h"
 #include "AppSettings.h"
 #include "VideoManager.h"
-#include "QGCCameraManager.h"
+#include "beeCopterCameraManager.h"
 #include "FTPManager.h"
-#include "QGCCompression.h"
-#include "QGCCorePlugin.h"
-#include "QGCFileHelper.h"
+#include "beeCopterCompression.h"
+#include "beeCopterCorePlugin.h"
+#include "beeCopterFileHelper.h"
 #include "Vehicle.h"
 #include "LinkInterface.h"
 #include "MAVLinkProtocol.h"
-#include "QGCVideoStreamInfo.h"
+#include "beeCopterVideoStreamInfo.h"
 #include "MissionCommandTree.h"
 
 #include <QtNetwork/QNetworkAccessManager>
@@ -23,10 +23,10 @@
 #include <QtQml/QQmlEngine>
 #include <QtNetwork/QNetworkReply>
 
-#include "QGCNetworkHelper.h"
+#include "beeCopterNetworkHelper.h"
 
 //-----------------------------------------------------------------------------
-QGCCameraOptionExclusion::QGCCameraOptionExclusion(QObject* parent, QString param_, QString value_, QStringList exclusions_)
+beeCopterCameraOptionExclusion::beeCopterCameraOptionExclusion(QObject* parent, QString param_, QString value_, QStringList exclusions_)
     : QObject(parent)
     , param(param_)
     , value(value_)
@@ -35,7 +35,7 @@ QGCCameraOptionExclusion::QGCCameraOptionExclusion(QObject* parent, QString para
 }
 
 //-----------------------------------------------------------------------------
-QGCCameraOptionRange::QGCCameraOptionRange(QObject* parent, QString param_, QString value_, QString targetParam_, QString condition_, QStringList optNames_, QStringList optValues_)
+beeCopterCameraOptionRange::beeCopterCameraOptionRange(QObject* parent, QString param_, QString value_, QString targetParam_, QString condition_, QStringList optNames_, QStringList optValues_)
     : QObject(parent)
     , param(param_)
     , value(value_)
@@ -218,7 +218,7 @@ VehicleCameraControl::recordTimeStr() const
 QString
 VehicleCameraControl::storageFreeStr() const
 {
-    return qgcApp()->bigSizeMBToString(static_cast<quint64>(_storageFree));
+    return beeCopterApp()->bigSizeMBToString(static_cast<quint64>(_storageFree));
 }
 
 //-----------------------------------------------------------------------------
@@ -226,7 +226,7 @@ QString
 VehicleCameraControl::batteryRemainingStr() const
 {
     if(_batteryRemaining >= 0) {
-        return qgcApp()->numberToString(static_cast<quint64>(_batteryRemaining)) + " %";
+        return beeCopterApp()->numberToString(static_cast<quint64>(_batteryRemaining)) + " %";
     }
     return "";
 }
@@ -727,7 +727,7 @@ VehicleCameraControl::_mavCommandResult(int vehicleId, int component, int comman
                     break;
             }
         } else {
-            qCDebug(CameraControlLog) << "Bad response for" << commandStr << QGCMAVLink::mavResultToString(result);
+            qCDebug(CameraControlLog) << "Bad response for" << commandStr << beeCopterMAVLink::mavResultToString(result);
         }
     }
 }
@@ -933,7 +933,7 @@ VehicleCameraControl::_loadSettings(const QDomNodeList nodeList)
                 QStringList exclusions = _loadExclusions(option);
                 if(exclusions.size()) {
                     qCDebug(CameraControlVerboseLog) << "New exclusions:" << factName << optValue << exclusions;
-                    QGCCameraOptionExclusion* pExc = new QGCCameraOptionExclusion(this, factName, optValue, exclusions);
+                    beeCopterCameraOptionExclusion* pExc = new beeCopterCameraOptionExclusion(this, factName, optValue, exclusions);
                     QQmlEngine::setObjectOwnership(pExc, QQmlEngine::CppOwnership);
                     _valueExclusions.append(pExc);
                 }
@@ -1039,7 +1039,7 @@ VehicleCameraControl::_loadSettings(const QDomNodeList nodeList)
             QQmlEngine::setObjectOwnership(pFact, QQmlEngine::CppOwnership);
             pFact->setMetaData(metaData);
             pFact->containerSetRawValue(metaData->rawDefaultValue());
-            QGCCameraParamIO* pIO = new QGCCameraParamIO(this, pFact, _vehicle);
+            beeCopterCameraParamIO* pIO = new beeCopterCameraParamIO(this, pFact, _vehicle);
             QQmlEngine::setObjectOwnership(pIO, QQmlEngine::CppOwnership);
             _paramIO[factName] = pIO;
             _addFact(pFact, factName);
@@ -1147,7 +1147,7 @@ VehicleCameraControl::_requestAllParameters()
         if(_paramIO[paramName]) {
             _paramIO[paramName]->setParamRequest();
         } else {
-            qCritical() << "QGCParamIO is NULL" << paramName;
+            qCritical() << "beeCopterParamIO is NULL" << paramName;
         }
     }
     SharedLinkInterfacePtr sharedLink = _vehicle->vehicleLinkManager()->primaryLink().lock();
@@ -1188,7 +1188,7 @@ VehicleCameraControl::handleParamAck(const mavlink_param_ext_ack_t& ack)
     if(_paramIO[paramName]) {
         _paramIO[paramName]->handleParamAck(ack);
     } else {
-        qCritical() << "QGCParamIO is NULL" << paramName;
+        qCritical() << "beeCopterParamIO is NULL" << paramName;
     }
 }
 
@@ -1204,7 +1204,7 @@ VehicleCameraControl::handleParamValue(const mavlink_param_ext_value_t& value)
     if(_paramIO[paramName]) {
         _paramIO[paramName]->handleParamValue(value);
     } else {
-        qCritical() << "QGCParamIO is NULL" << paramName;
+        qCritical() << "beeCopterParamIO is NULL" << paramName;
     }
 }
 
@@ -1214,7 +1214,7 @@ VehicleCameraControl::_updateActiveList()
 {
     //-- Clear out excluded parameters based on exclusion rules
     QStringList exclusionList;
-    for(QGCCameraOptionExclusion* param: _valueExclusions) {
+    for(beeCopterCameraOptionExclusion* param: _valueExclusions) {
         Fact* pFact = getFact(param->param);
         if(pFact) {
             QString option = pFact->rawValueString();
@@ -1327,13 +1327,13 @@ VehicleCameraControl::_processCondition(const QString condition)
 void
 VehicleCameraControl::_updateRanges(Fact* pFact)
 {
-    QMap<Fact*, QGCCameraOptionRange*> rangesSet;
+    QMap<Fact*, beeCopterCameraOptionRange*> rangesSet;
     QMap<Fact*, QString> rangesReset;
     QStringList changedList;
     QStringList resetList;
     QStringList updates;
     //-- Iterate range sets looking for limited ranges
-    for(QGCCameraOptionRange* pRange: _optionRanges) {
+    for(beeCopterCameraOptionRange* pRange: _optionRanges) {
         //-- If this fact or one of its conditions is part of this range set
         if(!changedList.contains(pRange->targetParam) && (pRange->param == pFact->name() || pRange->condition.contains(pFact->name()))) {
             Fact* pRFact = getFact(pRange->param);          //-- This parameter
@@ -1354,7 +1354,7 @@ VehicleCameraControl::_updateRanges(Fact* pFact)
         }
     }
     //-- Iterate range sets again looking for resets
-    for(QGCCameraOptionRange* pRange: _optionRanges) {
+    for(beeCopterCameraOptionRange* pRange: _optionRanges) {
         if(!changedList.contains(pRange->targetParam) && (pRange->param == pFact->name() || pRange->condition.contains(pFact->name()))) {
             Fact* pTFact = getFact(pRange->targetParam);    //-- The target parameter (the one its range is to change)
             if(!resetList.contains(pRange->targetParam)) {
@@ -1578,7 +1578,7 @@ VehicleCameraControl::handleCaptureStatus(const mavlink_camera_capture_status_t&
     if(photoCaptureStatus() == PHOTO_CAPTURE_INTERVAL_IDLE || photoCaptureStatus() == PHOTO_CAPTURE_INTERVAL_IN_PROGRESS) {
         //-- Capture local image as well
         const QString photoDir = SettingsManager::instance()->appSettings()->savePath()->rawValue().toString() + QStringLiteral("/Photo");
-        QGCFileHelper::ensureDirectoryExists(photoDir);
+        beeCopterFileHelper::ensureDirectoryExists(photoDir);
         const QString photoPath = photoDir + "/" + QDateTime::currentDateTime().toString("yyyy-MM-dd_hh.mm.ss.zzz") + ".jpg";
         VideoManager::instance()->grabImage(photoPath);
     }
@@ -1592,7 +1592,7 @@ VehicleCameraControl::handleVideoInfo(const mavlink_video_stream_information_t* 
     _expectedCount = vi->count;
     if(!_findStream(vi->stream_id, false)) {
         qCDebug(CameraControlLog) << "Create stream handler for stream ID:" << vi->stream_id;
-        QGCVideoStreamInfo* pStream = new QGCVideoStreamInfo(*vi, this);
+        beeCopterVideoStreamInfo* pStream = new beeCopterVideoStreamInfo(*vi, this);
         QQmlEngine::setObjectOwnership(pStream, QQmlEngine::CppOwnership);
         _streams.append(pStream);
         //-- Thermal is handled separately and not listed
@@ -1625,7 +1625,7 @@ VehicleCameraControl::handleVideoStatus(const mavlink_video_stream_status_t* vs)
     _streamStatusTimer.stop();
     _videoStreamStatusRetries = 0;
     qCDebug(CameraControlLog) << "handleVideoStatus:" << vs->stream_id;
-    QGCVideoStreamInfo* pInfo = _findStream(vs->stream_id);
+    beeCopterVideoStreamInfo* pInfo = _findStream(vs->stream_id);
     if(pInfo) {
         pInfo->update(*vs);
     }
@@ -1675,7 +1675,7 @@ void
 VehicleCameraControl::setCurrentStream(int stream)
 {
     if (stream != _currentStream && stream >= 0 && stream < _streamLabels.count()) {
-        QGCVideoStreamInfo* pInfo = currentStreamInstance();
+        beeCopterVideoStreamInfo* pInfo = currentStreamInstance();
         if(pInfo) {
             qCDebug(CameraControlLog) << "Stopping stream:" << pInfo->uri();
             //-- Stop current stream
@@ -1707,7 +1707,7 @@ VehicleCameraControl::setCurrentStream(int stream)
 void
 VehicleCameraControl::stopStream()
 {
-    QGCVideoStreamInfo* pInfo = currentStreamInstance();
+    beeCopterVideoStreamInfo* pInfo = currentStreamInstance();
     if(pInfo) {
         //-- Stop current stream
         _vehicle->sendMavCommand(
@@ -1722,7 +1722,7 @@ VehicleCameraControl::stopStream()
 void
 VehicleCameraControl::resumeStream()
 {
-    QGCVideoStreamInfo* pInfo = currentStreamInstance();
+    beeCopterVideoStreamInfo* pInfo = currentStreamInstance();
     if(pInfo) {
         //-- Start new stream
         _vehicle->sendMavCommand(
@@ -1744,24 +1744,24 @@ VehicleCameraControl::autoStream() const
 }
 
 //-----------------------------------------------------------------------------
-QGCVideoStreamInfo*
+beeCopterVideoStreamInfo*
 VehicleCameraControl::currentStreamInstance()
 {
     if(_currentStream < _streamLabels.count() && _streamLabels.count()) {
-        QGCVideoStreamInfo* pStream = _findStream(_streamLabels[_currentStream]);
+        beeCopterVideoStreamInfo* pStream = _findStream(_streamLabels[_currentStream]);
         return pStream;
     }
     return nullptr;
 }
 
 //-----------------------------------------------------------------------------
-QGCVideoStreamInfo*
+beeCopterVideoStreamInfo*
 VehicleCameraControl::thermalStreamInstance()
 {
     //-- For now, it will return the first thermal listed (if any)
     for(int i = 0; i < _streams.count(); i++) {
         if(_streams[i]) {
-            QGCVideoStreamInfo* pStream = qobject_cast<QGCVideoStreamInfo*>(_streams[i]);
+            beeCopterVideoStreamInfo* pStream = qobject_cast<beeCopterVideoStreamInfo*>(_streams[i]);
             if(pStream) {
                 if(pStream->isThermal()) {
                     return pStream;
@@ -1825,18 +1825,18 @@ VehicleCameraControl::_requestStreamStatus(uint8_t streamID)
 }
 
 //-----------------------------------------------------------------------------
-QGCVideoStreamInfo*
+beeCopterVideoStreamInfo*
 VehicleCameraControl::_findStream(uint8_t id, bool report)
 {
     for(int i = 0; i < _streams.count(); i++) {
         if(_streams[i]) {
-            QGCVideoStreamInfo* pStream = qobject_cast<QGCVideoStreamInfo*>(_streams[i]);
+            beeCopterVideoStreamInfo* pStream = qobject_cast<beeCopterVideoStreamInfo*>(_streams[i]);
             if(pStream) {
                 if(pStream->streamID() == id) {
                     return pStream;
                 }
             } else {
-                qCritical() << "Null QGCVideoStreamInfo instance";
+                qCritical() << "Null beeCopterVideoStreamInfo instance";
             }
         }
     }
@@ -1847,12 +1847,12 @@ VehicleCameraControl::_findStream(uint8_t id, bool report)
 }
 
 //-----------------------------------------------------------------------------
-QGCVideoStreamInfo*
+beeCopterVideoStreamInfo*
 VehicleCameraControl::_findStream(const QString name)
 {
     for(int i = 0; i < _streams.count(); i++) {
         if(_streams[i]) {
-            QGCVideoStreamInfo* pStream = qobject_cast<QGCVideoStreamInfo*>(_streams[i]);
+            beeCopterVideoStreamInfo* pStream = qobject_cast<beeCopterVideoStreamInfo*>(_streams[i]);
             if(pStream) {
                 if(pStream->name() == name) {
                     return pStream;
@@ -1898,7 +1898,7 @@ VehicleCameraControl::_streamStatusTimeout()
         _streamStatusTimer.stop();
         return;
     }
-    QGCVideoStreamInfo* pStream = currentStreamInstance();
+    beeCopterVideoStreamInfo* pStream = currentStreamInstance();
     if(pStream) {
         _requestStreamStatus(static_cast<uint8_t>(pStream->streamID()));
     }
@@ -2019,7 +2019,7 @@ VehicleCameraControl::_loadRanges(QDomNode option, const QString factName, QStri
                 optValues << optValue;
             }
             if(optNames.size()) {
-                QGCCameraOptionRange* pRange = new QGCCameraOptionRange(this, factName, paramValue, param, condition, optNames, optValues);
+                beeCopterCameraOptionRange* pRange = new beeCopterCameraOptionRange(this, factName, paramValue, param, condition, optNames, optValues);
                 _optionRanges.append(pRange);
                 qCDebug(CameraControlVerboseLog) << "New range limit:" << factName << paramValue << param << condition << optNames << optValues;
             }
@@ -2033,7 +2033,7 @@ void
 VehicleCameraControl::_processRanges()
 {
     //-- After all parameter are loaded, process parameter ranges
-    for(QGCCameraOptionRange* pRange: _optionRanges) {
+    for(beeCopterCameraOptionRange* pRange: _optionRanges) {
         Fact* pRFact = getFact(pRange->targetParam);
         if(pRFact) {
             for(int i = 0; i < pRange->optNames.size(); i++) {
@@ -2132,7 +2132,7 @@ VehicleCameraControl::_httpRequest(const QString &url)
     if(!_netManager) {
         _netManager = new QNetworkAccessManager(this);
     }
-    QGCNetworkHelper::configureProxy(_netManager);
+    beeCopterNetworkHelper::configureProxy(_netManager);
     QNetworkRequest request(QUrl::fromUserInput(url));
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
     QSslConfiguration conf = request.sslConfiguration();
@@ -2173,7 +2173,7 @@ void VehicleCameraControl::_ftpDownloadComplete(const QString& fileName, const Q
 
     disconnect(_vehicle->ftpManager(), &FTPManager::downloadComplete, this, &VehicleCameraControl::_ftpDownloadComplete);
 
-    QString outputFileName = QGCCompression::decompressIfNeeded(fileName);
+    QString outputFileName = beeCopterCompression::decompressIfNeeded(fileName);
     if (outputFileName.isEmpty()) {
         qCWarning(CameraControlLog) << "Inflate of compressed xml failed" << fileName;
     }
@@ -2204,7 +2204,7 @@ VehicleCameraControl::_dataReady(QByteArray data)
     } else {
         qCDebug(CameraControlLog) << "No camera definition received, trying to search on our own...";
         QFile definitionFile;
-        if(QGCCorePlugin::instance()->getOfflineCameraDefinitionFile(_modelName, definitionFile)) {
+        if(beeCopterCorePlugin::instance()->getOfflineCameraDefinitionFile(_modelName, definitionFile)) {
             qCDebug(CameraControlLog) << "Found offline definition file for: " << _modelName << ", loading: " << definitionFile.fileName();
             if (definitionFile.open(QIODevice::ReadOnly)) {
                 QByteArray newData = definitionFile.readAll();

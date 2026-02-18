@@ -2,13 +2,13 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SettingsPage {
-    property var    _settingsManager:            QGroundControl.settingsManager
-    property var    _videoManager:              QGroundControl.videoManager
+    property var    _settingsManager:            beeCopter.settingsManager
+    property var    _videoManager:              beeCopter.videoManager
     property var    _videoSettings:             _settingsManager.videoSettings
     property string _videoSource:               _videoSettings.videoSource.rawValue
     property bool   _isGST:                     _videoManager.gstreamerEnabled

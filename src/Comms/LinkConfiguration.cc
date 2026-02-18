@@ -1,19 +1,19 @@
 #include "LinkConfiguration.h"
-#include "QGCLoggingCategory.h"
-#ifndef QGC_NO_SERIAL_LINK
+#include "beeCopterLoggingCategory.h"
+#ifndef beeCopter_NO_SERIAL_LINK
 #include "SerialLink.h"
 #endif
 #include "UDPLink.h"
 #include "TCPLink.h"
 #include "LogReplayLink.h"
-#ifdef QGC_ENABLE_BLUETOOTH
+#ifdef beeCopter_ENABLE_BLUETOOTH
 #include "BluetoothLink.h"
 #endif
 #ifdef QT_DEBUG
 #include "MockLink.h"
 #endif
 
-QGC_LOGGING_CATEGORY(LinkConfigurationLog, "Comms.LinkConfiguration")
+beeCopter_LOGGING_CATEGORY(LinkConfigurationLog, "Comms.LinkConfiguration")
 
 LinkConfiguration::LinkConfiguration(const QString &name, QObject *parent)
     : QObject(parent)
@@ -56,7 +56,7 @@ LinkConfiguration *LinkConfiguration::createSettings(int type, const QString &na
     LinkConfiguration *config = nullptr;
 
     switch (static_cast<LinkType>(type)) {
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     case TypeSerial:
         config = new SerialConfiguration(name);
         break;
@@ -67,7 +67,7 @@ LinkConfiguration *LinkConfiguration::createSettings(int type, const QString &na
     case TypeTcp:
         config = new TCPConfiguration(name);
         break;
-#ifdef QGC_ENABLE_BLUETOOTH
+#ifdef beeCopter_ENABLE_BLUETOOTH
     case TypeBluetooth:
         config = new BluetoothConfiguration(name);
         break;
@@ -93,7 +93,7 @@ LinkConfiguration *LinkConfiguration::duplicateSettings(const LinkConfiguration 
     LinkConfiguration *dupe = nullptr;
 
     switch(source->type()) {
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     case TypeSerial:
         dupe = new SerialConfiguration(qobject_cast<const SerialConfiguration*>(source));
         break;
@@ -104,7 +104,7 @@ LinkConfiguration *LinkConfiguration::duplicateSettings(const LinkConfiguration 
     case TypeTcp:
         dupe = new TCPConfiguration(qobject_cast<const TCPConfiguration*>(source));
         break;
-#ifdef QGC_ENABLE_BLUETOOTH
+#ifdef beeCopter_ENABLE_BLUETOOTH
     case TypeBluetooth:
         dupe = new BluetoothConfiguration(qobject_cast<const BluetoothConfiguration*>(source));
         break;

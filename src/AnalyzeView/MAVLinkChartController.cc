@@ -1,15 +1,15 @@
 #include "MAVLinkChartController.h"
 #include "MAVLinkInspectorController.h"
 #include "MAVLinkMessageField.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCharts/QAbstractSeries>
 #include <QtCore/QTimer>
 
 Q_DECLARE_METATYPE(QAbstractSeries*)
 
-QGC_LOGGING_CATEGORY(MAVLinkChartControllerLog, "AnalyzeView.MAVLinkChartController")
+beeCopter_LOGGING_CATEGORY(MAVLinkChartControllerLog, "AnalyzeView.MAVLinkChartController")
 
 MAVLinkChartController::MAVLinkChartController(QObject *parent)
     : QObject(parent)
@@ -79,7 +79,7 @@ void MAVLinkChartController::updateXRange()
         return;
     }
 
-    const qint64 bootTime = static_cast<qint64>(qgcApp()->msecsSinceBoot());
+    const qint64 bootTime = static_cast<qint64>(beeCopterApp()->msecsSinceBoot());
     _rangeXMax = QDateTime::fromMSecsSinceEpoch(bootTime);
     emit rangeXMaxChanged();
 
@@ -97,7 +97,7 @@ void MAVLinkChartController::updateYRange()
     qreal vmax = std::numeric_limits<qreal>::min();
     for (const QVariant &field : _chartFields) {
         QObject *const object = qvariant_cast<QObject*>(field);
-        QGCMAVLinkMessageField *const pField = qobject_cast<QGCMAVLinkMessageField*>(object);
+        beeCopterMAVLinkMessageField *const pField = qobject_cast<beeCopterMAVLinkMessageField*>(object);
         if (pField) {
             if (vmax < pField->rangeMax()) {
                 vmax = pField->rangeMax();
@@ -126,14 +126,14 @@ void MAVLinkChartController::_refreshSeries()
 
     for (QVariant &field : _chartFields) {
         QObject *const object = qvariant_cast<QObject*>(field);
-        QGCMAVLinkMessageField *const pField = qobject_cast<QGCMAVLinkMessageField*>(object);
+        beeCopterMAVLinkMessageField *const pField = qobject_cast<beeCopterMAVLinkMessageField*>(object);
         if(pField) {
             pField->updateSeries();
         }
     }
 }
 
-void MAVLinkChartController::addSeries(QGCMAVLinkMessageField *field, QAbstractSeries *series)
+void MAVLinkChartController::addSeries(beeCopterMAVLinkMessageField *field, QAbstractSeries *series)
 {
     if (!field || !series) {
         return;
@@ -153,7 +153,7 @@ void MAVLinkChartController::addSeries(QGCMAVLinkMessageField *field, QAbstractS
     _updateSeriesTimer->start(kUpdateFrequency);
 }
 
-void MAVLinkChartController::delSeries(QGCMAVLinkMessageField *field)
+void MAVLinkChartController::delSeries(beeCopterMAVLinkMessageField *field)
 {
     if (!field) {
         return;

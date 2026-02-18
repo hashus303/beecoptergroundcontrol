@@ -2,10 +2,10 @@
 #include "ParameterManager.h"
 #include "MultiVehicleManager.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "Fact.h"
 
-QGC_LOGGING_CATEGORY(RCToParamDialogControllerLog, "QMLControls.RCToParamDialogController")
+beeCopter_LOGGING_CATEGORY(RCToParamDialogControllerLog, "QMLControls.RCToParamDialogController")
 
 QMap<QString, FactMetaData*> RCToParamDialogController::_metaDataMap;
 

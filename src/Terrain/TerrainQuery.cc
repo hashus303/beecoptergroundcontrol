@@ -1,12 +1,12 @@
 #include "TerrainQuery.h"
 #include "TerrainQueryInterface.h"
 #include "TerrainTileManager.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QTimer>
 
-QGC_LOGGING_CATEGORY(TerrainQueryLog, "Terrain.TerrainQuery")
-QGC_LOGGING_CATEGORY(TerrainQueryVerboseLog, "Terrain.TerrainQuery:verbose")
+beeCopter_LOGGING_CATEGORY(TerrainQueryLog, "Terrain.TerrainQuery")
+beeCopter_LOGGING_CATEGORY(TerrainQueryVerboseLog, "Terrain.TerrainQuery:verbose")
 
 Q_GLOBAL_STATIC(TerrainAtCoordinateBatchManager, _terrainAtCoordinateBatchManager)
 

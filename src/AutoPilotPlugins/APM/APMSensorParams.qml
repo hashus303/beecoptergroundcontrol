@@ -1,6 +1,6 @@
 import QtQuick
 
-import QGroundControl
+import beeCopter
 
 /// This is used to handle the various differences between firmware versions and missing parameters in each in a standard way.
 Item {

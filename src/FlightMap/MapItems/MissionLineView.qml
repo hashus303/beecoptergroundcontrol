@@ -2,7 +2,7 @@ import QtQuick
 import QtLocation
 import QtPositioning
 
-import QGroundControl
+import beeCopter
 
 /// The MissionLineView control is used to add lines between mission items
 MapItemView {
@@ -12,8 +12,8 @@ MapItemView {
         // Note: Special visuals for ROI are hacked out for now since they are not working correctly
         line.color: _terrainCollision ?
                         "red" :
-                        (false/*showSpecialVisual*/ ? "green" : QGroundControl.globalPalette.mapMissionTrajectory)
-        z:          QGroundControl.zOrderWaypointLines
+                        (false/*showSpecialVisual*/ ? "green" : beeCopter.globalPalette.mapMissionTrajectory)
+        z:          beeCopter.zOrderWaypointLines
         path:       _calcMissionLinePath()
 
         property bool _terrainCollision:    object && object.terrainCollision

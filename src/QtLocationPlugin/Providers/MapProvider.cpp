@@ -105,11 +105,11 @@ double MapProvider::tileY2lat(int y, int z) const
     return qRadiansToDegrees(std::atan(std::sinh(n)));
 }
 
-QGCTileSet MapProvider::getTileCount(int zoom, double topleftLon,
+beeCopterTileSet MapProvider::getTileCount(int zoom, double topleftLon,
                                      double topleftLat, double bottomRightLon,
                                      double bottomRightLat) const
 {
-    QGCTileSet set;
+    beeCopterTileSet set;
     set.tileX0 = long2tileX(topleftLon, zoom);
     set.tileY0 = lat2tileY(topleftLat, zoom);
     set.tileX1 = long2tileX(bottomRightLon, zoom);

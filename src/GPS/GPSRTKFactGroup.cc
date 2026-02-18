@@ -1,7 +1,7 @@
 #include "GPSRTKFactGroup.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(GPSRTKFactGroupLog, "GPS.GPSRTKFactGroup")
+beeCopter_LOGGING_CATEGORY(GPSRTKFactGroupLog, "GPS.GPSRTKFactGroup")
 
 GPSRTKFactGroup::GPSRTKFactGroup(QObject *parent)
     : FactGroup(1000, QStringLiteral(":/json/Vehicle/GPSRTKFact.json"), parent)

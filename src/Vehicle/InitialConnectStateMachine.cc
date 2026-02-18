@@ -1,7 +1,7 @@
 #include "InitialConnectStateMachine.h"
 #include "Vehicle.h"
-#include "QGCCorePlugin.h"
-#include "QGCOptions.h"
+#include "beeCopterCorePlugin.h"
+#include "beeCopterOptions.h"
 #include "FirmwarePlugin.h"
 #include "ParameterManager.h"
 #include "ComponentInformationManager.h"
@@ -9,9 +9,9 @@
 #include "StandardModes.h"
 #include "GeoFenceManager.h"
 #include "RallyPointManager.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(InitialConnectStateMachineLog, "Vehicle.InitialConnectStateMachine")
+beeCopter_LOGGING_CATEGORY(InitialConnectStateMachineLog, "Vehicle.InitialConnectStateMachine")
 
 InitialConnectStateMachine::InitialConnectStateMachine(Vehicle *vehicle, QObject *parent)
     : StateMachine(parent)
@@ -140,7 +140,7 @@ void InitialConnectStateMachine::_autopilotVersionRequestMessageHandler(void* re
             nullStr[8] = 0;
             vehicle->_gitHash = nullStr;
         }
-        if (QGCCorePlugin::instance()->options()->checkFirmwareVersion() && !vehicle->_checkLatestStableFWDone) {
+        if (beeCopterCorePlugin::instance()->options()->checkFirmwareVersion() && !vehicle->_checkLatestStableFWDone) {
             vehicle->_checkLatestStableFWDone = true;
             vehicle->_firmwarePlugin->checkIfIsLatestStable(vehicle);
         }

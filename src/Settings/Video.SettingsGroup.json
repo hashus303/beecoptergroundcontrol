@@ -1,7 +1,7 @@
 {
     "version":      1,
     "fileType":  "FactMetaData",
-    "QGC.MetaData.Facts":
+    "beeCopter.MetaData.Facts":
 [
 {
     "name":             "videoSource",
@@ -91,7 +91,7 @@
 {
     "name":             "enableStorageLimit",
     "shortDesc": "Enable/Disable Limits on Storage Usage",
-    "longDesc":  "When enabled, old video files will be auto-deleted when the total size of QGC-recorded video exceeds the maximum video storage usage.",
+    "longDesc":  "When enabled, old video files will be auto-deleted when the total size of beeCopter-recorded video exceeds the maximum video storage usage.",
     "type":             "bool",
     "default":     false,
     "mobileDefault":   true
@@ -134,7 +134,7 @@
     "enumStrings":      "Default,Force software decoder,Force hardware decoder,Force NVIDIA decoder,Force VA-API decoder,Force DirectX3D 11 decoder,Force VideoToolbox decoder,Force Intel decoder,Force Vulkan decoder",
     "enumValues":       "0,1,8,2,3,4,5,6,7",
     "default":           0,
-    "qgcRebootRequired": true
+    "beeCopterRebootRequired": true
 }
 ]
 }

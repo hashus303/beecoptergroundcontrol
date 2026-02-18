@@ -1,13 +1,13 @@
 #include "APMParameterMetaData.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QRegularExpressionMatch>
 #include <QtCore/QStack>
 
-QGC_LOGGING_CATEGORY(APMParameterMetaDataLog, "FirmwarePlugin.APMParameterMetaData")
-QGC_LOGGING_CATEGORY(APMParameterMetaDataVerboseLog, "FirmwarePlugin.APMParameterMetaData:verbose")
+beeCopter_LOGGING_CATEGORY(APMParameterMetaDataLog, "FirmwarePlugin.APMParameterMetaData")
+beeCopter_LOGGING_CATEGORY(APMParameterMetaDataVerboseLog, "FirmwarePlugin.APMParameterMetaData:verbose")
 
 APMParameterMetaData::APMParameterMetaData(QObject *parent)
     : QObject(parent)

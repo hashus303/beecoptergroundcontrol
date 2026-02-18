@@ -1,6 +1,6 @@
 #include "PX4AutoPilotPlugin.h"
 #include "PX4AirframeLoader.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "FlightModesComponent.h"
 #include "PX4RadioComponent.h"
 #include "PX4TuningComponent.h"
@@ -136,7 +136,7 @@ void PX4AutoPilotPlugin::parametersReadyPreChecks(void)
     QString hitlParam("SYS_HITL");
     if (_vehicle->parameterManager()->parameterExists(ParameterManager::defaultComponentId, hitlParam) &&
             _vehicle->parameterManager()->getParameter(ParameterManager::defaultComponentId, hitlParam)->rawValue().toBool()) {
-        qgcApp()->showAppMessage(tr("Warning: Hardware In The Loop (HITL) simulation is enabled for this vehicle."));
+        beeCopterApp()->showAppMessage(tr("Warning: Hardware In The Loop (HITL) simulation is enabled for this vehicle."));
     }
 }
 

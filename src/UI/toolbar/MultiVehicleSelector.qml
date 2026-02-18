@@ -2,21 +2,21 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 RowLayout {
     id:         control
     spacing:    0
 
     property bool   showIndicator:        _multipleVehicles
-    property var    _activeVehicle:       QGroundControl.multiVehicleManager.activeVehicle
-    property bool   _multipleVehicles:    QGroundControl.multiVehicleManager.vehicles.count > 1
+    property var    _activeVehicle:       beeCopter.multiVehicleManager.activeVehicle
+    property bool   _multipleVehicles:    beeCopter.multiVehicleManager.vehicles.count > 1
     property var    _vehicleModel:        [ ]
 
     Connections {
-        target:         QGroundControl.multiVehicleManager.vehicles
+        target:         beeCopter.multiVehicleManager.vehicles
         function onCountChanged(count) { _updateVehicleModel() }
     }
 
@@ -26,16 +26,16 @@ RowLayout {
     RowLayout {
         Layout.fillWidth: true
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             width:      ScreenTools.defaultFontPixelWidth * 4
             height:     ScreenTools.defaultFontPixelHeight * 1.33
             fillMode:   Image.PreserveAspectFit
             mipmap:     true
-            color:      qgcPal.text
+            color:      beeCopterPal.text
             source:     "/InstrumentValueIcons/airplane.svg"
         }
 
-        QGCLabel {
+        beeCopterLabel {
             text:               _activeVehicle ? qsTr("Vehicle") + " " + _activeVehicle.id : qsTr("N/A")
             font.pointSize:     ScreenTools.mediumFontPointSize
             Layout.alignment:   Qt.AlignCenter
@@ -60,14 +60,14 @@ RowLayout {
                     Repeater {
                         model: _vehicleModel
 
-                        QGCButton {
+                        beeCopterButton {
                             text:               modelData
                             Layout.fillWidth:   true
 
                             onClicked: {
                                 var vehicleId = modelData.split(" ")[1]
-                                var vehicle = QGroundControl.multiVehicleManager.getVehicleById(vehicleId)
-                                QGroundControl.multiVehicleManager.activeVehicle = vehicle
+                                var vehicle = beeCopter.multiVehicleManager.getVehicleById(vehicleId)
+                                beeCopter.multiVehicleManager.activeVehicle = vehicle
                                 mainWindow.closeIndicatorDrawer()
                             }
                         }
@@ -85,7 +85,7 @@ RowLayout {
                         fact:               _enableMultiVehiclePanel
                         visible:            _enableMultiVehiclePanel.visible
 
-                        property Fact _enableMultiVehiclePanel: QGroundControl.settingsManager.appSettings.enableMultiVehiclePanel
+                        property Fact _enableMultiVehiclePanel: beeCopter.settingsManager.appSettings.enableMultiVehiclePanel
                     }
                 }
             }
@@ -95,8 +95,8 @@ RowLayout {
     function _updateVehicleModel() {
         var newModel = [ ]
         if (_multipleVehicles) {
-            for (var i = 0; i < QGroundControl.multiVehicleManager.vehicles.count; i++) {
-                var vehicle = QGroundControl.multiVehicleManager.vehicles.get(i)
+            for (var i = 0; i < beeCopter.multiVehicleManager.vehicles.count; i++) {
+                var vehicle = beeCopter.multiVehicleManager.vehicles.get(i)
                 newModel.push(qsTr("Vehicle") + " " + vehicle.id)
             }
         }

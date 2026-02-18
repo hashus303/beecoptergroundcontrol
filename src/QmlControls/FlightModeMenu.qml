@@ -1,15 +1,15 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 // Label control whichs pop up a flight mode change menu when clicked
-QGCLabel {
+beeCopterLabel {
     id:     _root
     text:   currentVehicle ? currentVehicle.flightMode : qsTr("N/A", "No data to display")
 
-    property var    currentVehicle:         QGroundControl.multiVehicleManager.activeVehicle
+    property var    currentVehicle:         beeCopter.multiVehicleManager.activeVehicle
     property real   mouseAreaLeftMargin:    0
 
     Menu {
@@ -47,7 +47,7 @@ QGCLabel {
     Component.onCompleted: _root.updateFlightModesMenu()
 
     Connections {
-        target:                 QGroundControl.multiVehicleManager
+        target:                 beeCopter.multiVehicleManager
         function onActiveVehicleChanged(activeVehicle) { _root.updateFlightModesMenu() }
     }
 

@@ -1,10 +1,10 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
-QGCComboBox {
+beeCopterComboBox {
     property Fact fact: Fact { }
     property bool indexModel: fact ? fact.enumValues.length === 0 : true // true: Fact values are indices, false: Fact values are FactMetadata.enumValues
 

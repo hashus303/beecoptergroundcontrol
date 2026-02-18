@@ -31,7 +31,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_
 qt_add_library(AutoPilotPluginsCommonModule STATIC)
 
 qt_add_qml_module(AutoPilotPluginsCommonModule
-    URI QGroundControl.AutoPilotPlugins.Common
+    URI beeCopter.AutoPilotPlugins.Common
     VERSION 1.0
     RESOURCE_PREFIX /qml
     QML_FILES

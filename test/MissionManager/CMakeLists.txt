@@ -18,8 +18,8 @@ target_sources(${CMAKE_PROJECT_NAME}
         MissionManagerTest.cc MissionManagerTest.h
         MissionSettingsTest.cc MissionSettingsTest.h
         PlanMasterControllerTest.cc PlanMasterControllerTest.h
-        QGCMapPolygonTest.cc QGCMapPolygonTest.h
-        QGCMapPolylineTest.cc QGCMapPolylineTest.h
+        beeCopterMapPolygonTest.cc beeCopterMapPolygonTest.h
+        beeCopterMapPolylineTest.cc beeCopterMapPolylineTest.h
         SectionTest.cc SectionTest.h
         SimpleMissionItemTest.cc SimpleMissionItemTest.h
         SpeedSectionTest.cc SpeedSectionTest.h
@@ -64,7 +64,7 @@ qt_add_resources(${CMAKE_PROJECT_NAME} "MissionManagerTest_res1"
 # qt_add_library(MissionManagerTestModule STATIC)
 #
 # qt_add_qml_module(MissionManagerTestModule
-#     URI QGroundControl.Test.MissionManager
+#     URI beeCopter.Test.MissionManager
 #     VERSION 1.0
 #     RESOURCE_PREFIX /unittest
 #     QML_FILES

@@ -2,14 +2,14 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.AppSettings
+import beeCopter
+import beeCopter.Controls
+import beeCopter.AppSettings
 
 Rectangle {
     id:     settingsView
-    color:  qgcPal.window
-    z:      QGroundControl.zOrderTopMost
+    color:  beeCopterPal.window
+    z:      beeCopter.zOrderTopMost
 
     readonly property real _defaultTextHeight:  ScreenTools.defaultFontPixelHeight
     readonly property real _defaultTextWidth:   ScreenTools.defaultFontPixelWidth
@@ -35,15 +35,15 @@ Rectangle {
         anchors.fill: parent
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     Component.onCompleted: {
         //-- Default Settings
         if (globals.commingFromRIDIndicator) {
-            rightPanel.source = "qrc:/qml/QGroundControl/AppSettings/RemoteIDSettings.qml"
+            rightPanel.source = "qrc:/qml/beeCopter/AppSettings/RemoteIDSettings.qml"
             globals.commingFromRIDIndicator = false
         } else {
-            rightPanel.source =  "qrc:/qml/QGroundControl/AppSettings/GeneralSettings.qml"
+            rightPanel.source =  "qrc:/qml/beeCopter/AppSettings/GeneralSettings.qml"
         }
     }
 
@@ -51,7 +51,7 @@ Rectangle {
 
     ButtonGroup { id: buttonGroup }
 
-    QGCFlickable {
+    beeCopterFlickable {
         id:                 buttonList
         width:              buttonColumn.width
         anchors.topMargin:  _verticalMargin
@@ -104,7 +104,7 @@ Rectangle {
                         if (_commingFromRIDSettings) {
                             checked = false
                             _commingFromRIDSettings = false
-                            if (modelUrl == "qrc:/qml/QGroundControl/AppSettings/RemoteIDSettings.qml") {
+                            if (modelUrl == "qrc:/qml/beeCopter/AppSettings/RemoteIDSettings.qml") {
                                 checked = true
                             }
                         }
@@ -148,7 +148,7 @@ Rectangle {
         anchors.top:            parent.top
         anchors.bottom:         parent.bottom
         width:                  1
-        color:                  qgcPal.windowShade
+        color:                  beeCopterPal.windowShade
     }
 
     //-- Panel Contents

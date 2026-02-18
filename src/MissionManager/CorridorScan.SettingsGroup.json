@@ -1,7 +1,7 @@
 {
     "version":      1,
     "fileType":  "FactMetaData",
-    "QGC.MetaData.Facts":
+    "beeCopter.MetaData.Facts":
 [
 {
     "name":             "Altitude",

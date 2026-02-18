@@ -1,10 +1,10 @@
 #include "Platform.h"
-#include "qgc_version.h"
+#include "beeCopter_version.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QProcessEnvironment>
 
-#include "QGCCommandLineParser.h"
+#include "beeCopterCommandLineParser.h"
 
 #ifdef Q_OS_ANDROID
     #include "AndroidInterface.h"
@@ -71,7 +71,7 @@ int __cdecl WindowsCrtReportHook(int reportType, char* message, int* returnValue
 
 void __cdecl WindowsPurecallHandler()
 {
-    (void) OutputDebugStringW(L"QGC: _purecall\n");
+    (void) OutputDebugStringW(L"beeCopter: _purecall\n");
 }
 
 void WindowsInvalidParameterHandler([[maybe_unused]] const wchar_t* expression,
@@ -91,16 +91,16 @@ LONG WINAPI WindowsUnhandledExceptionFilter(EXCEPTION_POINTERS* ep)
     const DWORD code = (ep && ep->ExceptionRecord) ? ep->ExceptionRecord->ExceptionCode : 0;
     wchar_t buf[128] = {};
 #if defined(_MSC_VER)
-    (void) _snwprintf_s(buf, _TRUNCATE, L"QGC: unhandled SEH 0x%08lX\n", static_cast<unsigned long>(code));
+    (void) _snwprintf_s(buf, _TRUNCATE, L"beeCopter: unhandled SEH 0x%08lX\n", static_cast<unsigned long>(code));
 #else
-    (void) swprintf(buf, static_cast<int>(std::size(buf)), L"QGC: unhandled SEH 0x%08lX\n", static_cast<unsigned long>(code));
+    (void) swprintf(buf, static_cast<int>(std::size(buf)), L"beeCopter: unhandled SEH 0x%08lX\n", static_cast<unsigned long>(code));
 #endif
     (void) OutputDebugStringW(buf);
 
     const HANDLE h = GetStdHandle(STD_ERROR_HANDLE);
     if (h && (h != INVALID_HANDLE_VALUE)) {
         DWORD ignored = 0;
-        const char narrow[] = "QGC: unhandled SEH\n";
+        const char narrow[] = "beeCopter: unhandled SEH\n";
         (void) WriteFile(h, narrow, (DWORD)sizeof(narrow) - 1, &ignored, nullptr);
     }
 
@@ -133,7 +133,7 @@ void setWindowsErrorModes(bool quietWindowsAsserts)
 } // namespace
 
 std::optional<int> Platform::initialize(int argc, char* argv[],
-                                         const QGCCommandLineParser::CommandLineParseResult& args)
+                                         const beeCopterCommandLineParser::CommandLineParseResult& args)
 {
     // --- Safety checks (may cause early exit) ---
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
@@ -174,7 +174,7 @@ std::optional<int> Platform::initialize(int argc, char* argv[],
 #endif
 
     // --- Unit test mode: run headless ---
-#ifdef QGC_UNITTEST_BUILD
+#ifdef beeCopter_UNITTEST_BUILD
     if (args.runningUnitTests || args.listTests) {
         if (!qEnvironmentVariableIsSet("QT_QPA_PLATFORM")) {
             (void) qputenv("QT_QPA_PLATFORM", "offscreen");
@@ -223,7 +223,7 @@ int Platform::showRootError(int argc, char *argv[])
         QCoreApplication::translate("main",
             "You are running %1 as root. "
             "You should not do this since it will cause other issues with %1. "
-            "%1 will now exit.<br/><br/>").arg(QLatin1String(QGC_APP_NAME)));
+            "%1 will now exit.<br/><br/>").arg(QLatin1String(beeCopter_APP_NAME)));
     return -1;
 }
 #endif
@@ -236,7 +236,7 @@ int Platform::showMultipleInstanceError(int argc, char *argv[])
         QCoreApplication::translate("main", "Error"),
         QCoreApplication::translate("main",
             "A second instance of %1 is already running. "
-            "Please close the other instance and try again.").arg(QLatin1String(QGC_APP_NAME)));
+            "Please close the other instance and try again.").arg(QLatin1String(beeCopter_APP_NAME)));
     return -1;
 }
 
@@ -246,7 +246,7 @@ bool Platform::checkSingleInstance(bool allowMultiple)
         return true;
     }
 
-    static const QString runguardString = QStringLiteral("%1 RunGuardKey").arg(QLatin1String(QGC_APP_NAME));
+    static const QString runguardString = QStringLiteral("%1 RunGuardKey").arg(QLatin1String(beeCopter_APP_NAME));
     static RunGuard guard(runguardString);
     return guard.tryToRun();
 }

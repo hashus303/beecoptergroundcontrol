@@ -1,5 +1,5 @@
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ToolStripAction {
     text:           qsTr("Checklist")
@@ -7,6 +7,6 @@ ToolStripAction {
     visible:        _useChecklist
     enabled:        _useChecklist && _activeVehicle && !_activeVehicle.armed
 
-    property var  _activeVehicle:   QGroundControl.multiVehicleManager.activeVehicle
-    property bool _useChecklist:    QGroundControl.settingsManager.appSettings.useChecklist.rawValue && QGroundControl.corePlugin.options.preFlightChecklistUrl.toString().length
+    property var  _activeVehicle:   beeCopter.multiVehicleManager.activeVehicle
+    property bool _useChecklist:    beeCopter.settingsManager.appSettings.useChecklist.rawValue && beeCopter.corePlugin.options.preFlightChecklistUrl.toString().length
 }

@@ -5,11 +5,11 @@
 #include "PositionManager.h"
 #include "SettingsManager.h"
 #include "AppSettings.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtPositioning/QGeoPositionInfo>
 
-QGC_LOGGING_CATEGORY(FollowMeLog, "API.FollowMe")
+beeCopter_LOGGING_CATEGORY(FollowMeLog, "API.FollowMe")
 
 Q_APPLICATION_STATIC(FollowMe, _followMeInstance);
 
@@ -87,7 +87,7 @@ void FollowMe::_disableFollowSend()
 
 void FollowMe::_sendGCSMotionReport()
 {
-    const QGeoPositionInfo geoPositionInfo = QGCPositionManager::instance()->geoPositionInfo();
+    const QGeoPositionInfo geoPositionInfo = beeCopterPositionManager::instance()->geoPositionInfo();
     const QGeoCoordinate gcsCoordinate = geoPositionInfo.coordinate();
 
     if (!geoPositionInfo.isValid()) {
@@ -115,7 +115,7 @@ void FollowMe::_sendGCSMotionReport()
     uint8_t estimationCapabilities = 0;
 
     // Get the current location coordinates
-    // Important note: QGC only supports sending the constant GCS home position altitude for follow me.
+    // Important note: beeCopter only supports sending the constant GCS home position altitude for follow me.
     motionReport.lat_int = static_cast<int>(gcsCoordinate.latitude() * 1e7);
     motionReport.lon_int = static_cast<int>(gcsCoordinate.longitude() * 1e7);
     motionReport.altMetersAMSL = gcsCoordinate.altitude();

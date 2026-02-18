@@ -1,6 +1,6 @@
 import QtQuick
 
-import QGroundControl
+import beeCopter
 
 /// Manages access to ArduPilot mount parameters
 Item {

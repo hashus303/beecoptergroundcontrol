@@ -1,16 +1,16 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 FirstRunPrompt {
     title:      qsTr("Measurement Units")
-    promptId:   QGroundControl.corePlugin.unitsFirstRunPromptId
+    promptId:   beeCopter.corePlugin.unitsFirstRunPromptId
 
     property real   _margins:           ScreenTools.defaultFontPixelHeight / 2
-    property var    _unitsSettings:     QGroundControl.settingsManager.unitsSettings
+    property var    _unitsSettings:     beeCopter.settingsManager.unitsSettings
     property var    _rgFacts:           [ _unitsSettings.horizontalDistanceUnits, _unitsSettings.verticalDistanceUnits, _unitsSettings.areaUnits, _unitsSettings.speedUnits, _unitsSettings.temperatureUnits ]
     property var    _rgLabels:          [ qsTr("Horizontal Distance"), qsTr("Vertical Distance"), qsTr("Area"), qsTr("Speed"), qsTr("Temperature") ]
     property int    _cVisibleFacts:     0
@@ -51,7 +51,7 @@ FirstRunPrompt {
         id:         settingsColumn
         spacing:    ScreenTools.defaultFontPixelHeight
 
-        QGCLabel {
+        beeCopterLabel {
             id:         unitsSectionLabel
             text:       qsTr("Choose the measurement units you want to use. You can also change it later in General Settings.")
 
@@ -62,7 +62,7 @@ FirstRunPrompt {
         Rectangle {
             Layout.preferredHeight: unitsGrid.height + (_margins * 2)
             Layout.preferredWidth:  unitsGrid.width + (_margins * 2)
-            color:                  qgcPal.windowShade
+            color:                  beeCopterPal.windowShade
             Layout.fillWidth:       true
 
             GridLayout {
@@ -73,17 +73,17 @@ FirstRunPrompt {
                 rows:               _cVisibleFacts + 1
                 flow:               GridLayout.TopToBottom
 
-                QGCLabel { text: qsTr("System of units") }
+                beeCopterLabel { text: qsTr("System of units") }
 
                 Repeater {
                     model: _rgFacts.length
-                    QGCLabel {
+                    beeCopterLabel {
                         text:       _rgLabels[index]
                         visible:    _rgFacts[index].visible
                     }
                 }
 
-                QGCComboBox {
+                beeCopterComboBox {
                     Layout.fillWidth:   true
                     sizeToContents:     true
                     model:              [ qsTr("Metric System"), qsTr("Imperial System") ]

@@ -4,10 +4,10 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
-QGCLabel {
+beeCopterLabel {
     property Fact fact: Fact { }
     text: decode(fact)
 

@@ -2,17 +2,17 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
-    QGCLabel {
+    beeCopterLabel {
         text: qsTr("Optical Flow Camera")
         font.bold: true
     }
 
     Image {
-        source: globals.activeVehicle ? "image://QGCImages/" + globals.activeVehicle.id + "/" + globals.activeVehicle.flowImageIndex : ""
+        source: globals.activeVehicle ? "image://beeCopterImages/" + globals.activeVehicle.id + "/" + globals.activeVehicle.flowImageIndex : ""
         width: parent.width * 0.5
         height: width * 0.75
         cache: false

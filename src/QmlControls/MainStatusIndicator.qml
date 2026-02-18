@@ -1,14 +1,14 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 RowLayout {
     id:         control
     spacing:    ScreenTools.defaultFontPixelWidth
 
-    property var    _activeVehicle:     QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle:     beeCopter.multiVehicleManager.activeVehicle
     property bool   _armed:             _activeVehicle ? _activeVehicle.armed : false
     property real   _margins:           ScreenTools.defaultFontPixelWidth
     property real   _spacing:           ScreenTools.defaultFontPixelWidth / 2
@@ -23,15 +23,15 @@ RowLayout {
         mainWindow.showIndicatorDrawer(overallStatusComponent, control)
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
-    QGCLabel {
+    beeCopterLabel {
         id:                 mainStatusLabel
         Layout.fillHeight:  true
         Layout.preferredWidth: contentWidth + (vehicleMessagesIcon.visible ? vehicleMessagesIcon.width + control.spacing : 0)
         verticalAlignment:  Text.AlignVCenter
         text:               mainStatusText()
-        color:              qgcPal.windowTransparentText
+        color:              beeCopterPal.windowTransparentText
         font.pointSize:     ScreenTools.largeFontPointSize
 
         property string _commLostText:      qsTr("Comms Lost")
@@ -102,12 +102,12 @@ RowLayout {
                     }
                 }
             } else {
-                _mainStatusBGColor = qgcPal.brandingPurple
+                _mainStatusBGColor = beeCopterPal.brandingPurple
                 return mainStatusLabel._disconnectedText
             }
         }
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             id:                     vehicleMessagesIcon
             anchors.verticalCenter: parent.verticalCenter
             anchors.right:          parent.right
@@ -120,34 +120,34 @@ RowLayout {
             visible:                _activeVehicle && _activeVehicle.messageCount > 0
 
             function getIconColor() {
-                let iconColor = qgcPal.windowTransparentText
+                let iconColor = beeCopterPal.windowTransparentText
                 if (_activeVehicle) {
                     if (_activeVehicle.messageTypeWarning) {
-                        iconColor = qgcPal.colorOrange
+                        iconColor = beeCopterPal.colorOrange
                     } else if (_activeVehicle.messageTypeError) {
-                        iconColor = qgcPal.colorRed
+                        iconColor = beeCopterPal.colorRed
                     }
                 }
                 return iconColor
             }
         }
 
-        QGCMouseArea {
+        beeCopterMouseArea {
             anchors.fill:   parent
             onClicked:      dropMainStatusIndicator()
         }
     }
 
-    QGCLabel {
+    beeCopterLabel {
         id:                 vtolModeLabel
         Layout.fillHeight:  true
         verticalAlignment:  Text.AlignVCenter
         text:               _vtolInFWDFlight ? qsTr("FW(vtol)") : qsTr("MR(vtol)")
-        color:              qgcPal.windowTransparentText
+        color:              beeCopterPal.windowTransparentText
         font.pointSize:     _vehicleInAir ? ScreenTools.largeFontPointSize : ScreenTools.defaultFontPointSize
         visible:            _activeVehicle && _activeVehicle.vtol
 
-        QGCMouseArea {
+        beeCopterMouseArea {
             anchors.fill: parent
             onClicked: {
                 if (_vehicleInAir) {
@@ -184,7 +184,7 @@ RowLayout {
             RowLayout {
                 spacing: ScreenTools.defaultFontPixelWidth
 
-                QGCDelayButton {
+                beeCopterDelayButton {
                     enabled:    _armed || !_healthAndArmingChecksSupported || _activeVehicle.healthAndArmingCheckReport.canArm
                     text:       _armed ? qsTr("Disarm") : (control._allowForceArm ? qsTr("Force Arm") : qsTr("Arm"))
 
@@ -258,12 +258,12 @@ RowLayout {
 
                     Repeater {
                         model: _activeVehicle.sysStatusSensorInfo.sensorNames
-                        QGCLabel { text: modelData }
+                        beeCopterLabel { text: modelData }
                     }
 
                     Repeater {
                         model: _activeVehicle.sysStatusSensorInfo.sensorStatus
-                        QGCLabel { text: modelData }
+                        beeCopterLabel { text: modelData }
                     }
                 }
             }
@@ -287,11 +287,11 @@ RowLayout {
                     Row {
                         spacing: ScreenTools.defaultFontPixelHeight
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:           message
                             text:         object.message
                             textFormat:   TextEdit.RichText
-                            color:        object.severity == 'error' ? qgcPal.colorRed : object.severity == 'warning' ? qgcPal.colorOrange : qgcPal.text
+                            color:        object.severity == 'error' ? beeCopterPal.colorRed : object.severity == 'warning' ? beeCopterPal.colorOrange : beeCopterPal.text
                             MouseArea {
                                 anchors.fill: parent
                                 onClicked: {
@@ -301,13 +301,13 @@ RowLayout {
                             }
                         }
 
-                        QGCColoredImage {
+                        beeCopterColoredImage {
                             id:                     arrowDownIndicator
                             anchors.verticalCenter: parent.verticalCenter
                             height:                 1.5 * ScreenTools.defaultFontPixelWidth
                             width:                  height
                             source:                 "/qmlimages/arrow-down.png"
-                            color:                  qgcPal.text
+                            color:                  beeCopterPal.text
                             visible:                object.description != ""
                             MouseArea {
                                 anchors.fill:       parent
@@ -316,7 +316,7 @@ RowLayout {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:                 description
                         text:               object.description
                         textFormat:         TextEdit.RichText
@@ -376,7 +376,7 @@ RowLayout {
                 headingDescription: qsTr("Force arming bypasses pre-arm checks. Use with caution.")
                 visible:            _activeVehicle && !_armed
 
-                QGCCheckBoxSlider {
+                beeCopterCheckBoxSlider {
                     Layout.fillWidth:   true
                     text:               qsTr("Allow Force Arm")
                     checked:            false
@@ -386,7 +386,7 @@ RowLayout {
 
             SettingsGroupLayout {
                 Layout.fillWidth:   true
-                visible:            QGroundControl.corePlugin.showAdvancedUI
+                visible:            beeCopter.corePlugin.showAdvancedUI
 
                 GridLayout {
                     columns:            2
@@ -394,8 +394,8 @@ RowLayout {
                     columnSpacing:      ScreenTools.defaultFontPixelWidth *2
                     Layout.fillWidth:   true
 
-                    QGCLabel { Layout.fillWidth: true; text: qsTr("Vehicle Parameters") }
-                    QGCButton {
+                    beeCopterLabel { Layout.fillWidth: true; text: qsTr("Vehicle Parameters") }
+                    beeCopterButton {
                         text: qsTr("Configure")
                         onClicked: {
                             mainWindow.showVehicleConfigParametersPage()
@@ -403,8 +403,8 @@ RowLayout {
                         }
                     }
 
-                    QGCLabel { Layout.fillWidth: true; text: qsTr("Vehicle Configuration") }
-                    QGCButton {
+                    beeCopterLabel { Layout.fillWidth: true; text: qsTr("Vehicle Configuration") }
+                    beeCopterButton {
                         text: qsTr("Configure")
                         onClicked: {
                             mainWindow.showVehicleConfig()

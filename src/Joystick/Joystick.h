@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QObject>
@@ -340,7 +340,7 @@ signals:
     void setVtolInFwdFlight(bool set);
     void setFlightMode(const QString &flightMode);
     void emergencyStop();
-    void gripperAction(QGCMAVLink::GripperActions gripperAction);
+    void gripperAction(beeCopterMAVLink::GripperActions gripperAction);
     void landingGearDeploy();
     void landingGearRetract();
     void motorInterlock(bool enable);

@@ -7,14 +7,14 @@
 #include <QtQmlIntegration/QtQmlIntegration>
 
 #include "MAVLink/MAVLinkLib.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 Q_DECLARE_LOGGING_CATEGORY(FTPControllerLog)
 
 class FTPManager;
 class Vehicle;
-class QGCArchiveModel;
-class QGCCompressionJob;
+class beeCopterArchiveModel;
+class beeCopterCompressionJob;
 
 /// QML-facing controller for MAVLink FTP operations.
 class FTPController : public QObject
@@ -37,7 +37,7 @@ class FTPController : public QObject
     Q_PROPERTY(bool lastDownloadIsArchive READ lastDownloadIsArchive NOTIFY lastDownloadFileChanged)
     Q_PROPERTY(bool extracting READ extracting NOTIFY extractingChanged)
     Q_PROPERTY(float extractionProgress READ extractionProgress NOTIFY extractionProgressChanged)
-    Q_PROPERTY(QGCArchiveModel* archiveModel READ archiveModel CONSTANT)
+    Q_PROPERTY(beeCopterArchiveModel* archiveModel READ archiveModel CONSTANT)
 
 public:
     explicit FTPController(QObject *parent = nullptr);
@@ -56,7 +56,7 @@ public:
     bool lastDownloadIsArchive() const { return _lastDownloadIsArchive; }
     bool extracting() const { return _extracting; }
     float extractionProgress() const { return _extractionProgress; }
-    QGCArchiveModel* archiveModel() const { return _archiveModel; }
+    beeCopterArchiveModel* archiveModel() const { return _archiveModel; }
 
     Q_INVOKABLE bool listDirectory(const QString &uri, int componentId = MAV_COMP_ID_AUTOPILOT1);
     Q_INVOKABLE bool downloadFile(const QString &uri, const QString &localDir, const QString &fileName = QString(), int componentId = MAV_COMP_ID_AUTOPILOT1);
@@ -133,6 +133,6 @@ private:
     bool _extracting = false;
     float _extractionProgress = 0.0F;
     QString _extractionOutputDir;
-    QGCArchiveModel *_archiveModel = nullptr;
-    QGCCompressionJob *_extractionJob = nullptr;
+    beeCopterArchiveModel *_archiveModel = nullptr;
+    beeCopterCompressionJob *_extractionJob = nullptr;
 };

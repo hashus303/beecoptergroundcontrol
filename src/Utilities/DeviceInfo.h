@@ -6,18 +6,18 @@
 #include <QtSensors/QCompass>
 #include <QtSensors/QPressureSensor>
 
-Q_DECLARE_LOGGING_CATEGORY(QGCDeviceInfoLog)
+Q_DECLARE_LOGGING_CATEGORY(beeCopterDeviceInfoLog)
 
-namespace QGCDeviceInfo
+namespace beeCopterDeviceInfo
 {
 
 ////////////////////////////////////////////////////////////////////
 
-class QGCAmbientTemperatureFilter : public QAmbientTemperatureFilter
+class beeCopterAmbientTemperatureFilter : public QAmbientTemperatureFilter
 {
 public:
-    QGCAmbientTemperatureFilter();
-    ~QGCAmbientTemperatureFilter();
+    beeCopterAmbientTemperatureFilter();
+    ~beeCopterAmbientTemperatureFilter();
 
     bool filter(QAmbientTemperatureReading *reading) final;
 
@@ -26,15 +26,15 @@ private:
     static constexpr const qreal s_maxValidTemperatureC = 85.;
 };
 
-class QGCAmbientTemperature : public QObject
+class beeCopterAmbientTemperature : public QObject
 {
     Q_OBJECT
 
 public:
-    QGCAmbientTemperature(QObject* parent = nullptr);
-    ~QGCAmbientTemperature();
+    beeCopterAmbientTemperature(QObject* parent = nullptr);
+    ~beeCopterAmbientTemperature();
 
-    static QGCAmbientTemperature* instance();
+    static beeCopterAmbientTemperature* instance();
 
     qreal temperature() const { return _temperatureC; }
 
@@ -46,7 +46,7 @@ signals:
 
 private:
     QAmbientTemperatureSensor* _ambientTemperature = nullptr;
-    std::shared_ptr<QGCAmbientTemperatureFilter> _ambientTemperatureFilter = nullptr;
+    std::shared_ptr<beeCopterAmbientTemperatureFilter> _ambientTemperatureFilter = nullptr;
 
     QMetaObject::Connection _readingChangedConnection;
 
@@ -55,11 +55,11 @@ private:
 
 ////////////////////////////////////////////////////////////////////
 
-class QGCPressureFilter : public QPressureFilter
+class beeCopterPressureFilter : public QPressureFilter
 {
 public:
-    QGCPressureFilter();
-    ~QGCPressureFilter();
+    beeCopterPressureFilter();
+    ~beeCopterPressureFilter();
 
     bool filter(QPressureReading *reading) final;
 
@@ -71,15 +71,15 @@ private:
     static constexpr const qreal s_maxValidTemperatureC = 85.;
 };
 
-class QGCPressure : public QObject
+class beeCopterPressure : public QObject
 {
     Q_OBJECT
 
 public:
-    QGCPressure(QObject* parent = nullptr);
-    ~QGCPressure();
+    beeCopterPressure(QObject* parent = nullptr);
+    ~beeCopterPressure();
 
-    static QGCPressure* instance();
+    static beeCopterPressure* instance();
 
     qreal pressure() const { return _pressurePa; }
     qreal temperature() const { return _temperatureC; }
@@ -92,7 +92,7 @@ signals:
 
 private:
     QPressureSensor* _pressure = nullptr;
-    std::shared_ptr<QGCPressureFilter> _pressureFilter = nullptr;
+    std::shared_ptr<beeCopterPressureFilter> _pressureFilter = nullptr;
 
     QMetaObject::Connection _readingChangedConnection;
 
@@ -102,11 +102,11 @@ private:
 
 ////////////////////////////////////////////////////////////////////
 
-class QGCCompassFilter : public QCompassFilter
+class beeCopterCompassFilter : public QCompassFilter
 {
 public:
-    QGCCompassFilter();
-    ~QGCCompassFilter();
+    beeCopterCompassFilter();
+    ~beeCopterCompassFilter();
 
     bool filter(QCompassReading *reading) final;
 
@@ -114,15 +114,15 @@ private:
     static constexpr qreal s_minCompassCalibrationLevel = 0.65;
 };
 
-class QGCCompass : public QObject
+class beeCopterCompass : public QObject
 {
     Q_OBJECT
 
 public:
-    QGCCompass(QObject *parent = nullptr);
-    ~QGCCompass();
+    beeCopterCompass(QObject *parent = nullptr);
+    ~beeCopterCompass();
 
-    static QGCCompass* instance();
+    static beeCopterCompass* instance();
 
     bool init();
     void quit();
@@ -133,7 +133,7 @@ signals:
 
 private:
     QCompass *_compass = nullptr;
-    std::shared_ptr<QGCCompassFilter> _compassFilter = nullptr;
+    std::shared_ptr<beeCopterCompassFilter> _compassFilter = nullptr;
 
     QMetaObject::Connection _readingChangedConnection;
 
@@ -143,4 +143,4 @@ private:
 
 ////////////////////////////////////////////////////////////////////
 
-} /* namespace QGCDeviceInfo */
+} /* namespace beeCopterDeviceInfo */

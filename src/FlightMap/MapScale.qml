@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Map scale control
 Item {
@@ -104,7 +104,7 @@ Item {
             var leftCoord  = mapControl.toCoordinate(Qt.point(0, control.y), false /* clipToViewPort */)
             var rightCoord = mapControl.toCoordinate(Qt.point(scaleLinePixelLength, control.y), false /* clipToViewPort */)
             var scaleLineMeters = Math.round(leftCoord.distanceTo(rightCoord))
-            if (QGroundControl.settingsManager.unitsSettings.horizontalDistanceUnits.value === UnitsSettings.HorizontalDistanceUnitsFeet) {
+            if (beeCopter.settingsManager.unitsSettings.horizontalDistanceUnits.value === UnitsSettings.HorizontalDistanceUnitsFeet) {
                 calculateFeetRatio(scaleLineMeters, scaleLinePixelLength)
             } else {
                 calculateMetersRatio(scaleLineMeters, scaleLinePixelLength)
@@ -145,7 +145,7 @@ Item {
         onTriggered:    autoHideAnimation.start()
     }
 
-    QGCMapLabel {
+    beeCopterMapLabel {
         id:                 scaleText
         map:                mapControl
         font.bold:          true

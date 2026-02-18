@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ColumnLayout {
     spacing: _rowSpacing
@@ -63,35 +63,35 @@ ColumnLayout {
         }
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: sendStatus
         Layout.fillWidth: true
         text: qsTr("Send Status Text and Voice")
         checked: subEditConfig.sendStatus
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: enableCamera
         Layout.fillWidth: true
         text: qsTr("Enable Camera")
         checked: subEditConfig.enableCamera
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: incrementVehicleId
         Layout.fillWidth: true
         text: qsTr("Increment Vehicle Id")
         checked: subEditConfig.incrementVehicleId
     }
 
-    QGCLabel {
+    beeCopterLabel {
         Layout.fillWidth: true
         text: qsTr("Camera Capabilities")
         font.bold: true
         visible: enableCamera.checked
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: cameraCaptureVideo
         Layout.fillWidth: true
         text: "CAMERA_CAP_FLAGS_CAPTURE_VIDEO"
@@ -99,7 +99,7 @@ ColumnLayout {
         visible: enableCamera.checked
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: cameraCaptureImage
         Layout.fillWidth: true
         text: "CAMERA_CAP_FLAGS_CAPTURE_IMAGE"
@@ -107,7 +107,7 @@ ColumnLayout {
         visible: enableCamera.checked
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: cameraHasModes
         Layout.fillWidth: true
         text: "CAMERA_CAP_FLAGS_HAS_MODES"
@@ -115,7 +115,7 @@ ColumnLayout {
         visible: enableCamera.checked
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: cameraCanCaptureImageInVideoMode
         Layout.fillWidth: true
         text: "CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE"
@@ -123,7 +123,7 @@ ColumnLayout {
         visible: enableCamera.checked
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: cameraCanCaptureVideoInImageMode
         Layout.fillWidth: true
         text: "CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE"
@@ -131,7 +131,7 @@ ColumnLayout {
         visible: enableCamera.checked
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: cameraHasBasicZoom
         Layout.fillWidth: true
         text: "CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM"
@@ -139,7 +139,7 @@ ColumnLayout {
         visible: enableCamera.checked
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: cameraHasTrackingPoint
         Layout.fillWidth: true
         text: "CAMERA_CAP_FLAGS_HAS_TRACKING_POINT"
@@ -147,7 +147,7 @@ ColumnLayout {
         visible: enableCamera.checked
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: cameraHasTrackingRectangle
         Layout.fillWidth: true
         text: "CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE"

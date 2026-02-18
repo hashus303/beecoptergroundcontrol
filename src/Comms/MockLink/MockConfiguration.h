@@ -74,8 +74,8 @@ public:
     enum FailureMode_t {
         FailNone,                                                   ///< No failures
         FailParamNoResponseToRequestList,                           ///< Do not respond to PARAM_REQUEST_LIST
-        FailMissingParamOnInitialRequest,                           ///< Not all params are sent on initial request, should still succeed since QGC will re-query missing params
-        FailMissingParamOnAllRequests,                              ///< Not all params are sent on initial request, QGC retries will fail as well
+        FailMissingParamOnInitialRequest,                           ///< Not all params are sent on initial request, should still succeed since beeCopter will re-query missing params
+        FailMissingParamOnAllRequests,                              ///< Not all params are sent on initial request, beeCopter retries will fail as well
         FailInitialConnectRequestMessageAutopilotVersionFailure,    ///< REQUEST_MESSAGE:AUTOPILOT_VERSION returns failure
         FailInitialConnectRequestMessageAutopilotVersionLost,       ///< REQUEST_MESSAGE:AUTOPILOT_VERSION success, AUTOPILOT_VERSION never sent
     };

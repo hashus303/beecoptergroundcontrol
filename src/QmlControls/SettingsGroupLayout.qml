@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ColumnLayout {
     id:                 control
@@ -14,7 +14,7 @@ ColumnLayout {
 
     property alias contentSpacing: _contentLayout.spacing
 
-    property string defaultBorderColor  : QGroundControl.globalPalette.groupBorder
+    property string defaultBorderColor  : beeCopter.globalPalette.groupBorder
     property string outerBorderColor    : defaultBorderColor
 
     property string defaultHeadingPointSize:    ScreenTools.defaultFontPointSize + 1
@@ -42,13 +42,13 @@ ColumnLayout {
         spacing:            0
         visible:            heading !== ""
 
-        QGCLabel {
+        beeCopterLabel {
             text:           heading
             font.pointSize: headingPointSize
             font.bold:      true
         }
 
-        QGCLabel {
+        beeCopterLabel {
             Layout.fillWidth:   true
             text:               headingDescription
             wrapMode:           Text.WordWrap
@@ -75,7 +75,7 @@ ColumnLayout {
                 y:          _contentItem.y + _contentItem.height + _margins + (showBorder ? _margins : 0)
                 width:      parent.width - (showBorder ? _margins * 2 : 0)
                 height:     1
-                color:      QGroundControl.globalPalette.groupBorder
+                color:      beeCopter.globalPalette.groupBorder
                 visible:    _isContentItemVisible()
 
                 property var _contentItem: _ySortedChildren[index]

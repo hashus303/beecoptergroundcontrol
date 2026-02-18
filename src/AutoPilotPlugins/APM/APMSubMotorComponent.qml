@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 SetupPage {
     id:             motorPage
@@ -56,12 +56,12 @@ SetupPage {
                                 property alias motorSlider: slider
                                 spacing:    ScreenTools.defaultFontPixelWidth
 
-                                QGCLabel {
+                                beeCopterLabel {
                                     anchors.horizontalCenter:   parent.horizontalCenter
                                     text:                       index + 1
                                 }
 
-                                QGCSlider {
+                                beeCopterSlider {
                                     id:                         slider
                                     height:                     ScreenTools.defaultFontPixelHeight * _sliderHeight
                                     orientation:                Qt.Vertical
@@ -96,7 +96,7 @@ SetupPage {
                         } // Repeater
                     } // Row
 
-                    QGCLabel {
+                    beeCopterLabel {
                         width: parent.width
                         anchors.left:   parent.left
                         anchors.right:  parent.right
@@ -109,7 +109,7 @@ SetupPage {
                         anchors.margins: ScreenTools.defaultFontPixelWidth * 3
                         width:              parent.width
                         height:             1
-                        color:              qgcPal.text
+                        color:              beeCopterPal.text
                     }
 
                     Row {
@@ -122,7 +122,7 @@ SetupPage {
                             Column {
                                 spacing:    ScreenTools.defaultFontPixelWidth
 
-                                QGCCheckBox {
+                                beeCopterCheckBox {
                                     width: sliderRow.width / (controller.vehicle.motorCount - 0.5)
                                     checked: controller.getParameterFact(-1, "MOT_" + (index + 1) + "_DIRECTION").value == -1
                                     onClicked: {
@@ -144,7 +144,7 @@ SetupPage {
                 }
             } // Row
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.left:   parent.left
                 anchors.right:  parent.right
                 wrapMode:       Text.WordWrap
@@ -187,16 +187,16 @@ SetupPage {
                         }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     anchors.verticalCenter: safetySwitch.verticalCenter
-                    color:  qgcPal.warningText
+                    color:  beeCopterPal.warningText
                     text:   coolDownTimer.running
                                 ? qsTr("A 10 second coooldown is required before testing again, please stand by...")
                                 : qsTr("Slide this switch to arm the vehicle and enable the motor test (CAUTION!)")
                 }
             } // Row
 
-            QGCLabel {
+            beeCopterLabel {
                 visible:             controller.vehicle.versionCompare(4, 0, 0) >= 0
                 width:               parent.width
                 anchors.left:        parent.left
@@ -205,7 +205,7 @@ SetupPage {
                 text:                qsTr("Automatic Motor Direction Detection")
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 visible:        controller.vehicle.versionCompare(4, 0, 0) >= 0
                 anchors.left:   parent.left
                 anchors.right:  parent.right
@@ -222,7 +222,7 @@ SetupPage {
                 Column {
                     spacing:    ScreenTools.defaultFontPixelWidth * 2
 
-                    QGCButton {
+                    beeCopterButton {
                         id: startAutoDetection
                         text: "Auto-Detect Directions"
                         enabled: controller.vehicle.flightMode !== controller.vehicle.motorDetectionFlightMode
@@ -247,11 +247,11 @@ SetupPage {
                         TextArea {
                             id: textArea
                             anchors.fill: parent
-                            color:  qgcPal.text
+                            color:  beeCopterPal.text
                             text: controller.motorDetectionMessages
                             wrapMode: Text.WordWrap
                             background: Rectangle {
-                                color: qgcPal.window
+                                color: beeCopterPal.window
                             }
                             onTextChanged: function() {
                                 flickable.flick(0, -300)

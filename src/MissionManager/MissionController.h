@@ -7,9 +7,9 @@
 
 #include "PlanElementController.h"
 #include "QmlObjectListModel.h"
-#include "QGCGeoBoundingCube.h"
-#include "QGroundControlQmlGlobal.h"
-#include "QGCMAVLink.h"
+#include "beeCopterGeoBoundingCube.h"
+#include "beeCopterQmlGlobal.h"
+#include "beeCopterMAVLink.h"
 
 Q_DECLARE_LOGGING_CATEGORY(MissionControllerLog)
 
@@ -64,7 +64,7 @@ public:
         double                      gimbalYaw;              ///< NaN signals yaw was never changed
         double                      gimbalPitch;            ///< NaN signals pitch was never changed
         // The following values are the state prior to executing this item
-        QGCMAVLink::VehicleClass_t  vtolMode;               ///< Either VehicleClassFixedWing, VehicleClassMultiRotor, VehicleClassGeneric (mode unknown)
+        beeCopterMAVLink::VehicleClass_t  vtolMode;               ///< Either VehicleClassFixedWing, VehicleClassMultiRotor, VehicleClassGeneric (mode unknown)
         double                      cruiseSpeed;
         double                      hoverSpeed;
         double                      vehicleSpeed;           ///< Either cruise or hover speed based on vehicle type and vtol state
@@ -95,7 +95,7 @@ public:
     Q_PROPERTY(double               missionMaxTelemetry             READ missionMaxTelemetry            NOTIFY missionMaxTelemetryChanged)
     Q_PROPERTY(int                  batteryChangePoint              READ batteryChangePoint             NOTIFY batteryChangePointChanged)
     Q_PROPERTY(int                  batteriesRequired               READ batteriesRequired              NOTIFY batteriesRequiredChanged)
-    Q_PROPERTY(QGCGeoBoundingCube*  travelBoundingCube              READ travelBoundingCube             NOTIFY missionBoundingCubeChanged)
+    Q_PROPERTY(beeCopterGeoBoundingCube*  travelBoundingCube              READ travelBoundingCube             NOTIFY missionBoundingCubeChanged)
     Q_PROPERTY(QString              surveyComplexItemName           READ surveyComplexItemName          CONSTANT)
     Q_PROPERTY(QString              corridorScanComplexItemName     READ corridorScanComplexItemName    CONSTANT)
     Q_PROPERTY(QString              structureScanComplexItemName    READ structureScanComplexItemName   CONSTANT)
@@ -110,8 +110,8 @@ public:
     Q_PROPERTY(double               minAMSLAltitude                 MEMBER _minAMSLAltitude             NOTIFY minAMSLAltitudeChanged)          ///< Minimum altitude associated with this mission. Used to calculate percentages for terrain status.
     Q_PROPERTY(double               maxAMSLAltitude                 MEMBER _maxAMSLAltitude             NOTIFY maxAMSLAltitudeChanged)          ///< Maximum altitude associated with this mission. Used to calculate percentages for terrain status.
 
-    Q_PROPERTY(QGroundControlQmlGlobal::AltMode globalAltitudeMode         READ globalAltitudeMode         WRITE setGlobalAltitudeMode NOTIFY globalAltitudeModeChanged)
-    Q_PROPERTY(QGroundControlQmlGlobal::AltMode globalAltitudeModeDefault  READ globalAltitudeModeDefault  NOTIFY globalAltitudeModeChanged)                               ///< Default to use for newly created items
+    Q_PROPERTY(beeCopterQmlGlobal::AltMode globalAltitudeMode         READ globalAltitudeMode         WRITE setGlobalAltitudeMode NOTIFY globalAltitudeModeChanged)
+    Q_PROPERTY(beeCopterQmlGlobal::AltMode globalAltitudeModeDefault  READ globalAltitudeModeDefault  NOTIFY globalAltitudeModeChanged)                               ///< Default to use for newly created items
 
     Q_INVOKABLE void removeVisualItem(int viIndex);
 
@@ -196,7 +196,7 @@ public:
 
     bool loadTextFile(QFile& file, QString& errorString);
 
-    QGCGeoBoundingCube* travelBoundingCube  () { return &_travelBoundingCube; }
+    beeCopterGeoBoundingCube* travelBoundingCube  () { return &_travelBoundingCube; }
     QGeoCoordinate      takeoffCoordinate   () { return _takeoffCoordinate; }
 
     // Overrides from PlanElementController
@@ -256,9 +256,9 @@ public:
     bool isFirstLandingComplexItem  (const LandingComplexItem* item) const;
     bool isEmpty                    (void) const;
 
-    QGroundControlQmlGlobal::AltMode globalAltitudeMode(void);
-    QGroundControlQmlGlobal::AltMode globalAltitudeModeDefault(void);
-    void setGlobalAltitudeMode(QGroundControlQmlGlobal::AltMode altMode);
+    beeCopterQmlGlobal::AltMode globalAltitudeMode(void);
+    beeCopterQmlGlobal::AltMode globalAltitudeModeDefault(void);
+    void setGlobalAltitudeMode(beeCopterQmlGlobal::AltMode altMode);
 
 signals:
     void visualItemsChanged                 (void);
@@ -333,7 +333,7 @@ private:
     void                    _deinitVisualItem                   (VisualMissionItem* item);
     void                    _setupActiveVehicle                 (Vehicle* activeVehicle, bool forceLoadFromVehicle);
     void                    _calcPrevWaypointValues             (VisualMissionItem* currentItem, VisualMissionItem* prevItem, double* azimuth, double* distance, double* altDifference);
-    bool                    _findPreviousAltitude               (int newIndex, double* prevAltitude, QGroundControlQmlGlobal::AltMode* prevAltMode);
+    bool                    _findPreviousAltitude               (int newIndex, double* prevAltitude, beeCopterQmlGlobal::AltMode* prevAltMode);
     MissionSettingsItem*    _addMissionSettings                 (QmlObjectListModel* visualItems);
     void                    _centerHomePositionOnMissionItems   (QmlObjectListModel* visualItems);
     bool                    _loadJsonMissionFile                (const QByteArray& bytes, QmlObjectListModel* visualItems, QString& errorString);
@@ -386,7 +386,7 @@ private:
     VisualMissionItem*          _currentPlanViewItem =          nullptr;
     TakeoffMissionItem*         _takeoffMissionItem =           nullptr;
     QTimer                      _updateTimer;
-    QGCGeoBoundingCube          _travelBoundingCube;
+    beeCopterGeoBoundingCube          _travelBoundingCube;
     QGeoCoordinate              _takeoffCoordinate;
     QGeoCoordinate              _previousCoordinate;
     FlightPathSegment*          _splitSegment =                 nullptr;
@@ -402,7 +402,7 @@ private:
     double                      _maxAMSLAltitude =              0;
     bool                        _missionContainsVTOLTakeoff =   false;
 
-    QGroundControlQmlGlobal::AltMode _globalAltMode = QGroundControlQmlGlobal::AltitudeModeRelative;
+    beeCopterQmlGlobal::AltMode _globalAltMode = beeCopterQmlGlobal::AltitudeModeRelative;
 
     static constexpr const char* _settingsGroup =                 "MissionController";
     static constexpr const char* _jsonFileTypeValue =             "Mission";

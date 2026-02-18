@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Button {
     id:                 control
@@ -17,7 +17,7 @@ Button {
 
     background: Rectangle {
         anchors.fill:   parent
-        color:          checked ? qgcPal.buttonHighlight : qgcPal.button
+        color:          checked ? beeCopterPal.buttonHighlight : beeCopterPal.button
     }
 
     property double messageHz:  0
@@ -27,22 +27,22 @@ Button {
         id:         rowLayout
         spacing:    ScreenTools.defaultFontPixelWidth
 
-        QGCLabel {
+        beeCopterLabel {
             text:                   control.compID
-            color:                  checked ? qgcPal.buttonHighlightText : qgcPal.buttonText
+            color:                  checked ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
             verticalAlignment:      Text.AlignVCenter
             Layout.minimumHeight:   ScreenTools.isMobile ? (ScreenTools.defaultFontPixelHeight * 2) : (ScreenTools.defaultFontPixelHeight * 1.5)
             Layout.minimumWidth:    _compIDWidth
         }
-        QGCLabel {
+        beeCopterLabel {
             id:                     nameLabel
             text:                   control.text
-            color:                  checked ? qgcPal.buttonHighlightText : qgcPal.buttonText
+            color:                  checked ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
             Layout.fillWidth:       true
             Layout.alignment:       Qt.AlignVCenter
         }
-        QGCLabel {
-            color:                  checked ? qgcPal.buttonHighlightText : qgcPal.buttonText
+        beeCopterLabel {
+            color:                  checked ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
             text:                   messageHz.toFixed(1) + 'Hz'
             horizontalAlignment:    Text.AlignRight
             Layout.minimumWidth:    _hzWidth

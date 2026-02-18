@@ -2,9 +2,9 @@ import QtQuick
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 // Allow custom builds to add visual items associated with the Flight Plan to the map
 Item {
@@ -12,7 +12,7 @@ Item {
     property bool   largeMapView    ///< true: map takes up entire view, false: map is in small window
 
     Instantiator {
-        model: QGroundControl.corePlugin.customMapItems
+        model: beeCopter.corePlugin.customMapItems
 
         Item {
             property var _customObject

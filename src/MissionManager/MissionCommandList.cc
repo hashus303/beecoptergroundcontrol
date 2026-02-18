@@ -1,7 +1,7 @@
 #include "MissionCommandList.h"
 #include "JsonHelper.h"
 #include "MissionCommandUIInfo.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QJsonArray>
 
@@ -21,7 +21,7 @@ void MissionCommandList::_loadMavCmdInfoJson(const QString& jsonFilename, bool b
 
     QString errorString;
     int version;
-    QJsonObject jsonObject = JsonHelper::openInternalQGCJsonFile(jsonFilename, qgcFileType, 1, 1, version, errorString);
+    QJsonObject jsonObject = JsonHelper::openInternalbeeCopterJsonFile(jsonFilename, beeCopterFileType, 1, 1, version, errorString);
     if (!errorString.isEmpty()) {
         qWarning() << "Internal Error: " << errorString;
         return;

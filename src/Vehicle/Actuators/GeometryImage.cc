@@ -298,7 +298,7 @@ QPixmap VehicleGeometryImageProvider::requestPixmap([[maybe_unused]] const QStri
             arrowColor = counterClockWiseColor;
         }
         arrowColor.setAlpha(255);
-        if (_palette.globalTheme() == QGCPalette::Light) {
+        if (_palette.globalTheme() == beeCopterPalette::Light) {
             arrowColor = arrowColor.darker(200);
         } else {
             arrowColor = arrowColor.lighter(130);

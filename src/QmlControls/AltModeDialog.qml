@@ -3,10 +3,10 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
-QGCPopupDialog {
+beeCopterPopupDialog {
     title:   qsTr("Altitude Mode")
     buttons: Dialog.Close
 
@@ -16,8 +16,8 @@ QGCPopupDialog {
 
     Component.onCompleted: {
         // Check for custom build override on AMSL usage
-        if (!QGroundControl.corePlugin.options.showMissionAbsoluteAltitude && currentAltMode != QGroundControl.AltitudeModeAbsolute) {
-            rgRemoveModes.push(QGroundControl.AltitudeModeAbsolute)
+        if (!beeCopter.corePlugin.options.showMissionAbsoluteAltitude && currentAltMode != beeCopter.AltitudeModeAbsolute) {
+            rgRemoveModes.push(beeCopter.AltitudeModeAbsolute)
         }
 
         // Remove modes specified by consumer
@@ -39,34 +39,34 @@ QGCPopupDialog {
         ListElement {
             modeName:   qsTr("Relative")
             help:       qsTr("Altitude above home position")
-            modeValue:  QGroundControl.AltitudeModeRelative
+            modeValue:  beeCopter.AltitudeModeRelative
         }
         ListElement {
             modeName:   qsTr("Absolute")
             help:       qsTr("Altitude above mean sea level (AMSL)")
-            modeValue:  QGroundControl.AltitudeModeAbsolute
+            modeValue:  beeCopter.AltitudeModeAbsolute
         }
         ListElement {
             modeName:   qsTr("Terrain")
             help:       qsTr("Altitude above terrain at waypoint")
-            modeValue:  QGroundControl.AltitudeModeTerrainFrame
+            modeValue:  beeCopter.AltitudeModeTerrainFrame
         }
         ListElement {
             modeName:   qsTr("Terrain Calculated")
             help:       qsTr("Altitudes are terrain-relative; converting to AMSL before upload")
-            modeValue:  QGroundControl.AltitudeModeCalcAboveTerrain
+            modeValue:  beeCopter.AltitudeModeCalcAboveTerrain
         }
         ListElement {
             modeName:   qsTr("Waypoint Defined")
             help:       qsTr("Each waypoint specifies its own altitude mode")
-            modeValue:  QGroundControl.AltitudeModeMixed
+            modeValue:  beeCopter.AltitudeModeMixed
         }
     }
 
     Column {
         spacing: ScreenTools.defaultFontPixelWidth
 
-        QGCLabel {
+        beeCopterLabel {
             text: qsTr("Altitude mode for mission items")
             font.pointSize: ScreenTools.smallFontPointSize
         }
@@ -80,19 +80,19 @@ QGCPopupDialog {
 
                 background: Rectangle {
                     radius: ScreenTools.defaultFontPixelHeight / 2
-                    color:  pressed | hovered | checked ? QGroundControl.globalPalette.buttonHighlight: QGroundControl.globalPalette.button
+                    color:  pressed | hovered | checked ? beeCopter.globalPalette.buttonHighlight: beeCopter.globalPalette.button
                 }
 
                 contentItem: Column {
                     spacing: 0
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:     modeNameLabel
                         text:   modeName
-                        color:  pressed | hovered | checked ? QGroundControl.globalPalette.buttonHighlightText: QGroundControl.globalPalette.buttonText
+                        color:  pressed | hovered | checked ? beeCopter.globalPalette.buttonHighlightText: beeCopter.globalPalette.buttonText
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         width:              ScreenTools.defaultFontPixelWidth * 40
                         text:               help
                         wrapMode:           Label.WordWrap

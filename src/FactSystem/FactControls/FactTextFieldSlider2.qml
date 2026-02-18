@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Row {
     id: sliderRoot
@@ -30,7 +30,7 @@ Row {
     }
 
     // Used to find width of value string
-    QGCLabel {
+    beeCopterLabel {
         id:      textMeasure
         visible: false
         text:    fact.value.toFixed(precision)
@@ -46,7 +46,7 @@ Row {
         Row {
             spacing: _margins
 
-            QGCLabel {
+            beeCopterLabel {
                 text:                   fact.name
                 font.bold:              true
                 font.pointSize:         ScreenTools.defaultFontPointSize * 1.1
@@ -58,7 +58,7 @@ Row {
                 spacing:                ScreenTools.defaultFontPixelWidth
                 anchors.verticalCenter: parent.verticalCenter
 
-                QGCLabel {
+                beeCopterLabel {
                     text:                   qsTr("Value: ")
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -72,12 +72,12 @@ Row {
                     width:                  textMeasure.width + ScreenTools.defaultFontPixelWidth*2 // Fudged, nothing else seems to work
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:                   fact.units
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                QGCButton {
+                beeCopterButton {
                     height:                 parent.height
                     width:                  height
                     text:                   "-"
@@ -86,7 +86,7 @@ Row {
                     onClicked: fact.value = Math.max(Math.min(fact.value - _minIncrement, fact.max), fact.min)
                 }
 
-                QGCButton {
+                beeCopterButton {
                     height:                 parent.height
                     width:                  height
                     text:                   "+"
@@ -97,7 +97,7 @@ Row {
             } // Row - container for Value: xx.xx +/- (different spacing than parent)
         } // Row - Param name and value
 
-        QGCLabel {
+        beeCopterLabel {
             text: fact.shortDescription
         }
 
@@ -106,14 +106,14 @@ Row {
             width:      parent.width
             spacing:    _margins
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                  minLabel
                 width:               ScreenTools.defaultFontPixelWidth * 10
                 text:                fact.min.toFixed(precision)
                 horizontalAlignment: Text.AlignRight
             }
 
-            QGCSlider {
+            beeCopterSlider {
                 id:                 slide
                 width:              parent.width - minLabel.width - maxLabel.width - _margins * 2
                 stepSize:           fact.increment ? Math.max(fact.increment, _minIncrement) : _minIncrement
@@ -128,7 +128,7 @@ Row {
                 }
             } // Slider
 
-            QGCLabel {
+            beeCopterLabel {
                 id:     maxLabel
                 width:  ScreenTools.defaultFontPixelWidth * 10
                 text:   fact.max.toFixed(precision)

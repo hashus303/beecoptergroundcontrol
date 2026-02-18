@@ -2,14 +2,14 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Rectangle {
     id:         root
     radius:     ScreenTools.defaultFontPixelWidth * 0.5
-    color:      qgcPal.window
+    color:      beeCopterPal.window
     opacity:    0.80
     clip:       true
 
@@ -25,9 +25,9 @@ Rectangle {
         root.width = root.maxWidth > calcLength ? calcLength : root.maxWidth
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
-    QGCLabel {
+    beeCopterLabel {
         id:                     label
         anchors.top:            parent.bottom
         width:                  parent.height
@@ -37,7 +37,7 @@ Rectangle {
         transformOrigin:        Item.TopLeft
     }
 
-    QGCListView {
+    beeCopterListView {
         id:                     statusListView
         anchors.margins:        _margins
         anchors.top:            parent.top
@@ -75,7 +75,7 @@ Rectangle {
                 anchors.horizontalCenter:   parent.horizontalCenter
                 width:                      indicator.width
                 height:                     _terrainAvailable ? Math.max(availableHeight * _terrainPercent, 1) : parent.height
-                color:                      _terrainAvailable ? (object.terrainCollision ? "red": qgcPal.text) : "yellow"
+                color:                      _terrainAvailable ? (object.terrainCollision ? "red": beeCopterPal.text) : "yellow"
                 visible:                    _coordValid
             }
 
@@ -95,13 +95,13 @@ Rectangle {
                 anchors.leftMargin:     -2
                 anchors.rightMargin:    -2
                 anchors.fill:           indexLabel
-                color:                  qgcPal.window
+                color:                  beeCopterPal.window
                 opacity:                0.3
                 visible:                indexLabel.visible
                 transform:              Rotation { angle: 90; origin.x: indexBackground.width / 2; origin.y: indexBackground.height / 2 }
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                 indexLabel
                 anchors.centerIn:   parent
                 text:               object.sequenceNumber

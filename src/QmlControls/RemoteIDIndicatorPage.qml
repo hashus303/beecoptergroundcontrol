@@ -1,14 +1,14 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 ToolIndicatorPage {
     showExpand: true
 
-    property var    _activeVehicle:     QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle:     beeCopter.multiVehicleManager.activeVehicle
 
     property bool   gpsFlag:            _activeVehicle && _activeVehicle.remoteIDManager ? _activeVehicle.remoteIDManager.gcsGPSGood         : false
     property bool   basicIDFlag:        _activeVehicle && _activeVehicle.remoteIDManager ? _activeVehicle.remoteIDManager.basicIDGood        : false
@@ -17,7 +17,7 @@ ToolIndicatorPage {
     property bool   emergencyDeclared:  _activeVehicle && _activeVehicle.remoteIDManager ? _activeVehicle.remoteIDManager.emergencyDeclared  : false
     property bool   operatorIDFlag:     _activeVehicle && _activeVehicle.remoteIDManager ? _activeVehicle.remoteIDManager.operatorIDGood     : false
 
-    property int    _regionOperation:   QGroundControl.settingsManager.remoteIDSettings.region.value
+    property int    _regionOperation:   beeCopter.settingsManager.remoteIDSettings.region.value
 
     // Flags visual properties
     property real   flagsWidth:         ScreenTools.defaultFontPixelWidth * 10
@@ -56,8 +56,8 @@ ToolIndicatorPage {
             width:          remoteIDCol.width + ScreenTools.defaultFontPixelWidth  * 3
             height:         remoteIDCol.height + ScreenTools.defaultFontPixelHeight * 2 + (emergencyButtonItem.visible ? emergencyButtonItem.height : 0)
             radius:         ScreenTools.defaultFontPixelHeight * 0.5
-            color:          qgcPal.window
-            border.color:   qgcPal.text
+            color:          beeCopterPal.window
+            border.color:   beeCopterPal.text
 
             Column {
                 id:                         remoteIDCol
@@ -67,7 +67,7 @@ ToolIndicatorPage {
                 anchors.top:                parent.top
                 anchors.horizontalCenter:   parent.horizontalCenter
 
-                QGCLabel {
+                beeCopterLabel {
                     id:                         remoteIDLabel
                     text:                       qsTr("RemoteID Status")
                     font.bold:                  true
@@ -90,7 +90,7 @@ ToolIndicatorPage {
                         sourceSize.height:  height
                         visible:            commsFlag
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.fill:           parent
                             text:                   qsTr("ARM STATUS")
                             wrapMode:               Text.WordWrap
@@ -100,7 +100,7 @@ ToolIndicatorPage {
                             font.pointSize:         ScreenTools.smallFontPointSize
                         }
 
-                        QGCMouseArea {
+                        beeCopterMouseArea {
                             anchors.fill:   parent
                             onClicked:      goToSettings()
                         }
@@ -114,7 +114,7 @@ ToolIndicatorPage {
                         fillMode:           Image.PreserveAspectFit
                         sourceSize.height:  height
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.fill:           parent
                             text:                   commsFlag ? qsTr("RID COMMS") : qsTr("NOT CONNECTED")
                             wrapMode:               Text.WordWrap
@@ -124,7 +124,7 @@ ToolIndicatorPage {
                             font.pointSize:         ScreenTools.smallFontPointSize
                         }
 
-                        QGCMouseArea {
+                        beeCopterMouseArea {
                             anchors.fill:   parent
                             onClicked:      goToSettings()
                         }
@@ -139,7 +139,7 @@ ToolIndicatorPage {
                         sourceSize.height:  height
                         visible:            commsFlag
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.fill:           parent
                             text:                   qsTr("GCS GPS")
                             wrapMode:               Text.WordWrap
@@ -149,7 +149,7 @@ ToolIndicatorPage {
                             font.pointSize:         ScreenTools.smallFontPointSize
                         }
 
-                        QGCMouseArea {
+                        beeCopterMouseArea {
                             anchors.fill:   parent
                             onClicked:      goToSettings()
                         }
@@ -164,7 +164,7 @@ ToolIndicatorPage {
                         sourceSize.height:  height
                         visible:            commsFlag
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.fill:           parent
                             text:                   qsTr("BASIC ID")
                             wrapMode:               Text.WordWrap
@@ -174,7 +174,7 @@ ToolIndicatorPage {
                             font.pointSize:         ScreenTools.smallFontPointSize
                         }
 
-                        QGCMouseArea {
+                        beeCopterMouseArea {
                             anchors.fill:   parent
                             onClicked:      goToSettings()
                         }
@@ -187,9 +187,9 @@ ToolIndicatorPage {
                         source:             operatorIDFlag ? "/qmlimages/RidFlagBackgroundGreen.svg" : "/qmlimages/RidFlagBackgroundRed.svg"
                         fillMode:           Image.PreserveAspectFit
                         sourceSize.height:  height
-                        visible:            commsFlag && _activeVehicle ? (QGroundControl.settingsManager.remoteIDSettings.sendOperatorID.value || _regionOperation == RemoteIDIndicatorPage.EU) : false
+                        visible:            commsFlag && _activeVehicle ? (beeCopter.settingsManager.remoteIDSettings.sendOperatorID.value || _regionOperation == RemoteIDIndicatorPage.EU) : false
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.fill:           parent
                             text:                   qsTr("OPERATOR ID")
                             wrapMode:               Text.WordWrap
@@ -199,7 +199,7 @@ ToolIndicatorPage {
                             font.pointSize:         ScreenTools.smallFontPointSize
                         }
 
-                        QGCMouseArea {
+                        beeCopterMouseArea {
                             anchors.fill:   parent
                             onClicked:      goToSettings()
                         }
@@ -215,7 +215,7 @@ ToolIndicatorPage {
                 height:         emergencyDeclareLabel.height + emergencyButton.height + (_margins * 4)
                 visible:        commsFlag
 
-                QGCLabel {
+                beeCopterLabel {
                     id:                     emergencyDeclareLabel
                     text:                   emergencyDeclared ? qsTr("EMERGENCY HAS BEEN DECLARED, Press and Hold for 3 seconds to cancel") : qsTr("Press and Hold below button to declare emergency")
                     font.bold:              true
@@ -240,7 +240,7 @@ ToolIndicatorPage {
                     anchors.margins:            _margins
                     visible:                    true
 
-                    QGCLabel {
+                    beeCopterLabel {
                         anchors.fill:           parent
                         text:                   emergencyDeclared ? qsTr("Clear Emergency") : qsTr("EMERGENCY")
                         wrapMode:               Text.WordWrap
@@ -289,7 +289,7 @@ ToolIndicatorPage {
         RowLayout {
             spacing: ScreenTools.defaultFontPixelWidth
 
-            property var  remoteIDSettings:QGroundControl.settingsManager.remoteIDSettings
+            property var  remoteIDSettings:beeCopter.settingsManager.remoteIDSettings
             property Fact regionFact:           remoteIDSettings.region
             property Fact sendOperatorIdFact:   remoteIDSettings.sendOperatorID
             property Fact locationTypeFact:     remoteIDSettings.locationType
@@ -344,7 +344,7 @@ ToolIndicatorPage {
                             property Fact _fact: remoteIDSettings.sendSelfID
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:                   qsTr("If an emergency is declared, Emergency Text will be broadcast even if Broadcast setting is not enabled.")
                             font.pointSize:         ScreenTools.smallFontPointSize
                             wrapMode:               Text.WordWrap
@@ -403,13 +403,13 @@ ToolIndicatorPage {
 
                 SettingsGroupLayout {
                     Layout.fillWidth:   true
-                    visible:            QGroundControl.corePlugin.showAdvancedUI
+                    visible:            beeCopter.corePlugin.showAdvancedUI
 
                     RowLayout {
                         Layout.fillWidth: true
 
-                        QGCLabel { Layout.fillWidth: true; text: qsTr("Remote ID") }
-                        QGCButton {
+                        beeCopterLabel { Layout.fillWidth: true; text: qsTr("Remote ID") }
+                        beeCopterButton {
                             text: qsTr("Configure")
                             onClicked: {
                                 goToSettings()

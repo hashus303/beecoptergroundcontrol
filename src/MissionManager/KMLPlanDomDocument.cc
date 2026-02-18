@@ -1,6 +1,6 @@
 #include "KMLPlanDomDocument.h"
-#include "QGCPalette.h"
-#include "QGCApplication.h"
+#include "beeCopterPalette.h"
+#include "beeCopterApplication.h"
 #include "MissionCommandTree.h"
 #include "MissionCommandUIInfo.h"
 #include "MissionItem.h"
@@ -35,7 +35,7 @@ void KMLPlanDomDocument::_addFlightPath(Vehicle* vehicle, QList<MissionItem*> rg
     QList<QGeoCoordinate> rgFlightCoords;
     QGeoCoordinate homeCoord = rgMissionItems[0]->coordinate();
     for (const MissionItem* item : rgMissionItems) {
-        const MissionCommandUIInfo* uiInfo = MissionCommandTree::instance()->getUIInfo(vehicle, QGCMAVLink::VehicleClassGeneric, item->command());
+        const MissionCommandUIInfo* uiInfo = MissionCommandTree::instance()->getUIInfo(vehicle, beeCopterMAVLink::VehicleClassGeneric, item->command());
         if (uiInfo) {
             double altAdjustment = item->frame() == MAV_FRAME_GLOBAL ? 0 : homeCoord.altitude(); // Used to convert to amsl
             if (uiInfo->isTakeoffCommand() && !vehicle->fixedWing()) {
@@ -94,7 +94,7 @@ void KMLPlanDomDocument::addMission(Vehicle* vehicle, QmlObjectListModel* visual
 
 void KMLPlanDomDocument::_addStyles(void)
 {
-    QGCPalette palette;
+    beeCopterPalette palette;
 
     QDomElement missionLineStyle = addStyle(_missionLineStyleName);
     addLineStyle(missionLineStyle, palette.mapMissionTrajectory(), 4);

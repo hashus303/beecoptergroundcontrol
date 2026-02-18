@@ -1,13 +1,13 @@
 #include "Viewer3DTerrainTexture.h"
 
 #include "FlightMapSettings.h"
-#include "QGCLoggingCategory.h"
-#include "QGCMapEngine.h"
-#include "QGCMapUrlEngine.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterMapEngine.h"
+#include "beeCopterMapUrlEngine.h"
 #include "SettingsManager.h"
 #include "Viewer3DMapProvider.h"
 
-QGC_LOGGING_CATEGORY(Viewer3DTerrainTextureLog, "Viewer3d.Viewer3DTerrainTexture")
+beeCopter_LOGGING_CATEGORY(Viewer3DTerrainTextureLog, "Viewer3d.Viewer3DTerrainTexture")
 
 Viewer3DTerrainTexture::Viewer3DTerrainTexture()
     : _flightMapSettings(SettingsManager::instance()->flightMapSettings())

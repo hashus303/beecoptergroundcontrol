@@ -11,14 +11,14 @@ include(CreateCPackCommon)
 list(APPEND CPACK_GENERATOR "BUNDLE")
 set(CPACK_BINARY_BUNDLE ON)
 
-set(QGC_INSTALLER_SOURCE "${CMAKE_SOURCE_DIR}/deploy/macos")
+set(beeCopter_INSTALLER_SOURCE "${CMAKE_SOURCE_DIR}/deploy/macos")
 
 # ----------------------------------------------------------------------------
 # Bundle Configuration
 # ----------------------------------------------------------------------------
 set(CPACK_BUNDLE_NAME ${CMAKE_PROJECT_NAME})
-set(CPACK_BUNDLE_PLIST "${QGC_INSTALLER_SOURCE}/MacOSXBundleInfo.plist.in")
-set(CPACK_BUNDLE_ICON "${QGC_APP_ICON}")
+set(CPACK_BUNDLE_PLIST "${beeCopter_INSTALLER_SOURCE}/MacOSXBundleInfo.plist.in")
+set(CPACK_BUNDLE_ICON "${beeCopter_APP_ICON}")
 # set(CPACK_BUNDLE_STARTUP_COMMAND "")
 
 # ----------------------------------------------------------------------------

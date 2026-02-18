@@ -2,31 +2,31 @@
 # Decompression Subsystem
 # Unified decompression using libarchive (decompression-only)
 # Core formats: ZIP, GZIP, XZ/LZMA, ZSTD (always enabled)
-# Optional formats: LZ4, BZip2 (controlled by QGC_ENABLE_LZ4, QGC_ENABLE_BZIP2)
+# Optional formats: LZ4, BZip2 (controlled by beeCopter_ENABLE_LZ4, beeCopter_ENABLE_BZIP2)
 # ============================================================================
 
 target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE
         # Unified decompression interface
-        QGCCompression.cc
-        QGCCompression.h
-        QGCCompressionTypes.h
+        beeCopterCompression.cc
+        beeCopterCompression.h
+        beeCopterCompressionTypes.h
         # Async job wrapper (QObject with signals)
-        QGCCompressionJob.cc
-        QGCCompressionJob.h
+        beeCopterCompressionJob.cc
+        beeCopterCompressionJob.h
         # QML model for archive contents
-        QGCArchiveModel.cc
-        QGCArchiveModel.h
+        beeCopterArchiveModel.cc
+        beeCopterArchiveModel.h
         # libarchive-based implementation (private)
-        QGClibarchive.cc
-        QGClibarchive.h
+        beeCopterlibarchive.cc
+        beeCopterlibarchive.h
         # QIODevice streaming wrappers
-        QGCArchiveDeviceBase.cc
-        QGCArchiveDeviceBase.h
-        QGCDecompressDevice.cc
-        QGCDecompressDevice.h
-        QGCArchiveFile.cc
-        QGCArchiveFile.h
+        beeCopterArchiveDeviceBase.cc
+        beeCopterArchiveDeviceBase.h
+        beeCopterDecompressDevice.cc
+        beeCopterDecompressDevice.h
+        beeCopterArchiveFile.cc
+        beeCopterArchiveFile.h
 )
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
@@ -60,7 +60,7 @@ CPMAddPackage(
 
 # Suppress compiler warnings for zlib dependency
 if(zlib_ADDED)
-    qgc_disable_dependency_warnings(zlibstatic)
+    beeCopter_disable_dependency_warnings(zlibstatic)
 endif()
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ZLIB::ZLIBSTATIC)
@@ -97,13 +97,13 @@ CPMAddPackage(
         "XZ_DOC OFF"
         "XZ_DOXYGEN OFF"
         "XZ_ENCODERS "                   # Decoder-only: disable all encoders
-        "XZ_MICROLZMA_ENCODER OFF"       # Not used by QGC
-        "XZ_MICROLZMA_DECODER OFF"       # Not used by QGC
-        "XZ_LZIP_DECODER OFF"            # Not used by QGC
+        "XZ_MICROLZMA_ENCODER OFF"       # Not used by beeCopter
+        "XZ_MICROLZMA_DECODER OFF"       # Not used by beeCopter
+        "XZ_LZIP_DECODER OFF"            # Not used by beeCopter
 )
 
 if(TARGET liblzma)
-    qgc_disable_dependency_warnings(liblzma)
+    beeCopter_disable_dependency_warnings(liblzma)
     # Set Find-module variables so libarchive's find_package(LibLZMA) succeeds
     set(LIBLZMA_INCLUDE_DIR "${xz_SOURCE_DIR}/src/liblzma/api" CACHE PATH "" FORCE)
     set(LIBLZMA_INCLUDE_DIRS "${xz_SOURCE_DIR}/src/liblzma/api" CACHE PATH "" FORCE)  # libarchive uses plural
@@ -150,12 +150,12 @@ CPMAddPackage(
         "ZSTD_BUILD_SHARED OFF"
         "ZSTD_BUILD_STATIC ON"
         "ZSTD_MULTITHREAD_SUPPORT OFF"
-        "ZSTD_BUILD_COMPRESSION OFF"     # Decoder-only: QGC only decompresses
+        "ZSTD_BUILD_COMPRESSION OFF"     # Decoder-only: beeCopter only decompresses
         "ZSTD_BUILD_DICTBUILDER OFF"     # Dictionary builder not needed
 )
 
 if(TARGET libzstd_static)
-    qgc_disable_dependency_warnings(libzstd_static)
+    beeCopter_disable_dependency_warnings(libzstd_static)
     # Help libarchive find our ZSTD (prevent using system zstd during cross-compile)
     set(ZSTD_INCLUDE_DIR "${zstd_SOURCE_DIR}/lib" CACHE PATH "" FORCE)
     set(ZSTD_LIBRARY "libzstd_static" CACHE STRING "" FORCE)
@@ -185,7 +185,7 @@ endif()
 # LZ4 Integration (Fast compression) - Optional
 # ============================================================================
 
-if(QGC_ENABLE_LZ4)
+if(beeCopter_ENABLE_LZ4)
     CPMAddPackage(
         NAME lz4
         VERSION 1.10.0
@@ -200,7 +200,7 @@ if(QGC_ENABLE_LZ4)
     )
 
     if(TARGET lz4_static)
-        qgc_disable_dependency_warnings(lz4_static)
+        beeCopter_disable_dependency_warnings(lz4_static)
         # Help libarchive find our LZ4
         set(LZ4_INCLUDE_DIR "${lz4_SOURCE_DIR}/lib" CACHE PATH "" FORCE)
         set(LZ4_LIBRARY "lz4_static" CACHE STRING "" FORCE)
@@ -224,7 +224,7 @@ endif()
 # - Risk: Commit may become unavailable if repo history is rewritten
 # - TODO: Update to tagged release when bzip2 publishes one with CMake support
 
-if(QGC_ENABLE_BZIP2)
+if(beeCopter_ENABLE_BZIP2)
     CPMAddPackage(
         NAME bzip2
         VERSION 1.0.8
@@ -241,7 +241,7 @@ if(QGC_ENABLE_BZIP2)
     )
 
     if(TARGET bz2_static)
-        qgc_disable_dependency_warnings(bz2_static)
+        beeCopter_disable_dependency_warnings(bz2_static)
         # Help libarchive/minizip find our BZip2
         set(BZIP2_INCLUDE_DIR "${bzip2_SOURCE_DIR}" CACHE PATH "" FORCE)
         set(BZIP2_LIBRARY "bz2_static" CACHE STRING "" FORCE)
@@ -260,14 +260,14 @@ endif()
 # libarchive Integration (Full-featured C library)
 # ============================================================================
 
-# Configure optional format support based on QGC options
-if(QGC_ENABLE_BZIP2)
+# Configure optional format support based on beeCopter options
+if(beeCopter_ENABLE_BZIP2)
     set(_LIBARCHIVE_BZIP2 "ON")
 else()
     set(_LIBARCHIVE_BZIP2 "OFF")
 endif()
 
-if(QGC_ENABLE_LZ4)
+if(beeCopter_ENABLE_LZ4)
     set(_LIBARCHIVE_LZ4 "ON")
 else()
     set(_LIBARCHIVE_LZ4 "OFF")
@@ -317,14 +317,14 @@ CPMAddPackage(
 )
 
 if(TARGET archive_static)
-    qgc_disable_dependency_warnings(archive_static)
+    beeCopter_disable_dependency_warnings(archive_static)
     target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE archive_static)
     target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE LIBARCHIVE_STATIC)
-    if(QGC_ENABLE_BZIP2)
-        target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE QGC_ENABLE_BZIP2)
+    if(beeCopter_ENABLE_BZIP2)
+        target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE beeCopter_ENABLE_BZIP2)
     endif()
-    if(QGC_ENABLE_LZ4)
-        target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE QGC_ENABLE_LZ4)
+    if(beeCopter_ENABLE_LZ4)
+        target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE beeCopter_ENABLE_LZ4)
     endif()
     message(STATUS "libarchive support enabled")
 else()

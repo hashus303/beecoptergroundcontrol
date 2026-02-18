@@ -1,6 +1,6 @@
 #include "VehicleFactGroup.h"
 #include "Vehicle.h"
-#include "QGC.h"
+#include "beeCopter.h"
 
 #include <QtGui/QQuaternion>
 #include <QtGui/QVector3D>
@@ -64,7 +64,7 @@ void VehicleFactGroup::handleMessage(Vehicle *vehicle, const mavlink_message_t &
     case MAVLINK_MSG_ID_RAW_IMU:
         _handleRawImuTemp(message);
         break;
-#ifndef QGC_NO_ARDUPILOT_DIALECT
+#ifndef beeCopter_NO_ARDUPILOT_DIALECT
     case MAVLINK_MSG_ID_RANGEFINDER:
         _handleRangefinder(message);
         break;
@@ -76,9 +76,9 @@ void VehicleFactGroup::handleMessage(Vehicle *vehicle, const mavlink_message_t &
 
 void VehicleFactGroup::_handleAttitudeWorker(double rollRadians, double pitchRadians, double yawRadians)
 {
-    double rollDegrees = QGC::limitAngleToPMPIf(rollRadians);
-    double pitchDegrees = QGC::limitAngleToPMPIf(pitchRadians);
-    double yawDegrees = QGC::limitAngleToPMPIf(yawRadians);
+    double rollDegrees = beeCopter::limitAngleToPMPIf(rollRadians);
+    double pitchDegrees = beeCopter::limitAngleToPMPIf(pitchRadians);
+    double yawDegrees = beeCopter::limitAngleToPMPIf(yawRadians);
 
     rollDegrees = qRadiansToDegrees(rollDegrees);
     pitchDegrees = qRadiansToDegrees(pitchDegrees);
@@ -204,7 +204,7 @@ void VehicleFactGroup::_handleRawImuTemp(const mavlink_message_t &message)
     _setTelemetryAvailable(true);
 }
 
-#ifndef QGC_NO_ARDUPILOT_DIALECT
+#ifndef beeCopter_NO_ARDUPILOT_DIALECT
 void VehicleFactGroup::_handleRangefinder(const mavlink_message_t &message)
 {
     mavlink_rangefinder_t rangefinder{};

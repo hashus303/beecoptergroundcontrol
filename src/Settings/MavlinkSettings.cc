@@ -16,7 +16,7 @@ DECLARE_SETTINGGROUP(Mavlink, "")
         deprecatedSettings.remove(deprecatedGCSHeartbeatEnabledKey);
     }
 
-    static const char* deprecatedMavlinkGroup = "QGC_MAVLINK_PROTOCOL";
+    static const char* deprecatedMavlinkGroup = "beeCopter_MAVLINK_PROTOCOL";
     static const char* deprecatedMavlinkSystemIdKey = "GCS_SYSTEM_ID";
     deprecatedSettings.beginGroup(deprecatedMavlinkGroup);
     if (!newSettings.contains(gcsMavlinkSystemIDName) && deprecatedSettings.contains(deprecatedMavlinkSystemIdKey)) {

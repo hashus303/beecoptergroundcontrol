@@ -2,11 +2,11 @@
 #include "Vehicle.h"
 #include "FirmwarePlugin.h"
 #include "MAVLinkProtocol.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "MissionCommandTree.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(PlanManagerLog, "PlanManager.PlanManager")
+beeCopter_LOGGING_CATEGORY(PlanManagerLog, "PlanManager.PlanManager")
 
 PlanManager::PlanManager(Vehicle* vehicle, MAV_MISSION_TYPE planType)
     : QObject                   (vehicle)
@@ -241,8 +241,8 @@ void PlanManager::_ackTimeout(void)
 void PlanManager::_startAckTimeout(AckType_t ack)
 {
     // Use much shorter timeouts in unit tests since MockLink responds instantly
-    const int retryTimeout = qgcApp()->runningUnitTests() ? 10 : _retryTimeoutMilliseconds;
-    const int ackTimeout = qgcApp()->runningUnitTests() ? kTestAckTimeoutMs : _ackTimeoutMilliseconds;
+    const int retryTimeout = beeCopterApp()->runningUnitTests() ? 10 : _retryTimeoutMilliseconds;
+    const int ackTimeout = beeCopterApp()->runningUnitTests() ? kTestAckTimeoutMs : _ackTimeoutMilliseconds;
 
     switch (ack) {
     case AckMissionItem:
@@ -684,7 +684,7 @@ QString PlanManager::_ackTypeToString(AckType_t ackType)
         return QString("Guided Mode Item");
     default:
         qWarning(PlanManagerLog) << QStringLiteral("Fell off end of switch statement %1").arg(_planTypeString());
-        return QString("QGC Internal Error");
+        return QString("beeCopter Internal Error");
     }
 }
 

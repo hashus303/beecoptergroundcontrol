@@ -27,6 +27,6 @@ CPMAddPackage(
 
 # libevents is a header-only (INTERFACE) library, so we cannot suppress warnings
 # on its target. Instead, mark its include directories as SYSTEM to suppress
-# warnings when its headers are compiled as part of QGC source code.
+# warnings when its headers are compiled as part of beeCopter source code.
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE libevents)
 target_include_directories(${CMAKE_PROJECT_NAME} SYSTEM PRIVATE ${libevents_SOURCE_DIR}/libs/cpp)

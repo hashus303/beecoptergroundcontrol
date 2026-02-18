@@ -1,12 +1,12 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     id:         _root
-    color:      qgcPal.windowTransparent
+    color:      beeCopterPal.windowTransparent
     width:      ScreenTools.defaultFontPixelWidth * 7
     height:     Math.min(maxHeight, toolStripColumn.height + (flickable.anchors.margins * 2))
     radius:     ScreenTools.defaultFontPixelWidth / 2
@@ -31,7 +31,7 @@ Rectangle {
         anchors.fill: parent
     }
 
-    QGCFlickable {
+    beeCopterFlickable {
         id:                 flickable
         anchors.margins:    ScreenTools.defaultFontPixelWidth * 0.4
         anchors.fill:       parent

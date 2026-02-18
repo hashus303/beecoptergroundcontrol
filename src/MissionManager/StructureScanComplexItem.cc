@@ -1,17 +1,17 @@
 #include "StructureScanComplexItem.h"
 #include "JsonHelper.h"
 #include "MissionController.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "SettingsManager.h"
 #include "AppSettings.h"
 #include "PlanMasterController.h"
 #include "FlightPathSegment.h"
-#include "QGC.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopter.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QJsonArray>
 
-QGC_LOGGING_CATEGORY(StructureScanComplexItemLog, "Plan.StructureScanComplexItem")
+beeCopter_LOGGING_CATEGORY(StructureScanComplexItemLog, "Plan.StructureScanComplexItem")
 
 const QString StructureScanComplexItem::name(StructureScanComplexItem::tr("Structure Scan"));
 
@@ -31,7 +31,7 @@ StructureScanComplexItem::StructureScanComplexItem(PlanMasterController* masterC
     , _startFromTopFact         (settingsGroup, _metaDataMap[startFromTopName])
     , _entranceAltFact          (settingsGroup, _metaDataMap[_entranceAltName])
 {
-    _editorQml = "qrc:/qml/QGroundControl/Controls/StructureScanEditor.qml";
+    _editorQml = "qrc:/qml/beeCopter/Controls/StructureScanEditor.qml";
 
     _entranceAltFact.setRawValue(SettingsManager::instance()->appSettings()->defaultMissionItemAltitude()->rawValue());
 
@@ -50,27 +50,27 @@ StructureScanComplexItem::StructureScanComplexItem(PlanMasterController* masterC
 
     connect(&_entranceAltFact, &Fact::valueChanged, this, &StructureScanComplexItem::_updateCoordinateAltitudes);
 
-    connect(&_structurePolygon, &QGCMapPolygon::dirtyChanged,   this, &StructureScanComplexItem::_polygonDirtyChanged);
-    connect(&_structurePolygon, &QGCMapPolygon::pathChanged,    this, &StructureScanComplexItem::_rebuildFlightPolygon);
-    connect(&_structurePolygon, &QGCMapPolygon::isValidChanged, this, &StructureScanComplexItem::readyForSaveStateChanged);
-    connect(&_structurePolygon, &QGCMapPolygon::isValidChanged,     this, &StructureScanComplexItem::_updateWizardMode);
-    connect(&_structurePolygon, &QGCMapPolygon::traceModeChanged,   this, &StructureScanComplexItem::_updateWizardMode);
+    connect(&_structurePolygon, &beeCopterMapPolygon::dirtyChanged,   this, &StructureScanComplexItem::_polygonDirtyChanged);
+    connect(&_structurePolygon, &beeCopterMapPolygon::pathChanged,    this, &StructureScanComplexItem::_rebuildFlightPolygon);
+    connect(&_structurePolygon, &beeCopterMapPolygon::isValidChanged, this, &StructureScanComplexItem::readyForSaveStateChanged);
+    connect(&_structurePolygon, &beeCopterMapPolygon::isValidChanged,     this, &StructureScanComplexItem::_updateWizardMode);
+    connect(&_structurePolygon, &beeCopterMapPolygon::traceModeChanged,   this, &StructureScanComplexItem::_updateWizardMode);
 
-    connect(&_structurePolygon, &QGCMapPolygon::countChanged,   this, &StructureScanComplexItem::_updateLastSequenceNumber);
+    connect(&_structurePolygon, &beeCopterMapPolygon::countChanged,   this, &StructureScanComplexItem::_updateLastSequenceNumber);
     connect(&_layersFact,       &Fact::valueChanged,            this, &StructureScanComplexItem::_updateLastSequenceNumber);
 
-    connect(&_flightPolygon,    &QGCMapPolygon::pathChanged,    this, &StructureScanComplexItem::_flightPathChanged);
+    connect(&_flightPolygon,    &beeCopterMapPolygon::pathChanged,    this, &StructureScanComplexItem::_flightPathChanged);
 
     connect(_cameraCalc.distanceToSurface(),    &Fact::valueChanged,                this, &StructureScanComplexItem::_rebuildFlightPolygon);
 
-    connect(&_flightPolygon,                        &QGCMapPolygon::pathChanged,    this, &StructureScanComplexItem::_recalcCameraShots);
+    connect(&_flightPolygon,                        &beeCopterMapPolygon::pathChanged,    this, &StructureScanComplexItem::_recalcCameraShots);
     connect(_cameraCalc.adjustedFootprintSide(),    &Fact::valueChanged,            this, &StructureScanComplexItem::_recalcCameraShots);
     connect(&_layersFact,                           &Fact::valueChanged,            this, &StructureScanComplexItem::_recalcCameraShots);
 
     connect(&_cameraCalc, &CameraCalc::isManualCameraChanged, this, &StructureScanComplexItem::_updateGimbalPitch);
 
     connect(&_layersFact,                           &Fact::valueChanged,            this, &StructureScanComplexItem::_recalcScanDistance);
-    connect(&_flightPolygon,                        &QGCMapPolygon::pathChanged,    this, &StructureScanComplexItem::_recalcScanDistance);
+    connect(&_flightPolygon,                        &beeCopterMapPolygon::pathChanged,    this, &StructureScanComplexItem::_recalcScanDistance);
 
     connect(this, &StructureScanComplexItem::wizardModeChanged, this, &StructureScanComplexItem::readyForSaveStateChanged);
 
@@ -84,7 +84,7 @@ StructureScanComplexItem::StructureScanComplexItem(PlanMasterController* masterC
     connect(&_entranceAltFact,  &Fact::valueChanged,                                this, &StructureScanComplexItem::minAMSLAltitudeChanged);
     connect(&_entranceAltFact,  &Fact::valueChanged,                                this, &StructureScanComplexItem::maxAMSLAltitudeChanged);
 
-    connect(&_flightPolygon,                        &QGCMapPolygon::pathChanged,                    this, &StructureScanComplexItem::_updateFlightPathSegmentsSignal);
+    connect(&_flightPolygon,                        &beeCopterMapPolygon::pathChanged,                    this, &StructureScanComplexItem::_updateFlightPathSegmentsSignal);
     connect(&_startFromTopFact,                     &Fact::valueChanged,                            this, &StructureScanComplexItem::_updateFlightPathSegmentsSignal);
     connect(&_structureHeightFact,                  &Fact::valueChanged,                            this, &StructureScanComplexItem::_updateFlightPathSegmentsSignal);
     connect(&_scanBottomAltFact,                    &Fact::valueChanged,                            this, &StructureScanComplexItem::_updateFlightPathSegmentsSignal);
@@ -95,7 +95,7 @@ StructureScanComplexItem::StructureScanComplexItem(PlanMasterController* masterC
 
     // The follow is used to compress multiple recalc calls in a row to into a single call.
     connect(this, &StructureScanComplexItem::_updateFlightPathSegmentsSignal, this, &StructureScanComplexItem::_updateFlightPathSegmentsDontCallDirectly,   Qt::QueuedConnection);
-    qgcApp()->addCompressedSignal(QMetaMethod::fromSignal(&StructureScanComplexItem::_updateFlightPathSegmentsSignal));
+    beeCopterApp()->addCompressedSignal(QMetaMethod::fromSignal(&StructureScanComplexItem::_updateFlightPathSegmentsSignal));
 
     _recalcLayerInfo();
 
@@ -193,7 +193,7 @@ bool StructureScanComplexItem::load(const QJsonObject& complexObject, int sequen
         { JsonHelper::jsonVersionKey,                   QJsonValue::Double, true },
         { VisualMissionItem::jsonTypeKey,               QJsonValue::String, true },
         { ComplexMissionItem::jsonComplexItemTypeKey,   QJsonValue::String, true },
-        { QGCMapPolygon::jsonPolygonKey,                QJsonValue::Array,  true },
+        { beeCopterMapPolygon::jsonPolygonKey,                QJsonValue::Array,  true },
         { scanBottomAltName,                            QJsonValue::Double, true },
         { structureHeightName,                          QJsonValue::Double, true },
         { layersName,                                   QJsonValue::Double, true },
@@ -211,7 +211,7 @@ bool StructureScanComplexItem::load(const QJsonObject& complexObject, int sequen
     QString itemType = complexObject[VisualMissionItem::jsonTypeKey].toString();
     QString complexType = complexObject[ComplexMissionItem::jsonComplexItemTypeKey].toString();
     if (itemType != VisualMissionItem::jsonTypeComplexItemValue || complexType != jsonComplexItemTypeValue) {
-        errorString = tr("%1 does not support loading this complex mission item type: %2:%3").arg(qgcApp()->applicationName()).arg(itemType).arg(complexType);
+        errorString = tr("%1 does not support loading this complex mission item type: %2:%3").arg(beeCopterApp()->applicationName()).arg(itemType).arg(complexType);
         return false;
     }
 
@@ -265,7 +265,7 @@ void StructureScanComplexItem::_flightPathChanged(void)
         top     = fmax(top, vertex.altitude());
     }
     //-- Update bounding cube for airspace management control
-    _setBoundingCube(QGCGeoBoundingCube(
+    _setBoundingCube(beeCopterGeoBoundingCube(
                          QGeoCoordinate(north - 90.0, west - 180.0, bottom),
                          QGeoCoordinate(south - 90.0, east - 180.0, top)));
 
@@ -450,7 +450,7 @@ int StructureScanComplexItem::cameraShots(void) const
 void StructureScanComplexItem::setMissionFlightStatus(MissionController::MissionFlightStatus_t& missionFlightStatus)
 {
     ComplexMissionItem::setMissionFlightStatus(missionFlightStatus);
-    if (!QGC::fuzzyCompare(_vehicleSpeed, missionFlightStatus.vehicleSpeed)) {
+    if (!beeCopter::fuzzyCompare(_vehicleSpeed, missionFlightStatus.vehicleSpeed)) {
         _vehicleSpeed = missionFlightStatus.vehicleSpeed;
         emit timeBetweenShotsChanged();
     }
@@ -621,7 +621,7 @@ void StructureScanComplexItem::_recalcScanDistance()
                                              << " scanDistance: " << _scanDistance;
     }
 
-    if (!QGC::fuzzyCompare(_scanDistance, scanDistance)) {
+    if (!beeCopter::fuzzyCompare(_scanDistance, scanDistance)) {
         _scanDistance = scanDistance;
         emit complexDistanceChanged();
     }

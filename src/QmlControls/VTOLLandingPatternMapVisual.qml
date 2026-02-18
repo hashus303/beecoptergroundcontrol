@@ -4,9 +4,9 @@ import QtLocation
 import QtPositioning
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 Item {
     id: _root
@@ -76,7 +76,7 @@ Item {
         }
     }
 
-    QGCDynamicObjectManager {
+    beeCopterDynamicObjectManager {
         id: objMgr
     }
 
@@ -145,7 +145,7 @@ Item {
 
         MouseArea {
             anchors.fill:   map
-            z:              QGroundControl.zOrderMapItems + 1   // Over item indicators
+            z:              beeCopter.zOrderMapItems + 1   // Over item indicators
 
             readonly property int   _decimalPlaces:             8
 
@@ -203,7 +203,7 @@ Item {
         id: flightPathComponent
 
         MapPolyline {
-            z:          QGroundControl.zOrderMapItems - 1   // Under item indicators
+            z:          beeCopter.zOrderMapItems - 1   // Under item indicators
             line.color: "#be781c"
             line.width: 2
             path:       _flightPath
@@ -217,7 +217,7 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             coordinate:     _missionItem.finalApproachCoordinate
 
             sourceItem:
@@ -238,7 +238,7 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             coordinate:     _missionItem.landingCoordinate
 
             sourceItem:
@@ -256,7 +256,7 @@ Item {
         id: loiterRadiusComponent
 
         MapCircle {
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             center:         _missionItem.finalApproachCoordinate
             radius:         _missionItem.loiterRadius.rawValue
             border.width:   2

@@ -1,42 +1,42 @@
 import QtQml.Models
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ListModel {
     ListElement {
         name: qsTr("General")
-        url: "qrc:/qml/QGroundControl/AppSettings/GeneralSettings.qml"
-        iconUrl: "qrc:/res/QGCLogoWhite.svg"
+        url: "qrc:/qml/beeCopter/AppSettings/GeneralSettings.qml"
+        iconUrl: "qrc:/res/beeCopterLogoWhite.svg"
         pageVisible: function() { return true }
     }
 
     ListElement {
         name: qsTr("Fly View")
-        url: "qrc:/qml/QGroundControl/AppSettings/FlyViewSettings.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/FlyViewSettings.qml"
         iconUrl: "qrc:/qmlimages/PaperPlane.svg"
         pageVisible: function() { return true }
     }
 
     ListElement {
         name: qsTr("3D View")
-        url: "qrc:/qml/QGroundControl/Viewer3D/Viewer3DSettings.qml"
-        iconUrl: "qrc:/qml/QGroundControl/Viewer3D/City3DMapIcon.svg"
-        pageVisible: function() { return QGroundControl.settingsManager.viewer3DSettings.visible }
+        url: "qrc:/qml/beeCopter/Viewer3D/Viewer3DSettings.qml"
+        iconUrl: "qrc:/qml/beeCopter/Viewer3D/City3DMapIcon.svg"
+        pageVisible: function() { return beeCopter.settingsManager.viewer3DSettings.visible }
     }
 
     ListElement {
         name: qsTr("Plan View")
-        url: "qrc:/qml/QGroundControl/AppSettings/PlanViewSettings.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/PlanViewSettings.qml"
         iconUrl: "qrc:/qmlimages/Plan.svg"
         pageVisible: function() { return true }
     }
 
     ListElement {
         name: qsTr("Video")
-        url: "qrc:/qml/QGroundControl/AppSettings/VideoSettings.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/VideoSettings.qml"
         iconUrl: "qrc:/InstrumentValueIcons/camera.svg"
-        pageVisible: function() { return QGroundControl.settingsManager.videoSettings.visible }
+        pageVisible: function() { return beeCopter.settingsManager.videoSettings.visible }
     }
 
     ListElement {
@@ -45,64 +45,64 @@ ListModel {
 
     ListElement {
         name: qsTr("ADSB Server")
-        url: "qrc:/qml/QGroundControl/AppSettings/ADSBServerSettings.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/ADSBServerSettings.qml"
         iconUrl: "qrc:/InstrumentValueIcons/airplane.svg"
         pageVisible: function() { return true }
     }
 
     ListElement {
         name: qsTr("Comm Links")
-        url: "qrc:/qml/QGroundControl/AppSettings/LinkSettings.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/LinkSettings.qml"
         iconUrl: "qrc:/InstrumentValueIcons/usb.svg"
         pageVisible: function() { return true }
     }
 
     ListElement {
         name: qsTr("Logging")
-        url: "qrc:/qml/QGroundControl/Controls/AppLogging.qml"
+        url: "qrc:/qml/beeCopter/Controls/AppLogging.qml"
         iconUrl: "qrc:/InstrumentValueIcons/conversation.svg"
         pageVisible: function() { return true }
     }
 
     ListElement {
         name: qsTr("Maps")
-        url: "qrc:/qml/QGroundControl/AppSettings/MapSettings.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/MapSettings.qml"
         iconUrl: "qrc:/InstrumentValueIcons/globe.svg"
         pageVisible: function() { return true }
     }
 
     ListElement {
         name: qsTr("NTRIP/RTK")
-        url: "qrc:/qml/QGroundControl/AppSettings/NTRIPSettings.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/NTRIPSettings.qml"
         iconUrl: "qrc:/InstrumentValueIcons/globe.svg"
         pageVisible: function() {
-            return QGroundControl.settingsManager &&
-                   QGroundControl.settingsManager.ntripSettings !== undefined
+            return beeCopter.settingsManager &&
+                   beeCopter.settingsManager.ntripSettings !== undefined
         }
     }
 
     ListElement {
         name: qsTr("PX4 Log Transfer")
-        url: "qrc:/qml/QGroundControl/AppSettings/PX4LogTransferSettings.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/PX4LogTransferSettings.qml"
         iconUrl: "qrc:/InstrumentValueIcons/inbox-download.svg"
         pageVisible: function() {
-            var activeVehicle = QGroundControl.multiVehicleManager.activeVehicle
-            return QGroundControl.corePlugin.options.showPX4LogTransferOptions &&
-                        QGroundControl.px4ProFirmwareSupported &&
+            var activeVehicle = beeCopter.multiVehicleManager.activeVehicle
+            return beeCopter.corePlugin.options.showPX4LogTransferOptions &&
+                        beeCopter.px4ProFirmwareSupported &&
                         (activeVehicle ? activeVehicle.px4Firmware : true)
         }
     }
 
     ListElement {
         name: qsTr("Remote ID")
-        url: "qrc:/qml/QGroundControl/AppSettings/RemoteIDSettings.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/RemoteIDSettings.qml"
         iconUrl: "qrc:/qmlimages/RidIconManNoID.svg"
         pageVisible: function() { return true }
     }
 
     ListElement {
         name: qsTr("Telemetry")
-        url: "qrc:/qml/QGroundControl/AppSettings/TelemetrySettings.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/TelemetrySettings.qml"
         iconUrl: "qrc:/InstrumentValueIcons/drone.svg"
         pageVisible: function() { return true }
     }
@@ -113,7 +113,7 @@ ListModel {
 
     ListElement {
         name: qsTr("Help")
-        url: "qrc:/qml/QGroundControl/AppSettings/HelpSettings.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/HelpSettings.qml"
         iconUrl: "qrc:/InstrumentValueIcons/question.svg"
         pageVisible: function() { return true }
     }
@@ -124,21 +124,21 @@ ListModel {
 
     ListElement {
         name: qsTr("Mock Link")
-        url: "qrc:/qml/QGroundControl/AppSettings/MockLink.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/MockLink.qml"
         iconUrl: "qrc:/InstrumentValueIcons/drone.svg"
         pageVisible: function() { return ScreenTools.isDebug }
     }
 
     ListElement {
         name: qsTr("Debug")
-        url: "qrc:/qml/QGroundControl/AppSettings/DebugWindow.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/DebugWindow.qml"
         iconUrl: "qrc:/InstrumentValueIcons/bug.svg"
         pageVisible: function() { return ScreenTools.isDebug }
     }
 
     ListElement {
         name: qsTr("Palette Test")
-        url: "qrc:/qml/QGroundControl/AppSettings/QmlTest.qml"
+        url: "qrc:/qml/beeCopter/AppSettings/QmlTest.qml"
         iconUrl: "qrc:/InstrumentValueIcons/photo.svg"
         pageVisible: function() { return ScreenTools.isDebug }
     }

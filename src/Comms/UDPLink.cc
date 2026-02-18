@@ -1,7 +1,7 @@
 #include "UDPLink.h"
 #include "AutoConnectSettings.h"
-#include "QGCLoggingCategory.h"
-#include "QGCNetworkHelper.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterNetworkHelper.h"
 #include "SettingsManager.h"
 
 #include <QtCore/QMutexLocker>
@@ -12,7 +12,7 @@
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QUdpSocket>
 
-QGC_LOGGING_CATEGORY(UDPLinkLog, "Comms.UDPLink")
+beeCopter_LOGGING_CATEGORY(UDPLinkLog, "Comms.UDPLink")
 
 namespace {
     constexpr int BUFFER_TRIGGER_SIZE = 10 * 1024;
@@ -344,14 +344,14 @@ void UDPWorker::connectLink()
         qCWarning(UDPLinkLog) << "Failed to join multicast group" << _multicastGroup.toString();
     }
 
-#ifdef QGC_ZEROCONF_ENABLED
+#ifdef beeCopter_ZEROCONF_ENABLED
     _registerZeroconf(_udpConfig->localPort());
 #endif
 }
 
 void UDPWorker::disconnectLink()
 {
-#ifdef QGC_ZEROCONF_ENABLED
+#ifdef beeCopter_ZEROCONF_ENABLED
     _deregisterZeroconf();
 #endif
 
@@ -482,7 +482,7 @@ void UDPWorker::_onSocketErrorOccurred(QUdpSocket::SocketError error)
     }
 }
 
-#ifdef QGC_ZEROCONF_ENABLED
+#ifdef beeCopter_ZEROCONF_ENABLED
 void UDPWorker::_zeroconfRegisterCallback(DNSServiceRef sdRef, DNSServiceFlags flags, DNSServiceErrorType errorCode, const char *name, const char *regtype, const char *domain, void *context)
 {
     Q_UNUSED(sdRef); Q_UNUSED(flags); Q_UNUSED(name); Q_UNUSED(regtype); Q_UNUSED(domain);
@@ -495,7 +495,7 @@ void UDPWorker::_zeroconfRegisterCallback(DNSServiceRef sdRef, DNSServiceFlags f
 
 void UDPWorker::_registerZeroconf(uint16_t port)
 {
-    static constexpr const char *regType = "_qgroundcontrol._udp";
+    static constexpr const char *regType = "_beeCopter._udp";
 
     if (_dnssServiceRef) {
         qCWarning(UDPLinkLog) << "Already registered zeroconf";
@@ -546,7 +546,7 @@ void UDPWorker::_deregisterZeroconf()
         _dnssServiceRef = NULL;
     }
 }
-#endif // QGC_ZEROCONF_ENABLED
+#endif // beeCopter_ZEROCONF_ENABLED
 
 /*===========================================================================*/
 
@@ -642,5 +642,5 @@ void UDPLink::_writeBytes(const QByteArray& bytes)
 
 bool UDPLink::isSecureConnection() const
 {
-    return QGCNetworkHelper::isNetworkEthernet();
+    return beeCopterNetworkHelper::isNetworkEthernet();
 }

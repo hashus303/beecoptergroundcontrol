@@ -1,6 +1,6 @@
 #include "ScreenToolsController.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "SettingsManager.h"
 #include "AppSettings.h"
 
@@ -13,7 +13,7 @@
 #include <sys/utsname.h>
 #endif
 
-QGC_LOGGING_CATEGORY(ScreenToolsControllerLog, "QMLControls.ScreenToolsController")
+beeCopter_LOGGING_CATEGORY(ScreenToolsControllerLog, "QMLControls.ScreenToolsController")
 
 ScreenToolsController::ScreenToolsController(QObject *parent)
     : QObject(parent)
@@ -81,6 +81,6 @@ double ScreenToolsController::defaultFontDescent(int pointSize)
 #if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
 bool ScreenToolsController::fakeMobile()
 {
-    return qgcApp()->fakeMobile();
+    return beeCopterApp()->fakeMobile();
 }
 #endif

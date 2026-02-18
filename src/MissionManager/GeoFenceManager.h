@@ -4,8 +4,8 @@
 #include <QtPositioning/QGeoCoordinate>
 #include <QtCore/QLoggingCategory>
 
-#include "QGCFencePolygon.h"
-#include "QGCFenceCircle.h"
+#include "beeCopterFencePolygon.h"
+#include "beeCopterFenceCircle.h"
 #include "PlanManager.h"
 
 class Vehicle;
@@ -27,8 +27,8 @@ public:
 
     /// Signals sendComplete when done
     void sendToVehicle(const QGeoCoordinate&    breachReturn,   ///< Breach return point
-                       QmlObjectListModel&      polygons,       ///< List of QGCFencePolygons
-                       QmlObjectListModel&      circles);       ///< List of QGCFenceCircles
+                       QmlObjectListModel&      polygons,       ///< List of beeCopterFencePolygons
+                       QmlObjectListModel&      circles);       ///< List of beeCopterFenceCircles
 
     /// Signals removeAllComplete when done
     void removeAll(void);
@@ -37,8 +37,8 @@ public:
     ///     Signal: polygonEnabledChanged
     bool polygonEnabled(void) const { return true; }
 
-    const QList<QGCFencePolygon>&   polygons(void) { return _polygons; }
-    const QList<QGCFenceCircle>&    circles(void) { return _circles; }
+    const QList<beeCopterFencePolygon>&   polygons(void) { return _polygons; }
+    const QList<beeCopterFenceCircle>&    circles(void) { return _circles; }
     const QGeoCoordinate&           breachReturnPoint(void) const { return _breachReturnPoint; }
 
     /// Error codes returned in error signal
@@ -66,10 +66,10 @@ private slots:
 private:
     void _sendError(ErrorCode_t errorCode, const QString& errorMsg);
 
-    QList<QGCFencePolygon>  _polygons;
-    QList<QGCFenceCircle>   _circles;
+    QList<beeCopterFencePolygon>  _polygons;
+    QList<beeCopterFenceCircle>   _circles;
     QGeoCoordinate          _breachReturnPoint;
     bool                    _firstParamLoadComplete = false;
-    QList<QGCFencePolygon>  _sendPolygons;
-    QList<QGCFenceCircle>   _sendCircles;
+    QList<beeCopterFencePolygon>  _sendPolygons;
+    QList<beeCopterFenceCircle>   _sendCircles;
 };

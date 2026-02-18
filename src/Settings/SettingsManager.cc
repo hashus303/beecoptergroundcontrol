@@ -1,7 +1,7 @@
 #include "SettingsManager.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "ADSBVehicleManagerSettings.h"
-#ifndef QGC_NO_ARDUPILOT_DIALECT
+#ifndef beeCopter_NO_ARDUPILOT_DIALECT
 #include "APMMavlinkStreamRateSettings.h"
 #endif
 #include "AppSettings.h"
@@ -27,13 +27,13 @@
 #include "Viewer3DSettings.h"
 #include "JsonHelper.h"
 #include "JsonParsing.h"
-#include "QGCCorePlugin.h"
-#include "QGCApplication.h"
+#include "beeCopterCorePlugin.h"
+#include "beeCopterApplication.h"
 
 #include <QtCore/QApplicationStatic>
 #include <QtQml/qqml.h>
 
-QGC_LOGGING_CATEGORY(SettingsManagerLog, "Utilities.SettingsManager")
+beeCopter_LOGGING_CATEGORY(SettingsManagerLog, "Utilities.SettingsManager")
 
 Q_APPLICATION_STATIC(SettingsManager, _settingsManagerInstance);
 
@@ -55,8 +55,8 @@ SettingsManager *SettingsManager::instance()
 
 void SettingsManager::registerQmlTypes()
 {
-    (void) qmlRegisterUncreatableType<SettingsManager>("QGroundControl.SettingsManager", 1, 0, "SettingsManager", "Reference only");
-    (void) qmlRegisterUncreatableType<NTRIPSettings>("QGroundControl", 1, 0, "NTRIPSettings", "Reference only");
+    (void) qmlRegisterUncreatableType<SettingsManager>("beeCopter.SettingsManager", 1, 0, "SettingsManager", "Reference only");
+    (void) qmlRegisterUncreatableType<NTRIPSettings>("beeCopter", 1, 0, "NTRIPSettings", "Reference only");
 
 }
 
@@ -87,13 +87,13 @@ void SettingsManager::init()
     _joystickManagerSettings = new JoystickManagerSettings(this);
     _viewer3DSettings = new Viewer3DSettings(this);
     _adsbVehicleManagerSettings = new ADSBVehicleManagerSettings(this);
-#ifndef QGC_NO_ARDUPILOT_DIALECT
+#ifndef beeCopter_NO_ARDUPILOT_DIALECT
     _apmMavlinkStreamRateSettings = new APMMavlinkStreamRateSettings(this);
 #endif
 }
 
 ADSBVehicleManagerSettings *SettingsManager::adsbVehicleManagerSettings() const { return _adsbVehicleManagerSettings; }
-#ifndef QGC_NO_ARDUPILOT_DIALECT
+#ifndef beeCopter_NO_ARDUPILOT_DIALECT
 APMMavlinkStreamRateSettings *SettingsManager::apmMavlinkStreamRateSettings() const { return _apmMavlinkStreamRateSettings; }
 #endif
 AppSettings *SettingsManager::appSettings() const { return _appSettings; }
@@ -164,7 +164,7 @@ void SettingsManager::_loadSettingsFiles()
 
         // Validate the settings file
         int version;
-        if (!JsonHelper::validateInternalQGCJsonFile(jsonObject, "Settings", 1, 1, version, errorString)) {
+        if (!JsonHelper::validateInternalbeeCopterJsonFile(jsonObject, "Settings", 1, 1, version, errorString)) {
             qCWarning(SettingsManagerLog) << "Settings file failed validation:" << fileInfo.absoluteFilePath() << errorString;
             continue;
         }
@@ -219,7 +219,7 @@ void SettingsManager::adjustSettingMetaData(const QString &settingsGroup, FactMe
         return;
     }
 
-    if (!qgcApp()->runningUnitTests()) {
+    if (!beeCopterApp()->runningUnitTests()) {
         // Apply settings file overrides
         const auto &groupOverrides = settingsManager->_settingsFileOverrides;
         if (groupOverrides.contains(settingsGroup) && groupOverrides[settingsGroup].contains(metaData.name())) {
@@ -271,6 +271,6 @@ void SettingsManager::adjustSettingMetaData(const QString &settingsGroup, FactMe
         }
     }
 
-    // Give QGCCorePlugin a whack at it too
-    QGCCorePlugin::instance()->adjustSettingMetaData(settingsGroup, metaData, visible);
+    // Give beeCopterCorePlugin a whack at it too
+    beeCopterCorePlugin::instance()->adjustSettingMetaData(settingsGroup, metaData, visible);
 }

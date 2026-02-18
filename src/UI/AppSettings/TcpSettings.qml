@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 GridLayout {
     columns:        2
@@ -15,8 +15,8 @@ GridLayout {
         subEditConfig.port = parseInt(portField.text)
     }
 
-    QGCLabel { text: qsTr("Server Address") }
-    QGCTextField {
+    beeCopterLabel { text: qsTr("Server Address") }
+    beeCopterTextField {
         id:                     hostField
         Layout.preferredWidth:  _secondColumnWidth
         text:                   subEditConfig.host
@@ -30,8 +30,8 @@ GridLayout {
         }
     }
 
-    QGCLabel { text: qsTr("Port") }
-    QGCTextField {
+    beeCopterLabel { text: qsTr("Port") }
+    beeCopterTextField {
         id:                     portField
         Layout.preferredWidth:  _secondColumnWidth
         text:                   subEditConfig.port.toString()
@@ -45,13 +45,13 @@ GridLayout {
     }
 
     // Help text
-    QGCLabel {
+    beeCopterLabel {
         Layout.columnSpan:      2
         Layout.preferredWidth:  _secondColumnWidth
         Layout.fillWidth:       true
         font.pointSize:         ScreenTools.smallFontPointSize
         wrapMode:               Text.WordWrap
         text:                   qsTr("You can enter an IP address (e.g. 192.168.1.1) or hostname (e.g. my-drone.local)")
-        color:                  qgcPal.text
+        color:                  beeCopterPal.text
     }
 }

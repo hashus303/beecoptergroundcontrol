@@ -2,9 +2,9 @@ import QtQuick
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
 
 Item {
     id:             _root
@@ -54,7 +54,7 @@ Item {
         Repeater{
             model: proximityValues.rgRotationValues.length
 
-            QGCLabel{
+            beeCopterLabel{
                 x:                      (_sectorViewEllipsoid.width / 2) - (width / 2)
                 y:                      (_sectorViewEllipsoid.height / 2) - (height / 2)
                 text:                   proximityValues.rgRotationValueStrings[index]

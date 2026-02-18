@@ -1,8 +1,8 @@
 import QtQuick
 import QtQml.Models
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// A PreFlightCheckGroup manages a set of PreFlightCheckButtons as a single entity.
 Column  {
@@ -39,7 +39,7 @@ Column  {
         anchors.left:   parent.left
         anchors.right:  parent.right
         text:           name + (passed ? qsTr(" (passed)") : "")
-        color:          failed ? qgcPal.statusFailedText : (passed ? qgcPal.statusPassedText : qgcPal.statusPendingText)
+        color:          failed ? beeCopterPal.statusFailedText : (passed ? beeCopterPal.statusPassedText : beeCopterPal.statusPendingText)
     }
 
     Column {

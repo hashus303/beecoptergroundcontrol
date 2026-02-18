@@ -3,7 +3,7 @@
 #include "MissionManager.h"
 #include "FlightPathSegment.h"
 #include "FirmwarePlugin.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "SimpleMissionItem.h"
 #include "SurveyComplexItem.h"
 #include "FixedWingLandingComplexItem.h"
@@ -11,25 +11,25 @@
 #include "StructureScanComplexItem.h"
 #include "CorridorScanComplexItem.h"
 #include "JsonHelper.h"
-#include "QGroundControlQmlGlobal.h"
+#include "beeCopterQmlGlobal.h"
 #include "SettingsManager.h"
 #include "AppSettings.h"
 #include "MissionSettingsItem.h"
 #include "PlanMasterController.h"
 #include "KMLPlanDomDocument.h"
-#include "QGCCorePlugin.h"
+#include "beeCopterCorePlugin.h"
 #include "TakeoffMissionItem.h"
 #include "PlanViewSettings.h"
 #include "MissionCommandTree.h"
-#include "QGC.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopter.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 
 #define UPDATE_TIMEOUT 5000 ///< How often we check for bounding box changes
 
-QGC_LOGGING_CATEGORY(MissionControllerLog, "PlanManager.MissionController")
+beeCopter_LOGGING_CATEGORY(MissionControllerLog, "PlanManager.MissionController")
 
 MissionController::MissionController(PlanMasterController* masterController, QObject *parent)
     : PlanElementController (masterController, parent)
@@ -54,9 +54,9 @@ MissionController::MissionController(PlanMasterController* masterController, QOb
     // The follow is used to compress multiple recalc calls in a row to into a single call.
     connect(this, &MissionController::_recalcMissionFlightStatusSignal, this, &MissionController::_recalcMissionFlightStatus,   Qt::QueuedConnection);
     connect(this, &MissionController::_recalcFlightPathSegmentsSignal,  this, &MissionController::_recalcFlightPathSegments,    Qt::QueuedConnection);
-    qgcApp()->addCompressedSignal(QMetaMethod::fromSignal(&MissionController::_recalcMissionFlightStatusSignal));
-    qgcApp()->addCompressedSignal(QMetaMethod::fromSignal(&MissionController::_recalcFlightPathSegmentsSignal));
-    qgcApp()->addCompressedSignal(QMetaMethod::fromSignal(&MissionController::recalcTerrainProfile));
+    beeCopterApp()->addCompressedSignal(QMetaMethod::fromSignal(&MissionController::_recalcMissionFlightStatusSignal));
+    beeCopterApp()->addCompressedSignal(QMetaMethod::fromSignal(&MissionController::_recalcFlightPathSegmentsSignal));
+    beeCopterApp()->addCompressedSignal(QMetaMethod::fromSignal(&MissionController::recalcTerrainProfile));
 }
 
 MissionController::~MissionController()
@@ -88,7 +88,7 @@ void MissionController::_resetMissionFlightStatus(void)
     _missionFlightStatus.cruiseAmpsTotal =      0;
     _missionFlightStatus.batteryChangePoint =   -1;
     _missionFlightStatus.batteriesRequired =    -1;
-    _missionFlightStatus.vtolMode =             _missionContainsVTOLTakeoff ? QGCMAVLink::VehicleClassMultiRotor : QGCMAVLink::VehicleClassFixedWing;
+    _missionFlightStatus.vtolMode =             _missionContainsVTOLTakeoff ? beeCopterMAVLink::VehicleClassMultiRotor : beeCopterMAVLink::VehicleClassFixedWing;
 
     _controllerVehicle->firmwarePlugin()->batteryConsumptionData(_controllerVehicle, _missionFlightStatus.mAhBattery, _missionFlightStatus.hoverAmps, _missionFlightStatus.cruiseAmps);
     if (_missionFlightStatus.mAhBattery != 0) {
@@ -189,7 +189,7 @@ void MissionController::_newMissionItemsAvailableFromVehicle(bool removeAllReque
         _settingsItem = settingsItem;
 
         // We set Altitude mode to mixed, otherwise if we need a non relative altitude frame we won't be able to change it
-        setGlobalAltitudeMode(weHaveItemsFromVehicle ? QGroundControlQmlGlobal::AltitudeModeMixed : QGroundControlQmlGlobal::AltitudeModeRelative);
+        setGlobalAltitudeMode(weHaveItemsFromVehicle ? beeCopterQmlGlobal::AltitudeModeMixed : beeCopterQmlGlobal::AltitudeModeRelative);
 
         MissionController::_scanForAdditionalSettings(_visualItems, _masterController);
 
@@ -309,13 +309,13 @@ VisualMissionItem* MissionController::_insertSimpleMissionItemWorker(QGeoCoordin
     if (newItem->specifiesAltitude()) {
         if (!MissionCommandTree::instance()->isLandCommand(command)) {
             double                              prevAltitude;
-            QGroundControlQmlGlobal::AltMode    prevAltMode;
+            beeCopterQmlGlobal::AltMode    prevAltMode;
 
             if (_findPreviousAltitude(visualItemIndex, &prevAltitude, &prevAltMode)) {
                 newItem->altitude()->setRawValue(prevAltitude);
-                if (globalAltitudeMode() == QGroundControlQmlGlobal::AltitudeModeMixed) {
+                if (globalAltitudeMode() == beeCopterQmlGlobal::AltitudeModeMixed) {
                     // We are in mixed altitude modes, so copy from previous. Otherwise alt mode will be set from global setting.
-                    newItem->setAltitudeMode(static_cast<QGroundControlQmlGlobal::AltMode>(prevAltMode));
+                    newItem->setAltitudeMode(static_cast<beeCopterQmlGlobal::AltMode>(prevAltMode));
                 }
             }
         }
@@ -353,11 +353,11 @@ VisualMissionItem* MissionController::insertTakeoffItem(QGeoCoordinate /*coordin
 
     if (_takeoffMissionItem->specifiesAltitude()) {
         double                              prevAltitude;
-        QGroundControlQmlGlobal::AltMode    prevAltMode;
+        beeCopterQmlGlobal::AltMode    prevAltMode;
 
         if (_findPreviousAltitude(visualItemIndex, &prevAltitude, &prevAltMode)) {
             _takeoffMissionItem->altitude()->setRawValue(prevAltitude);
-            _takeoffMissionItem->setAltitudeMode(static_cast<QGroundControlQmlGlobal::AltMode>(prevAltMode));
+            _takeoffMissionItem->setAltitudeMode(static_cast<beeCopterQmlGlobal::AltMode>(prevAltMode));
         }
     }
     if (visualItemIndex == -1) {
@@ -402,7 +402,7 @@ VisualMissionItem* MissionController::insertROIMissionItem(QGeoCoordinate coordi
 {
     SimpleMissionItem* simpleItem = qobject_cast<SimpleMissionItem*>(_insertSimpleMissionItemWorker(coordinate, MAV_CMD_DO_SET_ROI_LOCATION, visualItemIndex, makeCurrentItem));
 
-    if (!_controllerVehicle->firmwarePlugin()->supportedMissionCommands(QGCMAVLink::VehicleClassGeneric).contains(MAV_CMD_DO_SET_ROI_LOCATION)) {
+    if (!_controllerVehicle->firmwarePlugin()->supportedMissionCommands(beeCopterMAVLink::VehicleClassGeneric).contains(MAV_CMD_DO_SET_ROI_LOCATION)) {
         simpleItem->setCommand(MAV_CMD_DO_SET_ROI)  ;
         simpleItem->missionItem().setParam1(MAV_ROI_LOCATION);
     }
@@ -414,7 +414,7 @@ VisualMissionItem* MissionController::insertCancelROIMissionItem(int visualItemI
 {
     SimpleMissionItem* simpleItem = qobject_cast<SimpleMissionItem*>(_insertSimpleMissionItemWorker(QGeoCoordinate(), MAV_CMD_DO_SET_ROI_NONE, visualItemIndex, makeCurrentItem));
 
-    if (!_controllerVehicle->firmwarePlugin()->supportedMissionCommands(QGCMAVLink::VehicleClassGeneric).contains(MAV_CMD_DO_SET_ROI_NONE)) {
+    if (!_controllerVehicle->firmwarePlugin()->supportedMissionCommands(beeCopterMAVLink::VehicleClassGeneric).contains(MAV_CMD_DO_SET_ROI_NONE)) {
         simpleItem->setCommand(MAV_CMD_DO_SET_ROI)  ;
         simpleItem->missionItem().setParam1(MAV_ROI_NONE);
     }
@@ -431,8 +431,8 @@ VisualMissionItem* MissionController::insertComplexMissionItem(QString itemName,
         newItem->setCoordinate(mapCenterCoordinate);
 
         double                              prevAltitude;
-        QGroundControlQmlGlobal::AltMode    prevAltMode;
-        if (globalAltitudeMode() == QGroundControlQmlGlobal::AltitudeModeMixed) {
+        beeCopterQmlGlobal::AltMode    prevAltMode;
+        if (globalAltitudeMode() == beeCopterQmlGlobal::AltitudeModeMixed) {
             // We are in mixed altitude modes, so copy from previous. Otherwise alt mode will be set from global setting in constructor.
             if (_findPreviousAltitude(visualItemIndex, &prevAltitude, &prevAltMode)) {
                 qobject_cast<SurveyComplexItem*>(newItem)->cameraCalc()->setDistanceMode(prevAltMode);
@@ -625,7 +625,7 @@ bool MissionController::_loadJsonMissionFileV1(const QJsonObject& json, QmlObjec
         return false;
     }
 
-    setGlobalAltitudeMode(QGroundControlQmlGlobal::AltitudeModeMixed);
+    setGlobalAltitudeMode(beeCopterQmlGlobal::AltitudeModeMixed);
 
     // Read complex items
     QList<SurveyComplexItem*> surveyItems;
@@ -730,7 +730,7 @@ bool MissionController::_loadJsonMissionFileV2(const QJsonObject& json, QmlObjec
         return false;
     }
 
-    setGlobalAltitudeMode(QGroundControlQmlGlobal::AltitudeModeMixed);
+    setGlobalAltitudeMode(beeCopterQmlGlobal::AltitudeModeMixed);
 
     qCDebug(MissionControllerLog) << "MissionController::_loadJsonMissionFileV2 itemCount:" << json[_jsonItemsKey].toArray().count();
 
@@ -738,16 +738,16 @@ bool MissionController::_loadJsonMissionFileV2(const QJsonObject& json, QmlObjec
 
     // Get the firmware/vehicle type from the plan file
     MAV_AUTOPILOT   planFileFirmwareType =  static_cast<MAV_AUTOPILOT>(json[_jsonFirmwareTypeKey].toInt());
-    MAV_TYPE        planFileVehicleType =   static_cast<MAV_TYPE>     (QGCMAVLink::vehicleClassToMavType(appSettings->offlineEditingVehicleClass()->rawValue().toInt()));
+    MAV_TYPE        planFileVehicleType =   static_cast<MAV_TYPE>     (beeCopterMAVLink::vehicleClassToMavType(appSettings->offlineEditingVehicleClass()->rawValue().toInt()));
     if (json.contains(_jsonVehicleTypeKey)) {
         planFileVehicleType = static_cast<MAV_TYPE>(json[_jsonVehicleTypeKey].toInt());
     }
 
     // Update firmware/vehicle offline settings if we aren't connect to a vehicle
     if (_masterController->offline()) {
-        appSettings->offlineEditingFirmwareClass()->setRawValue(QGCMAVLink::firmwareClass(static_cast<MAV_AUTOPILOT>(json[_jsonFirmwareTypeKey].toInt())));
+        appSettings->offlineEditingFirmwareClass()->setRawValue(beeCopterMAVLink::firmwareClass(static_cast<MAV_AUTOPILOT>(json[_jsonFirmwareTypeKey].toInt())));
         if (json.contains(_jsonVehicleTypeKey)) {
-            appSettings->offlineEditingVehicleClass()->setRawValue(QGCMAVLink::vehicleClass(planFileVehicleType));
+            appSettings->offlineEditingVehicleClass()->setRawValue(beeCopterMAVLink::vehicleClass(planFileVehicleType));
         }
     }
 
@@ -763,7 +763,7 @@ bool MissionController::_loadJsonMissionFileV2(const QJsonObject& json, QmlObjec
         appSettings->offlineEditingHoverSpeed()->setRawValue(json[_jsonHoverSpeedKey].toDouble());
     }
     if (json.contains(_jsonGlobalPlanAltitudeModeKey)) {
-        setGlobalAltitudeMode(json[_jsonGlobalPlanAltitudeModeKey].toVariant().value<QGroundControlQmlGlobal::AltMode>());
+        setGlobalAltitudeMode(json[_jsonGlobalPlanAltitudeModeKey].toVariant().value<beeCopterQmlGlobal::AltMode>());
     }
 
     QGeoCoordinate homeCoordinate;
@@ -908,7 +908,7 @@ bool MissionController::_loadJsonMissionFileV2(const QJsonObject& json, QmlObjec
 bool MissionController::_loadItemsFromJson(const QJsonObject& json, QmlObjectListModel* visualItems, QString& errorString)
 {
     int fileVersion;
-    JsonHelper::validateExternalQGCJsonFile(json,
+    JsonHelper::validateExternalbeeCopterJsonFile(json,
                                             _jsonFileTypeValue,    // expected file type
                                             2,                     // minimum supported version
                                             2,                     // maximum supported version
@@ -927,13 +927,13 @@ bool MissionController::_loadTextMissionFile(QTextStream& stream, QmlObjectListM
     const QStringList& version = firstLine.split(" ");
 
     bool versionOk = false;
-    if (version.size() == 3 && version[0] == "QGC" && version[1] == "WPL") {
+    if (version.size() == 3 && version[0] == "beeCopter" && version[1] == "WPL") {
         if (version[2] == "110") {
             // ArduPilot file, planned home position is already in position 0
             versionOk = true;
             plannedHomePositionInFile = true;
         } else if (version[2] == "120") {
-            // Old QGC file, no planned home position
+            // Old beeCopter file, no planned home position
             versionOk = true;
             plannedHomePositionInFile = false;
         }
@@ -1030,7 +1030,7 @@ bool MissionController::loadTextFile(QFile& file, QString& errorString)
     QByteArray  bytes = file.readAll();
     QTextStream stream(bytes);
 
-    setGlobalAltitudeMode(QGroundControlQmlGlobal::AltitudeModeMixed);
+    setGlobalAltitudeMode(beeCopterQmlGlobal::AltitudeModeMixed);
 
     QmlObjectListModel* loadedVisualItems = new QmlObjectListModel(this);
     if (!_loadTextMissionFile(stream, loadedVisualItems, errorStr)) {
@@ -1558,7 +1558,7 @@ void MissionController::_recalcMissionFlightStatus()
             }
 
             if (!pastLandCommand)
-                _addTimeDistance(_missionFlightStatus.vtolMode == QGCMAVLink::VehicleClassMultiRotor, 0, 0, item->additionalTimeDelay(), 0, -1);
+                _addTimeDistance(_missionFlightStatus.vtolMode == beeCopterMAVLink::VehicleClassMultiRotor, 0, 0, item->additionalTimeDelay(), 0, -1);
 
             if (item->specifiesCoordinate()) {
 
@@ -1607,7 +1607,7 @@ void MissionController::_recalcMissionFlightStatus()
                                 // Calculate time/distance
                                 double hoverTime = distance / _missionFlightStatus.hoverSpeed;
                                 double cruiseTime = distance / _missionFlightStatus.cruiseSpeed;
-                                _addTimeDistance(_missionFlightStatus.vtolMode == QGCMAVLink::VehicleClassMultiRotor, hoverTime, cruiseTime, 0, distance, item->sequenceNumber());
+                                _addTimeDistance(_missionFlightStatus.vtolMode == beeCopterMAVLink::VehicleClassMultiRotor, hoverTime, cruiseTime, 0, distance, item->sequenceNumber());
                             }
                         }
 
@@ -1626,7 +1626,7 @@ void MissionController::_recalcMissionFlightStatus()
                         if (!pastLandCommand) {
                             double hoverTime = distance / _missionFlightStatus.hoverSpeed;
                             double cruiseTime = distance / _missionFlightStatus.cruiseSpeed;
-                            _addTimeDistance(_missionFlightStatus.vtolMode == QGCMAVLink::VehicleClassMultiRotor, hoverTime, cruiseTime, 0, distance, item->sequenceNumber());
+                            _addTimeDistance(_missionFlightStatus.vtolMode == beeCopterMAVLink::VehicleClassMultiRotor, hoverTime, cruiseTime, 0, distance, item->sequenceNumber());
                         }
 
                         totalHorizontalDistance += distance;
@@ -1645,7 +1645,7 @@ void MissionController::_recalcMissionFlightStatus()
             if (_controllerVehicle->multiRotor()) {
                 _missionFlightStatus.hoverSpeed = newSpeed;
             } else if (_controllerVehicle->vtol()) {
-                if (_missionFlightStatus.vtolMode == QGCMAVLink::VehicleClassMultiRotor) {
+                if (_missionFlightStatus.vtolMode == beeCopterMAVLink::VehicleClassMultiRotor) {
                     _missionFlightStatus.hoverSpeed = newSpeed;
                 } else {
                     _missionFlightStatus.cruiseSpeed = newSpeed;
@@ -1662,18 +1662,18 @@ void MissionController::_recalcMissionFlightStatus()
             case MAV_CMD_NAV_TAKEOFF:       // This will do a fixed wing style takeoff
             case MAV_CMD_NAV_VTOL_TAKEOFF:  // Vehicle goes straight up and then transitions to FW
             case MAV_CMD_NAV_LAND:
-                _missionFlightStatus.vtolMode = QGCMAVLink::VehicleClassFixedWing;
+                _missionFlightStatus.vtolMode = beeCopterMAVLink::VehicleClassFixedWing;
                 break;
             case MAV_CMD_NAV_VTOL_LAND:
-                _missionFlightStatus.vtolMode = QGCMAVLink::VehicleClassMultiRotor;
+                _missionFlightStatus.vtolMode = beeCopterMAVLink::VehicleClassMultiRotor;
                 break;
             case MAV_CMD_DO_VTOL_TRANSITION:
             {
                 int transitionState = simpleItem->missionItem().param1();
                 if (transitionState == MAV_VTOL_STATE_MC) {
-                    _missionFlightStatus.vtolMode = QGCMAVLink::VehicleClassMultiRotor;
+                    _missionFlightStatus.vtolMode = beeCopterMAVLink::VehicleClassMultiRotor;
                 } else if (transitionState == MAV_VTOL_STATE_FW) {
-                    _missionFlightStatus.vtolMode = QGCMAVLink::VehicleClassFixedWing;
+                    _missionFlightStatus.vtolMode = beeCopterMAVLink::VehicleClassFixedWing;
                 }
             }
                 break;
@@ -1698,7 +1698,7 @@ void MissionController::_recalcMissionFlightStatus()
             double hoverTime = distance / _missionFlightStatus.hoverSpeed;
             double cruiseTime = distance / _missionFlightStatus.cruiseSpeed;
             double landTime = qAbs(altDifference) / _appSettings->offlineEditingDescentSpeed()->rawValue().toDouble();
-            _addTimeDistance(_missionFlightStatus.vtolMode == QGCMAVLink::VehicleClassMultiRotor, hoverTime, cruiseTime, landTime, distance, -1);
+            _addTimeDistance(_missionFlightStatus.vtolMode == beeCopterMAVLink::VehicleClassMultiRotor, hoverTime, cruiseTime, landTime, distance, -1);
         }
     }
 
@@ -1994,11 +1994,11 @@ void MissionController::_inProgressChanged(bool inProgress)
     emit syncInProgressChanged(inProgress);
 }
 
-bool MissionController::_findPreviousAltitude(int newIndex, double* prevAltitude, QGroundControlQmlGlobal::AltMode* prevAltitudeMode)
+bool MissionController::_findPreviousAltitude(int newIndex, double* prevAltitude, beeCopterQmlGlobal::AltMode* prevAltitudeMode)
 {
     bool                                found = false;
     double                              foundAltitude = 0;
-    QGroundControlQmlGlobal::AltMode    foundAltMode = QGroundControlQmlGlobal::AltitudeModeNone;
+    beeCopterQmlGlobal::AltMode    foundAltMode = beeCopterQmlGlobal::AltitudeModeNone;
 
     if (newIndex > _visualItems->count()) {
         return false;
@@ -2224,7 +2224,7 @@ QStringList MissionController::complexMissionItemNames(void) const
 
     // Note: The landing pattern items are not added here since they have there own button which adds them
 
-    return QGCCorePlugin::instance()->complexMissionItemNames(_controllerVehicle, complexItems);
+    return beeCopterCorePlugin::instance()->complexMissionItemNames(_controllerVehicle, complexItems);
 }
 
 void MissionController::resumeMission(int resumeIndex)
@@ -2256,7 +2256,7 @@ void MissionController::applyDefaultMissionAltitude(void)
 
 void MissionController::_progressPctChanged(double progressPct)
 {
-    if (!QGC::fuzzyCompare(progressPct, _progressPct)) {
+    if (!beeCopter::fuzzyCompare(progressPct, _progressPct)) {
         _progressPct = progressPct;
         emit progressPctChanged(progressPct);
     }
@@ -2508,13 +2508,13 @@ void MissionController::_updateTimeout()
 {
     QGeoCoordinate firstCoordinate;
     QGeoCoordinate takeoffCoordinate;
-    QGCGeoBoundingCube boundingCube;
+    beeCopterGeoBoundingCube boundingCube;
     double north = 0.0;
     double south = 180.0;
     double east  = 0.0;
     double west  = 360.0;
-    double minAlt = QGCGeoBoundingCube::MaxAlt;
-    double maxAlt = QGCGeoBoundingCube::MinAlt;
+    double minAlt = beeCopterGeoBoundingCube::MaxAlt;
+    double maxAlt = beeCopterGeoBoundingCube::MinAlt;
     for (int i = 1; i < _visualItems->count(); i++) {
         VisualMissionItem* item = qobject_cast<VisualMissionItem*>(_visualItems->get(i));
         if(item->isSimpleItem()) {
@@ -2553,7 +2553,7 @@ void MissionController::_updateTimeout()
         } else {
             ComplexMissionItem* pComplexItem = qobject_cast<ComplexMissionItem*>(item);
             if(pComplexItem) {
-                QGCGeoBoundingCube bc = pComplexItem->boundingCube();
+                beeCopterGeoBoundingCube bc = pComplexItem->boundingCube();
                 if(bc.isValid()) {
                     if(!firstCoordinate.isValid() && pComplexItem->coordinate().isValid()) {
                         firstCoordinate = pComplexItem->coordinate();
@@ -2577,7 +2577,7 @@ void MissionController::_updateTimeout()
         }
     }
     //-- Build bounding "cube"
-    boundingCube = QGCGeoBoundingCube(
+    boundingCube = beeCopterGeoBoundingCube(
                 QGeoCoordinate(north - 90.0, west - 180.0, minAlt),
                 QGeoCoordinate(south - 90.0, east - 180.0, maxAlt));
     if(_travelBoundingCube != boundingCube || _takeoffCoordinate != takeoffCoordinate) {
@@ -2656,27 +2656,27 @@ MissionController::SendToVehiclePreCheckState MissionController::sendToVehiclePr
     if (_managerVehicle->armed() && _managerVehicle->flightMode() == _managerVehicle->missionFlightMode()) {
         return SendToVehiclePreCheckStateActiveMission;
     }
-    if (_controllerVehicle->firmwareType() != _managerVehicle->firmwareType() || QGCMAVLink::vehicleClass(_controllerVehicle->vehicleType()) != QGCMAVLink::vehicleClass(_managerVehicle->vehicleType())) {
+    if (_controllerVehicle->firmwareType() != _managerVehicle->firmwareType() || beeCopterMAVLink::vehicleClass(_controllerVehicle->vehicleType()) != beeCopterMAVLink::vehicleClass(_managerVehicle->vehicleType())) {
         return SendToVehiclePreCheckStateFirwmareVehicleMismatch;
     }
     return SendToVehiclePreCheckStateOk;
 }
 
-QGroundControlQmlGlobal::AltMode MissionController::globalAltitudeMode(void)
+beeCopterQmlGlobal::AltMode MissionController::globalAltitudeMode(void)
 {
     return _globalAltMode;
 }
 
-QGroundControlQmlGlobal::AltMode MissionController::globalAltitudeModeDefault(void)
+beeCopterQmlGlobal::AltMode MissionController::globalAltitudeModeDefault(void)
 {
-    if (_globalAltMode == QGroundControlQmlGlobal::AltitudeModeMixed) {
-        return QGroundControlQmlGlobal::AltitudeModeRelative;
+    if (_globalAltMode == beeCopterQmlGlobal::AltitudeModeMixed) {
+        return beeCopterQmlGlobal::AltitudeModeRelative;
     } else {
         return _globalAltMode;
     }
 }
 
-void MissionController::setGlobalAltitudeMode(QGroundControlQmlGlobal::AltMode altMode)
+void MissionController::setGlobalAltitudeMode(beeCopterQmlGlobal::AltMode altMode)
 {
     if (_globalAltMode != altMode) {
         _globalAltMode = altMode;

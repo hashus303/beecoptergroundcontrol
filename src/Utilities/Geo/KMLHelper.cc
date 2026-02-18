@@ -1,13 +1,13 @@
 #include "KMLHelper.h"
 #include "KMLSchemaValidator.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFile>
 #include <QtXml/QDomDocument>
 
 #include <algorithm>
 
-QGC_LOGGING_CATEGORY(KMLHelperLog, "Utilities.KMLHelper")
+beeCopter_LOGGING_CATEGORY(KMLHelperLog, "Utilities.KMLHelper")
 
 namespace KMLHelper
 {
@@ -111,7 +111,7 @@ void KMLHelper::_filterVertices(QList<QGeoCoordinate> &vertices, double filterMe
 void KMLHelper::_checkAltitudeMode(const QDomNode &geometryNode, const QString &geometryType, int index)
 {
     // Validate altitudeMode using schema-derived rules
-    // QGC treats all coordinates as absolute (AMSL), so warn if a different mode is specified
+    // beeCopter treats all coordinates as absolute (AMSL), so warn if a different mode is specified
     const QDomNode altModeNode = geometryNode.namedItem("altitudeMode");
     if (!altModeNode.isNull()) {
         const QString mode = altModeNode.toElement().text();
@@ -125,7 +125,7 @@ void KMLHelper::_checkAltitudeMode(const QDomNode &geometryNode, const QString &
                                     << "- valid values are:" << validator->validEnumValues("altitudeModeEnumType").join(", ");
         } else if (mode != "absolute") {
             qCWarning(KMLHelperLog) << geometryType << index << location << "uses altitudeMode:" << mode
-                                    << "- QGC will treat coordinates as absolute (AMSL)";
+                                    << "- beeCopter will treat coordinates as absolute (AMSL)";
         }
     }
 }
@@ -219,7 +219,7 @@ bool KMLHelper::loadPolygonsFromFile(const QString &kmlFile, QList<QList<QGeoCoo
             rgCoords.removeLast();
         }
 
-        // Determine winding, reverse if needed. QGC wants clockwise winding
+        // Determine winding, reverse if needed. beeCopter wants clockwise winding
         double sum = 0;
         for (int i = 0; i < rgCoords.count(); i++) {
             const QGeoCoordinate &coord1 = rgCoords[i];

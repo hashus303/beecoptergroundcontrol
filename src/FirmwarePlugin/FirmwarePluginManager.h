@@ -3,7 +3,7 @@
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QObject>
 
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 class FirmwarePlugin;
 class FirmwarePluginFactory;
@@ -28,10 +28,10 @@ public:
     static FirmwarePluginManager *instance();
 
     /// Returns list of firmwares which are supported by the system
-    QList<QGCMAVLink::FirmwareClass_t> supportedFirmwareClasses();
+    QList<beeCopterMAVLink::FirmwareClass_t> supportedFirmwareClasses();
 
     /// Returns the list of supported vehicle types for the specified firmware
-    QList<QGCMAVLink::VehicleClass_t> supportedVehicleClasses(QGCMAVLink::FirmwareClass_t firmwareClass);
+    QList<beeCopterMAVLink::VehicleClass_t> supportedVehicleClasses(beeCopterMAVLink::FirmwareClass_t firmwareClass);
 
     /// Returns appropriate plugin for autopilot type.
     ///     @param firmwareType Type of firmwware to return plugin for.
@@ -40,8 +40,8 @@ public:
     FirmwarePlugin *firmwarePluginForAutopilot(MAV_AUTOPILOT firmwareType, MAV_TYPE vehicleType);
 
 private:
-    FirmwarePluginFactory *_findPluginFactory(QGCMAVLink::FirmwareClass_t firmwareClass);
+    FirmwarePluginFactory *_findPluginFactory(beeCopterMAVLink::FirmwareClass_t firmwareClass);
 
     FirmwarePlugin *_genericFirmwarePlugin = nullptr;
-    QList<QGCMAVLink::FirmwareClass_t> _supportedFirmwareClasses;
+    QList<beeCopterMAVLink::FirmwareClass_t> _supportedFirmwareClasses;
 };

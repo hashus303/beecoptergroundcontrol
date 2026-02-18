@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 Item {
 
@@ -98,20 +98,20 @@ Item {
                 spacing:                                _margins
                 anchors.horizontalCenter:               parent.horizontalCenter
                 Item { width: 1; height: _margins * 0.5; }
-                QGCLabel {
+                beeCopterLabel {
                     text:                               qsTr("ESP WiFi Bridge Settings")
                     font.bold:                          true
                 }
                 Rectangle {
-                    color:                              qgcPal.windowShade
+                    color:                              beeCopterPal.windowShade
                     width:                              statusLayout.width  + _margins * 4
                     height:                             settingsRow.height  + _margins * 2
                     Row {
                         id:                             settingsRow
                         spacing:                        _margins * 4
                         anchors.centerIn:               parent
-                        QGCColoredImage {
-                            color:                      qgcPal.text
+                        beeCopterColoredImage {
+                            color:                      beeCopterPal.text
                             width:                      ScreenTools.defaultFontPixelWidth * 12
                             height:                     width * 1.45
                             sourceSize.height:          width * 1.45
@@ -125,12 +125,12 @@ Item {
                             anchors.verticalCenter:         parent.verticalCenter
                             Row {
                                 visible:                    wifiMode
-                                QGCLabel {
+                                beeCopterLabel {
                                     text:                   qsTr("WiFi Mode")
                                     width:                  _middleRowWidth
                                     anchors.baseline:       modeField.baseline
                                 }
-                                QGCComboBox {
+                                beeCopterComboBox {
                                     id:                     modeField
                                     width:                  _editFieldWidth
                                     model:                  ["Access Point Mode", "Station Mode"]
@@ -141,12 +141,12 @@ Item {
                                 }
                             }
                             Row {
-                                QGCLabel {
+                                beeCopterLabel {
                                     text:                   qsTr("WiFi Channel")
                                     width:                  _middleRowWidth
                                     anchors.baseline:       channelField.baseline
                                 }
-                                QGCComboBox {
+                                beeCopterComboBox {
                                     id:                     channelField
                                     width:                  _editFieldWidth
                                     enabled:                wifiMode ? wifiMode.value === 0 : true
@@ -158,12 +158,12 @@ Item {
                                 }
                             }
                             Row {
-                                QGCLabel {
+                                beeCopterLabel {
                                     text:                   qsTr("WiFi AP SSID")
                                     width:                  _middleRowWidth
                                     anchors.baseline:       ssidField.baseline
                                 }
-                                QGCTextField {
+                                beeCopterTextField {
                                     id:                     ssidField
                                     width:                  _editFieldWidth
                                     text:                   controller.wifiSSID
@@ -174,12 +174,12 @@ Item {
                                 }
                             }
                             Row {
-                                QGCLabel {
+                                beeCopterLabel {
                                     text:                   qsTr("WiFi AP Password")
                                     width:                  _middleRowWidth
                                     anchors.baseline:       passwordField.baseline
                                 }
-                                QGCTextField {
+                                beeCopterTextField {
                                     id:                     passwordField
                                     width:                  _editFieldWidth
                                     text:                   controller.wifiPassword
@@ -190,12 +190,12 @@ Item {
                                 }
                             }
                             Row {
-                                QGCLabel {
+                                beeCopterLabel {
                                     text:                   qsTr("WiFi STA SSID")
                                     width:                  _middleRowWidth
                                     anchors.baseline:       stassidField.baseline
                                 }
-                                QGCTextField {
+                                beeCopterTextField {
                                     id:                     stassidField
                                     width:                  _editFieldWidth
                                     text:                   controller.wifiSSIDSta
@@ -207,12 +207,12 @@ Item {
                                 }
                             }
                             Row {
-                                QGCLabel {
+                                beeCopterLabel {
                                     text:                   qsTr("WiFi STA Password")
                                     width:                  _middleRowWidth
                                     anchors.baseline:       passwordStaField.baseline
                                 }
-                                QGCTextField {
+                                beeCopterTextField {
                                     id:                     passwordStaField
                                     width:                  _editFieldWidth
                                     text:                   controller.wifiPasswordSta
@@ -224,12 +224,12 @@ Item {
                                 }
                             }
                             Row {
-                                QGCLabel {
+                                beeCopterLabel {
                                     text:                   qsTr("UART Baud Rate")
                                     width:                  _middleRowWidth
                                     anchors.baseline:       baudField.baseline
                                 }
-                                QGCComboBox {
+                                beeCopterComboBox {
                                     id:                     baudField
                                     width:                  _editFieldWidth
                                     model:                  controller.baudRates
@@ -240,13 +240,13 @@ Item {
                                 }
                             }
                             Row {
-                                QGCLabel {
-                                    text:                   qsTr("QGC UDP Port")
+                                beeCopterLabel {
+                                    text:                   qsTr("beeCopter UDP Port")
                                     width:                  _middleRowWidth
-                                    anchors.baseline:       qgcportField.baseline
+                                    anchors.baseline:       beeCopterportField.baseline
                                 }
-                                QGCTextField {
-                                    id:                     qgcportField
+                                beeCopterTextField {
+                                    id:                     beeCopterportField
                                     width:                  _editFieldWidth
                                     text:                   hostPort ? hostPort.valueString : ""
                                     validator:              IntValidator {bottom: 1024; top: 65535;}
@@ -259,12 +259,12 @@ Item {
                         }
                     }
                 }
-                QGCLabel {
+                beeCopterLabel {
                     text:                               qsTr("ESP WiFi Bridge Status")
                     font.bold:                          true
                 }
                 Rectangle {
-                    color:                              qgcPal.windowShade
+                    color:                              beeCopterPal.windowShade
                     width:                              statusLayout.width  + _margins * 4
                     height:                             statusLayout.height + _margins * 2
                     GridLayout {
@@ -272,26 +272,26 @@ Item {
                        columns:                         3
                        columnSpacing:                   _margins * 2
                        anchors.centerIn:                parent
-                       QGCLabel {
+                       beeCopterLabel {
                            text:                        qsTr("Bridge/Vehicle Link")
                            Layout.alignment:            Qt.AlignHCenter
                        }
-                       QGCLabel {
-                           text:                        qsTr("Bridge/QGC Link")
+                       beeCopterLabel {
+                           text:                        qsTr("Bridge/beeCopter Link")
                            Layout.alignment:            Qt.AlignHCenter
                        }
-                       QGCLabel {
-                           text:                        qsTr("QGC/Bridge Link")
+                       beeCopterLabel {
+                           text:                        qsTr("beeCopter/Bridge Link")
                            Layout.alignment:            Qt.AlignHCenter
                        }
                        Row {
                            spacing:                     _margins
-                           QGCLabel {
+                           beeCopterLabel {
                                text:                    qsTr("Messages Received")
                                font.pointSize:          _smallFont
                                width:                   _labelWidth
                            }
-                           QGCLabel {
+                           beeCopterLabel {
                                id:                      vpackets
                                font.pointSize:          _smallFont
                                width:                   _statusWidth
@@ -300,12 +300,12 @@ Item {
                        }
                        Row {
                            spacing:                     _margins
-                           QGCLabel {
+                           beeCopterLabel {
                                font.pointSize:          _smallFont
                                text:                    qsTr("Messages Received")
                                width:                   _labelWidth
                            }
-                           QGCLabel {
+                           beeCopterLabel {
                                id:                      gpackets
                                font.pointSize:          _smallFont
                                width:                   _statusWidth
@@ -314,12 +314,12 @@ Item {
                        }
                        Row {
                            spacing:                     _margins
-                           QGCLabel {
+                           beeCopterLabel {
                                font.pointSize:          _smallFont
                                text:                    qsTr("Messages Received")
                                width:                   _labelWidth
                            }
-                           QGCLabel {
+                           beeCopterLabel {
                                font.pointSize:          _smallFont
                                text:                    controller.vehicle ? thisThingHasNoNumberLocaleSupport(controller.vehicle.messagesReceived) : 0
                                width:                   _statusWidth
@@ -328,12 +328,12 @@ Item {
                        }
                        Row {
                            spacing:                     _margins
-                           QGCLabel {
+                           beeCopterLabel {
                                text:                    qsTr("Messages Lost")
                                font.pointSize:          _smallFont
                                width:                   _labelWidth
                            }
-                           QGCLabel {
+                           beeCopterLabel {
                                id:                      vlost
                                width:                   _statusWidth
                                horizontalAlignment:     Text.AlignRight
@@ -342,12 +342,12 @@ Item {
                        }
                        Row {
                            spacing:                     _margins
-                           QGCLabel {
+                           beeCopterLabel {
                                text:                    qsTr("Messages Lost")
                                font.pointSize:          _smallFont
                                width:                   _labelWidth
                            }
-                           QGCLabel {
+                           beeCopterLabel {
                                id:                      glost
                                width:                   _statusWidth
                                horizontalAlignment:     Text.AlignRight
@@ -356,12 +356,12 @@ Item {
                        }
                        Row {
                            spacing:                     _margins
-                           QGCLabel {
+                           beeCopterLabel {
                                text:                    qsTr("Messages Lost")
                                font.pointSize:          _smallFont
                                width:                   _labelWidth
                            }
-                           QGCLabel {
+                           beeCopterLabel {
                                text:                    controller.vehicle ? thisThingHasNoNumberLocaleSupport(controller.vehicle.messagesLost) : 0
                                width:                   _statusWidth
                                horizontalAlignment:     Text.AlignRight
@@ -370,12 +370,12 @@ Item {
                        }
                        Row {
                            spacing:                     _margins
-                           QGCLabel {
+                           beeCopterLabel {
                                text:                    qsTr("Messages Sent")
                                font.pointSize:          _smallFont
                                width:                   _labelWidth
                            }
-                           QGCLabel {
+                           beeCopterLabel {
                                id:                      vsent
                                width:                   _statusWidth
                                horizontalAlignment:     Text.AlignRight
@@ -384,12 +384,12 @@ Item {
                        }
                        Row {
                            spacing:                     _margins
-                           QGCLabel {
+                           beeCopterLabel {
                                text:                    qsTr("Messages Sent")
                                font.pointSize:          _smallFont
                                width:                   _labelWidth
                            }
-                           QGCLabel {
+                           beeCopterLabel {
                                id:                      gsent
                                width:                   _statusWidth
                                horizontalAlignment:     Text.AlignRight
@@ -398,12 +398,12 @@ Item {
                        }
                        Row {
                            spacing:                     _margins
-                           QGCLabel {
+                           beeCopterLabel {
                                text:                    qsTr("Messages Sent")
                                font.pointSize:          _smallFont
                                width:                   _labelWidth
                            }
-                           QGCLabel {
+                           beeCopterLabel {
                                text:                    controller.vehicle ? thisThingHasNoNumberLocaleSupport(controller.vehicle.messagesSent) : 0
                                width:                   _statusWidth
                                horizontalAlignment:     Text.AlignRight
@@ -415,14 +415,14 @@ Item {
                 Row {
                     spacing:                            _margins
                     anchors.horizontalCenter:           parent.horizontalCenter
-                    QGCButton {
+                    beeCopterButton {
                         text:                           qsTr("Restore Defaults")
                         width:                          _editFieldWidth
                         onClicked: {
                             controller.restoreDefaults()
                         }
                     }
-                    QGCButton {
+                    beeCopterButton {
                         text:                           qsTr("Restart WiFi Bridge")
                         enabled:                        !controller.busy
                         width:                          _editFieldWidth
@@ -434,7 +434,7 @@ Item {
                             visible:    false
                             buttons:    MessageDialog.Yes | MessageDialog.No
                             title:      qsTr("Reboot WiFi Bridge")
-                            text:       qsTr("This will restart the WiFi Bridge so the settings you've changed can take effect. Note that you may have to change your computer WiFi settings and QGroundControl link settings to match these changes. Are you sure you want to restart it?")
+                            text:       qsTr("This will restart the WiFi Bridge so the settings you've changed can take effect. Note that you may have to change your computer WiFi settings and beeCopter link settings to match these changes. Are you sure you want to restart it?")
                             onButtonClicked: function (button, role) {
                                 switch (button) {
                                 case MessageDialog.Yes:
@@ -448,7 +448,7 @@ Item {
                             }
                         }
                     }
-                    QGCButton {
+                    beeCopterButton {
                         text:                           qsTr("Reset Counters")
                         width:                          _editFieldWidth
                         onClicked: {

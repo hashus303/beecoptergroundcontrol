@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 /// Base class for Remote Control Calibration (supports both RC and Joystick)
 ColumnLayout {
@@ -26,7 +26,7 @@ ColumnLayout {
     property real _channelValueDisplayWidth: ScreenTools.defaultFontPixelWidth * 30
     property bool _deadbandActive: useDeadband
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: root.enabled }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: root.enabled }
 
     RowLayout {
         // Left Column - Attitude Controls display
@@ -39,12 +39,12 @@ ColumnLayout {
                 Layout.fillWidth: true
                 spacing: ScreenTools.defaultFontPixelHeight
 
-                QGCLabel { text: qsTr("Attitude Controls") }
+                beeCopterLabel { text: qsTr("Attitude Controls") }
 
                 RowLayout {
                     Layout.fillWidth: true
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.fillWidth: true
                         text: qsTr("Roll")
                     }
@@ -64,7 +64,7 @@ ColumnLayout {
                 RowLayout {
                     Layout.fillWidth: true
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.fillWidth: true
                         text: qsTr("Pitch")
                     }
@@ -84,7 +84,7 @@ ColumnLayout {
                 RowLayout {
                     Layout.fillWidth: true
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.fillWidth: true
                         text: qsTr("Yaw")
                     }
@@ -104,7 +104,7 @@ ColumnLayout {
                 RowLayout {
                     Layout.fillWidth: true
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.fillWidth: true
                         text: qsTr("Throttle")
                     }
@@ -132,9 +132,9 @@ ColumnLayout {
                 id: stickDisplayContainer
                 implicitWidth: stickDisplayLayout.width + _margins * 2
                 implicitHeight: stickDisplayLayout.height + _margins * 2
-                border.color: qgcPal.text
+                border.color: beeCopterPal.text
                 border.width: 1
-                color: qgcPal.window
+                color: beeCopterPal.window
                 radius: ScreenTools.defaultBorderRadius
 
                 property real _margins: ScreenTools.defaultFontPixelHeight / 2
@@ -151,7 +151,7 @@ ColumnLayout {
                     RowLayout {
                         spacing: ScreenTools.defaultFontPixelWidth * 2
 
-                        QGCComboBox {
+                        beeCopterComboBox {
                             id: transmitterModeComboBox
                             model: [ qsTr("Mode 1"), qsTr("Mode 2"), qsTr("Mode 3"), qsTr("Mode 4") ]
                             enabled: !controller.calibrating
@@ -161,7 +161,7 @@ ColumnLayout {
                             Component.onCompleted: currentIndex = controller.transmitterMode - 1
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: centeredThrottleCheckBox
                             text: qsTr("Centered Throttle")
                             checked: controller.centeredThrottle
@@ -182,9 +182,9 @@ ColumnLayout {
                             implicitWidth: ScreenTools.defaultFontPixelHeight * 5
                             implicitHeight: implicitWidth
                             radius: implicitWidth / 2
-                            border.color: qgcPal.buttonHighlight
+                            border.color: beeCopterPal.buttonHighlight
                             border.width: 1
-                            color: qgcPal.window
+                            color: beeCopterPal.window
 
                             Rectangle {
                                 x: parent.width / 2 + stickDisplayContainer._stickAdjust * controller.stickDisplayPositions[0] - width / 2
@@ -192,7 +192,7 @@ ColumnLayout {
                                 width: ScreenTools.defaultFontPixelHeight
                                 height: width
                                 radius: width / 2
-                                color: qgcPal.buttonHighlight
+                                color: beeCopterPal.buttonHighlight
                             }
                         }
 
@@ -201,9 +201,9 @@ ColumnLayout {
                             implicitWidth: leftStickDisplay.implicitWidth
                             implicitHeight: implicitWidth
                             radius: implicitWidth / 2
-                            border.color: qgcPal.buttonHighlight
+                            border.color: beeCopterPal.buttonHighlight
                             border.width: 1
-                            color: qgcPal.window
+                            color: beeCopterPal.window
 
                             Rectangle {
                                 x: parent.width / 2 + stickDisplayContainer._stickAdjust * controller.stickDisplayPositions[2] - width / 2
@@ -211,7 +211,7 @@ ColumnLayout {
                                 width: ScreenTools.defaultFontPixelHeight
                                 height: width
                                 radius: width / 2
-                                color: qgcPal.buttonHighlight
+                                color: beeCopterPal.buttonHighlight
                             }
                         }
                     }
@@ -225,13 +225,13 @@ ColumnLayout {
         Layout.preferredWidth: parent.width
         spacing: ScreenTools.defaultFontPixelWidth
 
-        QGCButton {
+        beeCopterButton {
             id: cancelButton
             text: qsTr("Cancel")
             onClicked: controller.cancelButtonClicked()
         }
 
-        QGCButton {
+        beeCopterButton {
             id: nextButton
             primary: true
             text: qsTr("Calibrate")
@@ -248,7 +248,7 @@ ColumnLayout {
                     } else if (!controller.joystickMode) {
                         mainWindow.showMessageDialog(qsTr("Zero Trims"),
                                                         qsTr("Before calibrating you should zero all your trims and subtrims. Click Ok to start Calibration.\n\n%1").arg(
-                                                            (QGroundControl.multiVehicleManager.activeVehicle.px4Firmware ? "" : qsTr("Please ensure all motor power is disconnected AND all props are removed from the vehicle."))),
+                                                            (beeCopter.multiVehicleManager.activeVehicle.px4Firmware ? "" : qsTr("Please ensure all motor power is disconnected AND all props are removed from the vehicle."))),
                                                         Dialog.Ok,
                                                         function() { controller.nextButtonClicked() })
                         return
@@ -258,7 +258,7 @@ ColumnLayout {
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             id: statusText
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
@@ -269,7 +269,7 @@ ColumnLayout {
         id: separator
         Layout.fillWidth: true
         implicitHeight: 1
-        color: qgcPal.text
+        color: beeCopterPal.text
     }
 
     // Additional Setup + Channel Monitor

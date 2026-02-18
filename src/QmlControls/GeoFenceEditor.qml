@@ -3,15 +3,15 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Rectangle {
     id:     geoFenceEditorRect
     height: geoFenceItems.y + geoFenceItems.height + (_margin * 2)
     radius: _radius
-    color:  qgcPal.buttonHighlight
+    color:  beeCopterPal.buttonHighlight
 
     property var    myGeoFenceController
     property var    flightMap
@@ -20,7 +20,7 @@ Rectangle {
     readonly property real  _margin:            ScreenTools.defaultFontPixelWidth / 2
     readonly property real  _radius:            ScreenTools.defaultFontPixelWidth / 2
 
-    QGCLabel {
+    beeCopterLabel {
         id:                 geoFenceLabel
         anchors.margins:    _margin
         anchors.left:       parent.left
@@ -36,7 +36,7 @@ Rectangle {
         anchors.right:      parent.right
         anchors.top:        geoFenceLabel.bottom
         height:             fenceColumn.y + fenceColumn.height + (_margin * 2)
-        color:              qgcPal.windowShadeDark
+        color:              beeCopterPal.windowShadeDark
         radius:             _radius
 
         Column {
@@ -47,7 +47,7 @@ Rectangle {
             anchors.right:      parent.right
             spacing:            _margin
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.left:       parent.left
                 anchors.right:      parent.right
                 wrapMode:           Text.WordWrap
@@ -72,7 +72,7 @@ Rectangle {
 
                         property bool showCombo: modelData.enumStrings.length > 0
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:                 textFieldLabel
                             anchors.baseline:   textField.baseline
                             text:               myGeoFenceController.paramLabels[index]
@@ -107,7 +107,7 @@ Rectangle {
                     text:           qsTr("Insert GeoFence")
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth:   true
                     text:               qsTr("Polygon Fence")
 
@@ -119,7 +119,7 @@ Rectangle {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth:   true
                     text:               qsTr("Circular Fence")
 
@@ -138,7 +138,7 @@ Rectangle {
                     text:           qsTr("Polygon Fences")
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("None")
                     visible:    polygonSection.checked && myGeoFenceController.polygons.count === 0
                 }
@@ -149,7 +149,7 @@ Rectangle {
                     flow:               GridLayout.TopToBottom
                     visible:            polygonSection.checked && myGeoFenceController.polygons.count > 0
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:               qsTr("Inclusion")
                         Layout.column:      0
                         Layout.alignment:   Qt.AlignHCenter
@@ -158,14 +158,14 @@ Rectangle {
                     Repeater {
                         model: myGeoFenceController.polygons
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             checked:            object.inclusion
                             onClicked:          object.inclusion = checked
                             Layout.alignment:   Qt.AlignHCenter
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:               qsTr("Edit")
                         Layout.column:      1
                         Layout.alignment:   Qt.AlignHCenter
@@ -174,7 +174,7 @@ Rectangle {
                     Repeater {
                         model: myGeoFenceController.polygons
 
-                        QGCRadioButton {
+                        beeCopterRadioButton {
                             checked:            _interactive
                             Layout.alignment:   Qt.AlignHCenter
 
@@ -189,7 +189,7 @@ Rectangle {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:               qsTr("Delete")
                         Layout.column:      2
                         Layout.alignment:   Qt.AlignHCenter
@@ -198,7 +198,7 @@ Rectangle {
                     Repeater {
                         model: myGeoFenceController.polygons
 
-                        QGCButton {
+                        beeCopterButton {
                             text:               qsTr("Del")
                             Layout.alignment:   Qt.AlignHCenter
                             onClicked:          myGeoFenceController.deletePolygon(index)
@@ -213,7 +213,7 @@ Rectangle {
                     text:           qsTr("Circular Fences")
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("None")
                     visible:    circleSection.checked && myGeoFenceController.circles.count === 0
                 }
@@ -225,7 +225,7 @@ Rectangle {
                     flow:               GridLayout.TopToBottom
                     visible:            polygonSection.checked && myGeoFenceController.circles.count > 0
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:               qsTr("Inclusion")
                         Layout.column:      0
                         Layout.alignment:   Qt.AlignHCenter
@@ -234,14 +234,14 @@ Rectangle {
                     Repeater {
                         model: myGeoFenceController.circles
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             checked:            object.inclusion
                             onClicked:          object.inclusion = checked
                             Layout.alignment:   Qt.AlignHCenter
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:               qsTr("Edit")
                         Layout.column:      1
                         Layout.alignment:   Qt.AlignHCenter
@@ -250,7 +250,7 @@ Rectangle {
                     Repeater {
                         model: myGeoFenceController.circles
 
-                        QGCRadioButton {
+                        beeCopterRadioButton {
                             checked:            _interactive
                             Layout.alignment:   Qt.AlignHCenter
 
@@ -265,7 +265,7 @@ Rectangle {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:               qsTr("Radius")
                         Layout.column:      2
                         Layout.alignment:   Qt.AlignHCenter
@@ -281,7 +281,7 @@ Rectangle {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:               qsTr("Delete")
                         Layout.column:      3
                         Layout.alignment:   Qt.AlignHCenter
@@ -290,7 +290,7 @@ Rectangle {
                     Repeater {
                         model: myGeoFenceController.circles
 
-                        QGCButton {
+                        beeCopterButton {
                             text:               qsTr("Del")
                             Layout.alignment:   Qt.AlignHCenter
                             onClicked:          myGeoFenceController.deleteCircle(index)
@@ -305,7 +305,7 @@ Rectangle {
                     text:           qsTr("Breach Return Point")
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:               qsTr("Add Breach Return Point")
                     visible:            breachReturnSection.visible && !myGeoFenceController.breachReturnPoint.isValid
                     anchors.left:       parent.left
@@ -314,7 +314,7 @@ Rectangle {
                     onClicked: myGeoFenceController.breachReturnPoint = flightMap.center
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:               qsTr("Remove Breach Return Point")
                     visible:            breachReturnSection.visible && myGeoFenceController.breachReturnPoint.isValid
                     anchors.left:       parent.left
@@ -329,7 +329,7 @@ Rectangle {
                     spacing:            _margin
                     visible:            breachReturnSection.visible && myGeoFenceController.breachReturnPoint.isValid
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text: qsTr("Altitude")
                     }
 

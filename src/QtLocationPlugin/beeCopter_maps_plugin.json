@@ -1,0 +1,10 @@
+{
+    "Keys": ["beeCopter-maps"],
+    "Provider": "beeCopter",
+    "Version": 101,
+    "Experimental": false,
+    "Features": [
+        "OnlineMappingFeature",
+        "OfflineMappingFeature"
+    ]
+}

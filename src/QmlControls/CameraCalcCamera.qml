@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 // Camera calculator "Camera" section for mission item editors
 ColumnLayout {
@@ -14,20 +14,20 @@ ColumnLayout {
 
     property real   _margin:            ScreenTools.defaultFontPixelWidth / 2
     property real   _fieldWidth:        ScreenTools.defaultFontPixelWidth * 10.5
-    property var    _vehicle:           QGroundControl.multiVehicleManager.activeVehicle ? QGroundControl.multiVehicleManager.activeVehicle : QGroundControl.multiVehicleManager.offlineEditingVehicle
+    property var    _vehicle:           beeCopter.multiVehicleManager.activeVehicle ? beeCopter.multiVehicleManager.activeVehicle : beeCopter.multiVehicleManager.offlineEditingVehicle
 
     Component.onCompleted: {
         cameraBrandCombo.selectCurrentBrand()
         cameraModelCombo.selectCurrentModel()
     }
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     ColumnLayout {
         Layout.fillWidth:   true
         spacing:            _margin
 
-        QGCComboBox {
+        beeCopterComboBox {
             id:                 cameraBrandCombo
             Layout.fillWidth:   true
             model:              cameraCalc.cameraBrandList
@@ -44,7 +44,7 @@ ColumnLayout {
             }
         }
 
-        QGCComboBox {
+        beeCopterComboBox {
             id:                 cameraModelCombo
             Layout.fillWidth:   true
             model:              cameraCalc.cameraModelList
@@ -73,14 +73,14 @@ ColumnLayout {
                 spacing:            _margin
                 visible:            !cameraCalc.fixedOrientation.value
 
-                QGCRadioButton {
+                beeCopterRadioButton {
                     width:          _editFieldWidth
                     text:           "Landscape"
                     checked:        !!cameraCalc.landscape.value
                     onClicked:      cameraCalc.landscape.value = 1
                 }
 
-                QGCRadioButton {
+                beeCopterRadioButton {
                     id:             cameraOrientationPortrait
                     text:           "Portrait"
                     checked:        !cameraCalc.landscape.value
@@ -100,11 +100,11 @@ ColumnLayout {
                     spacing:            _margin
 
                     Item { Layout.fillWidth: true }
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.preferredWidth:  _root._fieldWidth
                         text:                   qsTr("Width")
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.preferredWidth:  _root._fieldWidth
                         text:                   qsTr("Height")
                     }
@@ -114,7 +114,7 @@ ColumnLayout {
                     Layout.fillWidth:   true
                     spacing:            _margin
 
-                    QGCLabel { text: qsTr("Sensor"); Layout.fillWidth: true }
+                    beeCopterLabel { text: qsTr("Sensor"); Layout.fillWidth: true }
                     FactTextField {
                         Layout.preferredWidth:  _root._fieldWidth
                         fact:                   cameraCalc.sensorWidth
@@ -129,7 +129,7 @@ ColumnLayout {
                     Layout.fillWidth:   true
                     spacing:            _margin
 
-                    QGCLabel { text: qsTr("Image"); Layout.fillWidth: true }
+                    beeCopterLabel { text: qsTr("Image"); Layout.fillWidth: true }
                     FactTextField {
                         Layout.preferredWidth:  _root._fieldWidth
                         fact:                   cameraCalc.imageWidth
@@ -143,7 +143,7 @@ ColumnLayout {
                 RowLayout {
                     Layout.fillWidth:   true
                     spacing:            _margin
-                    QGCLabel {
+                    beeCopterLabel {
                         text:                   qsTr("Focal length")
                         Layout.fillWidth:       true
                     }

@@ -1,12 +1,12 @@
 #include "SettingsFact.h"
-#include "QGCApplication.h"
-#include "QGCCorePlugin.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterCorePlugin.h"
+#include "beeCopterLoggingCategory.h"
 #include "SettingsManager.h"
 
 #include <QtCore/QSettings>
 
-QGC_LOGGING_CATEGORY(SettingsFactLog, "FactSystem.SettingsFact")
+beeCopter_LOGGING_CATEGORY(SettingsFactLog, "FactSystem.SettingsFact")
 
 SettingsFact::SettingsFact(QObject *parent)
     : Fact(parent)
@@ -33,7 +33,7 @@ SettingsFact::SettingsFact(const QString &settingsGroup, FactMetaData *metaData,
         const QVariant rawDefaultValue = metaData->rawDefaultValue();
         QVariant resolvedValue;
 
-        if (qgcApp()->runningUnitTests()) {
+        if (beeCopterApp()->runningUnitTests()) {
             // Don't use saved settings
             resolvedValue = rawDefaultValue;
         } else if (_visible) {

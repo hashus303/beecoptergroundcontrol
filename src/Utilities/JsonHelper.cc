@@ -10,14 +10,14 @@
 
 #include "FactMetaData.h"
 #include "MissionCommandList.h"
-#include "QGCFileHelper.h"
-#include "QGCLoggingCategory.h"
-#include "QGCNetworkHelper.h"
-#include "QGCQGeoCoordinate.h"
+#include "beeCopterFileHelper.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterNetworkHelper.h"
+#include "beeCopterQGeoCoordinate.h"
 #include "QmlObjectListModel.h"
 #include "JsonParsing.h"
 
-QGC_LOGGING_CATEGORY(JsonHelperLog, "Utilities.JsonHelper")
+beeCopter_LOGGING_CATEGORY(JsonHelperLog, "Utilities.JsonHelper")
 
 Q_APPLICATION_STATIC(QTranslator, s_jsonTranslator);
 
@@ -31,7 +31,7 @@ QJsonArray _translateArray(QJsonArray& jsonArray, const QString& translateContex
 constexpr const char* _translateKeysKey = "translateKeys";
 constexpr const char* _arrayIDKeysKey = "_arrayIDKeys";
 constexpr const char* _jsonGroundStationKey = "groundStation";
-constexpr const char* _jsonGroundStationValue = "QGroundControl";
+constexpr const char* _jsonGroundStationValue = "beeCopter";
 }  // namespace JsonHelper
 
 QStringList JsonHelper::_addDefaultLocKeys(QJsonObject& jsonObject)
@@ -39,7 +39,7 @@ QStringList JsonHelper::_addDefaultLocKeys(QJsonObject& jsonObject)
     QString translateKeys;
     const QString fileType = jsonObject[jsonFileTypeKey].toString();
     if (!fileType.isEmpty()) {
-        if (fileType == MissionCommandList::qgcFileType) {
+        if (fileType == MissionCommandList::beeCopterFileType) {
             if (jsonObject.contains(_translateKeysKey)) {
                 translateKeys = jsonObject[_translateKeysKey].toString();
             } else {
@@ -50,7 +50,7 @@ QStringList JsonHelper::_addDefaultLocKeys(QJsonObject& jsonObject)
             if (!jsonObject.contains(_arrayIDKeysKey)) {
                 jsonObject[_arrayIDKeysKey] = QStringLiteral("rawName,comment");
             }
-        } else if (fileType == FactMetaData::qgcFileType) {
+        } else if (fileType == FactMetaData::beeCopterFileType) {
             if (jsonObject.contains(_translateKeysKey)) {
                 translateKeys = jsonObject[_translateKeysKey].toString();
             } else {
@@ -185,7 +185,7 @@ void JsonHelper::saveGeoCoordinate(const QGeoCoordinate& coordinate, bool writeA
     jsonValue = QJsonValue(coordinateArray);
 }
 
-bool JsonHelper::validateInternalQGCJsonFile(const QJsonObject& jsonObject, const QString& expectedFileType,
+bool JsonHelper::validateInternalbeeCopterJsonFile(const QJsonObject& jsonObject, const QString& expectedFileType,
                                              int minSupportedVersion, int maxSupportedVersion, int& version,
                                              QString& errorString)
 {
@@ -220,7 +220,7 @@ bool JsonHelper::validateInternalQGCJsonFile(const QJsonObject& jsonObject, cons
     return true;
 }
 
-bool JsonHelper::validateExternalQGCJsonFile(const QJsonObject& jsonObject, const QString& expectedFileType,
+bool JsonHelper::validateExternalbeeCopterJsonFile(const QJsonObject& jsonObject, const QString& expectedFileType,
                                              int minSupportedVersion, int maxSupportedVersion, int& version,
                                              QString& errorString)
 {
@@ -232,21 +232,21 @@ bool JsonHelper::validateExternalQGCJsonFile(const QJsonObject& jsonObject, cons
         return false;
     }
 
-    return validateInternalQGCJsonFile(jsonObject, expectedFileType, minSupportedVersion, maxSupportedVersion, version,
+    return validateInternalbeeCopterJsonFile(jsonObject, expectedFileType, minSupportedVersion, maxSupportedVersion, version,
                                        errorString);
 }
 
-QJsonObject JsonHelper::openInternalQGCJsonFile(const QString& jsonFilename, const QString& expectedFileType,
+QJsonObject JsonHelper::openInternalbeeCopterJsonFile(const QString& jsonFilename, const QString& expectedFileType,
                                                 int minSupportedVersion, int maxSupportedVersion, int& version,
                                                 QString& errorString)
 {
-    const QByteArray bytes = QGCFileHelper::readFile(jsonFilename, &errorString);
+    const QByteArray bytes = beeCopterFileHelper::readFile(jsonFilename, &errorString);
     if (bytes.isEmpty() && !errorString.isEmpty()) {
         return {};
     }
 
     QJsonParseError jsonParseError;
-    const QJsonDocument doc = QGCNetworkHelper::parseCompressedJson(bytes, &jsonParseError);
+    const QJsonDocument doc = beeCopterNetworkHelper::parseCompressedJson(bytes, &jsonParseError);
     if (jsonParseError.error != QJsonParseError::NoError) {
         errorString = QObject::tr("Unable to parse json file: %1 error: %2 offset: %3")
                           .arg(jsonFilename, jsonParseError.errorString())
@@ -260,7 +260,7 @@ QJsonObject JsonHelper::openInternalQGCJsonFile(const QString& jsonFilename, con
     }
 
     QJsonObject jsonObject = doc.object();
-    const bool success = validateInternalQGCJsonFile(jsonObject, expectedFileType, minSupportedVersion,
+    const bool success = validateInternalbeeCopterJsonFile(jsonObject, expectedFileType, minSupportedVersion,
                                                      maxSupportedVersion, version, errorString);
     if (!success) {
         errorString = QObject::tr("Json file: '%1'. %2").arg(jsonFilename, errorString);
@@ -272,7 +272,7 @@ QJsonObject JsonHelper::openInternalQGCJsonFile(const QString& jsonFilename, con
     return _translateRoot(jsonObject, context, translateKeys);
 }
 
-void JsonHelper::saveQGCJsonFileHeader(QJsonObject& jsonObject, const QString& fileType, int version)
+void JsonHelper::savebeeCopterJsonFileHeader(QJsonObject& jsonObject, const QString& fileType, int version)
 {
     jsonObject[_jsonGroundStationKey] = _jsonGroundStationValue;
     jsonObject[jsonFileTypeKey] = fileType;
@@ -374,7 +374,7 @@ bool JsonHelper::loadPolygon(const QJsonArray& polygonArray, QmlObjectListModel&
             list.clearAndDeleteContents();
             return false;
         }
-        list.append(new QGCQGeoCoordinate(pointCoord, parent));
+        list.append(new beeCopterQGeoCoordinate(pointCoord, parent));
     }
 
     return true;
@@ -383,7 +383,7 @@ bool JsonHelper::loadPolygon(const QJsonArray& polygonArray, QmlObjectListModel&
 void JsonHelper::savePolygon(const QmlObjectListModel& list, QJsonArray& polygonArray)
 {
     for (qsizetype i = 0; i < list.count(); i++) {
-        const QGeoCoordinate vertex = list.value<QGCQGeoCoordinate*>(i)->coordinate();
+        const QGeoCoordinate vertex = list.value<beeCopterQGeoCoordinate*>(i)->coordinate();
 
         QJsonValue jsonValue;
         JsonHelper::saveGeoCoordinate(vertex, false /* writeAltitude */, jsonValue);

@@ -1,9 +1,9 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
+import beeCopter.FlightMap
 
 Item {
     implicitWidth:  _totalRadius * 2
@@ -23,7 +23,7 @@ Item {
     property real _clampedAngleDegrees:     Math.min(Math.max(attitudeAngleDegrees, -_maxAngleDegrees), _maxAngleDegrees)
     property real _attitudeAnglePercent:    _clampedAngleDegrees / _maxAngleDegrees
 
-    property var qgcPal:  QGroundControl.globalPalette
+    property var beeCopterPal:  beeCopter.globalPalette
 
     on_AttitudeAnglePercentChanged: angleIndicator.requestPaint()
 
@@ -36,7 +36,7 @@ Item {
             var centerY = height / 2
             var ctx = getContext("2d")
             ctx.reset()
-            ctx.strokeStyle = qgcPal.window
+            ctx.strokeStyle = beeCopterPal.window
             ctx.lineWidth = attitudeSize
             ctx.beginPath()
             ctx.arc(centerX, centerY, _attitudeRadius, _zeroAttitudeRadians - _maxRadians, _zeroAttitudeRadians + _maxRadians)
@@ -60,7 +60,7 @@ Item {
             var centerY = height / 2
             var ctx = getContext("2d")
             ctx.reset()
-            ctx.strokeStyle = qgcPal.primaryButton
+            ctx.strokeStyle = beeCopterPal.primaryButton
             ctx.lineWidth = attitudeSize
             ctx.beginPath()
             ctx.arc(centerX, centerY, _attitudeRadius, startRollRadiansOrdered, endRollRadiansOrdered)
@@ -77,7 +77,7 @@ Item {
             var centerY = height / 2
             var ctx = getContext("2d")
             ctx.reset()
-            ctx.strokeStyle = qgcPal.text
+            ctx.strokeStyle = beeCopterPal.text
             ctx.lineWidth = 2
             ctx.beginPath()
             ctx.moveTo(centerX, 0)

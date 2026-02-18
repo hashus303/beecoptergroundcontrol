@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 //-------------------------------------------------------------------------
 //-- Telemetry RSSI
@@ -14,10 +14,10 @@ Item {
 
     property bool showIndicator: _hasTelemetry
 
-    property var  _activeVehicle:   QGroundControl.multiVehicleManager.activeVehicle
+    property var  _activeVehicle:   beeCopter.multiVehicleManager.activeVehicle
     property bool _hasTelemetry:    _activeVehicle.telemetryLRSSI !== 0
 
-    QGCColoredImage {
+    beeCopterColoredImage {
         id:                 telemIcon
         anchors.top:        parent.top
         anchors.bottom:     parent.bottom
@@ -25,7 +25,7 @@ Item {
         sourceSize.height:  height
         source:             "/qmlimages/TelemRSSI.svg"
         fillMode:           Image.PreserveAspectFit
-        color:              qgcPal.buttonText
+        color:              beeCopterPal.buttonText
     }
 
     MouseArea {

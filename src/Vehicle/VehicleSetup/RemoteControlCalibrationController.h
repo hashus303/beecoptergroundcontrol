@@ -6,7 +6,7 @@
 #include <QtQuick/QQuickItem>
 
 #include "FactPanelController.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 Q_DECLARE_LOGGING_CATEGORY(RemoteControlCalibrationControllerLog)
 Q_DECLARE_LOGGING_CATEGORY(RemoteControlCalibrationControllerVerboseLog)
@@ -125,7 +125,7 @@ public slots:
 
 protected:
     /// A set of information associated with a radio channel.
-    static constexpr int _chanMax = QGCMAVLink::maxRcChannels; ///< Maximum number of supported channels by this implementation
+    static constexpr int _chanMax = beeCopterMAVLink::maxRcChannels; ///< Maximum number of supported channels by this implementation
     struct ChannelInfo {
         enum StickFunction stickFunction; ///< Function mapped to this channel, stickFunctionMax for none
         bool channelReversed;

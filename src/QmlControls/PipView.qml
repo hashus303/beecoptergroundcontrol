@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Window
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     id:         _root
@@ -41,7 +41,7 @@ Item {
     }
 
     function _initForItems() {
-        var item1IsFull = QGroundControl.loadBoolGlobalSetting(item1IsFullSettingsKey, true)
+        var item1IsFull = beeCopter.loadBoolGlobalSetting(item1IsFullSettingsKey, true)
         if (item1 && item2) {
             item1.pipState.state = item1IsFull ? item1.pipState.fullState : item1.pipState.pipState
             item2.pipState.state = item1IsFull ? item2.pipState.pipState : item2.pipState.fullState
@@ -52,7 +52,7 @@ Item {
             _fullItem = item1
             _pipOrWindowItem = null
         }
-        _setPipIsExpanded(QGroundControl.loadBoolGlobalSetting(_pipExpandedSettingsKey, true))
+        _setPipIsExpanded(beeCopter.loadBoolGlobalSetting(_pipExpandedSettingsKey, true))
     }
 
     function _swapPip() {
@@ -70,11 +70,11 @@ Item {
             _pipOrWindowItem = item2
             item1IsFull = true
         }
-        QGroundControl.saveBoolGlobalSetting(item1IsFullSettingsKey, item1IsFull)
+        beeCopter.saveBoolGlobalSetting(item1IsFullSettingsKey, item1IsFull)
     }
 
     function _setPipIsExpanded(isExpanded) {
-        QGroundControl.saveBoolGlobalSetting(_pipExpandedSettingsKey, isExpanded)
+        beeCopter.saveBoolGlobalSetting(_pipExpandedSettingsKey, isExpanded)
         _isExpanded = isExpanded
     }
 

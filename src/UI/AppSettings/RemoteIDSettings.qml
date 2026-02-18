@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SettingsPage {
 
@@ -29,15 +29,15 @@ SettingsPage {
     property bool commsGood:            _activeVehicle && _activeVehicle.remoteIDManager ? _activeVehicle.remoteIDManager.commsGood : false
 
     // General properties
-    property var  _activeVehicle:       QGroundControl.multiVehicleManager.activeVehicle
-    property var  _offlineVehicle:      QGroundControl.multiVehicleManager.offlineEditingVehicle
-    property int  _regionOperation:     QGroundControl.settingsManager.remoteIDSettings.region.value
-    property int  _locationType:        QGroundControl.settingsManager.remoteIDSettings.locationType.value
-    property int  _classificationType:  QGroundControl.settingsManager.remoteIDSettings.classificationType.value
+    property var  _activeVehicle:       beeCopter.multiVehicleManager.activeVehicle
+    property var  _offlineVehicle:      beeCopter.multiVehicleManager.offlineEditingVehicle
+    property int  _regionOperation:     beeCopter.settingsManager.remoteIDSettings.region.value
+    property int  _locationType:        beeCopter.settingsManager.remoteIDSettings.locationType.value
+    property int  _classificationType:  beeCopter.settingsManager.remoteIDSettings.classificationType.value
     property var  _remoteIDManager:     _activeVehicle ? _activeVehicle.remoteIDManager : null
 
 
-    property var  remoteIDSettings:QGroundControl.settingsManager.remoteIDSettings
+    property var  remoteIDSettings:beeCopter.settingsManager.remoteIDSettings
     property Fact regionFact:           remoteIDSettings.region
     property Fact sendOperatorIdFact:   remoteIDSettings.sendOperatorID
     property Fact locationTypeFact:     remoteIDSettings.locationType
@@ -48,28 +48,28 @@ SettingsPage {
     property real textLabelWidth:       ScreenTools.defaultFontPixelWidth * 30
 
     // GPS properties
-    property var    gcsPosition:        QGroundControl.qgcPositionManger.gcsPosition
-    property real   gcsHeading:         QGroundControl.qgcPositionManger.gcsHeading
-    property real   gcsHDOP:            QGroundControl.qgcPositionManger.gcsPositionHorizontalAccuracy
+    property var    gcsPosition:        beeCopter.beeCopterPositionManger.gcsPosition
+    property real   gcsHeading:         beeCopter.beeCopterPositionManger.gcsHeading
+    property real   gcsHDOP:            beeCopter.beeCopterPositionManger.gcsPositionHorizontalAccuracy
     property string gpsDisabled:        "Disabled"
     property string gpsUdpPort:         "UDP Port"
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     // Function to get the corresponding Self ID label depending on the Self ID Type selected
     function getSelfIdLabelText() {
         switch (selfIDComboBox.currentIndex) {
         case 0:
-            return QGroundControl.settingsManager.remoteIDSettings.selfIDFree.shortDescription
+            return beeCopter.settingsManager.remoteIDSettings.selfIDFree.shortDescription
             break
         case 1:
-            return QGroundControl.settingsManager.remoteIDSettings.selfIDEmergency.shortDescription
+            return beeCopter.settingsManager.remoteIDSettings.selfIDEmergency.shortDescription
             break
         case 2:
-            return QGroundControl.settingsManager.remoteIDSettings.selfIDExtended.shortDescription
+            return beeCopter.settingsManager.remoteIDSettings.selfIDExtended.shortDescription
             break
         default:
-            return QGroundControl.settingsManager.remoteIDSettings.selfIDFree.shortDescription
+            return beeCopter.settingsManager.remoteIDSettings.selfIDFree.shortDescription
         }
     }
 
@@ -77,16 +77,16 @@ SettingsPage {
     function getSelfIDFact() {
         switch (selfIDComboBox.currentIndex) {
         case 0:
-            return QGroundControl.settingsManager.remoteIDSettings.selfIDFree
+            return beeCopter.settingsManager.remoteIDSettings.selfIDFree
             break
         case 1:
-            return QGroundControl.settingsManager.remoteIDSettings.selfIDEmergency
+            return beeCopter.settingsManager.remoteIDSettings.selfIDEmergency
             break
         case 2:
-            return QGroundControl.settingsManager.remoteIDSettings.selfIDExtended
+            return beeCopter.settingsManager.remoteIDSettings.selfIDExtended
             break
         default:
-            return QGroundControl.settingsManager.remoteIDSettings.selfIDFree
+            return beeCopter.settingsManager.remoteIDSettings.selfIDFree
         }
     }
 
@@ -109,7 +109,7 @@ SettingsPage {
                 id:                     flagsRectangle
                 Layout.preferredHeight: statusGrid.height + (_margins * 2)
                 Layout.preferredWidth:  statusGrid.width + (_margins * 2)
-                color:                  qgcPal.windowShade
+                color:                  beeCopterPal.windowShade
                 visible:                _activeVehicle
                 Layout.fillWidth:       true
 
@@ -126,11 +126,11 @@ SettingsPage {
                         id:                     armFlag
                         Layout.preferredHeight: flagsHeight
                         Layout.preferredWidth:  flagsWidth
-                        color:                  _activeRID ? (_remoteIDManager.armStatusGood ? qgcPal.colorGreen : qgcPal.colorRed) : qgcPal.colorGrey
+                        color:                  _activeRID ? (_remoteIDManager.armStatusGood ? beeCopterPal.colorGreen : beeCopterPal.colorRed) : beeCopterPal.colorGrey
                         radius:                 radiusFlags
                         visible:                commsGood
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.fill:           parent
                             text:                   qsTr("ARM STATUS")
                             wrapMode:               Text.WordWrap
@@ -144,10 +144,10 @@ SettingsPage {
                         id:                     commsFlag
                         Layout.preferredHeight: flagsHeight
                         Layout.preferredWidth:  flagsWidth
-                        color:                  _activeRID ? (_remoteIDManager.commsGood ? qgcPal.colorGreen : qgcPal.colorRed) : qgcPal.colorGrey
+                        color:                  _activeRID ? (_remoteIDManager.commsGood ? beeCopterPal.colorGreen : beeCopterPal.colorRed) : beeCopterPal.colorGrey
                         radius:                 radiusFlags
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.fill:           parent
                             text:                   _activeRID && _remoteIDManager.commsGood ? qsTr("RID COMMS") : qsTr("NOT CONNECTED")
                             wrapMode:               Text.WordWrap
@@ -161,11 +161,11 @@ SettingsPage {
                         id:                     gpsFlag
                         Layout.preferredHeight: flagsHeight
                         Layout.preferredWidth:  flagsWidth
-                        color:                  _activeRID ? (_remoteIDManager.gcsGPSGood ? qgcPal.colorGreen : qgcPal.colorRed) : qgcPal.colorGrey
+                        color:                  _activeRID ? (_remoteIDManager.gcsGPSGood ? beeCopterPal.colorGreen : beeCopterPal.colorRed) : beeCopterPal.colorGrey
                         radius:                 radiusFlags
                         visible:                commsGood
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.fill:           parent
                             text:                   qsTr("GCS GPS")
                             wrapMode:               Text.WordWrap
@@ -179,11 +179,11 @@ SettingsPage {
                         id:                     basicIDFlag
                         Layout.preferredHeight: flagsHeight
                         Layout.preferredWidth:  flagsWidth
-                        color:                  _activeRID ? (_remoteIDManager.basicIDGood ? qgcPal.colorGreen : qgcPal.colorRed) : qgcPal.colorGrey
+                        color:                  _activeRID ? (_remoteIDManager.basicIDGood ? beeCopterPal.colorGreen : beeCopterPal.colorRed) : beeCopterPal.colorGrey
                         radius:                 radiusFlags
                         visible:                commsGood
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.fill:           parent
                             text:                   qsTr("BASIC ID")
                             wrapMode:               Text.WordWrap
@@ -197,11 +197,11 @@ SettingsPage {
                         id:                     operatorIDFlag
                         Layout.preferredHeight: flagsHeight
                         Layout.preferredWidth:  flagsWidth
-                        color:                  _activeRID ? (_remoteIDManager.operatorIDGood ? qgcPal.colorGreen : qgcPal.colorRed) : qgcPal.colorGrey
+                        color:                  _activeRID ? (_remoteIDManager.operatorIDGood ? beeCopterPal.colorGreen : beeCopterPal.colorRed) : beeCopterPal.colorGrey
                         radius:                 radiusFlags
-                        visible:                commsGood && _activeRID ? (QGroundControl.settingsManager.remoteIDSettings.sendOperatorID.value || _regionOperation == RemoteIDSettings.RegionOperation.EU) : false
+                        visible:                commsGood && _activeRID ? (beeCopter.settingsManager.remoteIDSettings.sendOperatorID.value || _regionOperation == RemoteIDSettings.RegionOperation.EU) : false
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.fill:           parent
                             text:                   qsTr("OPERATOR ID")
                             wrapMode:               Text.WordWrap
@@ -238,13 +238,13 @@ SettingsPage {
 
                 LabelledFactComboBox {
                     label:              fact.shortDescription
-                    fact:               QGroundControl.settingsManager.remoteIDSettings.region
-                    visible:            QGroundControl.settingsManager.remoteIDSettings.region.visible
+                    fact:               beeCopter.settingsManager.remoteIDSettings.region
+                    visible:            beeCopter.settingsManager.remoteIDSettings.region.visible
                     Layout.fillWidth:   true
                 }
             }
             SettingsGroupLayout {
-                outerBorderColor: _activeRID ? (_remoteIDManager.armStatusGood ? defaultBorderColor : qgcPal.colorRed) : defaultBorderColor
+                outerBorderColor: _activeRID ? (_remoteIDManager.armStatusGood ? defaultBorderColor : beeCopterPal.colorRed) : defaultBorderColor
                 visible:            armStatusLabel.labelText !== ""
                 LabelledLabel {
                     id :                armStatusLabel
@@ -260,7 +260,7 @@ SettingsPage {
                 headingDescription:     qsTr("If Basic ID is already set on the RID device, this will be registered as Basic ID 2")
                 Layout.fillWidth:       true
                 Layout.preferredWidth:  textLabelWidth
-                outerBorderColor:       _activeRID ? (_remoteIDManager.basicIDGood ? defaultBorderColor : qgcPal.colorRed) : defaultBorderColor
+                outerBorderColor:       _activeRID ? (_remoteIDManager.basicIDGood ? defaultBorderColor : beeCopterPal.colorRed) : defaultBorderColor
 
 
                 FactCheckBoxSlider {
@@ -337,12 +337,12 @@ SettingsPage {
                 RowLayout {
                     spacing: ScreenTools.defaultFontPixelWidth * 2
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.fillWidth:   true
                         text:               operatorIDFact.shortDescription + (regionOperationCombo.visible ? "" :  qsTr(" (%1)").arg(regionOperationCombo.comboBox.currentText))
                     }
 
-                    QGCTextField {
+                    beeCopterTextField {
                         id:                     operatorIDTextField
                         Layout.preferredWidth:  textFieldWidth
                         Layout.fillWidth:       true
@@ -452,7 +452,7 @@ SettingsPage {
             SettingsGroupLayout {
                 heading:            qsTr("GroundStation Location")
                 Layout.fillWidth:   true
-                outerBorderColor : _activeRID ? (_remoteIDManager.gcsGPSGood ? defaultBorderColor : qgcPal.colorRed) : defaultBorderColor
+                outerBorderColor : _activeRID ? (_remoteIDManager.gcsGPSGood ? defaultBorderColor : beeCopterPal.colorRed) : defaultBorderColor
                 LabelledFactComboBox {
                     label:              locationTypeFact.shortDescription
                     fact:               locationTypeFact
@@ -496,8 +496,8 @@ SettingsPage {
                 GridLayout {
                     id:                         gpsGrid
                     visible:                    !ScreenTools.isMobile
-                                                && QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaPort.visible
-                                                && QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaBaud.visible
+                                                && beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaPort.visible
+                                                && beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaBaud.visible
                                                 && _locationType !== RemoteIDSettings.LocationType.TAKEOFF
                     anchors.margins:            _margins
                     rowSpacing:                 _margins * 3
@@ -505,10 +505,10 @@ SettingsPage {
                     columnSpacing:              _margins * 2
                     Layout.alignment:           Qt.AlignHCenter
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text: qsTr("NMEA External GPS Device")
                     }
-                    QGCComboBox {
+                    beeCopterComboBox {
                         id:                     nmeaPortCombo
                         Layout.preferredWidth:  _comboFieldWidth
 
@@ -517,29 +517,29 @@ SettingsPage {
 
                         onActivated: (index) => {
                                          if (index !== -1) {
-                                             QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaPort.value = textAt(index);
+                                             beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaPort.value = textAt(index);
                                          }
                                      }
                         Component.onCompleted: {
                             model.append({text: gpsDisabled})
                             model.append({text: gpsUdpPort})
 
-                            for (var i in QGroundControl.linkManager.serialPorts) {
-                                nmeaPortCombo.model.append({text:QGroundControl.linkManager.serialPorts[i]})
+                            for (var i in beeCopter.linkManager.serialPorts) {
+                                nmeaPortCombo.model.append({text:beeCopter.linkManager.serialPorts[i]})
                             }
-                            var index = nmeaPortCombo.find(QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaPort.valueString);
+                            var index = nmeaPortCombo.find(beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaPort.valueString);
                             nmeaPortCombo.currentIndex = index;
-                            if (QGroundControl.linkManager.serialPorts.length === 0) {
+                            if (beeCopter.linkManager.serialPorts.length === 0) {
                                 nmeaPortCombo.model.append({text: "Serial <none available>"})
                             }
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         visible:          nmeaPortCombo.currentText !== gpsUdpPort && nmeaPortCombo.currentText !== gpsDisabled
                         text:             qsTr("NMEA GPS Baudrate")
                     }
-                    QGCComboBox {
+                    beeCopterComboBox {
                         visible:                nmeaPortCombo.currentText !== gpsUdpPort && nmeaPortCombo.currentText !== gpsDisabled
                         id:                     nmeaBaudCombo
                         Layout.preferredWidth:  _comboFieldWidth
@@ -547,23 +547,23 @@ SettingsPage {
 
                         onActivated: (index) => {
                                          if (index !== -1) {
-                                             QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaBaud.value = textAt(index);
+                                             beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaBaud.value = textAt(index);
                                          }
                                      }
                         Component.onCompleted: {
-                            var index = nmeaBaudCombo.find(QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaBaud.valueString);
+                            var index = nmeaBaudCombo.find(beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaBaud.valueString);
                             nmeaBaudCombo.currentIndex = index;
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:       qsTr("NMEA stream UDP port")
                         visible:    nmeaPortCombo.currentText === gpsUdpPort
                     }
                     FactTextField {
                         visible:                nmeaPortCombo.currentText === gpsUdpPort
                         Layout.preferredWidth:  _valueFieldWidth
-                        fact:                   QGroundControl.settingsManager.autoConnectSettings.nmeaUdpPort
+                        fact:                   beeCopter.settingsManager.autoConnectSettings.nmeaUdpPort
                     }
                 }
             }
@@ -574,7 +574,7 @@ SettingsPage {
                 visible:            isEURegion
                 Layout.fillWidth:   true
 
-                QGCCheckBoxSlider {
+                beeCopterCheckBoxSlider {
                     id:                 euProvideInfoSlider
                     text:               qsTr("Provide Information")
                     checked:            _fact.rawValue === RemoteIDSettings.ClassificationType.EU

@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     id:         _root
@@ -76,7 +76,7 @@ Item {
         arrowCanvas.requestPaint()
     } // function - _calcPositions
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     Component {
         // Overlay which is used to cancel the panel when the user clicks away
@@ -125,12 +125,12 @@ Item {
                 context.lineTo(panelX, panelY)                              // top left
 
                 context.closePath()
-                context.fillStyle = qgcPal.windowShade
+                context.fillStyle = beeCopterPal.windowShade
                 context.fill()
             }
         } // Canvas - arrowCanvas
 
-        QGCFlickable {
+        beeCopterFlickable {
             id:                 panelItemFlickable
             anchors.margins:    _dropMargin
             anchors.leftMargin: _dropMargin + _arrowPointWidth

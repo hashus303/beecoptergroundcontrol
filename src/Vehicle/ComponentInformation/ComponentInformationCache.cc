@@ -1,12 +1,12 @@
 #include "ComponentInformationCache.h"
-#include "QGCFileHelper.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterFileHelper.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QDirIterator>
 #include <QtCore/QStandardPaths>
 
-QGC_LOGGING_CATEGORY(ComponentInformationCacheLog, "ComponentInformation.ComponentInformationCache")
+beeCopter_LOGGING_CATEGORY(ComponentInformationCacheLog, "ComponentInformation.ComponentInformationCache")
 
 ComponentInformationCache::ComponentInformationCache(const QDir& path, int maxNumFiles)
     : _path(path), _maxNumFiles(maxNumFiles)
@@ -16,7 +16,7 @@ ComponentInformationCache::ComponentInformationCache(const QDir& path, int maxNu
 
 ComponentInformationCache& ComponentInformationCache::defaultInstance()
 {
-    QString cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/QGCCompInfoCache");
+    QString cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/beeCopterCompInfoCache");
     static ComponentInformationCache instance(cacheDir, 50);
     return instance;
 }
@@ -107,7 +107,7 @@ QString ComponentInformationCache::insert(const QString &fileTag, const QString 
 
 void ComponentInformationCache::initializeDirectory()
 {
-    if (!QGCFileHelper::ensureDirectoryExists(_path.path())) {
+    if (!beeCopterFileHelper::ensureDirectoryExists(_path.path())) {
         qCWarning(ComponentInformationCacheLog) << "Failed to create dir" << _path.path();
     }
 

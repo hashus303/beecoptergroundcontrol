@@ -1,8 +1,8 @@
 #include "SysStatusSensorInfo.h"
-#include "QGCLoggingCategory.h"
-#include "QGCMAVLink.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterMAVLink.h"
 
-QGC_LOGGING_CATEGORY(SysStatusSensorInfoLog, "MAVLink.SysStatusSensorInfo")
+beeCopter_LOGGING_CATEGORY(SysStatusSensorInfoLog, "MAVLink.SysStatusSensorInfo")
 
 SysStatusSensorInfo::SysStatusSensorInfo(QObject *parent)
     : QObject(parent)
@@ -60,19 +60,19 @@ QStringList SysStatusSensorInfo::sensorNames() const
     // List ordering is unhealthy, healthy, disabled
     for (std::pair<MAV_SYS_STATUS_SENSOR, const SensorInfo&> sensorInfo : _sensorInfoMap.asKeyValueRange()) {
         if (sensorInfo.second.enabled && !sensorInfo.second.healthy) {
-            rgNames.append(QGCMAVLink::mavSysStatusSensorToString(sensorInfo.first));
+            rgNames.append(beeCopterMAVLink::mavSysStatusSensorToString(sensorInfo.first));
         }
     }
 
     for (std::pair<MAV_SYS_STATUS_SENSOR, const SensorInfo&> sensorInfo : _sensorInfoMap.asKeyValueRange()) {
         if (sensorInfo.second.enabled && sensorInfo.second.healthy) {
-            rgNames.append(QGCMAVLink::mavSysStatusSensorToString(sensorInfo.first));
+            rgNames.append(beeCopterMAVLink::mavSysStatusSensorToString(sensorInfo.first));
         }
     }
 
     for (std::pair<MAV_SYS_STATUS_SENSOR, const SensorInfo&> sensorInfo : _sensorInfoMap.asKeyValueRange()) {
         if (!sensorInfo.second.enabled) {
-            rgNames.append(QGCMAVLink::mavSysStatusSensorToString(sensorInfo.first));
+            rgNames.append(beeCopterMAVLink::mavSysStatusSensorToString(sensorInfo.first));
         }
     }
 

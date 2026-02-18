@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FactPanelController.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 #include <QtCore/QLoggingCategory>
 #include <QtQmlIntegration/QtQmlIntegration>

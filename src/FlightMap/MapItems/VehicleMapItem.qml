@@ -3,8 +3,8 @@ import QtQuick.Effects
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Marker for displaying a vehicle location on the map
 MapQuickItem {
@@ -22,10 +22,10 @@ MapQuickItem {
     anchorPoint.y:  vehicleItem.height / 2
     visible:        coordinate.isValid
 
-    property var    _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle: beeCopter.multiVehicleManager.activeVehicle
     property bool   _adsbVehicle:   vehicle ? false : true
     property var    _map:           map
-    property bool   _multiVehicle:  QGroundControl.multiVehicleManager.vehicles.count > 1
+    property bool   _multiVehicle:  beeCopter.multiVehicleManager.vehicles.count > 1
 
     sourceItem: Item {
         id:         vehicleItem
@@ -57,7 +57,7 @@ MapQuickItem {
                 property var gimbalYaw:       object.absoluteYaw.rawValue
                 rotation:                     gimbalYaw + 180
                 onGimbalYawChanged:           canvas.requestPaint()
-                visible:                      vehicle && !isNaN(gimbalYaw) && QGroundControl.settingsManager.gimbalControllerSettings.showAzimuthIndicatorOnMap.rawValue
+                visible:                      vehicle && !isNaN(gimbalYaw) && beeCopter.settingsManager.gimbalControllerSettings.showAzimuthIndicatorOnMap.rawValue
                 opacity:                      object === vehicle.gimbalController.activeGimbal ? 1.0 : 0.4
 
                 Canvas {
@@ -98,7 +98,7 @@ MapQuickItem {
                         const gradient = context.createLinearGradient(canvas.width / 2, canvas.height , canvas.width / 2, 0);
                         gradient.addColorStop(0.3, Qt.rgba(255,255,255,0));
                         gradient.addColorStop(0.5, Qt.rgba(255,255,255,0.5));
-                        gradient.addColorStop(1, qgcPal.mapIndicator);
+                        gradient.addColorStop(1, beeCopterPal.mapIndicator);
 
                         context.fillStyle = gradient;
                         context.fill();
@@ -122,7 +122,7 @@ MapQuickItem {
             }
         }
 
-        QGCMapLabel {
+        beeCopterMapLabel {
             id:                         vehicleLabel
             anchors.top:                parent.bottom
             anchors.horizontalCenter:   parent.horizontalCenter
@@ -132,7 +132,7 @@ MapQuickItem {
             visible:                    _adsbVehicle ? !isNaN(altitude) : _multiVehicle
             property string vehicleLabelText: visible ?
                                                   (_adsbVehicle ?
-                                                       QGroundControl.unitsConversion.metersToAppSettingsVerticalDistanceUnits(altitude).toFixed(0) + " " + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString + "\n" + callsign :
+                                                       beeCopter.unitsConversion.metersToAppSettingsVerticalDistanceUnits(altitude).toFixed(0) + " " + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString + "\n" + callsign :
                                                        (_multiVehicle ? qsTr("Vehicle %1").arg(vehicle.id) : "")) :
                                                   ""
 

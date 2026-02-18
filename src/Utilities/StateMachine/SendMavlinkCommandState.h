@@ -1,12 +1,12 @@
 #pragma once
 
-#include "QGCState.h"
-#include "QGCMAVLink.h"
+#include "beeCopterState.h"
+#include "beeCopterMAVLink.h"
 
 class Vehicle;
 
 /// Sends the specified MAVLink command to the vehicle
-class SendMavlinkCommandState : public QGCState
+class SendMavlinkCommandState : public beeCopterState
 {
     Q_OBJECT
 

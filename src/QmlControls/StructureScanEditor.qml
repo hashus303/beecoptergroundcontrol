@@ -3,17 +3,17 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
+import beeCopter.FlightMap
 
 // Editor for Survery mission items
 Rectangle {
     id:         _root
     height:     visible ? (editorColumn.height + (_margin * 2)) : 0
     width:      availableWidth
-    color:      qgcPal.windowShadeDark
+    color:      beeCopterPal.windowShadeDark
     radius:     _radius
 
     // The following properties must be available up the hierarchy chain
@@ -22,7 +22,7 @@ Rectangle {
 
     property real   _margin:                    ScreenTools.defaultFontPixelWidth / 2
     property real   _fieldWidth:                ScreenTools.defaultFontPixelWidth * 10.5
-    property var    _vehicle:                   QGroundControl.multiVehicleManager.activeVehicle ? QGroundControl.multiVehicleManager.activeVehicle : QGroundControl.multiVehicleManager.offlineEditingVehicle
+    property var    _vehicle:                   beeCopter.multiVehicleManager.activeVehicle ? beeCopter.multiVehicleManager.activeVehicle : beeCopter.multiVehicleManager.offlineEditingVehicle
     property real   _cameraMinTriggerInterval:  missionItem.cameraCalc.minTriggerInterval.rawValue
 
     function polygonCaptureStarted() {
@@ -42,7 +42,7 @@ Rectangle {
     function polygonAdjustStarted() { }
     function polygonAdjustFinished() { }
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     ColumnLayout {
         id:                 editorColumn
@@ -51,7 +51,7 @@ Rectangle {
         anchors.left:       parent.left
         anchors.right:      parent.right
 
-        QGCLabel {
+        beeCopterLabel {
                 id:                 wizardLabel
                 Layout.fillWidth:   true
                 wrapMode:           Text.WordWrap
@@ -65,14 +65,14 @@ Rectangle {
             spacing:        _margin
             visible:        !wizardLabel.visible
 
-            QGCTabBar {
+            beeCopterTabBar {
                 id:             tabBar
                 Layout.fillWidth:   true
 
                 Component.onCompleted: currentIndex = 0
 
-                QGCTabButton { text: qsTr("Grid") }
-                QGCTabButton { text: qsTr("Camera") }
+                beeCopterTabButton { text: qsTr("Grid") }
+                beeCopterTabButton { text: qsTr("Camera") }
             }
 
             ColumnLayout {
@@ -80,18 +80,18 @@ Rectangle {
                 spacing:            _margin
                 visible:            tabBar.currentIndex == 0
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     text:           qsTr("Note: Polygon respresents structure surface not vehicle flight path.")
                     wrapMode:       Text.WordWrap
                     font.pointSize: ScreenTools.smallFontPointSize
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     text:           qsTr("WARNING: Photo interval is below minimum interval (%1 secs) supported by camera.").arg(_cameraMinTriggerInterval.toFixed(1))
                     wrapMode:       Text.WordWrap
-                    color:          qgcPal.warningText
+                    color:          beeCopterPal.warningText
                     visible:        missionItem.cameraShots > 0 && _cameraMinTriggerInterval !== 0 && _cameraMinTriggerInterval > missionItem.timeBetweenShots
                 }
 
@@ -129,7 +129,7 @@ Rectangle {
                             Layout.fillWidth:   true
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Structure Height")
                         }
                         FactTextField {
@@ -137,21 +137,21 @@ Rectangle {
                             Layout.fillWidth:   true
                         }
 
-                        QGCLabel { text: qsTr("Scan Bottom Alt") }
+                        beeCopterLabel { text: qsTr("Scan Bottom Alt") }
                         AltitudeFactTextField {
                             fact:               missionItem.scanBottomAlt
-                            altitudeMode:       QGroundControl.AltitudeModeRelative
+                            altitudeMode:       beeCopter.AltitudeModeRelative
                             Layout.fillWidth:   true
                         }
 
-                        QGCLabel { text: qsTr("Entrance/Exit Alt") }
+                        beeCopterLabel { text: qsTr("Entrance/Exit Alt") }
                         AltitudeFactTextField {
                             fact:               missionItem.entranceAlt
-                            altitudeMode:       QGroundControl.AltitudeModeRelative
+                            altitudeMode:       beeCopter.AltitudeModeRelative
                             Layout.fillWidth:   true
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Gimbal Pitch")
                             visible:    missionItem.cameraCalc.isManualCamera
                         }
@@ -167,7 +167,7 @@ Rectangle {
                         width:  1
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         text:       qsTr("Rotate entry point")
                         onClicked:  missionItem.rotateEntryPoint()
                     }
@@ -184,26 +184,26 @@ Rectangle {
                     columnSpacing:  ScreenTools.defaultFontPixelWidth
                     visible:        statsHeader.checked
 
-                    QGCLabel { text: qsTr("Layers") }
-                    QGCLabel { text: missionItem.layers.valueString }
+                    beeCopterLabel { text: qsTr("Layers") }
+                    beeCopterLabel { text: missionItem.layers.valueString }
 
-                    QGCLabel { text: qsTr("Layer Height") }
-                    QGCLabel { text: missionItem.cameraCalc.adjustedFootprintFrontal.valueString + " " + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString }
+                    beeCopterLabel { text: qsTr("Layer Height") }
+                    beeCopterLabel { text: missionItem.cameraCalc.adjustedFootprintFrontal.valueString + " " + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString }
 
-                    QGCLabel { text: qsTr("Top Layer Alt") }
-                    QGCLabel { text: QGroundControl.unitsConversion.metersToAppSettingsVerticalDistanceUnits(missionItem.topFlightAlt).toFixed(1) + " " + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString }
+                    beeCopterLabel { text: qsTr("Top Layer Alt") }
+                    beeCopterLabel { text: beeCopter.unitsConversion.metersToAppSettingsVerticalDistanceUnits(missionItem.topFlightAlt).toFixed(1) + " " + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString }
 
-                    QGCLabel { text: qsTr("Bottom Layer Alt") }
-                    QGCLabel { text: QGroundControl.unitsConversion.metersToAppSettingsVerticalDistanceUnits(missionItem.bottomFlightAlt).toFixed(1) + " " + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString }
+                    beeCopterLabel { text: qsTr("Bottom Layer Alt") }
+                    beeCopterLabel { text: beeCopter.unitsConversion.metersToAppSettingsVerticalDistanceUnits(missionItem.bottomFlightAlt).toFixed(1) + " " + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString }
 
-                    QGCLabel { text: qsTr("Photo Count") }
-                    QGCLabel { text: missionItem.cameraShots }
+                    beeCopterLabel { text: qsTr("Photo Count") }
+                    beeCopterLabel { text: missionItem.cameraShots }
 
-                    QGCLabel { text: qsTr("Photo Interval") }
-                    QGCLabel { text: missionItem.timeBetweenShots.toFixed(1) + " " + qsTr("secs") }
+                    beeCopterLabel { text: qsTr("Photo Interval") }
+                    beeCopterLabel { text: missionItem.timeBetweenShots.toFixed(1) + " " + qsTr("secs") }
 
-                    QGCLabel { text: qsTr("Trigger Distance") }
-                    QGCLabel { text: missionItem.cameraCalc.adjustedFootprintSide.valueString + " " + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString }
+                    beeCopterLabel { text: qsTr("Trigger Distance") }
+                    beeCopterLabel { text: missionItem.cameraCalc.adjustedFootprintSide.valueString + " " + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString }
                 }
             } // Grid Column
 

@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     id:             control
@@ -19,7 +19,7 @@ Item {
         id:         backgroundRect
         width:      control.width + extraWidth
         height:     control.height
-        color:      qgcPal.window
+        color:      beeCopterPal.window
         radius:     ScreenTools.defaultFontPixelWidth / 2
         opacity:    0.75
     }
@@ -33,16 +33,16 @@ Item {
         RowLayout {
             visible: factValueGrid.settingsUnlocked
 
-            QGCColoredImage {
+            beeCopterColoredImage {
                 source:             "qrc:/InstrumentValueIcons/lock-open.svg"
                 mipmap:             true
                 width:              ScreenTools.minTouchPixels * 0.75
                 height:             width
                 sourceSize.width:   width
-                color:              qgcPal.text
+                color:              beeCopterPal.text
                 fillMode:           Image.PreserveAspectFit
 
-                QGCMouseArea {
+                beeCopterMouseArea {
                     anchors.fill: parent
                     onClicked:    factValueGrid.settingsUnlocked = false
                 }
@@ -54,7 +54,7 @@ Item {
         }
     }
 
-    QGCMouseArea {
+    beeCopterMouseArea {
         id:                         mouseArea
         x:                          mainLayout.x
         y:                          mainLayout.y

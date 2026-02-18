@@ -5,7 +5,7 @@
 #include <QtCore/QVariantList>
 #include <QtPositioning/QGeoCoordinate>
 
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 #include "FollowMe.h"
 #include "FactMetaData.h"
 
@@ -13,7 +13,7 @@ class VehicleComponent;
 class AutoPilotPlugin;
 class Vehicle;
 class MavlinkCameraControl;
-class QGCCameraManager;
+class beeCopterCameraManager;
 class Autotune;
 class LinkInterface;
 class FactGroup;
@@ -59,8 +59,8 @@ typedef QList<FirmwareFlightMode> FlightModeList;
 typedef QMap<uint32_t,QString> FlightModeCustomModeMap;
 
 /// The FirmwarePlugin class represents the methods and objects which are specific to a certain Firmware flight stack.
-/// This is the only place where flight stack specific code should reside in QGroundControl. The remainder of the
-/// QGroundControl source is generic to a common mavlink implementation. The implementation in the base class supports
+/// This is the only place where flight stack specific code should reside in beeCopter. The remainder of the
+/// beeCopter source is generic to a common mavlink implementation. The implementation in the base class supports
 /// mavlink generic firmware. Override the base clase virtuals to create your own firmware specific plugin.
 class FirmwarePlugin : public QObject
 {
@@ -267,7 +267,7 @@ public:
     ///     @param message[in,out] Mavlink message to adjust if needed.
     virtual void adjustOutgoingMavlinkMessageThreadSafe(Vehicle* /*vehicle*/, LinkInterface* /*outgoingLink*/, mavlink_message_t* /*message*/) {}
 
-    /// Determines how to handle the first item of the mission item list. Internally to QGC the first item
+    /// Determines how to handle the first item of the mission item list. Internally to beeCopter the first item
     /// is always the home position.
     /// Generic stack does not want home position sent in the first position.
     /// Subsequent sequence numbers must be adjusted. This is the mavlink spec default.
@@ -298,11 +298,11 @@ public:
     virtual FactMetaData *_getMetaDataForFact(QObject* /*parameterMetaData*/, const QString& /*name*/, FactMetaData::ValueType_t /* type */, MAV_TYPE /*vehicleType*/) const { return nullptr; }
 
     /// List of supported mission commands. Empty list for all commands supported.
-    virtual QList<MAV_CMD> supportedMissionCommands(QGCMAVLink::VehicleClass_t /*vehicleClass*/) const { return QList<MAV_CMD>(); }
+    virtual QList<MAV_CMD> supportedMissionCommands(beeCopterMAVLink::VehicleClass_t /*vehicleClass*/) const { return QList<MAV_CMD>(); }
 
     /// Returns the name of the mission command json override file for the specified vehicle type.
     ///     @param vehicleClass Vehicle class to return file for, VehicleClassGeneric is a request for overrides for all vehicle types
-    virtual QString missionCommandOverrides(QGCMAVLink::VehicleClass_t vehicleClass) const;
+    virtual QString missionCommandOverrides(beeCopterMAVLink::VehicleClass_t vehicleClass) const;
 
     /// Returns the mapping structure which is used to map from one parameter name to another based on firmware version.
     virtual const remapParamNameMajorVersionMap_t &paramNameRemapMajorVersionMap() const;
@@ -339,7 +339,7 @@ public:
     virtual const QVariantList &toolIndicators(const Vehicle *vehicle);
 
     /// Creates vehicle camera manager.
-    virtual QGCCameraManager *createCameraManager(Vehicle *vehicle) const;
+    virtual beeCopterCameraManager *createCameraManager(Vehicle *vehicle) const;
 
     /// Camera control.
     virtual MavlinkCameraControl *createCameraControl(const mavlink_camera_information_t *info, Vehicle *vehicle, int compID, QObject *parent = nullptr) const;

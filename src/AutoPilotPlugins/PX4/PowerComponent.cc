@@ -49,10 +49,10 @@ QStringList PowerComponent::setupCompleteChangedTriggerList(void) const
 
 QUrl PowerComponent::setupSource(void) const
 {
-    return QUrl::fromUserInput("qrc:/qml/QGroundControl/AutoPilotPlugins/PX4/PowerComponent.qml");
+    return QUrl::fromUserInput("qrc:/qml/beeCopter/AutoPilotPlugins/PX4/PowerComponent.qml");
 }
 
 QUrl PowerComponent::summaryQmlSource(void) const
 {
-    return QUrl::fromUserInput("qrc:/qml/QGroundControl/AutoPilotPlugins/PX4/PowerComponentSummary.qml");
+    return QUrl::fromUserInput("qrc:/qml/beeCopter/AutoPilotPlugins/PX4/PowerComponentSummary.qml");
 }

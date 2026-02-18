@@ -5,9 +5,9 @@ import QtLocation
 import QtPositioning
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 /// This provides the smarts behind the guided mode commands, minus the user interface. This way you can change UI
 /// without affecting the underlying functionality.
@@ -110,11 +110,11 @@ Item {
 
     readonly property int customActionStart:                10000 // Custom actions ids should start here so that they don't collide with the built in actions
 
-    property var    _activeVehicle:             QGroundControl.multiVehicleManager.activeVehicle
-    property var    _flyViewSettings:           QGroundControl.settingsManager.flyViewSettings
-    property var    _unitsConversion:           QGroundControl.unitsConversion
-    property bool   _useChecklist:              QGroundControl.settingsManager.appSettings.useChecklist.rawValue && QGroundControl.corePlugin.options.preFlightChecklistUrl.toString().length
-    property bool   _enforceChecklist:          _useChecklist && QGroundControl.settingsManager.appSettings.enforceChecklist.rawValue
+    property var    _activeVehicle:             beeCopter.multiVehicleManager.activeVehicle
+    property var    _flyViewSettings:           beeCopter.settingsManager.flyViewSettings
+    property var    _unitsConversion:           beeCopter.unitsConversion
+    property bool   _useChecklist:              beeCopter.settingsManager.appSettings.useChecklist.rawValue && beeCopter.corePlugin.options.preFlightChecklistUrl.toString().length
+    property bool   _enforceChecklist:          _useChecklist && beeCopter.settingsManager.appSettings.enforceChecklist.rawValue
     property bool   _checklistPassed:           _activeVehicle ? (_useChecklist ? (_enforceChecklist ? _activeVehicle.checkListState === Vehicle.CheckListPassed : true) : true) : true
     property bool   _canArm:                    _activeVehicle ? (_checklistPassed && (!_activeVehicle.healthAndArmingCheckReport.supported || _activeVehicle.healthAndArmingCheckReport.canArm)) : false
     property bool   _canTakeoff:                _activeVehicle ? (_checklistPassed && (!_activeVehicle.healthAndArmingCheckReport.supported || _activeVehicle.healthAndArmingCheckReport.canTakeoff)) : false
@@ -150,8 +150,8 @@ Item {
 
     property bool guidedUIVisible:          confirmDialog.visible
 
-    property var    _corePlugin:            QGroundControl.corePlugin
-    property var    _corePluginOptions:     QGroundControl.corePlugin.options
+    property var    _corePlugin:            beeCopter.corePlugin
+    property var    _corePluginOptions:     beeCopter.corePlugin.options
     property bool   _guidedActionsEnabled:  (!ScreenTools.isDebug && _corePluginOptions.guidedActionsRequireRCRSSI && _activeVehicle) ? _rcRSSIAvailable : _activeVehicle
     property string _flightMode:            _activeVehicle ? _activeVehicle.flightMode : ""
     property bool   _missionAvailable:      missionController.containsItems
@@ -189,7 +189,7 @@ Item {
     property var _customController: customController
 
     function _isGuidedActionsControllerLogEnabled() {
-        return QGroundControl.categoryLoggingOn("GuidedActionsControllerLog")
+        return beeCopter.categoryLoggingOn("GuidedActionsControllerLog")
     }
 
     function _outputState() {
@@ -576,7 +576,7 @@ Item {
             _activeVehicle.startMission()
             break
         case actionMVStartMission:
-            selectedVehicles = QGroundControl.multiVehicleManager.selectedVehicles
+            selectedVehicles = beeCopter.multiVehicleManager.selectedVehicles
             for (i = 0; i < selectedVehicles.count; i++) {
                 var vehicle = selectedVehicles.get(i)
                 if (vehicle.armed === true){
@@ -588,7 +588,7 @@ Item {
             _activeVehicle.armed = true
             break
         case actionMVArm:
-            selectedVehicles = QGroundControl.multiVehicleManager.selectedVehicles
+            selectedVehicles = beeCopter.multiVehicleManager.selectedVehicles
             for (i = 0; i < selectedVehicles.count; i++) {
                 selectedVehicles.get(i).armed = true
             }
@@ -600,7 +600,7 @@ Item {
             _activeVehicle.armed = false
             break
         case actionMVDisarm:
-            selectedVehicles = QGroundControl.multiVehicleManager.selectedVehicles
+            selectedVehicles = beeCopter.multiVehicleManager.selectedVehicles
             for (i = 0; i < selectedVehicles.count; i++) {
                 selectedVehicles.get(i).armed = false
             }
@@ -644,7 +644,7 @@ Item {
             _activeVehicle.guidedModeChangeAltitude(altitudeChangeInMeters, true /* pauseVehicle */)
             break
         case actionMVPause:
-            selectedVehicles = QGroundControl.multiVehicleManager.selectedVehicles
+            selectedVehicles = beeCopter.multiVehicleManager.selectedVehicles
             for (i = 0; i < selectedVehicles.count; i++) {
                 selectedVehicles.get(i).pauseVehicle()
             }

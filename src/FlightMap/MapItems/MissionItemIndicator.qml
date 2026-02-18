@@ -1,8 +1,8 @@
 import QtQuick
 import QtLocation
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Marker for displaying a mission item on the map
 MapQuickItem {

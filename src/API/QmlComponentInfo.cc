@@ -1,7 +1,7 @@
 #include "QmlComponentInfo.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(QmlComponentInfoLog, "API.QmlComponentInfo");
+beeCopter_LOGGING_CATEGORY(QmlComponentInfoLog, "API.QmlComponentInfo");
 
 QmlComponentInfo::QmlComponentInfo(const QString &title, QUrl url, QUrl icon, QObject *parent)
     : QObject(parent)

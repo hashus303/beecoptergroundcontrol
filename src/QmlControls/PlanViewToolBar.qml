@@ -3,21 +3,21 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     id: _root
     width: parent.width
     height: ScreenTools.toolbarHeight
-    color: qgcPal.toolbarBackground
+    color: beeCopterPal.toolbarBackground
 
     property var planMasterController
 
-    property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    property var _activeVehicle: beeCopter.multiVehicleManager.activeVehicle
     property real _controllerProgressPct: planMasterController.missionController.progressPct
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     /// Bottom single pixel divider
     Rectangle {
@@ -26,21 +26,21 @@ Rectangle {
         anchors.bottom: parent.bottom
         height: 1
         color: "black"
-        visible: qgcPal.globalTheme === QGCPalette.Light
+        visible: beeCopterPal.globalTheme === beeCopterPalette.Light
     }
 
-    QGCToolBarButton {
-        id: qgcButton
+    beeCopterToolBarButton {
+        id: beeCopterButton
         height: parent.height
-        icon.source: "/res/QGCLogoFull.svg"
+        icon.source: "/res/beeCopterLogoFull.svg"
         logo: true
         onClicked: mainWindow.showToolSelectDialog()
     }
 
-    QGCFlickable {
+    beeCopterFlickable {
         id: toolsFlickable
         anchors.bottomMargin: 1
-        anchors.left: qgcButton.right
+        anchors.left: beeCopterButton.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
@@ -62,7 +62,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         height: 4
         width: _controllerProgressPct * parent.width
-        color: qgcPal.colorGreen
+        color: beeCopterPal.colorGreen
         visible: false
 
         onVisibleChanged: {
@@ -79,14 +79,14 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         height: parent.height
-        color: qgcPal.window
+        color: beeCopterPal.window
         visible: _showLargeProgress
 
         property bool _userHide: false
-        property bool _showLargeProgress: progressBar.visible && !_userHide && qgcPal.globalTheme === QGCPalette.Light
+        property bool _showLargeProgress: progressBar.visible && !_userHide && beeCopterPal.globalTheme === beeCopterPalette.Light
 
         Connections {
-            target: QGroundControl.multiVehicleManager
+            target: beeCopter.multiVehicleManager
             function onActiveVehicleChanged(activeVehicle) { largeProgressBar._userHide = false }
         }
 
@@ -94,24 +94,24 @@ Rectangle {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             width: _controllerProgressPct * parent.width
-            color: qgcPal.colorGreen
+            color: beeCopterPal.colorGreen
         }
 
-        QGCLabel {
+        beeCopterLabel {
             anchors.centerIn: parent
             text: qsTr("Syncing Mission")
             font.pointSize: ScreenTools.largeFontPointSize
             visible: _controllerProgressPct !== 1
         }
 
-        QGCLabel {
+        beeCopterLabel {
             anchors.centerIn: parent
             text: qsTr("Done")
             font.pointSize: ScreenTools.largeFontPointSize
             visible: _controllerProgressPct === 1
         }
 
-        QGCLabel {
+        beeCopterLabel {
             anchors.margins: _margin
             anchors.right: parent.right
             anchors.bottom: parent.bottom

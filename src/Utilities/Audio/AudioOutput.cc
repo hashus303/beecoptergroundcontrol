@@ -1,13 +1,13 @@
 #include "AudioOutput.h"
 #include "Fact.h"
-#include "QGCLoggingCategory.h"
-#include "QGCApplication.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterApplication.h"
 
 #include <QtCore/QRegularExpression>
 #include <QtCore/QApplicationStatic>
 #include <QtTextToSpeech/QTextToSpeech>
 
-QGC_LOGGING_CATEGORY(AudioOutputLog, "Utilities.AudioOutput");
+beeCopter_LOGGING_CATEGORY(AudioOutputLog, "Utilities.AudioOutput");
 // qt.speech.tts.flite
 // qt.speech.tts.android
 
@@ -123,7 +123,7 @@ void AudioOutput::setMuted(bool muted)
 void AudioOutput::say(const QString &text, TextMods textMods)
 {
     if (!_initialized) {
-        if (!qgcApp()->runningUnitTests()) {
+        if (!beeCopterApp()->runningUnitTests()) {
             qCWarning(AudioOutputLog) << "AudioOutput not initialized. Call init() before using say().";
         }
         return;

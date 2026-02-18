@@ -8,12 +8,12 @@
 #include <QtQmlIntegration/QtQmlIntegration>
 
 #include "Fact.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 class SurveyComplexItem;
 class SimpleMissionItem;
 class MissionController;
-#ifdef QGC_UNITTEST_BUILD
+#ifdef beeCopter_UNITTEST_BUILD
     class MissionItemTest;
 #endif
 
@@ -139,7 +139,7 @@ private:
     friend class SurveyComplexItem;
     friend class SimpleMissionItem;
     friend class MissionController;
-#ifdef QGC_UNITTEST_BUILD
+#ifdef beeCopter_UNITTEST_BUILD
     friend class MissionItemTest;
 #endif
 };

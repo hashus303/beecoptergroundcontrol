@@ -1,8 +1,8 @@
 #include "RCChannelMonitorController.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(RCChannelMonitorControllerLog, "QMLControls.RCChannelMonitorController")
+beeCopter_LOGGING_CATEGORY(RCChannelMonitorControllerLog, "QMLControls.RCChannelMonitorController")
 
 RCChannelMonitorController::RCChannelMonitorController(QObject *parent)
     : FactPanelController(parent)

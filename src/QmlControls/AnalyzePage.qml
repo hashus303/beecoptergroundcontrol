@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Base view control for all Analyze pages
 Item {
@@ -40,12 +40,12 @@ Item {
         anchors.right:          floatIcon.visible ? floatIcon.left : parent.right
         spacing:                _margins
         visible:                !ScreenTools.isShortScreen && headerLoader.sourceComponent === null
-        QGCLabel {
+        beeCopterLabel {
             id:                 pageNameLabel
             font.pointSize:     ScreenTools.largeFontPointSize
             visible:            !popped
         }
-        QGCLabel {
+        beeCopterLabel {
             id:                 pageDescriptionLabel
             anchors.left:       parent.left
             anchors.right:      parent.right
@@ -66,7 +66,7 @@ Item {
         }
     }
 
-    QGCColoredImage {
+    beeCopterColoredImage {
         id:                     floatIcon
         anchors.verticalCenter: headerLoader.visible ? headerLoader.verticalCenter : headingColumn.verticalCenter
         anchors.right:          parent.right
@@ -75,7 +75,7 @@ Item {
         sourceSize.width:       width
         source:                 "/qmlimages/FloatingWindow.svg"
         fillMode:               Image.PreserveAspectFit
-        color:                  qgcPal.text
+        color:                  beeCopterPal.text
         visible:                allowPopout && !popped && !ScreenTools.isMobile
         MouseArea {
             anchors.fill:   parent

@@ -1,13 +1,13 @@
 #include "MissionSettingsItem.h"
 #include "PlanMasterController.h"
 #include "MissionItem.h"
-#include "QGC.h"
+#include "beeCopter.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QJsonArray>
 
-QGC_LOGGING_CATEGORY(MissionSettingsItemLog, "Plan.MissionSettingsItem")
+beeCopter_LOGGING_CATEGORY(MissionSettingsItemLog, "Plan.MissionSettingsItem")
 
 QMap<QString, FactMetaData*> MissionSettingsItem::_metaDataMap;
 
@@ -19,7 +19,7 @@ MissionSettingsItem::MissionSettingsItem(PlanMasterController* masterController,
     , _speedSection                     (masterController)
 {
     _isIncomplete = false;
-    _editorQml = "qrc:/qml/QGroundControl/Controls/MissionSettingsEditor.qml";
+    _editorQml = "qrc:/qml/beeCopter/Controls/MissionSettingsEditor.qml";
 
     if (_metaDataMap.isEmpty()) {
         _metaDataMap = FactMetaData::createMapFromJsonFile(QStringLiteral(":/json/MissionSettings.FactMetaData.json"), nullptr /* metaDataParent */);
@@ -248,7 +248,7 @@ void MissionSettingsItem::_updateAltitudeInCoordinate(QVariant value)
 {
     double newAltitude = value.toDouble();
 
-    if (!QGC::fuzzyCompare(_plannedHomePositionCoordinate.altitude(), newAltitude)) {
+    if (!beeCopter::fuzzyCompare(_plannedHomePositionCoordinate.altitude(), newAltitude)) {
         qCDebug(MissionSettingsItemLog) << "MissionSettingsItem::_updateAltitudeInCoordinate" << newAltitude;
         _plannedHomePositionCoordinate.setAltitude(newAltitude);
         emit coordinateChanged(_plannedHomePositionCoordinate);

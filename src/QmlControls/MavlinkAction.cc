@@ -1,8 +1,8 @@
 #include "MavlinkAction.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(MavlinkActionLog, "QMLControls.MavlinkAction")
+beeCopter_LOGGING_CATEGORY(MavlinkActionLog, "QMLControls.MavlinkAction")
 
 MavlinkAction::MavlinkAction(QObject *parent)
     : QObject(parent)

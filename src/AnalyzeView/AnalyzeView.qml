@@ -2,13 +2,13 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     id:     _root
-    color:  qgcPal.window
-    z:      QGroundControl.zOrderTopMost
+    color:  beeCopterPal.window
+    z:      beeCopter.zOrderTopMost
 
     signal popout()
 
@@ -27,7 +27,7 @@ Rectangle {
         id: geoController
     }
 
-    QGCFlickable {
+    beeCopterFlickable {
         id:                 buttonScroll
         width:              buttonColumn.width
         anchors.topMargin:  _defaultTextHeight / 2
@@ -50,7 +50,7 @@ Rectangle {
 
             // I don't know why this does not work
             Connections {
-                target:         QGroundControl.settingsManager.appSettings.appFontPointSize
+                target:         beeCopter.settingsManager.appSettings.appFontPointSize
                 function onValueChanged(value) { buttonColumn.reflowWidths() }
             }
 
@@ -66,7 +66,7 @@ Rectangle {
 
             Repeater {
                 id:     buttonRepeater
-                model:  QGroundControl.corePlugin ? QGroundControl.corePlugin.analyzePages : []
+                model:  beeCopter.corePlugin ? beeCopter.corePlugin.analyzePages : []
 
                 Component.onCompleted:  itemAt(0).checked = true
 
@@ -95,7 +95,7 @@ Rectangle {
         anchors.top:            parent.top
         anchors.bottom:         parent.bottom
         width:                  1
-        color:                  qgcPal.windowShade
+        color:                  beeCopterPal.windowShade
     }
 
     Loader {

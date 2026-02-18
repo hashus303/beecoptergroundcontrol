@@ -91,8 +91,8 @@ qt_add_resources(${CMAKE_PROJECT_NAME} json_mission_manager
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-# qt_add_qml_module(QGC
-#     URI QGroundControl.MissionManager
+# qt_add_qml_module(beeCopter
+#     URI beeCopter.MissionManager
 #     VERSION 1.0
 #     RESOURCES
 #       BlankPlanCreator.png
@@ -101,9 +101,9 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_
 #       SurveyPlanCreator.png
 #     QML_FILES
 #       MapLineArrow.qml
-#       QGCMapCircleVisuals.qml
-#       QGCMapPolygonVisuals.qml
-#       QGCMapPolylineVisuals.qml
+#       beeCopterMapCircleVisuals.qml
+#       beeCopterMapPolygonVisuals.qml
+#       beeCopterMapPolylineVisuals.qml
 #     OUTPUT_TARGETS MissionManager_targets
 #     IMPORT_PATH ${QT_QML_OUTPUT_DIRECTORY}
 #     IMPORTS
@@ -112,9 +112,9 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_
 #       QtLocation
 #       QtPositioning
 
-#       QGroundControl
-#       QGroundControl.ScreenTools
-#       QGroundControl.Palette
-#       QGroundControl.Controls
-#       QGroundControl.FlightMap
+#       beeCopter
+#       beeCopter.ScreenTools
+#       beeCopter.Palette
+#       beeCopter.Controls
+#       beeCopter.FlightMap
 # )

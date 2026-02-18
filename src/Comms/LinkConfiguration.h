@@ -68,15 +68,15 @@ public:
     ///     @param[in] source The source instance (the edited copy)
     virtual void copyFrom(const LinkConfiguration *source);
 
-    /// The link types supported by QGC
+    /// The link types supported by beeCopter
     /// Any changes here MUST be reflected in LinkManager::linkTypeStrings()
     enum LinkType {
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
         TypeSerial,     ///< Serial Link
 #endif
         TypeUdp,        ///< UDP Link
         TypeTcp,        ///< TCP Link
-#ifdef QGC_ENABLE_BLUETOOTH
+#ifdef beeCopter_ENABLE_BLUETOOTH
         TypeBluetooth,  ///< Bluetooth Link
 #endif
 #ifdef QT_DEBUG

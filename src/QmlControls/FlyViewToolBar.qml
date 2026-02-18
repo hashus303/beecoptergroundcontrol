@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
 
 Item {
     required property var guidedValueSlider
@@ -14,9 +14,9 @@ Item {
     width:  parent.width
     height: ScreenTools.toolbarHeight
 
-    property var    _activeVehicle:     QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle:     beeCopter.multiVehicleManager.activeVehicle
     property bool   _communicationLost: _activeVehicle ? _activeVehicle.vehicleLinkManager.communicationLost : false
-    property color  _mainStatusBGColor: qgcPal.brandingPurple
+    property color  _mainStatusBGColor: beeCopterPal.brandingPurple
     property real   _leftRightMargin:   ScreenTools.defaultFontPixelWidth * 0.75
     property var    _guidedController:  globals.guidedControllerFlyView
 
@@ -24,9 +24,9 @@ Item {
         mainStatusIndicator.dropMainStatusIndicator();
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
-    QGCFlickable {
+    beeCopterFlickable {
         anchors.fill:       parent
         contentWidth:       toolBarLayout.width
         flickableDirection: Flickable.HorizontalFlick
@@ -46,13 +46,13 @@ Item {
                     id:         gradientBackground
                     height:     parent.height
                     width:      mainStatusLayout.width
-                    opacity:    qgcPal.windowTransparent.a
+                    opacity:    beeCopterPal.windowTransparent.a
 
                     gradient: Gradient {
                         orientation: Gradient.Horizontal
                         GradientStop { position: 0; color: _mainStatusBGColor }
-                        //GradientStop { position: qgcButton.x + qgcButton.width; color: _mainStatusBGColor }
-                        GradientStop { position: 1; color: qgcPal.window }
+                        //GradientStop { position: beeCopterButton.x + beeCopterButton.width; color: _mainStatusBGColor }
+                        GradientStop { position: 1; color: beeCopterPal.window }
                     }
                 }
 
@@ -61,7 +61,7 @@ Item {
                     anchors.left:   gradientBackground.right
                     anchors.right:  parent.right
                     height:         parent.height
-                    color:          qgcPal.windowTransparent
+                    color:          beeCopterPal.windowTransparent
                 }
 
                 RowLayout {
@@ -74,10 +74,10 @@ Item {
                         height:     parent.height
                         spacing:    0
 
-                        QGCToolBarButton {
-                            id:                 qgcButton
+                        beeCopterToolBarButton {
+                            id:                 beeCopterButton
                             Layout.fillHeight:  true
-                            icon.source:        "/res/QGCLogoFull.svg"
+                            icon.source:        "/res/beeCopterLogoFull.svg"
                             logo:               true
                             onClicked:          mainWindow.showToolSelectDialog()
                         }
@@ -88,7 +88,7 @@ Item {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         id:         disconnectButton
                         text:       qsTr("Disconnect")
                         onClicked:  _activeVehicle.closeVehicle()
@@ -109,7 +109,7 @@ Item {
 
                 Rectangle {
                     anchors.fill:   parent
-                    color:          qgcPal.windowTransparent
+                    color:          beeCopterPal.windowTransparent
                 }
 
                 GuidedActionConfirm {
@@ -129,7 +129,7 @@ Item {
 
                 Rectangle {
                     anchors.fill:   parent
-                    color:          qgcPal.windowTransparent
+                    color:          beeCopterPal.windowTransparent
                 }
 
                 FlyViewToolBarIndicators {
@@ -149,11 +149,11 @@ Item {
         x:                          control.mapFromItem(guidedActionConfirm.parent, guidedActionConfirm.x, 0).x + (guidedActionConfirm.width - guidedActionMessageDisplay.width) / 2
         width:                      messageLabel.contentWidth + (_margins * 2)
         height:                     messageLabel.contentHeight + (_margins * 2)
-        color:                      qgcPal.windowTransparent
+        color:                      beeCopterPal.windowTransparent
         radius:                     ScreenTools.defaultBorderRadius
         visible:                    guidedActionConfirm.visible
 
-        QGCLabel {
+        beeCopterLabel {
             id:         messageLabel
             x:          _margins
             y:          _margins

@@ -1,10 +1,10 @@
-﻿#include "FirmwareUpgradeController.h"
+#include "FirmwareUpgradeController.h"
 #include "PX4FirmwareUpgradeThread.h"
 #include "Bootloader.h"
-#include "QGCApplication.h"
-#include "QGCFileDownload.h"
-#include "QGCOptions.h"
-#include "QGCCorePlugin.h"
+#include "beeCopterApplication.h"
+#include "beeCopterFileDownload.h"
+#include "beeCopterOptions.h"
+#include "beeCopterCorePlugin.h"
 #include "FirmwareUpgradeSettings.h"
 #include "SettingsManager.h"
 #include "JsonParsing.h"
@@ -12,7 +12,7 @@
 #include "MultiVehicleManager.h"
 #include "FirmwareImage.h"
 #include "Fact.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QStandardPaths>
@@ -100,7 +100,7 @@ uint qHash(const FirmwareUpgradeController::FirmwareIdentifier& firmwareId)
 
 /// @Brief Constructs a new FirmwareUpgradeController Widget. This widget is used within the PX4VehicleConfig set of screens.
 FirmwareUpgradeController::FirmwareUpgradeController(void)
-    : _singleFirmwareURL                (QGCCorePlugin::instance()->options()->firmwareUpgradeSingleURL())
+    : _singleFirmwareURL                (beeCopterCorePlugin::instance()->options()->firmwareUpgradeSingleURL())
     , _singleFirmwareMode               (!_singleFirmwareURL.isEmpty())
     , _downloadingFirmwareList          (false)
     , _statusLog                        (nullptr)
@@ -137,14 +137,14 @@ FirmwareUpgradeController::FirmwareUpgradeController(void)
 
     connect(&_eraseTimer, &QTimer::timeout, this, &FirmwareUpgradeController::_eraseProgressTick);
 
-#if !defined(QGC_NO_ARDUPILOT_DIALECT)
+#if !defined(beeCopter_NO_ARDUPILOT_DIALECT)
     connect(_apmChibiOSSetting,     &Fact::rawValueChanged, this, &FirmwareUpgradeController::_buildAPMFirmwareNames);
     connect(_apmVehicleTypeSetting, &Fact::rawValueChanged, this, &FirmwareUpgradeController::_buildAPMFirmwareNames);
 #endif
 
     _determinePX4StableVersion();
 
-#if !defined(QGC_NO_ARDUPILOT_DIALECT)
+#if !defined(beeCopter_NO_ARDUPILOT_DIALECT)
     _downloadArduPilotManifest();
 #endif
 }
@@ -214,11 +214,11 @@ void FirmwareUpgradeController::cancel(void)
 
 QStringList FirmwareUpgradeController::availableBoardsName(void)
 {
-    QGCSerialPortInfo::BoardType_t boardType;
+    beeCopterSerialPortInfo::BoardType_t boardType;
     QString boardName;
     QStringList names;
 
-    auto ports = QGCSerialPortInfo::availablePorts();
+    auto ports = beeCopterSerialPortInfo::availablePorts();
     for (const auto& info : ports) {
         if(info.canFlash()) {
             info.getBoardInfo(boardType, boardName);
@@ -232,14 +232,14 @@ QStringList FirmwareUpgradeController::availableBoardsName(void)
 void FirmwareUpgradeController::_foundBoard(bool firstAttempt, const QSerialPortInfo& info, int boardType, QString boardName)
 {
     _boardInfo      = info;
-    _boardType      = static_cast<QGCSerialPortInfo::BoardType_t>(boardType);
+    _boardType      = static_cast<beeCopterSerialPortInfo::BoardType_t>(boardType);
     _boardTypeName  = boardName;
 
     qDebug() << info.manufacturer() << info.description();
 
     _startFlashWhenBootloaderFound = false;
 
-    if (_boardType == QGCSerialPortInfo::BoardTypeSiKRadio) {
+    if (_boardType == beeCopterSerialPortInfo::BoardTypeSiKRadio) {
         if (!firstAttempt) {
             // Radio always flashes latest firmware, so we can start right away without
             // any further user input.
@@ -357,10 +357,10 @@ void FirmwareUpgradeController::_downloadFirmware(void)
     _appendStatusLog(tr("Downloading firmware..."));
     _appendStatusLog(tr(" From: %1").arg(_firmwareFilename));
 
-    QGCFileDownload* downloader = new QGCFileDownload(this);
-    connect(downloader, &QGCFileDownload::finished, downloader, &QObject::deleteLater);
-    connect(downloader, &QGCFileDownload::finished, this, &FirmwareUpgradeController::_firmwareDownloadComplete);
-    connect(downloader, &QGCFileDownload::downloadProgress, this, &FirmwareUpgradeController::_firmwareDownloadProgress);
+    beeCopterFileDownload* downloader = new beeCopterFileDownload(this);
+    connect(downloader, &beeCopterFileDownload::finished, downloader, &QObject::deleteLater);
+    connect(downloader, &beeCopterFileDownload::finished, this, &FirmwareUpgradeController::_firmwareDownloadComplete);
+    connect(downloader, &beeCopterFileDownload::downloadProgress, this, &FirmwareUpgradeController::_firmwareDownloadProgress);
     if (!downloader->start(_firmwareFilename)) {
         downloader->deleteLater();
         _errorCancel(downloader->errorString());
@@ -516,7 +516,7 @@ void FirmwareUpgradeController::setSelectedFirmwareBuildType(FirmwareBuildType_t
 
 void FirmwareUpgradeController::_buildAPMFirmwareNames(void)
 {
-#if !defined(QGC_NO_ARDUPILOT_DIALECT)
+#if !defined(beeCopter_NO_ARDUPILOT_DIALECT)
     bool                    chibios =           _apmChibiOSSetting->rawValue().toInt() == 0;
     FirmwareVehicleType_t   vehicleType =       static_cast<FirmwareVehicleType_t>(_apmVehicleTypeSetting->rawValue().toInt());
     QString                 boardDescription =  _boardInfo.description();
@@ -581,9 +581,9 @@ FirmwareUpgradeController::FirmwareVehicleType_t FirmwareUpgradeController::vehi
 
 void FirmwareUpgradeController::_determinePX4StableVersion(void)
 {
-    QGCFileDownload* downloader = new QGCFileDownload(this);
-    connect(downloader, &QGCFileDownload::finished, downloader, &QObject::deleteLater);
-    connect(downloader, &QGCFileDownload::finished, this, &FirmwareUpgradeController::_px4ReleasesGithubDownloadComplete);
+    beeCopterFileDownload* downloader = new beeCopterFileDownload(this);
+    connect(downloader, &beeCopterFileDownload::finished, downloader, &QObject::deleteLater);
+    connect(downloader, &beeCopterFileDownload::finished, this, &FirmwareUpgradeController::_px4ReleasesGithubDownloadComplete);
     if (!downloader->start(QStringLiteral("https://api.github.com/repos/PX4/Firmware/releases"))) {
         qCWarning(FirmwareUpgradeLog) << "PX4 releases github download did not start:" << downloader->errorString();
         downloader->deleteLater();
@@ -651,9 +651,9 @@ void FirmwareUpgradeController::_downloadArduPilotManifest(void)
     _downloadingFirmwareList = true;
     emit downloadingFirmwareListChanged(true);
 
-    QGCFileDownload* downloader = new QGCFileDownload(this);
-    connect(downloader, &QGCFileDownload::finished, downloader, &QObject::deleteLater);
-    connect(downloader, &QGCFileDownload::finished, this, &FirmwareUpgradeController::_ardupilotManifestDownloadComplete);
+    beeCopterFileDownload* downloader = new beeCopterFileDownload(this);
+    connect(downloader, &beeCopterFileDownload::finished, downloader, &QObject::deleteLater);
+    connect(downloader, &beeCopterFileDownload::finished, this, &FirmwareUpgradeController::_ardupilotManifestDownloadComplete);
     // Use autoDecompress to stream-decompress directly during download
     downloader->setAutoDecompress(true);
     if (!downloader->start(QStringLiteral("https://firmware.ardupilot.org/manifest.json.gz"))) {

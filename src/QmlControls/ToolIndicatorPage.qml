@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 // ToolIndicatorPage
 //      The base control for all Toolbar Indicator drop down pages. It supports a normal and expanded view.
@@ -21,12 +21,12 @@ RowLayout {
     property bool expanded: false
     property var  drawer
 
-    property var    activeVehicle:      QGroundControl.multiVehicleManager.vehicle
-    property bool   parametersReady:    QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable
+    property var    activeVehicle:      beeCopter.multiVehicleManager.vehicle
+    property bool   parametersReady:    beeCopter.multiVehicleManager.parameterReadyVehicleAvailable
 
     property bool _loadPages: !waitForParameters || parametersReady
 
-    QGCLabel {
+    beeCopterLabel {
         text:       qsTr("Waiting for parameters...")
         visible:    waitForParameters && !parametersReady
     }
@@ -43,7 +43,7 @@ RowLayout {
         id:                     divider
         Layout.preferredWidth:  visible ? 1 : -1
         Layout.fillHeight:      true
-        color:                  QGroundControl.globalPalette.groupBorder
+        color:                  beeCopter.globalPalette.groupBorder
         visible:                expanded
     }
 

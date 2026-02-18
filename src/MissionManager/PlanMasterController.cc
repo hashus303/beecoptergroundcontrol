@@ -1,6 +1,6 @@
 #include "PlanMasterController.h"
-#include "QGCApplication.h"
-#include "QGCCorePlugin.h"
+#include "beeCopterApplication.h"
+#include "beeCopterCorePlugin.h"
 #include "MultiVehicleManager.h"
 #include "Vehicle.h"
 #include "SettingsManager.h"
@@ -16,16 +16,16 @@
 #include "QmlObjectListModel.h"
 #include "GeoFenceManager.h"
 #include "RallyPointManager.h"
-#include "QGCCompression.h"
-#include "QGCCompressionJob.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterCompression.h"
+#include "beeCopterCompressionJob.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QFileInfo>
 
-QGC_LOGGING_CATEGORY(PlanMasterControllerLog, "PlanManager.PlanMasterController")
+beeCopter_LOGGING_CATEGORY(PlanMasterControllerLog, "PlanManager.PlanMasterController")
 
 PlanMasterController::PlanMasterController(QObject* parent)
     : QObject               (parent)
@@ -127,8 +127,8 @@ void PlanMasterController::_activeVehicleChanged(Vehicle* activeVehicle)
 
         // Update controllerVehicle to the currently connected vehicle
         AppSettings* appSettings = SettingsManager::instance()->appSettings();
-        appSettings->offlineEditingFirmwareClass()->setRawValue(QGCMAVLink::firmwareClass(_managerVehicle->firmwareType()));
-        appSettings->offlineEditingVehicleClass()->setRawValue(QGCMAVLink::vehicleClass(_managerVehicle->vehicleType()));
+        appSettings->offlineEditingFirmwareClass()->setRawValue(beeCopterMAVLink::firmwareClass(_managerVehicle->firmwareType()));
+        appSettings->offlineEditingVehicleClass()->setRawValue(beeCopterMAVLink::vehicleClass(_managerVehicle->vehicleType()));
 
         // We use these signals to sequence upload and download to the multiple controller/managers
         connect(_managerVehicle->missionManager(),      &MissionManager::newMissionItemsAvailable,  this, &PlanMasterController::_loadMissionComplete);
@@ -200,7 +200,7 @@ void PlanMasterController::loadFromVehicle(void)
     SharedLinkInterfacePtr sharedLink = _managerVehicle->vehicleLinkManager()->primaryLink().lock();
     if (sharedLink) {
         if (sharedLink->linkConfiguration()->isHighLatency()) {
-            qgcApp()->showAppMessage(tr("Download not supported on high latency links."));
+            beeCopterApp()->showAppMessage(tr("Download not supported on high latency links."));
             return;
         }
     } else {
@@ -304,7 +304,7 @@ void PlanMasterController::sendToVehicle(void)
     SharedLinkInterfacePtr sharedLink = _managerVehicle->vehicleLinkManager()->primaryLink().lock();
     if (sharedLink) {
         if (sharedLink->linkConfiguration()->isHighLatency()) {
-            qgcApp()->showAppMessage(tr("Upload not supported on high latency links."));
+            beeCopterApp()->showAppMessage(tr("Upload not supported on high latency links."));
             return;
         }
     } else {
@@ -338,14 +338,14 @@ void PlanMasterController::loadFromFile(const QString& filename)
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         errorString = file.errorString() + QStringLiteral(" ") + filename;
-        qgcApp()->showAppMessage(errorMessage.arg(errorString));
+        beeCopterApp()->showAppMessage(errorMessage.arg(errorString));
         return;
     }
 
     bool success = false;
     if (fileInfo.suffix() == AppSettings::waypointsFileExtension || fileInfo.suffix() == QStringLiteral("txt")) {
         if (!_missionController.loadTextFile(file, errorString)) {
-            qgcApp()->showAppMessage(errorMessage.arg(errorString));
+            beeCopterApp()->showAppMessage(errorMessage.arg(errorString));
         } else {
             success = true;
         }
@@ -354,17 +354,17 @@ void PlanMasterController::loadFromFile(const QString& filename)
         QByteArray      bytes = file.readAll();
 
         if (!JsonParsing::isJsonFile(bytes, jsonDoc, errorString)) {
-            qgcApp()->showAppMessage(errorMessage.arg(errorString));
+            beeCopterApp()->showAppMessage(errorMessage.arg(errorString));
             return;
         }
 
         QJsonObject json = jsonDoc.object();
         //-- Allow plugins to pre process the load
-        QGCCorePlugin::instance()->preLoadFromJson(this, json);
+        beeCopterCorePlugin::instance()->preLoadFromJson(this, json);
 
         int version;
-        if (!JsonHelper::validateExternalQGCJsonFile(json, kPlanFileType, kPlanFileVersion, kPlanFileVersion, version, errorString)) {
-            qgcApp()->showAppMessage(errorMessage.arg(errorString));
+        if (!JsonHelper::validateExternalbeeCopterJsonFile(json, kPlanFileType, kPlanFileVersion, kPlanFileVersion, version, errorString)) {
+            beeCopterApp()->showAppMessage(errorMessage.arg(errorString));
             return;
         }
 
@@ -374,17 +374,17 @@ void PlanMasterController::loadFromFile(const QString& filename)
             { kJsonRallyPointsObjectKey,    QJsonValue::Object, true },
         };
         if (!JsonHelper::validateKeys(json, rgKeyInfo, errorString)) {
-            qgcApp()->showAppMessage(errorMessage.arg(errorString));
+            beeCopterApp()->showAppMessage(errorMessage.arg(errorString));
             return;
         }
 
         if (!_missionController.load(json[kJsonMissionObjectKey].toObject(), errorString) ||
                 !_geoFenceController.load(json[kJsonGeoFenceObjectKey].toObject(), errorString) ||
                 !_rallyPointController.load(json[kJsonRallyPointsObjectKey].toObject(), errorString)) {
-            qgcApp()->showAppMessage(errorMessage.arg(errorString));
+            beeCopterApp()->showAppMessage(errorMessage.arg(errorString));
         } else {
             //-- Allow plugins to post process the load
-            QGCCorePlugin::instance()->postLoadFromJson(this, json);
+            beeCopterCorePlugin::instance()->postLoadFromJson(this, json);
             success = true;
         }
     }
@@ -404,22 +404,22 @@ void PlanMasterController::loadFromFile(const QString& filename)
 QJsonDocument PlanMasterController::saveToJson()
 {
     QJsonObject planJson;
-    QGCCorePlugin::instance()->preSaveToJson(this, planJson);
+    beeCopterCorePlugin::instance()->preSaveToJson(this, planJson);
     QJsonObject missionJson;
     QJsonObject fenceJson;
     QJsonObject rallyJson;
-    JsonHelper::saveQGCJsonFileHeader(planJson, kPlanFileType, kPlanFileVersion);
+    JsonHelper::savebeeCopterJsonFileHeader(planJson, kPlanFileType, kPlanFileVersion);
     //-- Allow plugin to preemptly add its own keys to mission
-    QGCCorePlugin::instance()->preSaveToMissionJson(this, missionJson);
+    beeCopterCorePlugin::instance()->preSaveToMissionJson(this, missionJson);
     _missionController.save(missionJson);
     //-- Allow plugin to add its own keys to mission
-    QGCCorePlugin::instance()->postSaveToMissionJson(this, missionJson);
+    beeCopterCorePlugin::instance()->postSaveToMissionJson(this, missionJson);
     _geoFenceController.save(fenceJson);
     _rallyPointController.save(rallyJson);
     planJson[kJsonMissionObjectKey] = missionJson;
     planJson[kJsonGeoFenceObjectKey] = fenceJson;
     planJson[kJsonRallyPointsObjectKey] = rallyJson;
-    QGCCorePlugin::instance()->postSaveToJson(this, planJson);
+    beeCopterCorePlugin::instance()->postSaveToJson(this, planJson);
     return QJsonDocument(planJson);
 }
 
@@ -445,7 +445,7 @@ void PlanMasterController::saveToFile(const QString& filename)
     QFile file(planFilename);
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qgcApp()->showAppMessage(tr("Plan save error %1 : %2").arg(filename).arg(file.errorString()));
+        beeCopterApp()->showAppMessage(tr("Plan save error %1 : %2").arg(filename).arg(file.errorString()));
         _currentPlanFile.clear();
         emit currentPlanFileChanged();
     } else {
@@ -477,7 +477,7 @@ void PlanMasterController::saveToKml(const QString& filename)
     QFile file(kmlFilename);
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qgcApp()->showAppMessage(tr("KML save error %1 : %2").arg(filename).arg(file.errorString()));
+        beeCopterApp()->showAppMessage(tr("KML save error %1 : %2").arg(filename).arg(file.errorString()));
     } else {
         KMLPlanDomDocument planKML;
         _missionController.addMissionToKML(planKML);
@@ -661,26 +661,26 @@ void PlanMasterController::loadFromArchive(const QString& archivePath)
     }
 
     if (!QFile::exists(archivePath)) {
-        qgcApp()->showAppMessage(tr("Archive file not found: %1").arg(archivePath));
+        beeCopterApp()->showAppMessage(tr("Archive file not found: %1").arg(archivePath));
         return;
     }
 
-    if (!QGCCompression::isArchiveFile(archivePath)) {
-        qgcApp()->showAppMessage(tr("Not a supported archive format: %1").arg(archivePath));
+    if (!beeCopterCompression::isArchiveFile(archivePath)) {
+        beeCopterApp()->showAppMessage(tr("Not a supported archive format: %1").arg(archivePath));
         return;
     }
 
-    const QString tempPath = QDir::temp().filePath(QStringLiteral("qgc_plan_") + QString::number(QDateTime::currentMSecsSinceEpoch()));
+    const QString tempPath = QDir::temp().filePath(QStringLiteral("beeCopter_plan_") + QString::number(QDateTime::currentMSecsSinceEpoch()));
     if (!QDir().mkpath(tempPath)) {
-        qgcApp()->showAppMessage(tr("Could not create temporary directory"));
+        beeCopterApp()->showAppMessage(tr("Could not create temporary directory"));
         return;
     }
 
     _extractionOutputDir = tempPath;
 
     if (_extractionJob == nullptr) {
-        _extractionJob = new QGCCompressionJob(this);
-        connect(_extractionJob, &QGCCompressionJob::finished,
+        _extractionJob = new beeCopterCompressionJob(this);
+        connect(_extractionJob, &beeCopterCompressionJob::finished,
                 this, &PlanMasterController::_handleExtractionFinished);
     }
 
@@ -691,7 +691,7 @@ void PlanMasterController::_handleExtractionFinished(bool success)
 {
     if (!success) {
         const QString error = _extractionJob != nullptr ? _extractionJob->errorString() : tr("Extraction failed");
-        qgcApp()->showAppMessage(tr("Failed to extract plan archive: %1").arg(error));
+        beeCopterApp()->showAppMessage(tr("Failed to extract plan archive: %1").arg(error));
         QDir(_extractionOutputDir).removeRecursively();
         _extractionOutputDir.clear();
         return;
@@ -705,7 +705,7 @@ void PlanMasterController::_handleExtractionFinished(bool success)
     }
 
     if (planPath.isEmpty()) {
-        qgcApp()->showAppMessage(tr("No plan file found in archive"));
+        beeCopterApp()->showAppMessage(tr("No plan file found in archive"));
         QDir(_extractionOutputDir).removeRecursively();
         _extractionOutputDir.clear();
         return;

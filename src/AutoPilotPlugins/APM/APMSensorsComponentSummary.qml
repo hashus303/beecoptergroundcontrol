@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 /*
     IMPORTANT NOTE: Any changes made here must also be made to SensorsComponentSummary.qml
@@ -34,7 +34,7 @@ Item {
                 Layout.fillWidth: true
                 width: parent.width
 
-                QGCLabel {
+                beeCopterLabel {
 
                     text:  sensorParams.rgCompassAvailable[index] ?
                                 (sensorParams.rgCompassCalibrated[index] ?

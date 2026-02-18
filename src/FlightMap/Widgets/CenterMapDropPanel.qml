@@ -3,8 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ColumnLayout {
     id:         root
@@ -15,9 +15,9 @@ ColumnLayout {
     property bool   showMission:          true
     property bool   showAllItems:         true
 
-    QGCLabel { text: qsTr("Center map on:") }
+    beeCopterLabel { text: qsTr("Center map on:") }
 
-    QGCButton {
+    beeCopterButton {
         text:               qsTr("Mission")
         Layout.fillWidth:   true
         visible:            showMission
@@ -28,7 +28,7 @@ ColumnLayout {
         }
     }
 
-    QGCButton {
+    beeCopterButton {
         text:               qsTr("All items")
         Layout.fillWidth:   true
         visible:            showAllItems
@@ -39,7 +39,7 @@ ColumnLayout {
         }
     }
 
-    QGCButton {
+    beeCopterButton {
         text:               qsTr("Launch")
         Layout.fillWidth:   true
 
@@ -49,7 +49,7 @@ ColumnLayout {
         }
     }
 
-    QGCButton {
+    beeCopterButton {
         text:               qsTr("Vehicle")
         Layout.fillWidth:   true
         enabled:            globals.activeVehicle && globals.activeVehicle.coordinate.isValid
@@ -60,7 +60,7 @@ ColumnLayout {
         }
     }
 
-    QGCButton {
+    beeCopterButton {
         text:               qsTr("Current Location")
         Layout.fillWidth:   true
         enabled:            map.gcsPosition.isValid
@@ -71,7 +71,7 @@ ColumnLayout {
         }
     }
 
-    QGCButton {
+    beeCopterButton {
         text:               qsTr("Specified Location")
         Layout.fillWidth:   true
 

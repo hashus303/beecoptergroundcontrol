@@ -1,12 +1,12 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 //-------------------------------------------------------------------------
 //-- Mode Indicator
-QGCComboBox {
+beeCopterComboBox {
     anchors.verticalCenter: parent.verticalCenter
     alternateText:          _activeVehicle ? _activeVehicle.flightMode : ""
     model:                  _flightModes
@@ -16,7 +16,7 @@ QGCComboBox {
 
     property bool showIndicator: true
 
-    property var _activeVehicle:    QGroundControl.multiVehicleManager.activeVehicle
+    property var _activeVehicle:    beeCopter.multiVehicleManager.activeVehicle
     property var _flightModes:      _activeVehicle ? _activeVehicle.flightModes : [ ]
 
     onActivated: (index) => {

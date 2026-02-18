@@ -86,7 +86,7 @@ QStringList SensorsComponent::setupCompleteChangedTriggerList(void) const
 
 QUrl SensorsComponent::setupSource(void) const
 {
-    return QUrl::fromUserInput("qrc:/qml/QGroundControl/AutoPilotPlugins/PX4/SensorsComponent.qml");
+    return QUrl::fromUserInput("qrc:/qml/beeCopter/AutoPilotPlugins/PX4/SensorsComponent.qml");
 }
 
 QUrl SensorsComponent::summaryQmlSource(void) const
@@ -94,9 +94,9 @@ QUrl SensorsComponent::summaryQmlSource(void) const
     QString summaryQml;
 
     if (_vehicle->fixedWing() || _vehicle->vtol() || _vehicle->airship()) {
-        summaryQml = "qrc:/qml/QGroundControl/AutoPilotPlugins/PX4/SensorsComponentSummaryFixedWing.qml";
+        summaryQml = "qrc:/qml/beeCopter/AutoPilotPlugins/PX4/SensorsComponentSummaryFixedWing.qml";
     } else {
-        summaryQml = "qrc:/qml/QGroundControl/AutoPilotPlugins/PX4/SensorsComponentSummary.qml";
+        summaryQml = "qrc:/qml/beeCopter/AutoPilotPlugins/PX4/SensorsComponentSummary.qml";
     }
 
     return QUrl::fromUserInput(summaryQml);

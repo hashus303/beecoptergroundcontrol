@@ -1,12 +1,12 @@
 #include "MultiVehicleManager.h"
 #include "MAVLinkProtocol.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "ParameterManager.h"
 #include "SettingsManager.h"
 #include "MavlinkSettings.h"
 #include "FirmwareUpgradeSettings.h"
-#include "QGCCorePlugin.h"
-#include "QGCOptions.h"
+#include "beeCopterCorePlugin.h"
+#include "beeCopterOptions.h"
 #include "LinkManager.h"
 #include "Vehicle.h"
 #include "VehicleLinkManager.h"
@@ -17,12 +17,12 @@
 #elif defined(Q_OS_ANDROID)
 #include "AndroidInterface.h"
 #endif
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QApplicationStatic>
 #include <QtCore/QTimer>
 
-QGC_LOGGING_CATEGORY(MultiVehicleManagerLog, "Vehicle.MultiVehicleManager")
+beeCopter_LOGGING_CATEGORY(MultiVehicleManagerLog, "Vehicle.MultiVehicleManager")
 
 Q_APPLICATION_STATIC(MultiVehicleManager, _multiVehicleManagerInstance);
 
@@ -78,9 +78,9 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
         return;
     }
 
-#ifndef QGC_NO_ARDUPILOT_DIALECT
+#ifndef beeCopter_NO_ARDUPILOT_DIALECT
     // When you flash a new ArduCopter it does not set a FRAME_CLASS for some reason. This is the only ArduPilot variant which
-    // works this way. Because of this the vehicle type is not known at first connection. In order to make QGC work reasonably
+    // works this way. Because of this the vehicle type is not known at first connection. In order to make beeCopter work reasonably
     // we assume ArduCopter for this case.
     if ((vehicleType == MAV_TYPE_GENERIC) && (vehicleFirmwareType == MAV_AUTOPILOT_ARDUPILOTMEGA)) {
         vehicleType = MAV_TYPE_QUADROTOR;
@@ -98,7 +98,7 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
         break;
     }
 
-    if ((_vehicles->count() > 0) && !QGCCorePlugin::instance()->options()->multiVehicleEnabled()) {
+    if ((_vehicles->count() > 0) && !beeCopterCorePlugin::instance()->options()->multiVehicleEnabled()) {
         return;
     }
 
@@ -114,7 +114,7 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
                                     << vehicleType;
 
     if (vehicleId == MAVLinkProtocol::instance()->getSystemId()) {
-        qgcApp()->showAppMessage(tr("Warning: A vehicle is using the same system id as %1: %2").arg(QCoreApplication::applicationName()).arg(vehicleId));
+        beeCopterApp()->showAppMessage(tr("Warning: A vehicle is using the same system id as %1: %2").arg(QCoreApplication::applicationName()).arg(vehicleId));
     }
 
     Vehicle *const vehicle = new Vehicle(link, vehicleId, componentId, (MAV_AUTOPILOT)vehicleFirmwareType, (MAV_TYPE)vehicleType, this);
@@ -123,7 +123,7 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
 
     _vehicles->append(vehicle);
 
-    // Send QGC heartbeat ASAP, this allows PX4 to start accepting commands
+    // Send beeCopter heartbeat ASAP, this allows PX4 to start accepting commands
     _sendGCSHeartbeat();
 
     SettingsManager::instance()->firmwareUpgradeSettings()->defaultFirmwareType()->setRawValue(vehicleFirmwareType);
@@ -131,7 +131,7 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
     emit vehicleAdded(vehicle);
 
     if (_vehicles->count() > 1) {
-        qgcApp()->showAppMessage(tr("Connected to Vehicle %1").arg(vehicleId));
+        beeCopterApp()->showAppMessage(tr("Connected to Vehicle %1").arg(vehicleId));
     } else {
         setActiveVehicle(vehicle);
     }

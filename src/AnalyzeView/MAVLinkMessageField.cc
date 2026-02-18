@@ -1,15 +1,15 @@
 #include "MAVLinkMessageField.h"
 #include "MAVLinkChartController.h"
 #include "MAVLinkMessage.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QAbstractSeries>
 
-QGC_LOGGING_CATEGORY(MAVLinkMessageFieldLog, "AnalyzeView.MAVLinkMessageField")
+beeCopter_LOGGING_CATEGORY(MAVLinkMessageFieldLog, "AnalyzeView.MAVLinkMessageField")
 
-QGCMAVLinkMessageField::QGCMAVLinkMessageField(const QString &name, const QString &type, QGCMAVLinkMessage *parent)
+beeCopterMAVLinkMessageField::beeCopterMAVLinkMessageField(const QString &name, const QString &type, beeCopterMAVLinkMessage *parent)
     : QObject(parent)
     , _type(type)
     , _name(name)
@@ -20,12 +20,12 @@ QGCMAVLinkMessageField::QGCMAVLinkMessageField(const QString &name, const QStrin
     qCDebug(MAVLinkMessageFieldLog) << "Field:" << name << type;
 }
 
-QGCMAVLinkMessageField::~QGCMAVLinkMessageField()
+beeCopterMAVLinkMessageField::~beeCopterMAVLinkMessageField()
 {
     // qCDebug(MAVLinkMessageFieldLog) << Q_FUNC_INFO << this;
 }
 
-void QGCMAVLinkMessageField::addSeries(MAVLinkChartController *chartController, QAbstractSeries *series)
+void beeCopterMAVLinkMessageField::addSeries(MAVLinkChartController *chartController, QAbstractSeries *series)
 {
     if (_pSeries) {
         return;
@@ -39,7 +39,7 @@ void QGCMAVLinkMessageField::addSeries(MAVLinkChartController *chartController, 
     _msg->updateFieldSelection();
 }
 
-void QGCMAVLinkMessageField::delSeries()
+void beeCopterMAVLinkMessageField::delSeries()
 {
     if (!_pSeries) {
         return;
@@ -54,12 +54,12 @@ void QGCMAVLinkMessageField::delSeries()
     _msg->updateFieldSelection();
 }
 
-QString QGCMAVLinkMessageField::label() const
+QString beeCopterMAVLinkMessageField::label() const
 {
     return (_msg->name() + ": " + _name);
 }
 
-void QGCMAVLinkMessageField::setSelectable(bool sel)
+void beeCopterMAVLinkMessageField::setSelectable(bool sel)
 {
     if (_selectable != sel) {
         _selectable = sel;
@@ -67,7 +67,7 @@ void QGCMAVLinkMessageField::setSelectable(bool sel)
     }
 }
 
-int QGCMAVLinkMessageField::chartIndex() const
+int beeCopterMAVLinkMessageField::chartIndex() const
 {
     if (_chartController) {
         return _chartController->chartIndex();
@@ -76,7 +76,7 @@ int QGCMAVLinkMessageField::chartIndex() const
     return 0;
 }
 
-void QGCMAVLinkMessageField::updateValue(const QString &newValue, qreal v)
+void beeCopterMAVLinkMessageField::updateValue(const QString &newValue, qreal v)
 {
     if (_value != newValue) {
         _value = newValue;
@@ -89,13 +89,13 @@ void QGCMAVLinkMessageField::updateValue(const QString &newValue, qreal v)
 
     const int count = _values.count();
     if (count < (50 * 60)) { ///< Arbitrary limit of 1 minute of data at 50Hz for now
-        const QPointF p(qgcApp()->msecsSinceBoot(), v);
+        const QPointF p(beeCopterApp()->msecsSinceBoot(), v);
         _values.append(p);
     } else {
         if (_dataIndex >= count) {
             _dataIndex = 0;
         }
-        _values[_dataIndex].setX(qgcApp()->msecsSinceBoot());
+        _values[_dataIndex].setX(beeCopterApp()->msecsSinceBoot());
         _values[_dataIndex].setY(v);
         _dataIndex++;
     }
@@ -132,7 +132,7 @@ void QGCMAVLinkMessageField::updateValue(const QString &newValue, qreal v)
     }
 }
 
-void QGCMAVLinkMessageField::updateSeries()
+void beeCopterMAVLinkMessageField::updateSeries()
 {
     const int count = _values.count();
     if (count <= 1) {

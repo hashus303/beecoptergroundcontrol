@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Flow {
     spacing: ScreenTools.defaultFontPixelWidth
@@ -25,7 +25,7 @@ Flow {
         id:     repeater
         model:  fact ? fact.bitmaskStrings : []
 
-        QGCCheckBox {
+        beeCopterCheckBox {
             id:         checkbox
             text:       modelData
             checked:    fact.value & fact.bitmaskValues[index]

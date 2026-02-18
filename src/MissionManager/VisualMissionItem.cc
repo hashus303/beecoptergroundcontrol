@@ -2,7 +2,7 @@
 #include "TerrainQuery.h"
 #include "PlanMasterController.h"
 #include "Vehicle.h"
-#include "QGC.h"
+#include "beeCopter.h"
 
 // All VisualMissionItem derived classes are parented to masterController in order to tie their lifecycles together.
 
@@ -81,7 +81,7 @@ void VisualMissionItem::setHasCurrentChildItem(bool hasCurrentChildItem)
 
 void VisualMissionItem::setDistance(double distance)
 {
-    if (!QGC::fuzzyCompare(_distance, distance)) {
+    if (!beeCopter::fuzzyCompare(_distance, distance)) {
         _distance = distance;
         emit distanceChanged(_distance);
     }
@@ -89,7 +89,7 @@ void VisualMissionItem::setDistance(double distance)
 
 void VisualMissionItem::setDistanceFromStart(double distanceFromStart)
 {
-    if (!QGC::fuzzyCompare(_distanceFromStart, distanceFromStart)) {
+    if (!beeCopter::fuzzyCompare(_distanceFromStart, distanceFromStart)) {
         _distanceFromStart = distanceFromStart;
         emit distanceFromStartChanged(_distanceFromStart);
     }
@@ -97,7 +97,7 @@ void VisualMissionItem::setDistanceFromStart(double distanceFromStart)
 
 void VisualMissionItem::setAltDifference(double altDifference)
 {
-    if (!QGC::fuzzyCompare(_altDifference, altDifference)) {
+    if (!beeCopter::fuzzyCompare(_altDifference, altDifference)) {
         _altDifference = altDifference;
         emit altDifferenceChanged(_altDifference);
     }
@@ -105,7 +105,7 @@ void VisualMissionItem::setAltDifference(double altDifference)
 
 void VisualMissionItem::setAltPercent(double altPercent)
 {
-    if (!QGC::fuzzyCompare(_altPercent, altPercent)) {
+    if (!beeCopter::fuzzyCompare(_altPercent, altPercent)) {
         _altPercent = altPercent;
         emit altPercentChanged(_altPercent);
     }
@@ -113,7 +113,7 @@ void VisualMissionItem::setAltPercent(double altPercent)
 
 void VisualMissionItem::setTerrainPercent(double terrainPercent)
 {
-    if (!QGC::fuzzyCompare(_terrainPercent, terrainPercent)) {
+    if (!beeCopter::fuzzyCompare(_terrainPercent, terrainPercent)) {
         _terrainPercent = terrainPercent;
         emit terrainPercentChanged(terrainPercent);
     }
@@ -129,7 +129,7 @@ void VisualMissionItem::setTerrainCollision(bool terrainCollision)
 
 void VisualMissionItem::setAzimuth(double azimuth)
 {
-    if (!QGC::fuzzyCompare(_azimuth, azimuth)) {
+    if (!beeCopter::fuzzyCompare(_azimuth, azimuth)) {
         _azimuth = azimuth;
         emit azimuthChanged(_azimuth);
     }
@@ -137,7 +137,7 @@ void VisualMissionItem::setAzimuth(double azimuth)
 
 void VisualMissionItem::setMissionFlightStatus(MissionController::MissionFlightStatus_t& missionFlightStatus)
 {
-    if (!QGC::fuzzyCompare(missionFlightStatus.gimbalYaw, _missionGimbalYaw)) {
+    if (!beeCopter::fuzzyCompare(missionFlightStatus.gimbalYaw, _missionGimbalYaw)) {
         _missionGimbalYaw = missionFlightStatus.gimbalYaw;
         emit missionGimbalYawChanged(_missionGimbalYaw);
     }
@@ -149,7 +149,7 @@ void VisualMissionItem::setMissionFlightStatus(MissionController::MissionFlightS
 
 void VisualMissionItem::setMissionVehicleYaw(double vehicleYaw)
 {
-    if (!QGC::fuzzyCompare(_missionVehicleYaw, vehicleYaw)) {
+    if (!beeCopter::fuzzyCompare(_missionVehicleYaw, vehicleYaw)) {
         _missionVehicleYaw = vehicleYaw;
         emit missionVehicleYawChanged(_missionVehicleYaw);
     }
@@ -174,7 +174,7 @@ void VisualMissionItem::_updateTerrainAltitude(void)
 void VisualMissionItem::_reallyUpdateTerrainAltitude(void)
 {
     QGeoCoordinate coord = coordinate();
-    if (specifiesCoordinate() && coord.isValid() && (qIsNaN(_terrainAltitude) || !QGC::fuzzyCompare(_lastLatTerrainQuery, coord.latitude()) || !QGC::fuzzyCompare(_lastLonTerrainQuery, coord.longitude()))) {
+    if (specifiesCoordinate() && coord.isValid() && (qIsNaN(_terrainAltitude) || !beeCopter::fuzzyCompare(_lastLatTerrainQuery, coord.latitude()) || !beeCopter::fuzzyCompare(_lastLonTerrainQuery, coord.longitude()))) {
         _lastLatTerrainQuery = coord.latitude();
         _lastLonTerrainQuery = coord.longitude();
         if (_currentTerrainAtCoordinateQuery) {
@@ -196,7 +196,7 @@ void VisualMissionItem::_terrainDataReceived(bool success, QList<double> heights
     _currentTerrainAtCoordinateQuery = nullptr;
 }
 
-void VisualMissionItem::_setBoundingCube(QGCGeoBoundingCube bc)
+void VisualMissionItem::_setBoundingCube(beeCopterGeoBoundingCube bc)
 {
     if (bc != _boundingCube) {
         _boundingCube = bc;

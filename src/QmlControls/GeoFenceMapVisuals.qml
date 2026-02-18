@@ -3,14 +3,14 @@ import QtQuick.Controls
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 /// GeoFence map visuals
 Item {
     id: _root
-    z: QGroundControl.zOrderMapItems
+    z: beeCopter.zOrderMapItems
 
     property var    map
     property var    myGeoFenceController
@@ -85,7 +85,7 @@ Item {
     Instantiator {
         model: _polygons
 
-        delegate : QGCMapPolygonVisuals {
+        delegate : beeCopterMapPolygonVisuals {
             parent:             _root
             mapControl:         map
             mapPolygon:         object
@@ -100,7 +100,7 @@ Item {
     Instantiator {
         model: _circles
 
-        delegate : QGCMapCircleVisuals {
+        delegate : beeCopterMapCircleVisuals {
             parent:             _root
             mapControl:         map
             mapCircle:          object
@@ -151,7 +151,7 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             coordinate:     myGeoFenceController.breachReturnPoint
             opacity:        _root.opacity
 

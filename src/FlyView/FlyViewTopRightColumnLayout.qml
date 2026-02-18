@@ -1,10 +1,10 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
+import beeCopter.FlightMap
 
 ColumnLayout {
     spacing: ScreenTools.defaultFontPixelHeight / 2

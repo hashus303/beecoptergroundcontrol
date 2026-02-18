@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 SetupPage {
     id:             scriptingPage
@@ -110,7 +110,7 @@ SetupPage {
                 id: factController
             }
 
-            QGCPalette { id: qgcPal; colorGroupEnabled: true }
+            beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
             FactCheckBoxSlider {
                 text: qsTr("Enable Scripting")
@@ -118,7 +118,7 @@ SetupPage {
                 enabled: scriptingEnabledFact !== null
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 id: statusText
                 Layout.fillWidth: true
                 text: ftpController.errorString
@@ -131,12 +131,12 @@ SetupPage {
                 spacing: ScreenTools.defaultFontPixelHeight
                 enabled: !ftpController.busy && scriptingEnabledFact && scriptingEnabledFact.rawValue
 
-                QGCButton {
+                beeCopterButton {
                     text: qsTr("Upload")
                     iconSource: "/res/Upload.svg"
                     enabled: !ftpController.busy
                     onClicked: {
-                        uploadDialog.folder = QGroundControl.settingsManager.appSettings.missionSavePath
+                        uploadDialog.folder = beeCopter.settingsManager.appSettings.missionSavePath
                         uploadDialog.openForLoad()
                     }
                 }
@@ -150,9 +150,9 @@ SetupPage {
                         radius: button.backRadius
                         border.width: button.showBorder ? 1 : 0
                         border.color: button.background.border.color
-                        color: qgcPal.buttonHighlight
+                        color: beeCopterPal.buttonHighlight
 
-                        QGCColoredImage {
+                        beeCopterColoredImage {
                             id: downloadIcon
                             anchors.leftMargin: button.leftPadding
                             anchors.left: parent.left
@@ -164,26 +164,26 @@ SetupPage {
                             color: button.textColor
                             visible: button.checked
 
-                            QGCMouseArea {
+                            beeCopterMouseArea {
                                 fillItem: parent
                                 onClicked: {
                                     downloadDialog.defaultSuffix = "lua"
                                     downloadDialog.title = qsTr("Download %1").arg(modelData)
                                     downloadDialog.fileToDownload = modelData
-                                    downloadDialog.folder = QGroundControl.settingsManager.appSettings.missionSavePath
+                                    downloadDialog.folder = beeCopter.settingsManager.appSettings.missionSavePath
                                     downloadDialog.openForLoad()
                                 }
                             }
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             id: button
                             anchors.left: checked ? downloadIcon.right : parent.left
                             text: modelData
                             checkable: true
                         }
 
-                        QGCColoredImage {
+                        beeCopterColoredImage {
                             id: deleteIcon
                             anchors.left: button.right
                             anchors.verticalCenter: button.verticalCenter
@@ -194,7 +194,7 @@ SetupPage {
                             color: button.textColor
                             visible: button.checked
 
-                            QGCMouseArea {
+                            beeCopterMouseArea {
                                 fillItem: parent
                                 onClicked: {
                                     var confirm = qsTr("Are you sure you want to delete the script \"%1\"? This action cannot be undone.").arg(modelData)
@@ -216,7 +216,7 @@ SetupPage {
                 Layout.fillWidth: true
                 spacing: ScreenTools.defaultFontPixelHeight * 0.5
 
-                QGCButton {
+                beeCopterButton {
                     text: qsTr("Cancel Operation")
                     visible: ftpController.busy
                     onClicked: ftpController.cancelActiveOperation()
@@ -224,13 +224,13 @@ SetupPage {
 
                 Item { Layout.fillWidth: true }
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("Transferring... %1%" ).arg(Math.round(ftpController.progress * 100))
                     visible: ftpController.busy
                 }
             }
 
-            QGCFileDialog {
+            beeCopterFileDialog {
                 id: uploadDialog
                 title: qsTr("Select Lua script to upload")
                 nameFilters: root.luaNameFilters
@@ -257,7 +257,7 @@ SetupPage {
                 }
             }
 
-            QGCFileDialog {
+            beeCopterFileDialog {
                 id: downloadDialog
                 title: qsTr("Save Lua Script")
                 nameFilters: root.luaNameFilters
@@ -281,10 +281,10 @@ SetupPage {
             Rectangle {
                 Layout.fillWidth: true
                 Layout.preferredHeight: availableHeight
-                color: qgcPal.window
+                color: beeCopterPal.window
                 visible: scriptingEnabledFact === null
 
-                QGCLabel {
+                beeCopterLabel {
                     anchors.centerIn: parent
                     text: qsTr("Scripting is not supported by this version of firmware.")
                     wrapMode: Text.Wrap

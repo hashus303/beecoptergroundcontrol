@@ -1,14 +1,14 @@
 #include "JoystickConfigController.h"
 #include "Fact.h"
 #include "ParameterManager.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "Vehicle.h"
 
 #include <QtCore/QSettings>
 
-QGC_LOGGING_CATEGORY(JoystickConfigControllerLog, "AutoPilotPlugins.JoystickConfigController")
-QGC_LOGGING_CATEGORY(JoystickConfigControllerVerboseLog, "AutoPilotPlugins.JoystickConfigController:verbose")
+beeCopter_LOGGING_CATEGORY(JoystickConfigControllerLog, "AutoPilotPlugins.JoystickConfigController")
+beeCopter_LOGGING_CATEGORY(JoystickConfigControllerVerboseLog, "AutoPilotPlugins.JoystickConfigController:verbose")
 
 JoystickConfigController::JoystickConfigController(QObject *parent)
     : RemoteControlCalibrationController(parent)

@@ -1,7 +1,7 @@
 #include "UdpIODevice.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(UdpIODeviceLog, "Comms.UdpIODevice")
+beeCopter_LOGGING_CATEGORY(UdpIODeviceLog, "Comms.UdpIODevice")
 
 UdpIODevice::UdpIODevice(QObject *parent)
     : QUdpSocket(parent)

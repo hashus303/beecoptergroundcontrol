@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Drop panel that displays positioned next to the specified click position.
 /// By default the panel drops to the right of the click position. If there isn't
@@ -23,7 +23,7 @@ Popup {
     property var  clickRect:        Qt.rect(0, 0, 0, 0)                         // Rectangle of clicked item - used to position drop down
     property var  dropViewPort:     Qt.rect(0, 0, parent.width, parent.height)  // Available viewport for dropdown
 
-    property var  _qgcPal:              QGroundControl.globalPalette
+    property var  _beeCopterPal:              beeCopter.globalPalette
     property real _innerMargin:         ScreenTools.defaultFontPixelWidth * 0.5 // Margin between content and rectanglular portion of background
     property real _arrowPointWidth:     ScreenTools.defaultFontPixelWidth * 2   // Distance from vertical side to point
     property real _arrowPointPositionY: height / 2
@@ -64,7 +64,7 @@ Popup {
             radius: ScreenTools.defaultFontPixelHeight / 2
             width:  parent.implicitWidth - _arrowPointWidth
             height: parent.implicitHeight
-            color:  _qgcPal.window
+            color:  _beeCopterPal.window
         }
 
         // Arrowhead
@@ -82,7 +82,7 @@ Popup {
                 context.lineTo(_dropRight ? _arrowPointWidth : 0, 0)
                 context.lineTo(_dropRight ? _arrowPointWidth : 0, _arrowPointWidth * 2)
                 context.closePath()
-                context.fillStyle = _qgcPal.window
+                context.fillStyle = _beeCopterPal.window
                 context.fill()
             }
         }

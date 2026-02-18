@@ -92,7 +92,7 @@ public:
     static constexpr const char* kmlFileExtension =         "kml";
     static constexpr const char* shpFileExtension =         "shp";
     static constexpr const char* logFileExtension =         "ulg";
-    static constexpr const char* tilesetFileExtension =     "qgctiledb";
+    static constexpr const char* tilesetFileExtension =     "beeCoptertiledb";
     static constexpr const char* settingsFileExtension =    "settings";
 
     // Child directories of savePath for specific file types
@@ -128,5 +128,5 @@ private:
     } LanguageInfo_t;
     static LanguageInfo_t _rgLanguageInfo[];
 
-    friend class QGCApplication;
+    friend class beeCopterApplication;
 };

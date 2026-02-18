@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.AutoPilotPlugins.APM
+import beeCopter
+import beeCopter.Controls
+import beeCopter.AutoPilotPlugins.APM
 
 SetupPage {
     pageComponent: mainComponent
@@ -27,17 +27,17 @@ SetupPage {
         ColumnLayout {
             spacing: _verticalSpacing
 
-            QGCTabBar {
+            beeCopterTabBar {
                 id: tabBar
                 width: availableWidth
                 currentIndex: 0
                 visible: gimbalParams.instanceCount > 1
 
-                QGCTabButton {
+                beeCopterTabButton {
                     text: qsTr("Gimbal 1")
                 }
 
-                QGCTabButton {
+                beeCopterTabButton {
                     text: qsTr("Gimbal 2")
                 }
             }
@@ -70,7 +70,7 @@ SetupPage {
     Component {
         id: notSupportedComponent
 
-        QGCLabel {
+        beeCopterLabel {
             text: qsTr("Gimbal settings are not available for this firmware version.")
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter

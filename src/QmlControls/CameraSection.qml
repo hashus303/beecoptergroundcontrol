@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 // Camera section for mission item editors
 Column {
@@ -59,7 +59,7 @@ Column {
             spacing:    ScreenTools.defaultFontPixelWidth
             visible:    _camera.cameraModeSupported
 
-            QGCCheckBox {
+            beeCopterCheckBox {
                 id:                 modeCheckBox
                 text:               qsTr("Mode")
                 checked:            _camera.specifyCameraMode
@@ -74,7 +74,7 @@ Column {
             }
         }
 
-        QGCCheckBox {
+        beeCopterCheckBox {
             id:                 gimbalCheckBox
             text:               qsTr("Gimbal")
             checked:            _camera.specifyGimbal

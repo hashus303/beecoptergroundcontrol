@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
 
 RowLayout {
     TelemetryValuesBar {
@@ -16,6 +16,6 @@ RowLayout {
     FlyViewInstrumentPanel {
         id:                 instrumentPanel
         Layout.alignment:   Qt.AlignBottom
-        visible:            QGroundControl.corePlugin.options.flyView.showInstrumentPanel && _showSingleVehicleUI
+        visible:            beeCopter.corePlugin.options.flyView.showInstrumentPanel && _showSingleVehicleUI
     }
 }

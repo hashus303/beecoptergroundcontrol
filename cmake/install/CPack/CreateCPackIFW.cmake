@@ -26,13 +26,13 @@ set(CPACK_IFW_VERBOSE ON)
 # ----------------------------------------------------------------------------
 # Package Appearance
 # ----------------------------------------------------------------------------
-set(CPACK_IFW_PACKAGE_TITLE "${QGC_INSTALLER_NAME}")
-set(CPACK_IFW_PACKAGE_PUBLISHER "${QGC_ORG_NAME}")
+set(CPACK_IFW_PACKAGE_TITLE "${beeCopter_INSTALLER_NAME}")
+set(CPACK_IFW_PACKAGE_PUBLISHER "${beeCopter_ORG_NAME}")
 set(CPACK_IFW_PRODUCT_URL "${CMAKE_PROJECT_HOMEPAGE_URL}")
-set(CPACK_IFW_PACKAGE_ICON "${QGC_APP_ICON}")
-set(CPACK_IFW_PACKAGE_WINDOW_ICON "${CMAKE_SOURCE_DIR}/resources/icons/qgroundcontrol.png")
-set(CPACK_IFW_PACKAGE_LOGO "${CMAKE_SOURCE_DIR}/resources/QGCLogoFull.svg")
-set(CPACK_IFW_PACKAGE_WATERMARK "${CMAKE_SOURCE_DIR}/resources/icons/qgroundcontrol.png")
+set(CPACK_IFW_PACKAGE_ICON "${beeCopter_APP_ICON}")
+set(CPACK_IFW_PACKAGE_WINDOW_ICON "${CMAKE_SOURCE_DIR}/resources/icons/beeCopter.png")
+set(CPACK_IFW_PACKAGE_LOGO "${CMAKE_SOURCE_DIR}/resources/beeCopterLogoFull.svg")
+set(CPACK_IFW_PACKAGE_WATERMARK "${CMAKE_SOURCE_DIR}/resources/icons/beeCopter.png")
 # set(CPACK_IFW_PACKAGE_BANNER "")
 # set(CPACK_IFW_PACKAGE_BACKGROUND "")
 set(CPACK_IFW_PACKAGE_WIZARD_STYLE "Modern")
@@ -96,7 +96,7 @@ cpack_ifw_configure_component(${CMAKE_PROJECT_NAME}
     VERSION ${CMAKE_PROJECT_VERSION}
     DESCRIPTION "Welcome to the ${CMAKE_PROJECT_NAME} installer."
     LICENSES "GPL LICENSE" ${CPACK_RESOURCE_FILE_LICENSE}
-    SCRIPT "${CMAKE_SOURCE_DIR}/deploy/installer/packages/org.mavlink.qgroundcontrol/meta/installerscript.js"
+    SCRIPT "${CMAKE_SOURCE_DIR}/deploy/installer/packages/org.mavlink.beeCopter/meta/installerscript.js"
 )
 # cpack_ifw_configure_component_group
 # cpack_ifw_add_repository

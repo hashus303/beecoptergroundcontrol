@@ -1,7 +1,7 @@
 #pragma once
 
-#include "QGCState.h"
-#include "QGCMAVLink.h"
+#include "beeCopterState.h"
+#include "beeCopterMAVLink.h"
 
 #include <cstdint>
 #include <functional>
@@ -9,7 +9,7 @@
 class Vehicle;
 
 /// Sends the specified MAVLink message to the vehicle
-class SendMavlinkMessageState : public QGCState
+class SendMavlinkMessageState : public beeCopterState
 {
     Q_OBJECT
 

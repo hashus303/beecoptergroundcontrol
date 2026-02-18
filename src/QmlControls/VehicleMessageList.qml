@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 TextArea {
     id:                     messageText
@@ -11,9 +11,9 @@ TextArea {
     height:                 contentHeight
     readOnly:               true
     textFormat:             TextEdit.RichText
-    color:                  qgcPal.text
+    color:                  beeCopterPal.text
     placeholderText:        qsTr("No Messages")
-    placeholderTextColor:   qgcPal.text
+    placeholderTextColor:   beeCopterPal.text
     padding:                0
     wrapMode:               TextEdit.Wrap
 
@@ -22,9 +22,9 @@ TextArea {
     property var _fact: null
 
     function formatMessage(message) {
-        message = message.replace(new RegExp("<#E>", "g"), "color: " + qgcPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
-        message = message.replace(new RegExp("<#I>", "g"), "color: " + qgcPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
-        message = message.replace(new RegExp("<#N>", "g"), "color: " + qgcPal.text + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
+        message = message.replace(new RegExp("<#E>", "g"), "color: " + beeCopterPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
+        message = message.replace(new RegExp("<#I>", "g"), "color: " + beeCopterPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
+        message = message.replace(new RegExp("<#N>", "g"), "color: " + beeCopterPal.text + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
         return message;
     }
 
@@ -72,11 +72,11 @@ TextArea {
         width:                      ScreenTools.defaultFontPixelHeight * 1.25
         height:                     width
         radius:                     width / 2
-        color:                      QGroundControl.globalPalette.button
-        border.color:               QGroundControl.globalPalette.buttonText
+        color:                      beeCopter.globalPalette.button
+        border.color:               beeCopter.globalPalette.buttonText
         visible:                    !noMessages
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             anchors.margins:    ScreenTools.defaultFontPixelHeight * 0.25
             anchors.centerIn:   parent
             anchors.fill:       parent
@@ -85,10 +85,10 @@ TextArea {
             fillMode:           Image.PreserveAspectFit
             mipmap:             true
             smooth:             true
-            color:              qgcPal.text
+            color:              beeCopterPal.text
         }
 
-        QGCMouseArea {
+        beeCopterMouseArea {
             fillItem: parent
             onClicked: {
                 _activeVehicle.clearMessages()

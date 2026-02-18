@@ -1,7 +1,7 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// This is the dial background for the compass
 
@@ -18,7 +18,7 @@ Item {
         return -radius * Math.cos(angle * (Math.PI / 180))
     }
 
-    QGCLabel {
+    beeCopterLabel {
         anchors.centerIn:   parent
         text:               "N"
 
@@ -28,7 +28,7 @@ Item {
         }
     }
 
-    QGCLabel {
+    beeCopterLabel {
         anchors.centerIn:   parent
         text:               "E"
 
@@ -38,7 +38,7 @@ Item {
         }
     }
 
-    QGCLabel {
+    beeCopterLabel {
         anchors.centerIn:   parent
         text:               "S"
 
@@ -48,7 +48,7 @@ Item {
         }
     }
 
-    QGCLabel {
+    beeCopterLabel {
         anchors.centerIn:   parent
         text:               "W"
 
@@ -66,7 +66,7 @@ Item {
             x:                  size / 2
             width:              1
             height:             ScreenTools.defaultFontPixelHeight * 0.5
-            color:              qgcPal.text
+            color:              beeCopterPal.text
             antialiasing:       true
 
             transform: Rotation {
@@ -86,7 +86,7 @@ Item {
             y:                  _margin
             width:              1
             height:             _margin
-            color:              qgcPal.text
+            color:              beeCopterPal.text
             antialiasing:       true
 
             property real _margin: ScreenTools.defaultFontPixelHeight * 0.25

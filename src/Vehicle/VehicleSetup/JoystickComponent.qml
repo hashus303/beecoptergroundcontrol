@@ -3,10 +3,10 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.VehicleSetup
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.VehicleSetup
+import beeCopter.FactControls
 
 SetupPage {
     pageComponent: joystickManager.activeJoystick ? pageComponent : noJoysticksComponent
@@ -18,20 +18,20 @@ SetupPage {
             id: root
             spacing: ScreenTools.defaultFontPixelHeight / 2
 
-            property Fact activeJoystickNameFact: QGroundControl.settingsManager.joystickManagerSettings.activeJoystickName
+            property Fact activeJoystickNameFact: beeCopter.settingsManager.joystickManagerSettings.activeJoystickName
             property string activeJoystickName: activeJoystickNameFact.value
             property var availableJoystickNames: joystickManager.availableJoystickNames
-            property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+            property var activeVehicle: beeCopter.multiVehicleManager.activeVehicle
             property var activeJoystick: joystickManager.activeJoystick
 
             RowLayout {
                 spacing: ScreenTools.defaultFontPixelWidth
                 visible: joystickCombo.visible || calibrationRequiredLabel.visible
 
-                QGCComboBox {
+                beeCopterComboBox {
                     id: joystickCombo
                     sizeToContents: true
-                    visible: activeJoystickName !== "" && QGroundControl.corePlugin.options.allowJoystickSelection
+                    visible: activeJoystickName !== "" && beeCopter.corePlugin.options.allowJoystickSelection
 
                     onActivated: (index) => { activeJoystickNameFact.rawValue = textAt(index) }
 
@@ -63,20 +63,20 @@ SetupPage {
                     Connections { target: joystickManager; function onAvailableJoystickNamesChanged() { joystickCombo._recalc() } }
                 }
 
-                QGCCheckBox {
+                beeCopterCheckBox {
                     text: qsTr("Enable")
                     checked: joystickManager.joystickEnabledForVehicle(activeVehicle)
 
                     onClicked: joystickManager.setJoystickEnabledForVehicle(activeVehicle, checked)
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     font.pointSize: ScreenTools.smallFontPointSize
                     text: qsTr("Not currently available")
                     visible: !activeJoystick
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     id: calibrationRequiredLabel
                     text: qsTr("Requires Calibration")
                     visible: activeJoystick && activeJoystick.requiresCalibration && !activeJoystick.settings.calibrated.rawValue
@@ -109,7 +109,7 @@ SetupPage {
                     additionalMonitorComponent: _activeJoystick ? _additionalMonitorComponent : null
 
                     property var _controller: controller
-                    property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+                    property var _activeVehicle: beeCopter.multiVehicleManager.activeVehicle
                     property var _activeJoystick: _controller.joystick
                     property bool _requiresCalibration: _activeJoystick ? (_activeJoystick.requiresCalibration && !_activeJoystick.settings.calibrated.rawValue) : false
 
@@ -137,16 +137,16 @@ SetupPage {
                             spacing: ScreenTools.defaultFontPixelHeight / 2
                             enabled: !controller.calibrating
 
-                            QGCTabBar {
+                            beeCopterTabBar {
                                 id: tabBar
                                 Layout.fillWidth: true
 
-                                QGCTabButton {
+                                beeCopterTabButton {
                                     text: qsTr("Buttons")
                                     checked: true
                                 }
 
-                                QGCTabButton {
+                                beeCopterTabButton {
                                     text: qsTr("Settings")
                                     checked: false
                                 }
@@ -182,7 +182,7 @@ SetupPage {
 
     Component {
         id: noJoysticksComponent
-        QGCLabel {
+        beeCopterLabel {
             width: availableWidth
             height: availableHeight
             text: qsTr("No joysticks or gamepads detected.")

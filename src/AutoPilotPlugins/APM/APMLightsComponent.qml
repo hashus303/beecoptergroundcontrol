@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:                 lightsPage
@@ -18,7 +18,7 @@ SetupPage {
 
             FactPanelController { id: controller; }
 
-            property var  _activeVehicle:       QGroundControl.multiVehicleManager.activeVehicle
+            property var  _activeVehicle:       beeCopter.multiVehicleManager.activeVehicle
             property bool _oldFW:               _activeVehicle.versionCompare(3, 5, 2) < 0
             property Fact _rc5Function:         controller.getParameterFact(-1, "SERVO5_FUNCTION")
             property Fact _rc6Function:         controller.getParameterFact(-1, "SERVO6_FUNCTION")
@@ -119,7 +119,7 @@ SetupPage {
 
             ListModel {
                 id: lightsOutModel
-                // It appears that QGCComboBox can't handle models that don't have a initial item
+                // It appears that beeCopterComboBox can't handle models that don't have a initial item
                 // after onModelChanged
                 ListElement { text: qsTr("Disabled"); value: 0 }
 
@@ -151,7 +151,7 @@ SetupPage {
                     width:  rectangle.x + rectangle.width
                     height: rectangle.y + rectangle.height
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:             settingsLabel
                         text:           qsTr("Light Output Channels")
                         font.bold:      true
@@ -163,9 +163,9 @@ SetupPage {
                         anchors.top:        settingsLabel.bottom
                         width:              lights1Combo.x + lights1Combo.width + lightsStepCombo.width + _margins
                         height:             lights2Combo.y + lights2Combo.height + lightsStepCombo.height + 2*_margins
-                        color:              qgcPal.windowShade
+                        color:              beeCopterPal.windowShade
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:                 lights1Label
                             anchors.margins:    _margins
                             anchors.right:      lights1Combo.left
@@ -173,7 +173,7 @@ SetupPage {
                             text:               qsTr("Lights 1:")
                         }
 
-                        QGCComboBox {
+                        beeCopterComboBox {
                             id:                 lights1Combo
                             anchors.margins:    _margins
                             anchors.top:        parent.top
@@ -186,7 +186,7 @@ SetupPage {
                             onActivated: (index) => { setRCFunction(lightsOutModel.get(index).value, lights1Function) }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:                 lights2Label
                             anchors.margins:    _margins
                             anchors.right:      lights2Combo.left
@@ -194,7 +194,7 @@ SetupPage {
                             text:               qsTr("Lights 2:")
                         }
 
-                        QGCComboBox {
+                        beeCopterComboBox {
                             id:                 lights2Combo
                             anchors.margins:    _margins
                             anchors.top:        lights1Combo.bottom
@@ -207,7 +207,7 @@ SetupPage {
                             onActivated: (index) => { setRCFunction(lightsOutModel.get(index).value, lights2Function) }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:                 lightsStepLabel
                             anchors.margins:    _margins
                             anchors.left:       parent.left
@@ -215,7 +215,7 @@ SetupPage {
                             text:               qsTr("Brightness Steps:")
                         }
 
-                        QGCComboBox {
+                        beeCopterComboBox {
                             id:                 lightsStepCombo
                             anchors.margins:    _margins
                             anchors.top:        lights2Combo.bottom

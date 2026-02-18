@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ColumnLayout {
     id:         root
@@ -130,11 +130,11 @@ ColumnLayout {
         rowSpacing:       _rowSpacing
         Layout.fillWidth: true
 
-        QGCLabel {
+        beeCopterLabel {
             text:    qsTr("Adapter")
             visible: hasAdapter
         }
-        QGCComboBox {
+        beeCopterComboBox {
             id:             adapterCombo
             width:          _secondColumnWidth
             visible:        hasAdapter
@@ -170,21 +170,21 @@ ColumnLayout {
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             text:    qsTr("Status")
             visible: hasAdapter
         }
-        QGCLabel {
+        beeCopterLabel {
             Layout.preferredWidth: _secondColumnWidth
             text:                  subEditConfig ? subEditConfig.hostMode : ""
             visible:               hasAdapter
-            color:                 adapterOn ? qgcPal.text : qgcPal.warningText
+            color:                 adapterOn ? beeCopterPal.text : beeCopterPal.warningText
         }
 
-        QGCLabel {
+        beeCopterLabel {
             text:              qsTr("Bluetooth adapter unavailable")
             visible:           !hasAdapter
-            color:             qgcPal.warningText
+            color:             beeCopterPal.warningText
             Layout.columnSpan: 2
         }
     }
@@ -194,7 +194,7 @@ ColumnLayout {
         spacing:          _colSpacing
         visible:          hasAdapter
 
-        QGCCheckBox {
+        beeCopterCheckBox {
             text:    qsTr("Powered On")
             checked: adapterOn
             onClicked: {
@@ -203,7 +203,7 @@ ColumnLayout {
             }
         }
 
-        QGCCheckBox {
+        beeCopterCheckBox {
             text:    qsTr("Discoverable")
             checked: subEditConfig && (subEditConfig.hostMode === qsTr("Discoverable") ||
                                        subEditConfig.hostMode === qsTr("Discoverable (Limited)"))
@@ -226,38 +226,38 @@ ColumnLayout {
         rowSpacing:       _rowSpacing
         Layout.fillWidth: true
 
-        QGCLabel { text: qsTr("Mode") }
+        beeCopterLabel { text: qsTr("Mode") }
         RowLayout {
             Layout.preferredWidth: _secondColumnWidth
             spacing:               _colSpacing
 
-            QGCRadioButton {
+            beeCopterRadioButton {
                 text:    qsTr("Classic")
                 checked: isClassicMode
                 onClicked: { if (subEditConfig) subEditConfig.mode = BluetoothConfiguration.BluetoothMode.ModeClassic }
             }
 
-            QGCRadioButton {
+            beeCopterRadioButton {
                 text:    qsTr("BLE")
                 checked: isBleMode
                 onClicked: { if (subEditConfig) subEditConfig.mode = BluetoothConfiguration.BluetoothMode.ModeLowEnergy }
             }
         }
 
-        QGCLabel { text: qsTr("Selected Device") }
-        QGCLabel {
+        beeCopterLabel { text: qsTr("Selected Device") }
+        beeCopterLabel {
             Layout.preferredWidth: _secondColumnWidth
             text: subEditConfig && subEditConfig.deviceName ? subEditConfig.deviceName : qsTr("None")
         }
 
-        QGCLabel { text: qsTr("Device Address") }
-        QGCLabel {
+        beeCopterLabel { text: qsTr("Device Address") }
+        beeCopterLabel {
             Layout.preferredWidth: _secondColumnWidth
             text: currentAddress || qsTr("N/A")
         }
 
         // Classic Bluetooth Pairing
-        QGCLabel {
+        beeCopterLabel {
             text:    qsTr("Pairing")
             visible: isClassicMode && currentAddress !== ""
         }
@@ -266,12 +266,12 @@ ColumnLayout {
             visible:               isClassicMode && currentAddress !== ""
             spacing:               _colSpacing
 
-            QGCLabel {
+            beeCopterLabel {
                 text:             subEditConfig ? subEditConfig.getPairingStatus(currentAddress) : ""
                 Layout.fillWidth: true
             }
 
-            QGCButton {
+            beeCopterButton {
                 text: paired ? qsTr("Unpair") : qsTr("Pair")
                 onClicked: {
                     if (!subEditConfig) return
@@ -282,7 +282,7 @@ ColumnLayout {
         }
 
         // BLE Signal Strength
-        QGCLabel {
+        beeCopterLabel {
             text:    qsTr("Signal Strength")
             visible: isBleMode && (rssiDisplay.hasConnected || rssiDisplay.hasSelected)
         }
@@ -304,22 +304,22 @@ ColumnLayout {
                     Rectangle {
                         width:  ScreenTools.defaultFontPixelWidth * 0.5
                         height: ScreenTools.defaultFontPixelHeight * (0.4 + index * 0.2)
-                        color:  index < rssiDisplay.signalLevel ? qgcPal.text : qgcPal.buttonText
+                        color:  index < rssiDisplay.signalLevel ? beeCopterPal.text : beeCopterPal.buttonText
                         opacity: index < rssiDisplay.signalLevel ? 1.0 : 0.3
                         anchors.bottom: parent.bottom
                     }
                 }
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 text: rssiDisplay.rssi + " dBm"
-                color: rssiDisplay.hasConnected ? qgcPal.text : qgcPal.buttonText
+                color: rssiDisplay.hasConnected ? beeCopterPal.text : beeCopterPal.buttonText
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 text: rssiDisplay.hasConnected ? qsTr("(Connected)") : qsTr("(Last Scan)")
                 font.pointSize: ScreenTools.smallFontPointSize
-                color: qgcPal.buttonText
+                color: beeCopterPal.buttonText
             }
         }
     }
@@ -327,7 +327,7 @@ ColumnLayout {
     //==========================================================================
     //-- BLE Configuration Section (Collapsible) --
     //==========================================================================
-    QGCCheckBox {
+    beeCopterCheckBox {
         id:      showBleConfig
         text:    qsTr("Advanced BLE Configuration")
         visible: isBleMode
@@ -341,24 +341,24 @@ ColumnLayout {
         Layout.fillWidth: true
         visible:          isBleMode && showBleConfig.checked
 
-        QGCLabel { text: qsTr("Service UUID") }
-        QGCTextField {
+        beeCopterLabel { text: qsTr("Service UUID") }
+        beeCopterTextField {
             Layout.preferredWidth: _secondColumnWidth
             text:                  subEditConfig ? subEditConfig.serviceUuid : ""
             placeholderText:       qsTr("Auto-detect")
             onEditingFinished:     { if (subEditConfig) subEditConfig.serviceUuid = text }
         }
 
-        QGCLabel { text: qsTr("RX Characteristic") }
-        QGCTextField {
+        beeCopterLabel { text: qsTr("RX Characteristic") }
+        beeCopterTextField {
             Layout.preferredWidth: _secondColumnWidth
             text:                  subEditConfig ? subEditConfig.readUuid : ""
             placeholderText:       qsTr("Auto-detect")
             onEditingFinished:     { if (subEditConfig) subEditConfig.readUuid = text }
         }
 
-        QGCLabel { text: qsTr("TX Characteristic") }
-        QGCTextField {
+        beeCopterLabel { text: qsTr("TX Characteristic") }
+        beeCopterTextField {
             Layout.preferredWidth: _secondColumnWidth
             text:                  subEditConfig ? subEditConfig.writeUuid : ""
             placeholderText:       qsTr("Auto-detect")
@@ -366,13 +366,13 @@ ColumnLayout {
         }
     }
 
-    QGCLabel {
+    beeCopterLabel {
         text:             qsTr("UUIDs are auto-detected for most devices. Only configure if connection fails.")
         visible:          isBleMode && showBleConfig.checked
         wrapMode:         Text.WordWrap
         Layout.fillWidth: true
         font.pointSize:   ScreenTools.smallFontPointSize
-        color:            qgcPal.buttonText
+        color:            beeCopterPal.buttonText
     }
 
     //==========================================================================
@@ -392,7 +392,7 @@ ColumnLayout {
         Repeater {
             model: knownDevices
 
-            QGCButton {
+            beeCopterButton {
                 property var  dev: modelData
                 property bool isConnected: dev.isConnected === true
 
@@ -424,14 +424,14 @@ ColumnLayout {
             running:                true
         }
 
-        QGCLabel {
+        beeCopterLabel {
             text:  qsTr("Scanning for devices...")
-            color: qgcPal.text
+            color: beeCopterPal.text
         }
     }
 
     // Device list
-    QGCFlickable {
+    beeCopterFlickable {
         Layout.fillWidth:       true
         Layout.preferredHeight: Math.min(contentHeight, ScreenTools.defaultFontPixelHeight * 16)
         contentHeight:          deviceColumn.height
@@ -448,7 +448,7 @@ ColumnLayout {
                 id:    deviceRepeater
                 model: sortedDevices
 
-                QGCButton {
+                beeCopterButton {
                     id: deviceBtn
                     Layout.fillWidth: true
 
@@ -478,32 +478,32 @@ ColumnLayout {
                                 Rectangle {
                                     width:  ScreenTools.defaultFontPixelWidth * 0.4
                                     height: ScreenTools.defaultFontPixelHeight * (0.3 + index * 0.2)
-                                    color:  index < deviceBtn.signalLevel ? qgcPal.text : qgcPal.buttonText
+                                    color:  index < deviceBtn.signalLevel ? beeCopterPal.text : beeCopterPal.buttonText
                                     opacity: index < deviceBtn.signalLevel ? 1.0 : 0.3
                                     anchors.bottom: parent.bottom
                                 }
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:             deviceBtn.deviceName
                             Layout.fillWidth: true
                             elide:            Text.ElideRight
-                            color:            deviceBtn.checked ? qgcPal.buttonHighlightText : qgcPal.buttonText
+                            color:            deviceBtn.checked ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             visible:        deviceBtn.isPaired
                             text:           qsTr("Paired")
                             font.pointSize: ScreenTools.smallFontPointSize
-                            color:          qgcPal.buttonText
+                            color:          beeCopterPal.buttonText
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             visible:        deviceBtn.hasRssi
                             text:           deviceBtn.rssiVal + " dBm"
                             font.pointSize: ScreenTools.smallFontPointSize
-                            color:          qgcPal.buttonText
+                            color:          beeCopterPal.buttonText
                         }
                     }
 
@@ -523,26 +523,26 @@ ColumnLayout {
         spacing:          ScreenTools.defaultFontPixelHeight
         visible:          !isScanning && sortedDevices.length === 0
 
-        QGCLabel {
+        beeCopterLabel {
             text:                qsTr("No devices found")
             Layout.fillWidth:    true
             horizontalAlignment: Text.AlignHCenter
-            color:               qgcPal.warningText
+            color:               beeCopterPal.warningText
         }
 
-        QGCLabel {
+        beeCopterLabel {
             text: isBleMode ? qsTr("Make sure your BLE device is powered on and advertising")
                             : qsTr("Make sure your Bluetooth device is powered on and discoverable")
             Layout.fillWidth:    true
             horizontalAlignment: Text.AlignHCenter
             wrapMode:            Text.WordWrap
             font.pointSize:      ScreenTools.smallFontPointSize
-            color:               qgcPal.buttonText
+            color:               beeCopterPal.buttonText
         }
     }
 
     // Scan button
-    QGCButton {
+    beeCopterButton {
         Layout.alignment: Qt.AlignHCenter
         text:             isScanning ? qsTr("Stop Scan") : qsTr("Scan for Devices")
         onClicked: {

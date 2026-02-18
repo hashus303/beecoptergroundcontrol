@@ -3,9 +3,9 @@
 #include "ArduPlaneFirmwarePlugin.h"
 #include "ArduRoverFirmwarePlugin.h"
 #include "ArduSubFirmwarePlugin.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(APMFirmwarePluginFactoryLog, "FirmwarePlugin.APMFirmwarePluginFactory");
+beeCopter_LOGGING_CATEGORY(APMFirmwarePluginFactoryLog, "FirmwarePlugin.APMFirmwarePluginFactory");
 
 APMFirmwarePluginFactory APMFirmwarePluginFactory(nullptr);
 
@@ -19,10 +19,10 @@ APMFirmwarePluginFactory::~APMFirmwarePluginFactory()
     // qCDebug(FirmwarePluginFactoryLog) << Q_FUNC_INFO << this;
 }
 
-QList<QGCMAVLink::FirmwareClass_t> APMFirmwarePluginFactory::supportedFirmwareClasses() const
+QList<beeCopterMAVLink::FirmwareClass_t> APMFirmwarePluginFactory::supportedFirmwareClasses() const
 {
-    QList<QGCMAVLink::FirmwareClass_t> list;
-    list.append(QGCMAVLink::FirmwareClassArduPilot);
+    QList<beeCopterMAVLink::FirmwareClass_t> list;
+    list.append(beeCopterMAVLink::FirmwareClassArduPilot);
     return list;
 }
 

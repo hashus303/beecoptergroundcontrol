@@ -15,7 +15,7 @@ public:
     QString iconResource() const override { return QStringLiteral("/InstrumentValueIcons/folder-outline.svg"); }
     bool requiresSetup() const override { return false; }
     bool setupComplete() const override { return true; }
-    QUrl setupSource() const override { return QUrl::fromUserInput(QStringLiteral("qrc:/qml/QGroundControl/AutoPilotPlugins/Common/ScriptingComponent.qml")); }
+    QUrl setupSource() const override { return QUrl::fromUserInput(QStringLiteral("qrc:/qml/beeCopter/AutoPilotPlugins/Common/ScriptingComponent.qml")); }
     QUrl summaryQmlSource() const override { return QUrl(); }
 
 private:

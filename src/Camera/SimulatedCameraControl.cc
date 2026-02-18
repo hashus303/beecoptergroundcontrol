@@ -1,12 +1,12 @@
 #include "SimulatedCameraControl.h"
 #include "FlyViewSettings.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "SettingsManager.h"
 #include "Vehicle.h"
 #include "VideoManager.h"
 
-QGC_LOGGING_CATEGORY(SimulatedCameraControlLog, "Camera.SimulatedCameraControl")
+beeCopter_LOGGING_CATEGORY(SimulatedCameraControlLog, "Camera.SimulatedCameraControl")
 
 SimulatedCameraControl::SimulatedCameraControl(Vehicle *vehicle, QObject *parent)
     : MavlinkCameraControl(vehicle, parent)
@@ -126,7 +126,7 @@ bool SimulatedCameraControl::takePhoto()
         QTimer::singleShot(500, [this]() { _photoCaptureStatus = PHOTO_CAPTURE_IDLE; emit photoCaptureStatusChanged(); });
         break;
     case PHOTO_CAPTURE_TIMELAPSE:
-        qgcApp()->showAppMessage(tr("Time lapse capture not supported by this camera"));
+        beeCopterApp()->showAppMessage(tr("Time lapse capture not supported by this camera"));
         break;
     default:
         break;

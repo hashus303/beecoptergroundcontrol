@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             airframePage
@@ -23,7 +23,7 @@ SetupPage {
                 width:      1
                 height:     1
             }
-            QGCLabel {
+            beeCopterLabel {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width:      parent.width * 0.5
                 height:     ScreenTools.defaultFontPixelHeight * 4
@@ -32,7 +32,7 @@ SetupPage {
                             qsTr("This configuration can only be modified through the Parameter Editor.\n\n") +
                             qsTr("If you want to reset your airframe configuration and select a standard configuration, click 'Reset' below.")
             }
-            QGCButton {
+            beeCopterButton {
                 text:       qsTr("Reset")
                 enabled:    sys_autostart
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -89,7 +89,7 @@ SetupPage {
                 anchors.right:  parent.right
                 height:         Math.max(helpText.contentHeight, applyButton.height)
 
-                QGCLabel {
+                beeCopterLabel {
                     id:             helpText
                     width:          parent.width - applyButton.width - 5
                     text:           (controller.currentVehicleName != "" ?
@@ -100,7 +100,7 @@ SetupPage {
                     wrapMode:       Text.WordWrap
                 }
 
-                QGCButton {
+                beeCopterButton {
                     id:             applyButton
                     anchors.right:  parent.right
                     text:           qsTr("Apply and Restart")
@@ -136,7 +136,7 @@ SetupPage {
                     Rectangle {
                         width:  _boxWidth
                         height: ScreenTools.defaultFontPixelHeight * 14
-                        color:  qgcPal.window
+                        color:  beeCopterPal.window
 
                         readonly property real titleHeight: ScreenTools.defaultFontPixelHeight * 1.75
                         readonly property real innerMargin: ScreenTools.defaultFontPixelWidth
@@ -150,7 +150,7 @@ SetupPage {
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:     title
                             text:   modelData.name
                         }
@@ -161,7 +161,7 @@ SetupPage {
                             anchors.bottom:     parent.bottom
                             anchors.left:       parent.left
                             anchors.right:      parent.right
-                            color:              airframeCheckBox.checked ? qgcPal.buttonHighlight : qgcPal.windowShade
+                            color:              airframeCheckBox.checked ? beeCopterPal.buttonHighlight : beeCopterPal.windowShade
 
                             Image {
                                 id:                 image
@@ -176,7 +176,7 @@ SetupPage {
                                 source:             modelData.imageResource
                             }
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 // Although this item is invisible we still use it to manage state
                                 id:             airframeCheckBox
                                 checked:        modelData.name === controller.currentAirframeType
@@ -191,7 +191,7 @@ SetupPage {
                                 }
                             }
 
-                            QGCComboBox {
+                            beeCopterComboBox {
                                 id:                 combo
                                 objectName:         modelData.airframeType + "ComboBox"
                                 anchors.margins:    innerMargin

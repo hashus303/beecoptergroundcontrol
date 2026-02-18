@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 /// Structure Scan Complex Mission Item visuals
 Item {
@@ -29,9 +29,9 @@ Item {
         _addVisualElements()
     }
 
-    QGCDynamicObjectManager { id: objMgr }
+    beeCopterDynamicObjectManager { id: objMgr }
 
-    QGCMapPolygonVisuals {
+    beeCopterMapPolygonVisuals {
         mapControl:         map
         mapPolygon:         _structurePolygon
         interactive:        _missionItem.isCurrentItem && _root.interactive
@@ -42,7 +42,7 @@ Item {
         interiorOpacity:    0.5 * _root.opacity
     }
 
-    QGCMapPolygonVisuals {
+    beeCopterMapPolygonVisuals {
         mapControl:         map
         mapPolygon:         _flightPolygon
         interactive:        false
@@ -58,7 +58,7 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             coordinate:     _missionItem.coordinate
             visible:        _missionItem.exitCoordinate.isValid && _root.interactive
 
@@ -78,7 +78,7 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             coordinate:     _missionItem.exitCoordinate
             visible:        _missionItem.exitCoordinate.isValid && _root.interactive
 

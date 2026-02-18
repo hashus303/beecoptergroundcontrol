@@ -3,8 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 DropButton {
     id:                 dropButton
@@ -26,7 +26,7 @@ DropButton {
 
     function fitHomePosition() {
         var homePosition = QtPositioning.coordinate()
-        var activeVehicle = QGroundControl.multiVehicleManager.activeVehicle
+        var activeVehicle = beeCopter.multiVehicleManager.activeVehicle
         if (usePlannedHomePosition) {
             homePosition = missionController.visualItems.get(0).coordinate
         } else if (activeVehicle) {
@@ -148,9 +148,9 @@ DropButton {
         ColumnLayout {
             spacing: ScreenTools.defaultFontPixelWidth * 0.5
 
-            QGCLabel { text: qsTr("Center map on:") }
+            beeCopterLabel { text: qsTr("Center map on:") }
 
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("Mission")
                 Layout.fillWidth:   true
                 visible:            showMission
@@ -162,7 +162,7 @@ DropButton {
                 }
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("All items")
                 Layout.fillWidth:   true
                 visible:            showAllItems
@@ -174,7 +174,7 @@ DropButton {
                 }
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("Launch")
                 Layout.fillWidth:   true
                 enabled:            !followVehicleCheckBox.checked
@@ -185,7 +185,7 @@ DropButton {
                 }
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("Current Location")
                 Layout.fillWidth:   true
                 enabled:            map.gcsPosition ? map.gcsPosition.isValid && !followVehicleCheckBox.checked : false
@@ -197,7 +197,7 @@ DropButton {
             }
 
 
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("Specified Location")
                 Layout.fillWidth:   true
 
@@ -207,7 +207,7 @@ DropButton {
                 }
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("Vehicle")
                 Layout.fillWidth:   true
                 enabled:            globals.activeVehicle && globals.activeVehicle.latitude != 0 && globals.activeVehicle.longitude != 0 && !followVehicleCheckBox.checked
@@ -218,7 +218,7 @@ DropButton {
                 }
             }
 
-            QGCCheckBox {
+            beeCopterCheckBox {
                 id:         followVehicleCheckBox
                 text:       qsTr("Follow Vehicle")
                 checked:    followVehicle

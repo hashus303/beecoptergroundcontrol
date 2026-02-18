@@ -1,13 +1,13 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 RowLayout {
     property var fact: Fact { }
 
-    QGCLabel {
+    beeCopterLabel {
         text: fact.name + ":"
     }
 

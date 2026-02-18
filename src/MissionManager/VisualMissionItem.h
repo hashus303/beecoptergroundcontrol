@@ -7,7 +7,7 @@
 #include <QtQmlIntegration/QtQmlIntegration>
 
 #include "MissionController.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 #include "QmlObjectListModel.h"
 
 class MissionItem;
@@ -76,7 +76,7 @@ public:
     Q_PROPERTY(ReadyForSaveState        readyForSaveState   READ readyForSaveState                                                  NOTIFY readyForSaveStateChanged)
     Q_PROPERTY(VisualMissionItem*       parentItem          READ parentItem                        WRITE setParentItem              NOTIFY parentItemChanged)
     Q_PROPERTY(QmlObjectListModel*      childItems          READ childItems                                                         CONSTANT)
-    Q_PROPERTY(QGCGeoBoundingCube*      boundingCube        READ boundingCube                                                       NOTIFY boundingCubeChanged)
+    Q_PROPERTY(beeCopterGeoBoundingCube*      boundingCube        READ boundingCube                                                       NOTIFY boundingCubeChanged)
 
     // The following properties are calculated/set by the MissionController recalc methods
 
@@ -150,7 +150,7 @@ public:
     virtual double          specifiedVehicleYaw     (void) { return qQNaN(); }
 
     //-- Default implementation returns an invalid bounding cube
-    virtual QGCGeoBoundingCube* boundingCube        (void) { return &_boundingCube; }
+    virtual beeCopterGeoBoundingCube* boundingCube        (void) { return &_boundingCube; }
 
     /// Update item to mission flight status at point where this item appears in mission.
     /// IMPORTANT: Overrides must call base class implementation
@@ -257,20 +257,20 @@ protected:
     QString                     _editorQml;                                                     ///< Qml resource for editing item
     double                      _missionGimbalYaw           = qQNaN();
     double                      _missionVehicleYaw          = qQNaN();
-    QGCMAVLink::VehicleClass_t  _previousVTOLMode           = QGCMAVLink::VehicleClassGeneric;  ///< Generic == unknown
+    beeCopterMAVLink::VehicleClass_t  _previousVTOLMode           = beeCopterMAVLink::VehicleClassGeneric;  ///< Generic == unknown
 
     PlanMasterController*   _masterController           = nullptr;
     MissionController*      _missionController          = nullptr;
     Vehicle*                _controllerVehicle          = nullptr;
     FlightPathSegment *     _simpleFlightPathSegment    = nullptr;  ///< The simple item flight segment (if any) which starts with this visual item.
     VisualMissionItem*      _parentItem                 = nullptr;
-    QGCGeoBoundingCube      _boundingCube;                          ///< The bounding "cube" of this element.
+    beeCopterGeoBoundingCube      _boundingCube;                          ///< The bounding "cube" of this element.
 
     /// This is used to reference any subsequent mission items which do not specify a coordinate.
     QmlObjectListModel  _childItems;
 
 protected:
-    void    _setBoundingCube                (QGCGeoBoundingCube bc);
+    void    _setBoundingCube                (beeCopterGeoBoundingCube bc);
 
 private slots:
     void _updateTerrainAltitude (void);

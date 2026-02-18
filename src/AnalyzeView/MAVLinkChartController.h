@@ -10,7 +10,7 @@ Q_DECLARE_LOGGING_CATEGORY(MAVLinkChartControllerLog)
 
 class MAVLinkInspectorController;
 class QAbstractSeries;
-class QGCMAVLinkMessageField;
+class beeCopterMAVLinkMessageField;
 class QTimer;
 
 class MAVLinkChartController : public QObject
@@ -36,8 +36,8 @@ public:
     explicit MAVLinkChartController(QObject *parent = nullptr);
     ~MAVLinkChartController();
 
-    Q_INVOKABLE void addSeries(QGCMAVLinkMessageField *field, QAbstractSeries *series);
-    Q_INVOKABLE void delSeries(QGCMAVLinkMessageField *field);
+    Q_INVOKABLE void addSeries(beeCopterMAVLinkMessageField *field, QAbstractSeries *series);
+    Q_INVOKABLE void delSeries(beeCopterMAVLinkMessageField *field);
 
     void setInspectorController(MAVLinkInspectorController *inspectorController);
     MAVLinkInspectorController *inspectorController() const { return _inspectorController; }

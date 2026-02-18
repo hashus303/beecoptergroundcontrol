@@ -4,7 +4,7 @@
 
 #include "TransectStyleComplexItem.h"
 #include "SettingsFact.h"
-#include "QGCMapPolyline.h"
+#include "beeCopterMapPolyline.h"
 
 Q_DECLARE_LOGGING_CATEGORY(CorridorScanComplexItemLog)
 
@@ -17,7 +17,7 @@ public:
     /// @param kmlOrShpFile Polyline comes from this file, empty for default polyline
     CorridorScanComplexItem(PlanMasterController* masterController, bool flyView, const QString& kmlOrShpFile);
 
-    Q_PROPERTY(QGCMapPolyline*  corridorPolyline    READ corridorPolyline   CONSTANT)
+    Q_PROPERTY(beeCopterMapPolyline*  corridorPolyline    READ corridorPolyline   CONSTANT)
     Q_PROPERTY(Fact*            corridorWidth       READ corridorWidth      CONSTANT)
 
     // Note1: These values are persisted to plan files so they cannot be changed with breaking plan file back compat
@@ -31,7 +31,7 @@ public:
     Q_ENUM(EntryPointLocation)
 
     Fact*           corridorWidth   (void) { return &_corridorWidthFact; }
-    QGCMapPolyline* corridorPolyline(void) { return &_corridorPolyline; }
+    beeCopterMapPolyline* corridorPolyline(void) { return &_corridorPolyline; }
 
     Q_INVOKABLE void rotateEntryPoint(void);
 
@@ -77,7 +77,7 @@ private:
     void    _saveCommon             (QJsonObject& complexObject);
     bool    _loadWorker              (const QJsonObject& complexObject, int sequenceNumber, QString& errorString, bool forPresets);
 
-    QGCMapPolyline                  _corridorPolyline;
+    beeCopterMapPolyline                  _corridorPolyline;
     QList<QList<QGeoCoordinate>>    _transectSegments;      ///< Internal transect segments including grid exit, turnaround and internal camera points
 
     EntryPointLocation              _entryPointLocation;

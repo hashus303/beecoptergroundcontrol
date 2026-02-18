@@ -2,8 +2,8 @@
 #include "NTRIPSettings.h"
 #include "Fact.h"
 #include "FactGroup.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "RTCMMavlink.h"
 #include "SettingsManager.h"
 #include <QtNetwork/QSslSocket>
@@ -22,7 +22,7 @@
 #include <QtQml/QQmlEngine>
 #include <QtQml/QJSEngine>
 
-QGC_LOGGING_CATEGORY(NTRIPLog, "qgc.ntrip")
+beeCopter_LOGGING_CATEGORY(NTRIPLog, "beeCopter.ntrip")
 
 // Register the QML type without constructing the singleton up-front.
 // This avoids creating NTRIPManager during a temporary Q(Core)Application
@@ -35,7 +35,7 @@ static QObject* _ntripManagerQmlProvider(QQmlEngine*, QJSEngine*)
 
 static void _ntripManagerRegisterQmlTypes()
 {
-    qmlRegisterSingletonType<NTRIPManager>("QGroundControl.NTRIP", 1, 0, "NTRIPManager", _ntripManagerQmlProvider);
+    qmlRegisterSingletonType<NTRIPManager>("beeCopter.NTRIP", 1, 0, "NTRIPManager", _ntripManagerQmlProvider);
 }
 Q_COREAPP_STARTUP_FUNCTION(_ntripManagerRegisterQmlTypes)
 
@@ -49,9 +49,9 @@ NTRIPManager::NTRIPManager(QObject* parent)
     qCDebug(NTRIPLog) << "NTRIPManager created";
     _startupTimer.start();
 
-    _rtcmMavlink = qgcApp() ? qgcApp()->findChild<RTCMMavlink*>() : nullptr;
+    _rtcmMavlink = beeCopterApp() ? beeCopterApp()->findChild<RTCMMavlink*>() : nullptr;
     if (!_rtcmMavlink) {
-        QObject* parentObj = qgcApp() ? static_cast<QObject*>(qgcApp()) : static_cast<QObject*>(this);
+        QObject* parentObj = beeCopterApp() ? static_cast<QObject*>(beeCopterApp()) : static_cast<QObject*>(this);
         // Ensure an RTCMMavlink helper exists for forwarding RTCM messages
         _rtcmMavlink = new RTCMMavlink(parentObj);
         _rtcmMavlink->setObjectName(QStringLiteral("RTCMMavlink"));
@@ -346,7 +346,7 @@ void NTRIPTCPLink::_hardwareConnect()
                 "GET /%1 HTTP/1.1\r\n"
                 "Host: %2\r\n"
                 "Ntrip-Version: Ntrip/2.0\r\n"
-                "User-Agent: QGC-NTRIP\r\n"
+                "User-Agent: beeCopter-NTRIP\r\n"
                 "Connection: keep-alive\r\n"
                 "Accept: */*\r\n"
                 "Authorization: Basic %3\r\n"
@@ -663,7 +663,7 @@ void NTRIPTCPLink::debugFetchSourceTable()
     const QByteArray req =
         QByteArray("GET / HTTP/1.1\r\n")
         + "Host: " + _hostAddress.toUtf8() + "\r\n"
-        + "User-Agent: QGC-NTRIP\r\n"
+        + "User-Agent: beeCopter-NTRIP\r\n"
         + "Ntrip-Version: Ntrip/2.0\r\n"
         + "Accept: */*\r\n"
         + "Authorization: Basic " + authB64 + "\r\n"
@@ -806,8 +806,8 @@ void NTRIPTCPLink::requestStop()
 NTRIPManager* NTRIPManager::instance()
 {
     if (!_instance) {
-        // Prefer QGCApplication as parent if available, otherwise fall back to qApp
-        QObject* parent = qgcApp() ? static_cast<QObject*>(qgcApp()) : static_cast<QObject*>(qApp);
+        // Prefer beeCopterApplication as parent if available, otherwise fall back to qApp
+        QObject* parent = beeCopterApp() ? static_cast<QObject*>(beeCopterApp()) : static_cast<QObject*>(qApp);
         _instance = new NTRIPManager(parent);
     }
     return _instance;
@@ -882,8 +882,8 @@ void NTRIPManager::startNTRIP()
             emit ntripStatusChanged();
         }
 
-        // >>> ONE-SHOT SOURCETABLE DUMP (enable with env var QGC_NTRIP_DUMP_TABLE=1)
-        if (qEnvironmentVariableIsSet("QGC_NTRIP_DUMP_TABLE")) {
+        // >>> ONE-SHOT SOURCETABLE DUMP (enable with env var beeCopter_NTRIP_DUMP_TABLE=1)
+        if (qEnvironmentVariableIsSet("beeCopter_NTRIP_DUMP_TABLE")) {
             static bool dumped = false;
             if (!dumped && _tcpLink) {
                 dumped = true;
@@ -977,9 +977,9 @@ void NTRIPManager::_tcpError(const QString& errorMsg)
         emit casterStatusChanged(_casterStatus);
     }
 
-    // Show error to user via QGC notification (toast)
-    if (qgcApp()) {
-        qgcApp()->showAppMessage(tr("NTRIP error: %1").arg(errorMsg));
+    // Show error to user via beeCopter notification (toast)
+    if (beeCopterApp()) {
+        beeCopterApp()->showAppMessage(tr("NTRIP error: %1").arg(errorMsg));
     }
 }
 
@@ -989,8 +989,8 @@ void NTRIPManager::_rtcmDataReceived(const QByteArray& data)
     qCDebug(NTRIPLog) << "NTRIP Forwarding RTCM to vehicle:" << data.size() << "bytes";
 
     // Lazily resolve the tool if we don't have it yet
-    if (!_rtcmMavlink && qgcApp()) {
-        _rtcmMavlink = qgcApp()->findChild<RTCMMavlink*>();
+    if (!_rtcmMavlink && beeCopterApp()) {
+        _rtcmMavlink = beeCopterApp()->findChild<RTCMMavlink*>();
     }
 
     if (_rtcmMavlink) {
@@ -1088,7 +1088,7 @@ void NTRIPManager::_sendGGA()
     bool validCoord = false;
     QString srcUsed;
 
-    if (qgcApp()) {
+    if (beeCopterApp()) {
         // PRIORITY 1: Raw GPS data from vehicle GPS facts (most important for RTK)
         MultiVehicleManager* mvm = MultiVehicleManager::instance();
         if (mvm) {

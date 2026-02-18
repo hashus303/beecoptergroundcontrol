@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Button {
     id:             control
@@ -12,15 +12,15 @@ Button {
     autoExclusive:  true
     icon.color:     textColor
 
-    property color textColor: checked || pressed ? qgcPal.buttonHighlightText : qgcPal.buttonText
+    property color textColor: checked || pressed ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
 
-    QGCPalette {
-        id:                 qgcPal
+    beeCopterPalette {
+        id:                 beeCopterPal
         colorGroupEnabled:  control.enabled
     }
 
     background: Rectangle {
-        color:      qgcPal.buttonHighlight
+        color:      beeCopterPal.buttonHighlight
         opacity:    checked || pressed ? 1 : enabled && hovered ? .2 : 0
         radius:     ScreenTools.defaultFontPixelWidth / 2
     }
@@ -28,19 +28,19 @@ Button {
     contentItem: RowLayout {
         spacing: ScreenTools.defaultFontPixelWidth
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             source: control.icon.source
             color:  control.icon.color
             width:  ScreenTools.defaultFontPixelHeight
             height: ScreenTools.defaultFontPixelHeight
         }
 
-        QGCLabel {
+        beeCopterLabel {
             id:                     displayText
             Layout.fillWidth:       true
             text:                   control.text
             color:                  control.textColor
-            horizontalAlignment:    QGCLabel.AlignLeft
+            horizontalAlignment:    beeCopterLabel.AlignLeft
         }
     }
 }

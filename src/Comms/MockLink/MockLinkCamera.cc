@@ -1,12 +1,12 @@
 #include "MockLinkCamera.h"
 #include "MockLink.h"
 #include "MissionManager/MissionCommandTree.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QLoggingCategory>
 
-QGC_LOGGING_CATEGORY(MockLinkCameraLog, "Comms.MockLink.MockLinkCamera")
+beeCopter_LOGGING_CATEGORY(MockLinkCameraLog, "Comms.MockLink.MockLinkCamera")
 
 MockLinkCamera::MockLinkCamera(MockLink *mockLink,
                                bool captureVideo,

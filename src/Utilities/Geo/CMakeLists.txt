@@ -13,8 +13,8 @@ target_sources(${CMAKE_PROJECT_NAME}
         KMLHelper.h
         KMLSchemaValidator.cc
         KMLSchemaValidator.h
-        QGCGeo.cc
-        QGCGeo.h
+        beeCopterGeo.cc
+        beeCopterGeo.h
         ShapeFileHelper.cc
         ShapeFileHelper.h
         SHPFileHelper.cc
@@ -60,7 +60,7 @@ CPMAddPackage(
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE GeographicLib::GeographicLib)
 if(geographiclib_ADDED)
-    qgc_disable_dependency_warnings(GeographicLib_STATIC)
+    beeCopter_disable_dependency_warnings(GeographicLib_STATIC)
 endif()
 
 # ============================================================================
@@ -79,5 +79,5 @@ CPMAddPackage(
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE shp)
 if(Shapelib_ADDED)
-    qgc_disable_dependency_warnings(shp)
+    beeCopter_disable_dependency_warnings(shp)
 endif()

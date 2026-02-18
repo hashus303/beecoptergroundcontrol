@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 RowLayout {
     id:                 control
@@ -16,12 +16,12 @@ RowLayout {
 
     property int _tileCount: tileSet.totalTileCount
 
-    QGCLabel {
+    beeCopterLabel {
         Layout.fillWidth:   true
         text:               tileSet.name
     }
 
-    QGCLabel {
+    beeCopterLabel {
         id:     sizeLabel
         text:   tileSet.downloadStatus + (_tileCount > 0 ? " (" + _tileCount + " tiles)" : "")
     }
@@ -34,7 +34,7 @@ RowLayout {
         opacity: sizeLabel.text.length > 0 ? 1 : 0
     }
 
-    QGCButton {
+    beeCopterButton {
         text:       qsTr("Edit")
         onClicked:  control.clicked()
     }

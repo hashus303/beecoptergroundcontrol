@@ -11,7 +11,7 @@ include(CreateCPackCommon)
 list(APPEND CPACK_GENERATOR "RPM")
 set(CPACK_BINARY_RPM ON)
 
-set(QGC_INSTALLER_SOURCE "${CMAKE_SOURCE_DIR}/deploy/linux")
+set(beeCopter_INSTALLER_SOURCE "${CMAKE_SOURCE_DIR}/deploy/linux")
 
 # ----------------------------------------------------------------------------
 # Package Metadata

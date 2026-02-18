@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 // Joystick Indicator
 Item {
@@ -31,7 +31,7 @@ Item {
 
     Component.onCompleted: _updateJoystickEnabled()
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     Component {
         id: joystickInfoPage
@@ -46,8 +46,8 @@ Item {
                     columns:        2
                     columnSpacing:  ScreenTools.defaultFontPixelWidth * 2
 
-                    QGCLabel { text: qsTr("Enabled:") }
-                    QGCLabel {
+                    beeCopterLabel { text: qsTr("Enabled:") }
+                    beeCopterLabel {
                         text: {
                             if (!globals.activeVehicle)
                                 return qsTr("No Vehicle")
@@ -55,27 +55,27 @@ Item {
                         }
                         color: {
                             if (!globals.activeVehicle)
-                                return qgcPal.buttonText
-                            return _joystickEnabled ? qgcPal.buttonText : "orange"
+                                return beeCopterPal.buttonText
+                            return _joystickEnabled ? beeCopterPal.buttonText : "orange"
                         }
                     }
 
-                    QGCLabel { text: qsTr("Type:") }
-                    QGCLabel {
+                    beeCopterLabel { text: qsTr("Type:") }
+                    beeCopterLabel {
                         text: _activeJoystick ? (_activeJoystick.isGamepad ? _activeJoystick.gamepadType || qsTr("Gamepad") : qsTr("Joystick")) : ""
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Connection:")
                         visible: _activeJoystick && _activeJoystick.connectionType && _activeJoystick.connectionType !== "Unknown" && _activeJoystick.connectionType !== "Invalid"
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    _activeJoystick ? _activeJoystick.connectionType : ""
                         visible: _activeJoystick && _activeJoystick.connectionType && _activeJoystick.connectionType !== "Unknown" && _activeJoystick.connectionType !== "Invalid"
                     }
 
-                    QGCLabel { text: qsTr("Inputs:") }
-                    QGCLabel {
+                    beeCopterLabel { text: qsTr("Inputs:") }
+                    beeCopterLabel {
                         text: {
                             if (!_activeJoystick) return ""
                             var parts = [qsTr("%1 axes").arg(_activeJoystick.axisCount), qsTr("%1 buttons").arg(_activeJoystick.buttonCount)]
@@ -85,26 +85,26 @@ Item {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Battery:")
                         visible: _activeJoystick && _activeJoystick.batteryPercent >= 0
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text: {
                             if (!_activeJoystick || _activeJoystick.batteryPercent < 0) return ""
                             var batteryText = qsTr("%1%").arg(_activeJoystick.batteryPercent)
                             if (_activeJoystick.powerState) batteryText += " (" + _activeJoystick.powerState + ")"
                             return batteryText
                         }
-                        color:   _activeJoystick && _activeJoystick.batteryPercent < 20 ? "red" : qgcPal.buttonText
+                        color:   _activeJoystick && _activeJoystick.batteryPercent < 20 ? "red" : beeCopterPal.buttonText
                         visible: _activeJoystick && _activeJoystick.batteryPercent >= 0
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Features:")
                         visible: _activeJoystick && (_activeJoystick.hasRumble || _activeJoystick.hasLED || _activeJoystick.hasGyroscope() || _activeJoystick.hasAccelerometer())
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         property var features: {
                             var list = []
                             if (_activeJoystick) {
@@ -120,11 +120,11 @@ Item {
                         visible: _activeJoystick && (_activeJoystick.hasRumble || _activeJoystick.hasLED || _activeJoystick.hasGyroscope() || _activeJoystick.hasAccelerometer())
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Player:")
                         visible: _activeJoystick && _activeJoystick.playerIndex >= 0
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    _activeJoystick ? (_activeJoystick.playerIndex + 1).toString() : ""
                         visible: _activeJoystick && _activeJoystick.playerIndex >= 0
                     }
@@ -138,58 +138,58 @@ Item {
                     columns:        2
                     columnSpacing:  ScreenTools.defaultFontPixelWidth * 2
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Device Type:")
                         visible: _activeJoystick && _activeJoystick.deviceType
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    _activeJoystick ? _activeJoystick.deviceType : ""
                         visible: _activeJoystick && _activeJoystick.deviceType
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Vendor/Product:")
                         visible: _activeJoystick && _activeJoystick.vendorId > 0
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    _activeJoystick ? "0x%1 / 0x%2".arg(_activeJoystick.vendorId.toString(16).toUpperCase().padStart(4, '0')).arg(_activeJoystick.productId.toString(16).toUpperCase().padStart(4, '0')) : ""
                         visible: _activeJoystick && _activeJoystick.vendorId > 0
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Serial:")
                         visible: _activeJoystick && _activeJoystick.serial
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    _activeJoystick ? _activeJoystick.serial : ""
                         visible: _activeJoystick && _activeJoystick.serial
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Firmware:")
                         visible: _activeJoystick && _activeJoystick.firmwareVersion > 0
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    _activeJoystick ? _activeJoystick.firmwareVersion.toString() : ""
                         visible: _activeJoystick && _activeJoystick.firmwareVersion > 0
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Path:")
                         visible: _activeJoystick && _activeJoystick.path
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    _activeJoystick ? _activeJoystick.path : ""
                         visible: _activeJoystick && _activeJoystick.path
                         elide:   Text.ElideMiddle
                         Layout.maximumWidth: ScreenTools.defaultFontPixelWidth * 20
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("GUID:")
                         visible: _activeJoystick && _activeJoystick.guid
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    _activeJoystick ? _activeJoystick.guid : ""
                         visible: _activeJoystick && _activeJoystick.guid
                         font.family: "monospace"
@@ -198,20 +198,20 @@ Item {
                         Layout.maximumWidth: ScreenTools.defaultFontPixelWidth * 20
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Virtual:")
                         visible: _activeJoystick && _activeJoystick.isVirtual
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Yes")
                         visible: _activeJoystick && _activeJoystick.isVirtual
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("LED Types:")
                         visible: _activeJoystick && (_activeJoystick.hasMonoLED() || _activeJoystick.hasRGBLED() || _activeJoystick.hasPlayerLED())
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         property var ledTypes: {
                             var list = []
                             if (_activeJoystick) {
@@ -225,20 +225,20 @@ Item {
                         visible: _activeJoystick && (_activeJoystick.hasMonoLED() || _activeJoystick.hasRGBLED() || _activeJoystick.hasPlayerLED())
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Haptic:")
                         visible: _activeJoystick && _activeJoystick.hasHaptic()
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    _activeJoystick && _activeJoystick.hasHaptic() ? qsTr("%1 effects").arg(_activeJoystick.hapticEffectsCount()) : ""
                         visible: _activeJoystick && _activeJoystick.hasHaptic()
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:    qsTr("Motion Sensors:")
                         visible: _activeJoystick && (_activeJoystick.hasGyroscope() || _activeJoystick.hasAccelerometer())
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         property var sensors: {
                             var list = []
                             if (_activeJoystick) {
@@ -261,7 +261,7 @@ Item {
         }
     }
 
-    QGCColoredImage {
+    beeCopterColoredImage {
         id:                 joystickIcon
         width:              height
         anchors.top:        parent.top
@@ -271,16 +271,16 @@ Item {
         fillMode:           Image.PreserveAspectFit
         color: {
             if (!globals.activeVehicle) {
-                return qgcPal.buttonText
+                return beeCopterPal.buttonText
             }
             if (_joystickEnabled) {
-                return qgcPal.buttonText
+                return beeCopterPal.buttonText
             }
             return "orange"
         }
     }
 
-    QGCMouseArea {
+    beeCopterMouseArea {
         fillItem:   joystickIcon
         onClicked:  mainWindow.showIndicatorDrawer(joystickInfoPage, control)
     }

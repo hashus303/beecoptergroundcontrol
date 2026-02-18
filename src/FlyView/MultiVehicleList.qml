@@ -2,18 +2,18 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
-import QGroundControl.FlyView
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
+import beeCopter.FlyView
 
 Item {
     property real   _margin:              ScreenTools.defaultFontPixelWidth / 2
     property real   _widgetHeight:        ScreenTools.defaultFontPixelHeight * 2.5
     property var    _guidedController:    globals.guidedControllerFlyView
     property var    _activeVehicleColor:  "green"
-    property var    _activeVehicle:       QGroundControl.multiVehicleManager.activeVehicle
-    property var    selectedVehicles:     QGroundControl.multiVehicleManager.selectedVehicles
+    property var    _activeVehicle:       beeCopter.multiVehicleManager.activeVehicle
+    property var    selectedVehicles:     beeCopter.multiVehicleManager.selectedVehicles
 
     implicitHeight: vehicleList.contentHeight
 
@@ -59,11 +59,11 @@ Item {
     }
 
     function selectVehicle(vehicleId) {
-        QGroundControl.multiVehicleManager.selectVehicle(vehicleId)
+        beeCopter.multiVehicleManager.selectVehicle(vehicleId)
     }
 
     function deselectVehicle(vehicleId) {
-        QGroundControl.multiVehicleManager.deselectVehicle(vehicleId)
+        beeCopter.multiVehicleManager.deselectVehicle(vehicleId)
     }
 
     function toggleSelect(vehicleId) {
@@ -75,7 +75,7 @@ Item {
     }
 
     function selectAll() {
-        var vehicles = QGroundControl.multiVehicleManager.vehicles
+        var vehicles = beeCopter.multiVehicleManager.vehicles
         for (var i = 0; i < vehicles.count; i++) {
             var vehicle = vehicles.get(i)
             var vehicleId = vehicle.id
@@ -86,7 +86,7 @@ Item {
     }
 
     function deselectAll() {
-        QGroundControl.multiVehicleManager.deselectAllVehicles()
+        beeCopter.multiVehicleManager.deselectAllVehicles()
     }
 
     function vehicleSelected(vehicleId) {
@@ -99,7 +99,7 @@ Item {
         return false
     }
 
-    QGCListView {
+    beeCopterListView {
         id:                 vehicleList
         anchors.left:       parent.left
         anchors.right:      parent.right
@@ -107,7 +107,7 @@ Item {
         anchors.bottom:     parent.bottom
         spacing:            ScreenTools.defaultFontPixelWidth * 0.75 // _layoutMargin
         orientation:        ListView.Vertical
-        model:              QGroundControl.multiVehicleManager.vehicles
+        model:              beeCopter.multiVehicleManager.vehicles
         cacheBuffer:        _cacheBuffer < 0 ? 0 : _cacheBuffer
         clip:               true
 
@@ -116,14 +116,14 @@ Item {
         delegate: Rectangle {
             width:          vehicleList.width
             height:         innerColumn.height + _margin * 2
-            color:          QGroundControl.multiVehicleManager.activeVehicle == _vehicle ? _activeVehicleColor : qgcPal.button
+            color:          beeCopter.multiVehicleManager.activeVehicle == _vehicle ? _activeVehicleColor : beeCopterPal.button
             radius:         _margin
             border.width:   _vehicle && vehicleSelected(_vehicle.id) ? 2 : 0
-            border.color:   qgcPal.text
+            border.color:   beeCopterPal.text
 
             property var    _vehicle:   object
 
-            QGCMouseArea {
+            beeCopterMouseArea {
                 anchors.fill:       parent
                 onClicked:          toggleSelect(_vehicle.id)
             }
@@ -148,24 +148,24 @@ Item {
                         vehicle:                     _vehicle
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text: " | "
                         font.pointSize:       ScreenTools.largeFontPointSize
-                        color:                qgcPal.text
+                        color:                beeCopterPal.text
                         Layout.alignment:     Qt.AlignHCenter
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:                 _vehicle ? _vehicle.id : ""
                         font.pointSize:       ScreenTools.largeFontPointSize
-                        color:                qgcPal.text
+                        color:                beeCopterPal.text
                         Layout.alignment:     Qt.AlignHCenter
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text: " | "
                         font.pointSize:       ScreenTools.largeFontPointSize
-                        color:                qgcPal.text
+                        color:                beeCopterPal.text
                         Layout.alignment:     Qt.AlignHCenter
                     }
 
@@ -177,19 +177,19 @@ Item {
                         FlightModeMenu {
                             Layout.alignment:     Qt.AlignHCenter
                             font.pointSize:       ScreenTools.largeFontPointSize
-                            color:                qgcPal.text
+                            color:                beeCopterPal.text
                             currentVehicle:       _vehicle
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.alignment:     Qt.AlignHCenter
                             text:                 _vehicle && _vehicle.armed ? qsTr("Armed") : qsTr("Disarmed")
-                            color:                qgcPal.text
+                            color:                beeCopterPal.text
                         }
                     }
                 }
 
-                QGCFlickable {
+                beeCopterFlickable {
                     anchors.horizontalCenter:   parent.horizontalCenter
                     width:          Math.min(contentWidth, vehicleList.width)
                     height:         control.height

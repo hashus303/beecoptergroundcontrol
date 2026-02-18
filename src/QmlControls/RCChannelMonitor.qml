@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Item {
     id:     _root
@@ -32,7 +32,7 @@ Item {
 
             property int            __lastRcValue:      1500
             readonly property int   __rcValueMaxJitter: 2
-            property color          __barColor:         qgcPal.windowShade
+            property color          __barColor:         beeCopterPal.windowShade
 
             // Bar
             Rectangle {
@@ -48,7 +48,7 @@ Item {
                 anchors.horizontalCenter:   parent.horizontalCenter
                 width:                      ScreenTools.defaultFontPixelWidth / 2
                 height:                     parent.height
-                color:                      qgcPal.window
+                color:                      beeCopterPal.window
             }
 
             // Indicator
@@ -58,11 +58,11 @@ Item {
                 height:                 width
                 x:                      (((reversed ? _pwmMax - rcValue : rcValue - _pwmMin) / _pwmRange) * parent.width) - (width / 2)
                 radius:                 width / 2
-                color:                  qgcPal.text
+                color:                  beeCopterPal.text
                 visible:                mapped
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.fill:           parent
                 horizontalAlignment:    Text.AlignHCenter
                 verticalAlignment:      Text.AlignVCenter
@@ -86,7 +86,7 @@ Item {
         width:      parent.width
         columns:    twoColumn ? 2 : 1
 
-        QGCLabel {
+        beeCopterLabel {
             Layout.columnSpan:  parent.columns
             text:               qsTr("Channel Monitor")
         }
@@ -109,7 +109,7 @@ Item {
                 // Need this to get to loader from Connections above
                 property Item loader: theLoader
 
-                QGCLabel {
+                beeCopterLabel {
                     id:     channelLabel
                     text:   modelData + 1
                 }

@@ -3,12 +3,12 @@
 #include "MultiVehicleManager.h"
 #include "Vehicle.h"
 
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QString>
 #include <utility>
 WaitForMavlinkMessageState::WaitForMavlinkMessageState(QState *parent, uint32_t messageId, int timeoutMsecs, Predicate predicate)
-    : QGCState(QStringLiteral("WaitForMavlinkMessageState"), parent)
+    : beeCopterState(QStringLiteral("WaitForMavlinkMessageState"), parent)
     , _messageId(messageId)
     , _predicate(std::move(predicate))
     , _timeoutMsecs(timeoutMsecs > 0 ? timeoutMsecs : 0)
@@ -44,7 +44,7 @@ void WaitForMavlinkMessageState::_messageReceived(const mavlink_message_t &messa
         return;
     }
 
-    qCDebug(QGCStateMachineLog) << "Received expected message id" << _messageId << stateName();
+    qCDebug(beeCopterStateMachineLog) << "Received expected message id" << _messageId << stateName();
 
     disconnect(vehicle(), &Vehicle::mavlinkMessageReceived, this, &WaitForMavlinkMessageState::_messageReceived);
     _timeoutTimer.stop();
@@ -54,7 +54,7 @@ void WaitForMavlinkMessageState::_messageReceived(const mavlink_message_t &messa
 
 void WaitForMavlinkMessageState::_onTimeout()
 {
-    qCDebug(QGCStateMachineLog) << "Timeout waiting for message id" << _messageId << stateName();
+    qCDebug(beeCopterStateMachineLog) << "Timeout waiting for message id" << _messageId << stateName();
     disconnect(vehicle(), &Vehicle::mavlinkMessageReceived, this, &WaitForMavlinkMessageState::_messageReceived);
 
     emit timeout();

@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     id:             control
@@ -12,7 +12,7 @@ Item {
 
     property bool showIndicator: _escs.count > 0
 
-    property var  _activeVehicle:   QGroundControl.multiVehicleManager.activeVehicle
+    property var  _activeVehicle:   beeCopter.multiVehicleManager.activeVehicle
     property var  _escs:            _activeVehicle ? _activeVehicle.escs : null
 
     // ESC status properties derived from vehicle data
@@ -54,10 +54,10 @@ Item {
     }
 
     function getEscStatusColor() {
-        return _escHealthy ? qgcPal.colorGreen : qgcPal.colorRed
+        return _escHealthy ? beeCopterPal.colorGreen : beeCopterPal.colorRed
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     Row {
         id:             escIndicatorRow
@@ -65,7 +65,7 @@ Item {
         anchors.bottom: parent.bottom
         spacing:        ScreenTools.defaultFontPixelWidth / 2
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             id:                 escIcon
             width:              height
             anchors.top:        parent.top
@@ -73,7 +73,7 @@ Item {
             source:             "/qmlimages/EscIndicator.svg"
             fillMode:           Image.PreserveAspectFit
             sourceSize.height:  height
-            color:              qgcPal.windowTransparentText
+            color:              beeCopterPal.windowTransparentText
         }
 
         Column {
@@ -81,14 +81,14 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             spacing:                0
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.horizontalCenter:   parent.horizontalCenter
-                color:                      qgcPal.windowTransparentText
+                color:                      beeCopterPal.windowTransparentText
                 text:                       _onlineMotorCount.toString()
                 font.pointSize:             ScreenTools.smallFontPointSize
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 color:          getEscStatusColor()
                 text:           _escHealthy ? qsTr("OK") : qsTr("ERR")
                 font.pointSize: ScreenTools.smallFontPointSize

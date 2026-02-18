@@ -10,7 +10,7 @@ void PowerComponentController::calibrateEsc(void)
 {
     _warningMessages.clear();
     connect(_vehicle, &Vehicle::textMessageReceived, this, &PowerComponentController::_handleVehicleTextMessage);
-    _vehicle->startCalibration(QGCMAVLink::CalibrationEsc);
+    _vehicle->startCalibration(beeCopterMAVLink::CalibrationEsc);
 }
 
 void PowerComponentController::startBusConfigureActuators(void)

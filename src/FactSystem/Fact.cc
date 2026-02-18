@@ -1,11 +1,11 @@
 #include "Fact.h"
 #include "FactValueSliderListModel.h"
-#include "QGCApplication.h"
-#include "QGCCorePlugin.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterCorePlugin.h"
+#include "beeCopterLoggingCategory.h"
 #include "SettingsManager.h"
 
-QGC_LOGGING_CATEGORY(FactLog, "FactSystem.Fact")
+beeCopter_LOGGING_CATEGORY(FactLog, "FactSystem.Fact")
 
 Fact::Fact(QObject *parent)
     : QObject(parent)
@@ -44,7 +44,7 @@ Fact::Fact(const QString& settingsGroup, FactMetaData *metaData, QObject *parent
     SettingsManager::adjustSettingMetaData(settingsGroup, *metaData, visible);
     setMetaData(metaData, true /* setDefaultFromMetaData */);
 
-    if (!qgcApp()->runningUnitTests()) {
+    if (!beeCopterApp()->runningUnitTests()) {
         if (metaData->defaultValueAvailable() && !visible) {
             // If setting is not visible, we force to default value
             const QVariant defaultValue = metaData->rawDefaultValue();
@@ -744,10 +744,10 @@ bool Fact::vehicleRebootRequired() const
     }
 }
 
-bool Fact::qgcRebootRequired() const
+bool Fact::beeCopterRebootRequired() const
 {
     if (_metaData) {
-        return _metaData->qgcRebootRequired();
+        return _metaData->beeCopterRebootRequired();
     } else {
         qCWarning(FactLog) << kMissingMetadata << name();
         return false;
@@ -865,12 +865,12 @@ FactValueSliderListModel *Fact::valueSliderModel()
 
 void Fact::_checkForRebootMessaging()
 {
-    if (qgcApp()) {
-        if (!qgcApp()->runningUnitTests()) {
+    if (beeCopterApp()) {
+        if (!beeCopterApp()->runningUnitTests()) {
             if (vehicleRebootRequired()) {
-                qgcApp()->showRebootAppMessage(tr("Reboot vehicle for changes to take effect."));
-            } else if (qgcRebootRequired()) {
-                qgcApp()->showRebootAppMessage(tr("Restart application for changes to take effect."));
+                beeCopterApp()->showRebootAppMessage(tr("Reboot vehicle for changes to take effect."));
+            } else if (beeCopterRebootRequired()) {
+                beeCopterApp()->showRebootAppMessage(tr("Restart application for changes to take effect."));
             }
         }
     }

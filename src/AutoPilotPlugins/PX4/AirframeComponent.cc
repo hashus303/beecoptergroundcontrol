@@ -42,10 +42,10 @@ QStringList AirframeComponent::setupCompleteChangedTriggerList(void) const
 
 QUrl AirframeComponent::setupSource(void) const
 {
-    return QUrl::fromUserInput("qrc:/qml/QGroundControl/AutoPilotPlugins/PX4/AirframeComponent.qml");
+    return QUrl::fromUserInput("qrc:/qml/beeCopter/AutoPilotPlugins/PX4/AirframeComponent.qml");
 }
 
 QUrl AirframeComponent::summaryQmlSource(void) const
 {
-    return QUrl::fromUserInput("qrc:/qml/QGroundControl/AutoPilotPlugins/PX4/AirframeComponentSummary.qml");
+    return QUrl::fromUserInput("qrc:/qml/beeCopter/AutoPilotPlugins/PX4/AirframeComponentSummary.qml");
 }

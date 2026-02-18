@@ -1,13 +1,13 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     anchors.fill: parent
 
-    readonly property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    readonly property var _activeVehicle: beeCopter.multiVehicleManager.activeVehicle
     readonly property var _activeJoystick: joystickManager.activeJoystick
 
     Column {

@@ -1,9 +1,9 @@
 # ----------------------------------------------------------------------------
-# QGroundControl Linux Platform Configuration
+# beeCopter Linux Platform Configuration
 # ----------------------------------------------------------------------------
 
 if(NOT LINUX)
-    message(FATAL_ERROR "QGC: Invalid Platform: Linux.cmake included but platform is not Linux")
+    message(FATAL_ERROR "beeCopter: Invalid Platform: Linux.cmake included but platform is not Linux")
 endif()
 
 # ----------------------------------------------------------------------------
@@ -32,4 +32,4 @@ target_compile_definitions(${CMAKE_PROJECT_NAME}
 # Desktop entry and icon files are handled by the install scripts
 # See cmake/install/CreateAppImage.cmake for AppImage-specific configuration
 
-message(STATUS "QGC: Linux platform configuration applied")
+message(STATUS "beeCopter: Linux platform configuration applied")

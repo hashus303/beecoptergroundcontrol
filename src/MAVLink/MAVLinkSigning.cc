@@ -1,5 +1,5 @@
 #include "MAVLinkSigning.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 #include "DeviceInfo.h"
 
 #include <QtCore/QDateTime>
@@ -108,7 +108,7 @@ bool checkSigningLinkId(mavlink_channel_t channel, const mavlink_message_t &mess
 {
     const mavlink_signing_t* const signing = _getChannelSigning(channel);
     if (!signing) {
-        qCWarning(QGCMAVLinkLog) << Q_FUNC_INFO << "Invalid Signing Pointer for Channel:" << channel;
+        qCWarning(beeCopterMAVLinkLog) << Q_FUNC_INFO << "Invalid Signing Pointer for Channel:" << channel;
         return false;
     }
 

@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ColumnLayout {
     id:         root
@@ -18,12 +18,12 @@ ColumnLayout {
         id:         controller
     }
 
-    QGCTabBar {
+    beeCopterTabBar {
         id: tabBar
 
         Repeater {
             model: root.model
-            QGCTabButton {
+            beeCopterTabButton {
                 text: buttonText
             }
         }

@@ -1,10 +1,10 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
-QGCLabel {
+beeCopterLabel {
     property bool showUnits:    true
     property Fact fact:         Fact { }
 

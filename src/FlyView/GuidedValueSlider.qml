@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     id:     control
@@ -21,7 +21,7 @@ Item {
     property int    _sliderType:            GuidedValueSlider.SliderType.Altitude
     property string _displayText:           ""
 
-    property var    _unitsSettings:         QGroundControl.settingsManager.unitsSettings
+    property var    _unitsSettings:         beeCopter.settingsManager.unitsSettings
     property real   _indicatorCenterPos:    sliderFlickable.height / 2
 
     property int    _fullSliderRangeIndex:  2
@@ -62,7 +62,7 @@ Item {
 
     property int     _cMajorTicks:          (_majorTickMaxValue - _majorTickMinValue) / _majorTickValueStep + 1
 
-    property var _qgcPal: QGroundControl.globalPalette
+    property var _beeCopterPal: beeCopter.globalPalette
 
     function setCurrentValue(currentValue, animate = true) {
         // Position the slider such that the indicator is pointing to the current value
@@ -104,7 +104,7 @@ Item {
 
     Rectangle {
         anchors.fill:   parent
-        color:          _qgcPal.window
+        color:          _beeCopterPal.window
         opacity:        0.5
     }
 
@@ -112,14 +112,14 @@ Item {
         anchors.fill:       parent
         spacing:            0
 
-        QGCLabel {
+        beeCopterLabel {
             Layout.fillWidth:   true
             horizontalAlignment: Text.AlignHCenter
             font.pointSize:     ScreenTools.smallFontPointSize
             text:               _displayText
         }
 
-        QGCFlickable {
+        beeCopterFlickable {
             id:                 sliderFlickable
             Layout.fillWidth:   true
             Layout.fillHeight:  true
@@ -164,10 +164,10 @@ Item {
                             id:     majorTick
                             width:  _majorTickWidth
                             height: 1
-                            color:  _qgcPal.text
+                            color:  _beeCopterPal.text
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.margins:        _tickValueRightMargin
                             anchors.right:          parent.right
                             anchors.verticalCenter: majorTick.verticalCenter
@@ -185,7 +185,7 @@ Item {
                         y:          _majorTickPixelHeight / 2 * index +  + _firstTickPixelOffset
                         width:      _minorTickWidth
                         height:     1
-                        color:      _qgcPal.text
+                        color:      _beeCopterPal.text
                         opacity:    tickValue < _sliderMinVal || tickValue > _sliderMaxVal ? 0.5 : 1
                         visible:    index % 2 === 1
 
@@ -204,7 +204,7 @@ Item {
         height: indicatorHeight
         clip:   false
 
-        QGCLabel {
+        beeCopterLabel {
             id:             maxDigitsTextMeasure
             text:           "-100"
             font.pointSize: ScreenTools.largeFontPointSize
@@ -221,8 +221,8 @@ Item {
 
         onPaint: {
             var ctx = getContext("2d")
-            ctx.strokeStyle = _qgcPal.text
-            ctx.fillStyle = _qgcPal.window
+            ctx.strokeStyle = _beeCopterPal.text
+            ctx.fillStyle = _beeCopterPal.window
             ctx.lineWidth = 1
             ctx.beginPath()
             ctx.moveTo(0, indicatorHeight / 2)
@@ -239,13 +239,13 @@ Item {
 
         // Repaint when palette changes
         Connections {
-            target: _qgcPal
+            target: _beeCopterPal
             function onPaletteChanged() {
                 indicatorCanvas.requestPaint()
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             id:                     valueLabel
             anchors.margins:        indicatorCanvas.indicatorValueMargins
             anchors.right:          parent.right
@@ -256,11 +256,11 @@ Item {
             font.pointSize:         ScreenTools.largeFontPointSize
 
             property var unitsString: _sliderType === GuidedValueSlider.Speed ?
-                                        QGroundControl.unitsConversion.appSettingsSpeedUnitsString :
-                                            QGroundControl.unitsConversion.appSettingsVerticalDistanceUnitsString
+                                        beeCopter.unitsConversion.appSettingsSpeedUnitsString :
+                                            beeCopter.unitsConversion.appSettingsVerticalDistanceUnitsString
         }
 
-        QGCMouseArea {
+        beeCopterMouseArea {
             anchors.fill: parent
             onClicked: {
                 sliderValueTextField.text = _clampedSliderValueString(_sliderValue)
@@ -269,7 +269,7 @@ Item {
             }
         }
 
-        QGCTextField {
+        beeCopterTextField {
             id:                 sliderValueTextField
             anchors.leftMargin: indicatorCanvas.pointerWidth
             anchors.fill:       parent

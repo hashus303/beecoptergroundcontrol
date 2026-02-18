@@ -1,13 +1,13 @@
 #include "AutoPilotPlugin.h"
 #include "FirmwarePlugin.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "Vehicle.h"
 #include "VehicleComponent.h"
 
 #include <QtCore/QCoreApplication>
 
-QGC_LOGGING_CATEGORY(AutoPilotPluginLog, "AutoPilotPlugins.AutoPilotPlugin");
+beeCopter_LOGGING_CATEGORY(AutoPilotPluginLog, "AutoPilotPlugins.AutoPilotPlugin");
 
 AutoPilotPlugin::AutoPilotPlugin(Vehicle *vehicle, QObject *parent)
     : QObject(parent)
@@ -60,9 +60,9 @@ void AutoPilotPlugin::parametersReadyPreChecks()
 
     if (!_setupComplete) {
         // Take the user to Vehicle Config Summary
-        qgcApp()->showVehicleConfig();
+        beeCopterApp()->showVehicleConfig();
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-        qgcApp()->showAppMessage(tr("One or more vehicle components require setup prior to flight."));
+        beeCopterApp()->showAppMessage(tr("One or more vehicle components require setup prior to flight."));
     }
 }
 

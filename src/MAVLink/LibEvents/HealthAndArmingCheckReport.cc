@@ -1,5 +1,5 @@
 #include "HealthAndArmingCheckReport.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 #include "QmlObjectListModel.h"
 
 

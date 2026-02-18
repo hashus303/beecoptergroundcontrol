@@ -1,9 +1,9 @@
 # ============================================================================
-# QGroundControl Custom Plugin Example
-# Template for building custom QGroundControl plugins
+# beeCopter Custom Plugin Example
+# Template for building custom beeCopter plugins
 # ============================================================================
 
-message(STATUS "QGC: Adding Custom Plugin")
+message(STATUS "beeCopter: Adding Custom Plugin")
 
 # ============================================================================
 # Custom Android Package Template
@@ -14,7 +14,7 @@ if(ANDROID)
     if(EXISTS "${CUSTOM_ANDROID_DIR}")
         file(GLOB CUSTOM_ANDROID_FILES "${CUSTOM_ANDROID_DIR}/*")
         if(CUSTOM_ANDROID_FILES)
-            message(STATUS "QGC: Custom Android package template found. Overlaying custom files...")
+            message(STATUS "beeCopter: Custom Android package template found. Overlaying custom files...")
             set(DEFAULT_ANDROID_DIR "${CMAKE_SOURCE_DIR}/android")
             set(FINAL_ANDROID_DIR "${CMAKE_BINARY_DIR}/custom/android")
 
@@ -30,13 +30,13 @@ if(ANDROID)
                 "${CUSTOM_ANDROID_DIR}/"
             )
 
-            set(QGC_ANDROID_PACKAGE_SOURCE_DIR "${FINAL_ANDROID_DIR}" CACHE PATH "Path to a custom Android package template" FORCE)
-            message(STATUS "QGC: Android package template path will be set to: ${QGC_ANDROID_PACKAGE_SOURCE_DIR}")
+            set(beeCopter_ANDROID_PACKAGE_SOURCE_DIR "${FINAL_ANDROID_DIR}" CACHE PATH "Path to a custom Android package template" FORCE)
+            message(STATUS "beeCopter: Android package template path will be set to: ${beeCopter_ANDROID_PACKAGE_SOURCE_DIR}")
         else()
-            message(STATUS "QGC: Custom Android package template empty. Using default.")
+            message(STATUS "beeCopter: Custom Android package template empty. Using default.")
         endif()
     else()
-        message(STATUS "QGC: No custom Android package template found. Using default.")
+        message(STATUS "beeCopter: No custom Android package template found. Using default.")
     endif()
 endif()
 
@@ -48,7 +48,7 @@ endif()
 list(APPEND CUSTOM_RESOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/custom.qrc
 )
-set(QGC_RESOURCES ${QGC_RESOURCES} ${CUSTOM_RESOURCES} CACHE STRING "Paths to .qrc Resources" FORCE)
+set(beeCopter_RESOURCES ${beeCopter_RESOURCES} ${CUSTOM_RESOURCES} CACHE STRING "Paths to .qrc Resources" FORCE)
 
 # Add custom QML import path
 set(QML_IMPORT_PATH ${QML_IMPORT_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/res" CACHE STRING "Extra qml import paths" FORCE)
@@ -61,7 +61,7 @@ qt_add_library(CustomModule STATIC)
 
 # Set resource aliases for custom widgets
 set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/res/Custom/Widgets/CustomArtificialHorizon.qml PROPERTIES QT_RESOURCE_ALIAS CustomArtificialHorizon.qml)
-qgc_set_qt_resource_alias(
+beeCopter_set_qt_resource_alias(
     ${CMAKE_CURRENT_SOURCE_DIR}/res/Custom/Widgets/CustomAttitudeWidget.qml
     ${CMAKE_CURRENT_SOURCE_DIR}/res/Custom/Widgets/CustomIconButton.qml
     ${CMAKE_CURRENT_SOURCE_DIR}/res/Custom/Widgets/CustomOnOffSwitch.qml
@@ -123,7 +123,7 @@ set(CUSTOM_INCLUDE_DIRECTORIES
 
 # Custom compiler definitions
 set(CUSTOM_DEFINITIONS
-    QGC_CUSTOM_BUILD
+    beeCopter_CUSTOM_BUILD
     CUSTOMHEADER="CustomPlugin.h"
     CUSTOMCLASS=CustomPlugin
     CACHE INTERNAL "" FORCE

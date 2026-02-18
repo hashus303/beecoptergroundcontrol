@@ -4,7 +4,7 @@
 
 #include <QtCore/QtGlobal>
 
-namespace QGCCommandLineParser {
+namespace beeCopterCommandLineParser {
     struct CommandLineParseResult;
 }
 
@@ -15,9 +15,9 @@ namespace Platform {
 /// @param argv Argument values (for error dialogs)
 /// @param args Parsed command line arguments
 /// @return Exit code if initialization failed, std::nullopt on success
-/// @note Call before constructing QGCApplication
+/// @note Call before constructing beeCopterApplication
 std::optional<int> initialize(int argc, char* argv[],
-                               const QGCCommandLineParser::CommandLineParseResult& args);
+                               const beeCopterCommandLineParser::CommandLineParseResult& args);
 
 /// @brief Complete platform setup after application exists
 /// @note Call after Q(Core)Application exists and logging is installed

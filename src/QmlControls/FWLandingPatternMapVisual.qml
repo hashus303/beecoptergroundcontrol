@@ -4,9 +4,9 @@ import QtLocation
 import QtPositioning
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 /// Fixed Wing Landing Pattern map visuals
 Item {
@@ -101,7 +101,7 @@ Item {
         }
     }
 
-    QGCDynamicObjectManager {
+    beeCopterDynamicObjectManager {
         id: objMgr
     }
 
@@ -183,7 +183,7 @@ Item {
 
         MouseArea {
             anchors.fill:   map
-            z:              QGroundControl.zOrderMapItems + 1   // Over item indicators
+            z:              beeCopter.zOrderMapItems + 1   // Over item indicators
             visible:        _root.interactive
 
             readonly property int   _decimalPlaces:             8
@@ -244,7 +244,7 @@ Item {
         id: flightPathComponent
 
         MapPolyline {
-            z:          QGroundControl.zOrderMapItems - 1   // Under item indicators
+            z:          beeCopter.zOrderMapItems - 1   // Under item indicators
             line.color: "#be781c"
             line.width: 2
             path:       _flightPath
@@ -258,7 +258,7 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             coordinate:     _missionItem.finalApproachCoordinate
 
             sourceItem:
@@ -279,7 +279,7 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             coordinate:     _missionItem.landingCoordinate
 
             sourceItem:
@@ -296,7 +296,7 @@ Item {
         id: loiterRadiusComponent
 
         MapCircle {
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             center:         _missionItem.finalApproachCoordinate
             radius:         _missionItem.loiterRadius.rawValue
             border.width:   2
@@ -312,11 +312,11 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.contentWidth / 2
             anchorPoint.y:  sourceItem.contentHeight / 2
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             coordinate:     _missionItem.landingCoordinate
             visible:        _missionItem.isCurrentItem
 
-            sourceItem: QGCLabel {
+            sourceItem: beeCopterLabel {
                 id:     landingAreaLabel
                 text:   qsTr("Landing Area")
                 color:  "white"
@@ -350,11 +350,11 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem._rawBearing > 180 ? sourceItem.contentWidth : 0
             anchorPoint.y:  sourceItem.contentHeight / 2
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             visible:        _missionItem.isCurrentItem
 
 
-            sourceItem: QGCLabel {
+            sourceItem: beeCopterLabel {
                 id:     glideSlopeLabel
                 text:   qsTr("Glide Slope")
                 color:  "white"
@@ -399,7 +399,7 @@ Item {
         id: landingAreaComponent
 
         MapPolygon {
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             border.width:   1
             border.color:   "black"
             color:          "green"
@@ -432,7 +432,7 @@ Item {
         id: glideSlopeComponent
 
         MapPolygon {
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             border.width:   1
             border.color:   "black"
             color:          _missionItem.terrainCollision ? "red" : "orange"
@@ -471,13 +471,13 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.width / 2
             anchorPoint.y:  0
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             visible:        _missionItem.isCurrentItem
 
             sourceItem: HeightIndicator {
                 map:        _root.map
-                heightText: Math.floor(QGroundControl.unitsConversion.metersToAppSettingsVerticalDistanceUnits(_transitionAltitudeMeters)) +
-                            QGroundControl.unitsConversion.appSettingsVerticalDistanceUnitsString + "<sup>*</sup>"
+                heightText: Math.floor(beeCopter.unitsConversion.metersToAppSettingsVerticalDistanceUnits(_transitionAltitudeMeters)) +
+                            beeCopter.unitsConversion.appSettingsVerticalDistanceUnitsString + "<sup>*</sup>"
             }
 
             function recalc() {
@@ -503,13 +503,13 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.width / 2
             anchorPoint.y:  0
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             visible:        _missionItem.isCurrentItem
 
             sourceItem: HeightIndicator {
                 map:        _root.map
-                heightText: Math.floor(QGroundControl.unitsConversion.metersToAppSettingsVerticalDistanceUnits(_midSlopeAltitudeMeters)) +
-                            QGroundControl.unitsConversion.appSettingsVerticalDistanceUnitsString + "<sup>*</sup>"
+                heightText: Math.floor(beeCopter.unitsConversion.metersToAppSettingsVerticalDistanceUnits(_midSlopeAltitudeMeters)) +
+                            beeCopter.unitsConversion.appSettingsVerticalDistanceUnitsString + "<sup>*</sup>"
             }
 
             function recalc() {
@@ -542,13 +542,13 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.width / 2
             anchorPoint.y:  0
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             visible:        _missionItem.isCurrentItem
             coordinate:     _missionItem.slopeStartCoordinate
 
             sourceItem: HeightIndicator {
                 map:        _root.map
-                heightText: _missionItem.finalApproachAltitude.value.toFixed(1) + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString
+                heightText: _missionItem.finalApproachAltitude.value.toFixed(1) + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString
             }
         }
     }

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "QGCState.h"
+#include "beeCopterState.h"
 
 #include <QString>
 
 /// Display an application message to the user
 
-class ShowAppMessageState : public QGCState
+class ShowAppMessageState : public beeCopterState
 {
     Q_OBJECT
 

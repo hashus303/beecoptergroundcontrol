@@ -3,7 +3,7 @@
 #include "JsonParsing.h"
 #include "MissionCommandTree.h"
 #include "MissionCommandUIInfo.h"
-#include "QGroundControlQmlGlobal.h"
+#include "beeCopterQmlGlobal.h"
 #include "SettingsManager.h"
 #include "AppSettings.h"
 #include "PlanMasterController.h"
@@ -11,7 +11,7 @@
 #include "MultiVehicleManager.h"
 #include "CameraSection.h"
 #include "Vehicle.h"
-#include "QGC.h"
+#include "beeCopter.h"
 
 #include <QtCore/QStringList>
 #include <QtCore/QJsonArray>
@@ -36,7 +36,7 @@ SimpleMissionItem::SimpleMissionItem(PlanMasterController* masterController, boo
     , _param6MetaData                   (FactMetaData::valueTypeDouble)
     , _param7MetaData                   (FactMetaData::valueTypeDouble)
 {
-    _editorQml = QStringLiteral("qrc:/qml/QGroundControl/Controls/SimpleItemEditor.qml");
+    _editorQml = QStringLiteral("qrc:/qml/beeCopter/Controls/SimpleItemEditor.qml");
 
     _setupMetaData();
 
@@ -64,19 +64,19 @@ SimpleMissionItem::SimpleMissionItem(PlanMasterController* masterController, boo
     , _param6MetaData           (FactMetaData::valueTypeDouble)
     , _param7MetaData           (FactMetaData::valueTypeDouble)
 {
-    _editorQml = QStringLiteral("qrc:/qml/QGroundControl/Controls/SimpleItemEditor.qml");
+    _editorQml = QStringLiteral("qrc:/qml/beeCopter/Controls/SimpleItemEditor.qml");
 
     struct MavFrame2AltMode_s {
         MAV_FRAME                               mavFrame;
-        QGroundControlQmlGlobal::AltMode   altMode;
+        beeCopterQmlGlobal::AltMode   altMode;
     };
 
     const struct MavFrame2AltMode_s rgMavFrame2AltMode[] = {
-        { MAV_FRAME_GLOBAL_TERRAIN_ALT,     QGroundControlQmlGlobal::AltitudeModeTerrainFrame },
-        { MAV_FRAME_GLOBAL,                 QGroundControlQmlGlobal::AltitudeModeAbsolute },
-        { MAV_FRAME_GLOBAL_RELATIVE_ALT,    QGroundControlQmlGlobal::AltitudeModeRelative },
+        { MAV_FRAME_GLOBAL_TERRAIN_ALT,     beeCopterQmlGlobal::AltitudeModeTerrainFrame },
+        { MAV_FRAME_GLOBAL,                 beeCopterQmlGlobal::AltitudeModeAbsolute },
+        { MAV_FRAME_GLOBAL_RELATIVE_ALT,    beeCopterQmlGlobal::AltitudeModeRelative },
     };
-    _altitudeMode = QGroundControlQmlGlobal::AltitudeModeRelative;
+    _altitudeMode = beeCopterQmlGlobal::AltitudeModeRelative;
     for (size_t i=0; i<sizeof(rgMavFrame2AltMode)/sizeof(rgMavFrame2AltMode[0]); i++) {
         const MavFrame2AltMode_s& pMavFrame2AltMode = rgMavFrame2AltMode[i];
         if (pMavFrame2AltMode.mavFrame == missionItem.frame()) {
@@ -270,7 +270,7 @@ bool SimpleMissionItem::load(QTextStream &loadStream)
     bool success;
     if ((success = _missionItem.load(loadStream))) {
         if (specifiesAltitude()) {
-            _altitudeMode = _missionItem.relativeAltitude() ? QGroundControlQmlGlobal::AltitudeModeRelative : QGroundControlQmlGlobal::AltitudeModeAbsolute;
+            _altitudeMode = _missionItem.relativeAltitude() ? beeCopterQmlGlobal::AltitudeModeRelative : beeCopterQmlGlobal::AltitudeModeAbsolute;
             _altitudeFact.setRawValue(_missionItem._param7Fact.rawValue());
             _amslAltAboveTerrainFact.setRawValue(qQNaN());
         }
@@ -300,11 +300,11 @@ bool SimpleMissionItem::load(const QJsonObject& json, int sequenceNumber, QStrin
                 return false;
             }
 
-            _altitudeMode = (QGroundControlQmlGlobal::AltMode)(int)json[_jsonAltitudeModeKey].toDouble();
+            _altitudeMode = (beeCopterQmlGlobal::AltMode)(int)json[_jsonAltitudeModeKey].toDouble();
             _altitudeFact.setRawValue(JsonParsing::possibleNaNJsonValue(json[_jsonAltitudeKey]));
             _amslAltAboveTerrainFact.setRawValue(JsonParsing::possibleNaNJsonValue(json[_jsonAltitudeKey]));
         } else {
-            _altitudeMode = _missionItem.relativeAltitude() ? QGroundControlQmlGlobal::AltitudeModeRelative : QGroundControlQmlGlobal::AltitudeModeAbsolute;
+            _altitudeMode = _missionItem.relativeAltitude() ? beeCopterQmlGlobal::AltitudeModeRelative : beeCopterQmlGlobal::AltitudeModeAbsolute;
             _altitudeFact.setRawValue(_missionItem._param7Fact.rawValue());
             _amslAltAboveTerrainFact.setRawValue(qQNaN());
         }
@@ -714,26 +714,26 @@ void SimpleMissionItem::_sendCoordinateChanged(void)
 void SimpleMissionItem::_altitudeModeChanged(void)
 {
     switch (_altitudeMode) {
-    case QGroundControlQmlGlobal::AltitudeModeTerrainFrame:
+    case beeCopterQmlGlobal::AltitudeModeTerrainFrame:
         _missionItem.setFrame(MAV_FRAME_GLOBAL_TERRAIN_ALT);
         break;
-    case QGroundControlQmlGlobal::AltitudeModeCalcAboveTerrain:
+    case beeCopterQmlGlobal::AltitudeModeCalcAboveTerrain:
         // Terrain altitudes are Absolute
         _missionItem.setFrame(MAV_FRAME_GLOBAL);
         // Clear any old calculated values
         _missionItem._param7Fact.setRawValue(qQNaN());
         _amslAltAboveTerrainFact.setRawValue(qQNaN());
         break;
-    case QGroundControlQmlGlobal::AltitudeModeAbsolute:
+    case beeCopterQmlGlobal::AltitudeModeAbsolute:
         _missionItem.setFrame(MAV_FRAME_GLOBAL);
         break;
-    case QGroundControlQmlGlobal::AltitudeModeRelative:
+    case beeCopterQmlGlobal::AltitudeModeRelative:
         _missionItem.setFrame(MAV_FRAME_GLOBAL_RELATIVE_ALT);
         break;
-    case QGroundControlQmlGlobal::AltitudeModeNone:
+    case beeCopterQmlGlobal::AltitudeModeNone:
         qWarning() << "Internal Error SimpleMissionItem::_altitudeModeChanged: Invalid altitudeMode == AltitudeModeNone";
         break;
-    case QGroundControlQmlGlobal::AltitudeModeMixed:
+    case beeCopterQmlGlobal::AltitudeModeMixed:
         qWarning() << "Internal Error SimpleMissionItem::_altitudeModeChanged: Invalid altitudeMode == AltitudeModeMixed";
         break;
     }
@@ -748,12 +748,12 @@ void SimpleMissionItem::_altitudeChanged(void)
         return;
     }
 
-    if (_altitudeMode == QGroundControlQmlGlobal::AltitudeModeCalcAboveTerrain || _altitudeMode == QGroundControlQmlGlobal::AltitudeModeTerrainFrame) {
+    if (_altitudeMode == beeCopterQmlGlobal::AltitudeModeCalcAboveTerrain || _altitudeMode == beeCopterQmlGlobal::AltitudeModeTerrainFrame) {
         _amslAltAboveTerrainFact.setRawValue(qQNaN());
         _terrainAltChanged();
     }
 
-    if (_altitudeMode != QGroundControlQmlGlobal::AltitudeModeCalcAboveTerrain) {
+    if (_altitudeMode != beeCopterQmlGlobal::AltitudeModeCalcAboveTerrain) {
         _missionItem._param7Fact.setRawValue(_altitudeFact.rawValue());
     }
 }
@@ -765,18 +765,18 @@ void SimpleMissionItem::_terrainAltChanged(void)
         return;
     }
 
-    if (_altitudeMode == QGroundControlQmlGlobal::AltitudeModeCalcAboveTerrain || _altitudeMode == QGroundControlQmlGlobal::AltitudeModeTerrainFrame) {
+    if (_altitudeMode == beeCopterQmlGlobal::AltitudeModeCalcAboveTerrain || _altitudeMode == beeCopterQmlGlobal::AltitudeModeTerrainFrame) {
         if (qIsNaN(terrainAltitude())) {
             // Set NaNs to signal we are waiting on terrain data
-            if (_altitudeMode == QGroundControlQmlGlobal::AltitudeModeCalcAboveTerrain) {
+            if (_altitudeMode == beeCopterQmlGlobal::AltitudeModeCalcAboveTerrain) {
                 _missionItem._param7Fact.setRawValue(qQNaN());
             }
             _amslAltAboveTerrainFact.setRawValue(qQNaN());
         } else {
             double newAboveTerrain = terrainAltitude() + _altitudeFact.rawValue().toDouble();
             double oldAboveTerrain = _amslAltAboveTerrainFact.rawValue().toDouble();
-            if (!QGC::fuzzyCompare(newAboveTerrain, oldAboveTerrain)) {
-                if (_altitudeMode == QGroundControlQmlGlobal::AltitudeModeCalcAboveTerrain) {
+            if (!beeCopter::fuzzyCompare(newAboveTerrain, oldAboveTerrain)) {
+                if (_altitudeMode == beeCopterQmlGlobal::AltitudeModeCalcAboveTerrain) {
                     _missionItem._param7Fact.setRawValue(newAboveTerrain);
                 }
                 _amslAltAboveTerrainFact.setRawValue(newAboveTerrain);
@@ -815,7 +815,7 @@ void SimpleMissionItem::_setDefaultsForCommand(void)
     }
 
     // Set global defaults first, then if there are param defaults they will get reset
-    _altitudeMode = QGroundControlQmlGlobal::AltitudeModeRelative;
+    _altitudeMode = beeCopterQmlGlobal::AltitudeModeRelative;
     emit altitudeModeChanged();
     _amslAltAboveTerrainFact.setRawValue(qQNaN());
     if (specifiesAltitude()) {
@@ -824,7 +824,7 @@ void SimpleMissionItem::_setDefaultsForCommand(void)
         _missionItem._param7Fact.setRawValue(defaultAlt);
         // Note that setAltitudeMode will also set MAV_FRAME correctly through signalling
         // Takeoff items always use relative alt since that is the highest quality data to base altitude from
-        setAltitudeMode(isTakeoffItem() ? QGroundControlQmlGlobal::AltitudeModeRelative : _missionController->globalAltitudeModeDefault());
+        setAltitudeMode(isTakeoffItem() ? beeCopterQmlGlobal::AltitudeModeRelative : _missionController->globalAltitudeModeDefault());
     } else {
         _altitudeFact.setRawValue(0);
         _missionItem._param7Fact.setRawValue(0);
@@ -1044,20 +1044,20 @@ void SimpleMissionItem::setMissionFlightStatus(MissionController::MissionFlightS
     VisualMissionItem::setMissionFlightStatus(missionFlightStatus);
 
     // If speed and/or gimbal are not specifically set on this item. Then use the flight status values as initial defaults should a user turn them on.
-    if (_speedSection->available() && !_speedSection->specifyFlightSpeed() && !QGC::fuzzyCompare(_speedSection->flightSpeed()->rawValue().toDouble(), missionFlightStatus.vehicleSpeed)) {
+    if (_speedSection->available() && !_speedSection->specifyFlightSpeed() && !beeCopter::fuzzyCompare(_speedSection->flightSpeed()->rawValue().toDouble(), missionFlightStatus.vehicleSpeed)) {
         _speedSection->flightSpeed()->setRawValue(missionFlightStatus.vehicleSpeed);
     }
     if (_cameraSection->available() && !_cameraSection->specifyGimbal()) {
-        if (!qIsNaN(missionFlightStatus.gimbalYaw) && !QGC::fuzzyCompare(_cameraSection->gimbalYaw()->rawValue().toDouble(), missionFlightStatus.gimbalYaw)) {
+        if (!qIsNaN(missionFlightStatus.gimbalYaw) && !beeCopter::fuzzyCompare(_cameraSection->gimbalYaw()->rawValue().toDouble(), missionFlightStatus.gimbalYaw)) {
             _cameraSection->gimbalYaw()->setRawValue(missionFlightStatus.gimbalYaw);
         }
-        if (!qIsNaN(missionFlightStatus.gimbalPitch) && !QGC::fuzzyCompare(_cameraSection->gimbalPitch()->rawValue().toDouble(), missionFlightStatus.gimbalPitch)) {
+        if (!qIsNaN(missionFlightStatus.gimbalPitch) && !beeCopter::fuzzyCompare(_cameraSection->gimbalPitch()->rawValue().toDouble(), missionFlightStatus.gimbalPitch)) {
             _cameraSection->gimbalPitch()->setRawValue(missionFlightStatus.gimbalPitch);
         }
     }
 }
 
-void SimpleMissionItem::setAltitudeMode(QGroundControlQmlGlobal::AltMode altitudeMode)
+void SimpleMissionItem::setAltitudeMode(beeCopterQmlGlobal::AltMode altitudeMode)
 {
     if (altitudeMode != _altitudeMode) {
         _altitudeMode = altitudeMode;
@@ -1107,17 +1107,17 @@ QGeoCoordinate SimpleMissionItem::coordinate(void) const
 double SimpleMissionItem::amslEntryAlt(void) const
 {
     switch (_altitudeMode) {
-    case QGroundControlQmlGlobal::AltitudeModeTerrainFrame:
+    case beeCopterQmlGlobal::AltitudeModeTerrainFrame:
         return _missionItem.param7() + _terrainAltitude;
-    case QGroundControlQmlGlobal::AltitudeModeCalcAboveTerrain:
-    case QGroundControlQmlGlobal::AltitudeModeAbsolute:
+    case beeCopterQmlGlobal::AltitudeModeCalcAboveTerrain:
+    case beeCopterQmlGlobal::AltitudeModeAbsolute:
         return _missionItem.param7();
-    case QGroundControlQmlGlobal::AltitudeModeRelative:
+    case beeCopterQmlGlobal::AltitudeModeRelative:
         return _missionItem.param7() + _masterController->missionController()->plannedHomePosition().altitude();
-    case QGroundControlQmlGlobal::AltitudeModeNone:
+    case beeCopterQmlGlobal::AltitudeModeNone:
         qWarning() << "Internal Error SimpleMissionItem::amslEntryAlt: Invalid altitudeMode:AltitudeModeNone";
         return qQNaN();
-    case QGroundControlQmlGlobal::AltitudeModeMixed:
+    case beeCopterQmlGlobal::AltitudeModeMixed:
         qWarning() << "Internal Error SimpleMissionItem::amslEntryAlt: Invalid altitudeMode:AltitudeModeMixed";
         return qQNaN();
     }

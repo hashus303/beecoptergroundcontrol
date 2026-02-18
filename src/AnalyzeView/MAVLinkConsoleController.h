@@ -9,7 +9,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(MAVLinkConsoleControllerLog)
 
-class QGCPalette;
+class beeCopterPalette;
 class Vehicle;
 
 class MAVLinkConsoleController : public QStringListModel
@@ -56,7 +56,7 @@ private:
     QString _transformLineForRichText(const QString &line) const;
     QString _getText() const;
 
-    QGCPalette *_palette = nullptr;
+    beeCopterPalette *_palette = nullptr;
     int _cursorHomePos = -1;
     int _cursorY = 0;
     int _cursorX = 0;

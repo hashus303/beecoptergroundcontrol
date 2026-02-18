@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 CheckBox {
     id:             control
@@ -11,7 +11,7 @@ CheckBox {
     checked:        true
     leftPadding:    0
 
-    property var            color:          qgcPal.text
+    property var            color:          beeCopterPal.text
     property bool           showSpacer:     true
     property ButtonGroup    buttonGroup:    null
 
@@ -23,7 +23,7 @@ CheckBox {
         }
     }
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: enabled }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: enabled }
 
     contentItem: ColumnLayout {
         Item {
@@ -32,18 +32,18 @@ CheckBox {
             visible:                control.showSpacer
         }
 
-        QGCLabel {
+        beeCopterLabel {
             text:               control.text
             color:              control.color
             Layout.fillWidth:   true
 
-            QGCColoredImage {
+            beeCopterColoredImage {
                 anchors.right:          parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 width:                  parent.height / 2
                 height:                 width
                 source:                 "/qmlimages/arrow-down.png"
-                color:                  qgcPal.text
+                color:                  beeCopterPal.text
                 visible:                !control.checked
             }
         }
@@ -51,7 +51,7 @@ CheckBox {
         Rectangle {
             Layout.fillWidth:   true
             height:             1
-            color:              qgcPal.text
+            color:              beeCopterPal.text
         }
     }
 

@@ -1,7 +1,7 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     id: _root
@@ -18,18 +18,18 @@ Item {
         isDark:     true
 
         onWindowAboutToOpen: {
-            QGroundControl.videoManager.stopVideo()
+            beeCopter.videoManager.stopVideo()
             videoStartDelay.start()
         }
 
         onWindowAboutToClose: {
-            QGroundControl.videoManager.stopVideo()
+            beeCopter.videoManager.stopVideo()
             videoStartDelay.start()
         }
 
         onStateChanged: {
             if (pipState.state !== pipState.fullState) {
-                QGroundControl.videoManager.fullScreen = false
+                beeCopter.videoManager.fullScreen = false
             }
         }
     }
@@ -39,7 +39,7 @@ Item {
         interval:     2000;
         running:      false
         repeat:       false
-        onTriggered:  QGroundControl.videoManager.startVideo()
+        onTriggered:  beeCopter.videoManager.startVideo()
     }
 
     //-- Video Streaming
@@ -47,20 +47,20 @@ Item {
         id:             videoStreaming
         anchors.fill:   parent
         useSmallFont:   _root.pipState.state !== _root.pipState.fullState
-        visible:        QGroundControl.videoManager.isStreamSource
+        visible:        beeCopter.videoManager.isStreamSource
     }
     //-- UVC Video (USB Camera or Video Device)
     Loader {
         id:             cameraLoader
         anchors.fill:   parent
-        visible:        QGroundControl.videoManager.isUvc
-        source:         QGroundControl.videoManager.uvcEnabled ? "qrc:/qml/QGroundControl/FlyView/FlightDisplayViewUVC.qml" : "qrc:/qml/QGroundControl/FlyView//FlightDisplayViewDummy.qml"
+        visible:        beeCopter.videoManager.isUvc
+        source:         beeCopter.videoManager.uvcEnabled ? "qrc:/qml/beeCopter/FlyView/FlightDisplayViewUVC.qml" : "qrc:/qml/beeCopter/FlyView//FlightDisplayViewDummy.qml"
     }
 
-    QGCLabel {
+    beeCopterLabel {
         text: qsTr("Double-click to exit full screen")
         font.pointSize: ScreenTools.largeFontPointSize
-        visible: QGroundControl.videoManager.fullScreen && flyViewVideoMouseArea.containsMouse
+        visible: beeCopter.videoManager.fullScreen && flyViewVideoMouseArea.containsMouse
         anchors.centerIn: parent
 
         onVisibleChanged: {
@@ -103,7 +103,7 @@ Item {
         property var trackingStatus: trackingStatusComponent.createObject(flyViewVideoMouseArea, {})
 
         onClicked:       onScreenGimbalController.clickControl()
-        onDoubleClicked: QGroundControl.videoManager.fullScreen = !QGroundControl.videoManager.fullScreen
+        onDoubleClicked: beeCopter.videoManager.fullScreen = !beeCopter.videoManager.fullScreen
 
         onPressed:(mouse) => {
             onScreenGimbalController.pressControl()
@@ -239,7 +239,7 @@ Item {
 
     ProximityRadarVideoView{
         anchors.fill:   parent
-        vehicle:        QGroundControl.multiVehicleManager.activeVehicle
+        vehicle:        beeCopter.multiVehicleManager.activeVehicle
     }
 
     ObstacleDistanceOverlayVideo {

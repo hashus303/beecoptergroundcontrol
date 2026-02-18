@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             airframePage
@@ -51,7 +51,7 @@ SetupPage {
 
             APMAirframeComponentController { id: controller; }
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                 helpText
                 Layout.fillWidth:   true
                 text:               (_frameClass.rawValue === 0 ?
@@ -87,7 +87,7 @@ SetupPage {
                         id:     outerRect
                         width:  _boxWidth
                         height: ScreenTools.defaultFontPixelHeight * 14
-                        color:  qgcPal.window
+                        color:  beeCopterPal.window
 
                         readonly property real titleHeight: ScreenTools.defaultFontPixelHeight * 1.75
                         readonly property real innerMargin: ScreenTools.defaultFontPixelWidth
@@ -104,7 +104,7 @@ SetupPage {
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:     title
                             text:   object.name
                         }
@@ -116,7 +116,7 @@ SetupPage {
                             anchors.bottom:     parent.bottom
                             anchors.left:       parent.left
                             anchors.right:      parent.right
-                            color:              airframeCheckBox.checked ? qgcPal.buttonHighlight : qgcPal.windowShade
+                            color:              airframeCheckBox.checked ? beeCopterPal.buttonHighlight : beeCopterPal.windowShade
                             opacity:            combo.valid ? 1.0 : 0.5
 
                             ColumnLayout {
@@ -135,7 +135,7 @@ SetupPage {
                                     source:             airframeCheckBox.checked ? object.imageResource : object.imageResourceDefault
                                 }
 
-                                QGCCheckBox {
+                                beeCopterCheckBox {
                                     // Although this item is invisible we still use it to manage state
                                     id:             airframeCheckBox
                                     checked:        object.frameClass === _frameClass.rawValue
@@ -149,14 +149,14 @@ SetupPage {
                                     }
                                 }
 
-                                QGCLabel {
+                                beeCopterLabel {
                                     text:           qsTr("Frame Type")
                                     font.pointSize: ScreenTools.smallFontPointSize
-                                    color:          qgcPal.buttonHighlightText
+                                    color:          beeCopterPal.buttonHighlightText
                                     visible:        airframeCheckBox.checked && object.frameTypeSupported
                                 }
 
-                                QGCComboBox {
+                                beeCopterComboBox {
                                     id:                 combo
                                     Layout.fillWidth:   true
                                     model:              object.frameTypeEnumStrings
@@ -191,7 +191,7 @@ SetupPage {
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.fill:   imageComboRect
                             text:           qsTr("Invalid setting for FRAME_TYPE. Click to Reset.")
                             wrapMode:       Text.WordWrap

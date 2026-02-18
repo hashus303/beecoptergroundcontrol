@@ -1,8 +1,8 @@
 #include "RallyPointManager.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(RallyPointManagerLog, "PlanManager.RallyPointManager")
+beeCopter_LOGGING_CATEGORY(RallyPointManagerLog, "PlanManager.RallyPointManager")
 
 RallyPointManager::RallyPointManager(Vehicle* vehicle)
     : PlanManager(vehicle, MAV_MISSION_TYPE_RALLY)

@@ -1,7 +1,7 @@
 #include "GeoJsonHelper.h"
 #include "JsonHelper.h"
 #include "JsonParsing.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QJsonValue>
@@ -10,7 +10,7 @@
 #include <QtPositioning/QGeoPath>
 #include <QtPositioning/QGeoPolygon>
 
-QGC_LOGGING_CATEGORY(GeoJsonHelperLog, "Utilities.GeoJsonHelper")
+beeCopter_LOGGING_CATEGORY(GeoJsonHelperLog, "Utilities.GeoJsonHelper")
 
 namespace GeoJsonHelper
 {

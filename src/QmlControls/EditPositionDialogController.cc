@@ -1,10 +1,10 @@
 #include "EditPositionDialogController.h"
-#include "QGCGeo.h"
+#include "beeCopterGeo.h"
 #include "MultiVehicleManager.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(EditPositionDialogControllerLog, "QMLControls.EditPositionDialogController")
+beeCopter_LOGGING_CATEGORY(EditPositionDialogControllerLog, "QMLControls.EditPositionDialogController")
 
 QMap<QString, FactMetaData*> EditPositionDialogController::_metaDataMap;
 
@@ -52,7 +52,7 @@ void EditPositionDialogController::initValues()
     _longitudeFact->setRawValue(_coordinate.longitude());
 
     double easting, northing;
-    const int zone = QGCGeo::convertGeoToUTM(_coordinate, easting, northing);
+    const int zone = beeCopterGeo::convertGeoToUTM(_coordinate, easting, northing);
     if ((zone >= 1) && (zone <= 60)) {
         _zoneFact->setRawValue(zone);
         _hemisphereFact->setRawValue(_coordinate.latitude() < 0);
@@ -60,7 +60,7 @@ void EditPositionDialogController::initValues()
         _northingFact->setRawValue(northing);
     }
 
-    const QString mgrs = QGCGeo::convertGeoToMGRS(_coordinate);
+    const QString mgrs = beeCopterGeo::convertGeoToMGRS(_coordinate);
     if (!mgrs.isEmpty()) {
         _mgrsFact->setRawValue(mgrs);
     }
@@ -76,7 +76,7 @@ void EditPositionDialogController::setFromGeo()
 void EditPositionDialogController::setFromUTM()
 {
     qCDebug(EditPositionDialogControllerLog) << _eastingFact->rawValue().toDouble() << _northingFact->rawValue().toDouble() << _zoneFact->rawValue().toInt() << (_hemisphereFact->rawValue().toInt() == 1);
-    if (QGCGeo::convertUTMToGeo(_eastingFact->rawValue().toDouble(), _northingFact->rawValue().toDouble(), _zoneFact->rawValue().toInt(), _hemisphereFact->rawValue().toInt() == 1, _coordinate)) {
+    if (beeCopterGeo::convertUTMToGeo(_eastingFact->rawValue().toDouble(), _northingFact->rawValue().toDouble(), _zoneFact->rawValue().toInt(), _hemisphereFact->rawValue().toInt() == 1, _coordinate)) {
         qCDebug(EditPositionDialogControllerLog) << _eastingFact->rawValue().toDouble() << _northingFact->rawValue().toDouble() << _zoneFact->rawValue().toInt() << (_hemisphereFact->rawValue().toInt() == 1) << _coordinate;
         emit coordinateChanged(_coordinate);
     } else {
@@ -86,7 +86,7 @@ void EditPositionDialogController::setFromUTM()
 
 void EditPositionDialogController::setFromMGRS()
 {
-    if (QGCGeo::convertMGRSToGeo(_mgrsFact->rawValue().toString(), _coordinate)) {
+    if (beeCopterGeo::convertMGRSToGeo(_mgrsFact->rawValue().toString(), _coordinate)) {
         emit coordinateChanged(_coordinate);
     } else {
         initValues();

@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 SetupPage {
     id:             flightBehavior
@@ -15,8 +15,8 @@ SetupPage {
         id: controller
     }
 
-    QGCPalette {
-        id: qgcPal
+    beeCopterPalette {
+        id: beeCopterPal
     }
 
     property Fact _sys_vehicle_resp:  controller.getParameterFact(-1, "SYS_VEHICLE_RESP", false)
@@ -62,7 +62,7 @@ SetupPage {
                     }
                 }
 
-                QGCCheckBox {
+                beeCopterCheckBox {
                     id:                 responsivenessCheckbox
                     Layout.fillWidth:   true
                     text:               qsTr("Enable responsiveness slider (if enabled, acceleration limit parameters and others are automatically set)")
@@ -70,10 +70,10 @@ SetupPage {
                     onClicked:          _sys_vehicle_resp.value = checked ? Math.abs(_sys_vehicle_resp.value) : -Math.abs(_sys_vehicle_resp.value)
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     visible:            _sys_vehicle_resp && _sys_vehicle_resp.value > 0.8
-                    color:              qgcPal.warningText
+                    color:              beeCopterPal.warningText
                     text:               qsTr("Warning: a high responsiveness requires a vehicle with large thrust-to-weight ratio. The vehicle might lose altitude otherwise.")
                 }
             }
@@ -110,7 +110,7 @@ SetupPage {
                     }
                 }
 
-                QGCCheckBox {
+                beeCopterCheckBox {
                     id:                 xyVelCheckbox
                     Layout.fillWidth:   true
                     text:               qsTr("Enable horizontal velocity slider (if enabled, individual velocity limit parameters are automatically set)")
@@ -151,7 +151,7 @@ SetupPage {
                     }
                 }
 
-                QGCCheckBox {
+                beeCopterCheckBox {
                     id:                 zVelCheckbox
                     Layout.fillWidth:   true
                     text:               qsTr("Enable vertical velocity slider (if enabled, individual velocity limit parameters are automatically set)")
@@ -167,8 +167,8 @@ SetupPage {
 
                 FactSlider {
                     Layout.fillWidth:   true
-                    from:               QGroundControl.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(2)
-                    to:                 QGroundControl.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(16)
+                    from:               beeCopter.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(2)
+                    to:                 beeCopter.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(16)
                     majorTickStepSize:  0.5
                     fact:               controller.getParameterFact(-1, "NAV_ACC_RAD")
                 }

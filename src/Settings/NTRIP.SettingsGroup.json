@@ -1,42 +1,42 @@
 {
   "version": 1,
   "fileType": "FactMetaData",
-  "QGC.MetaData.Facts": [
+  "beeCopter.MetaData.Facts": [
     {
       "name": "ntripServerConnectEnabled",
       "shortDescription": "Connect to NTRIP server",
       "longDescription": "Connect to NTRIP server using specified address/port",
       "type": "bool",
       "defaultValue": false,
-      "qgcRebootRequired": true
+      "beeCopterRebootRequired": true
     },
     {
       "name": "ntripServerHostAddress",
       "shortDescription": "Host address",
       "type": "string",
       "defaultValue": "127.0.0.1",
-      "qgcRebootRequired": true
+      "beeCopterRebootRequired": true
     },
     {
       "name": "ntripServerPort",
       "shortDescription": "Server port",
       "type": "int32",
       "defaultValue": 2101,
-      "qgcRebootRequired": true
+      "beeCopterRebootRequired": true
     },
     {
       "name": "ntripUsername",
       "shortDescription": "Username",
       "type": "string",
       "defaultValue": "",
-      "qgcRebootRequired": true
+      "beeCopterRebootRequired": true
     },
     {
       "name": "ntripPassword",
       "shortDescription": "Password",
       "type": "string",
       "defaultValue": "",
-      "qgcRebootRequired": true
+      "beeCopterRebootRequired": true
     },
     {
       "name": "ntripMountpoint",
@@ -44,7 +44,7 @@
       "longDescription": "NTRIP Mount Point. Leave blank for RTCM over TCP",
       "type": "string",
       "defaultValue": "",
-      "qgcRebootRequired": true
+      "beeCopterRebootRequired": true
     },
     {
       "name": "ntripWhitelist",
@@ -52,7 +52,7 @@
       "longDescription": "RTCM Messages to send over mavlink. Leave blank for all messages",
       "type": "string",
       "defaultValue": "",
-      "qgcRebootRequired": true
+      "beeCopterRebootRequired": true
     },
     {
       "name": "ntripUseSpartn",
@@ -60,7 +60,7 @@
       "longDescription": "If enabled, connect with TLS (2102) and treat payload as SPARTN instead of RTCM. Requires SPARTN keys handled by the receiver.",
       "type": "bool",
       "defaultValue": false,
-      "qgcRebootRequired": true
+      "beeCopterRebootRequired": true
     }
   ]
 }

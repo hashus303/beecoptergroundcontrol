@@ -2,15 +2,15 @@
 #include "GimbalControllerSettings.h"
 #include "MAVLinkProtocol.h"
 #include "ParameterManager.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "QmlObjectListModel.h"
 #include "SettingsManager.h"
 #include "Vehicle.h"
 #include <cmath>
 #include "Gimbal.h"
-#include "QGCCameraManager.h"
+#include "beeCopterCameraManager.h"
 
-QGC_LOGGING_CATEGORY(GimbalControllerLog, "Gimbal.GimbalController")
+beeCopter_LOGGING_CATEGORY(GimbalControllerLog, "Gimbal.GimbalController")
 
 GimbalController::GimbalController(Vehicle *vehicle)
     : QObject(vehicle)

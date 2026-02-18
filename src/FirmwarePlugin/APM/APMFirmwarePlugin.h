@@ -2,7 +2,7 @@
 
 #include "FirmwarePlugin.h"
 #include "FollowMe.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QMutex>
@@ -26,7 +26,7 @@ class APMFirmwarePlugin : public FirmwarePlugin
     Q_OBJECT
 
 public:
-    QList<MAV_CMD> supportedMissionCommands(QGCMAVLink::VehicleClass_t vehicleClass) const override;
+    QList<MAV_CMD> supportedMissionCommands(beeCopterMAVLink::VehicleClass_t vehicleClass) const override;
     AutoPilotPlugin *autopilotPlugin(Vehicle* vehicle) const override;
     bool isCapable(const Vehicle *vehicle, FirmwareCapabilities capabilities) const override;
     void setGuidedMode(Vehicle *vehicle, bool guidedMode) const override;
@@ -54,7 +54,7 @@ public:
     virtual void initializeStreamRates(Vehicle *vehicle);
     void initializeVehicle(Vehicle *vehicle) override;
     bool sendHomePositionToVehicle() const override { return true; }
-    QString missionCommandOverrides(QGCMAVLink::VehicleClass_t vehicleClass) const override;
+    QString missionCommandOverrides(beeCopterMAVLink::VehicleClass_t vehicleClass) const override;
     QString _internalParameterMetaDataFile(const Vehicle* vehicle) const override;
     FactMetaData *_getMetaDataForFact(QObject *parameterMetaData, const QString &name, FactMetaData::ValueType_t type, MAV_TYPE vehicleType) const override;
     void _getParameterMetaDataVersionInfo(const QString &metaDataFile, int &majorVersion, int &minorVersion) const override;
@@ -111,7 +111,7 @@ private:
     void _handleRCChannelsRaw(Vehicle *vehicle, mavlink_message_t* message);
     QString _getLatestVersionFileUrl(Vehicle *vehicle) const final;
     QString _versionRegex() const final { return QStringLiteral(" V([0-9,\\.]*)$"); }
-    QString _vehicleClassToString(QGCMAVLink::VehicleClass_t vehicleClass) const;
+    QString _vehicleClassToString(beeCopterMAVLink::VehicleClass_t vehicleClass) const;
 
     static void _setBaroGndTemp(Vehicle *vehicle, qreal temperature);
     static void _setBaroAltOffset(Vehicle *vehicle, qreal offset);

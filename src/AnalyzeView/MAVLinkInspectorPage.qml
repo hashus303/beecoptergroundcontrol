@@ -5,8 +5,8 @@ import QtQuick.Dialogs
 import QtQuick.Window
 import QtCharts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 AnalyzePage {
     id: root
@@ -58,13 +58,13 @@ AnalyzePage {
             id:                 header
             anchors.left:       parent.left
             anchors.right:      parent.right
-            QGCLabel {
+            beeCopterLabel {
                 text:           qsTr("Inspect real time MAVLink messages.")
             }
             RowLayout {
                 Layout.alignment:   Qt.AlignRight
                 visible:            curSystem ? controller.systemNames.length > 1 || curSystem.compIDsStr.length > 2 : false
-                QGCComboBox {
+                beeCopterComboBox {
                     id:             systemCombo
                     model:          controller.systemNames
                     sizeToContents: true
@@ -85,7 +85,7 @@ AnalyzePage {
                         }
                     }
                 }
-                QGCComboBox {
+                beeCopterComboBox {
                     id:             cidCombo
                     model:          curSystem ? curSystem.compIDsStr : []
                     sizeToContents: true
@@ -110,7 +110,7 @@ AnalyzePage {
             height:                 availableHeight
             spacing:                ScreenTools.defaultFontPixelWidth
             //-- Messages (Buttons)
-            QGCFlickable {
+            beeCopterFlickable {
                 id:                 buttonGrid
                 flickableDirection: Flickable.VerticalFlick
                 width:              maxButtonWidth
@@ -139,7 +139,7 @@ AnalyzePage {
                 }
             }
             //-- Message Data
-            QGCFlickable {
+            beeCopterFlickable {
                 id:                 messageGrid
                 visible:            curMessage !== null && (curCompID === 0 || curCompID === curMessage.compId)
                 flickableDirection: Flickable.VerticalFlick
@@ -155,26 +155,26 @@ AnalyzePage {
                         columns:        2
                         columnSpacing:  ScreenTools.defaultFontPixelWidth
                         rowSpacing:     ScreenTools.defaultFontPixelHeight * 0.25
-                        QGCLabel {
+                        beeCopterLabel {
                             text: qsTr("Message:")
                             Layout.minimumWidth: ScreenTools.defaultFontPixelWidth * 20
                         }
-                        QGCLabel {
-                            color: qgcPal.buttonHighlight
+                        beeCopterLabel {
+                            color: beeCopterPal.buttonHighlight
                             text: curMessage ? curMessage.name + ' (' + curMessage.id + ')' : ""
                         }
 
-                        QGCLabel { text: qsTr("Component:") }
-                        QGCLabel { text: curMessage ? curMessage.compId : "" }
+                        beeCopterLabel { text: qsTr("Component:") }
+                        beeCopterLabel { text: curMessage ? curMessage.compId : "" }
 
-                        QGCLabel { text: qsTr("Count:") }
-                        QGCLabel { text: curMessage ? curMessage.count : "" }
+                        beeCopterLabel { text: qsTr("Count:") }
+                        beeCopterLabel { text: curMessage ? curMessage.count : "" }
 
-                        QGCLabel { text: qsTr("Actual Rate:") }
-                        QGCLabel { text: curMessage ? curMessage.actualRateHz.toFixed(1) + qsTr("Hz") : "" }
+                        beeCopterLabel { text: qsTr("Actual Rate:") }
+                        beeCopterLabel { text: curMessage ? curMessage.actualRateHz.toFixed(1) + qsTr("Hz") : "" }
 
-                        QGCLabel { text: qsTr("Set Rate:") }
-                        QGCComboBox {
+                        beeCopterLabel { text: qsTr("Set Rate:") }
+                        beeCopterComboBox {
                             id: msgRateCombo
                             textRole: "text"
                             valueRole: "value"
@@ -223,19 +223,19 @@ AnalyzePage {
                         columnSpacing:      ScreenTools.defaultFontPixelWidth  * 0.25
                         rowSpacing:         ScreenTools.defaultFontPixelHeight * 0.25
                         width:              parent.width
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Name")
                         }
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Value")
                         }
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Type")
                         }
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Plot 1")
                         }
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Plot 2")
                         }
 
@@ -244,13 +244,13 @@ AnalyzePage {
                             Layout.columnSpan:  5
                             Layout.fillWidth:   true
                             height:             1
-                            color:              qgcPal.text
+                            color:              beeCopterPal.text
                         }
                         //---------------------------------------------------------
 
                         Repeater {
                             model:      curMessage ? curMessage.fields : []
-                            delegate:   QGCLabel {
+                            delegate:   beeCopterLabel {
                                 Layout.row:         index + 2
                                 Layout.column:      0
                                 Layout.minimumWidth: ScreenTools.defaultFontPixelWidth * 20
@@ -259,7 +259,7 @@ AnalyzePage {
                         }
                         Repeater {
                             model:      curMessage ? curMessage.fields : []
-                            delegate:   QGCLabel {
+                            delegate:   beeCopterLabel {
                                 Layout.row:         index + 2
                                 Layout.column:      1
                                 Layout.minimumWidth: msgInfoGrid.width * 0.25
@@ -270,7 +270,7 @@ AnalyzePage {
                         }
                         Repeater {
                             model:      curMessage ? curMessage.fields : []
-                            delegate:   QGCLabel {
+                            delegate:   beeCopterLabel {
                                 Layout.row:         index + 2
                                 Layout.column:      2
                                 Layout.minimumWidth: ScreenTools.defaultFontPixelWidth * 10
@@ -281,7 +281,7 @@ AnalyzePage {
                         Repeater {
                             id: chart1Repeater
                             model:      curMessage ? curMessage.fields : []
-                            delegate:   QGCCheckBox {
+                            delegate:   beeCopterCheckBox {
                                 Layout.row:         index + 2
                                 Layout.column:      3
                                 Layout.alignment:   Qt.AlignHCenter
@@ -301,7 +301,7 @@ AnalyzePage {
                         Repeater {
                             id: chart2Repeater
                             model:      curMessage ? curMessage.fields : []
-                            delegate:   QGCCheckBox {
+                            delegate:   beeCopterCheckBox {
                                 Layout.row:         index + 2
                                 Layout.column:      4
                                 Layout.alignment:   Qt.AlignHCenter

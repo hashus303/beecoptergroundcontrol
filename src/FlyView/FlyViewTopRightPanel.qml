@@ -1,25 +1,25 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
-import QGroundControl.FlyView
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
+import beeCopter.FlyView
+import beeCopter.FlightMap
 
 Rectangle {
     id:             topRightPanel
     width:          contentWidth
     height:         Math.max(contentHeight, minimumHeight)
-    color:          qgcPal.toolbarBackground
+    color:          beeCopterPal.toolbarBackground
     radius:         ScreenTools.defaultFontPixelHeight / 2
-    visible:        !QGroundControl.videoManager.fullScreen && _multipleVehicles && _settingEnableMVPanel
+    visible:        !beeCopter.videoManager.fullScreen && _multipleVehicles && _settingEnableMVPanel
     clip:           true
 
-    property bool _settingEnableMVPanel:    QGroundControl.settingsManager.appSettings.enableMultiVehiclePanel.value
-    property bool  _multipleVehicles:       QGroundControl.multiVehicleManager.vehicles.count > 1
-    property var   vehicles:                QGroundControl.multiVehicleManager.vehicles
-    property var   selectedVehicles:        QGroundControl.multiVehicleManager.selectedVehicles
+    property bool _settingEnableMVPanel:    beeCopter.settingsManager.appSettings.enableMultiVehiclePanel.value
+    property bool  _multipleVehicles:       beeCopter.multiVehicleManager.vehicles.count > 1
+    property var   vehicles:                beeCopter.multiVehicleManager.vehicles
+    property var   selectedVehicles:        beeCopter.multiVehicleManager.selectedVehicles
     property real  contentWidth:            Math.max(
                                                 multiVehicleList.implicitWidth,
                                                 swipeViewContainer.implicitWidth
@@ -31,7 +31,7 @@ Rectangle {
     property real  minimumHeight:           swipeViewContainer.height
     property real  maximumHeight
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     DeadMouseArea {
         anchors.fill:       parent
@@ -58,7 +58,7 @@ Rectangle {
                     anchors.top:        parent.top
                     anchors.margins:    0
                     height:             1
-                    color:              QGroundControl.globalPalette.groupBorder
+                    color:              beeCopter.globalPalette.groupBorder
                 }
 
                 gradient: Gradient {
@@ -76,7 +76,7 @@ Rectangle {
                     anchors.bottom:     parent.bottom
                     anchors.margins:    0
                     height:             1
-                    color:              QGroundControl.globalPalette.groupBorder
+                    color:              beeCopter.globalPalette.groupBorder
                 }
             }
 
@@ -89,7 +89,7 @@ Rectangle {
             implicitWidth:          swipePages.implicitWidth
             color:                  "transparent"
 
-            QGCSwipeView {
+            beeCopterSwipeView {
                 id:                swipePages
                 anchors.fill:      parent
                 spacing:           ScreenTools.defaultFontPixelHeight
@@ -110,7 +110,7 @@ Rectangle {
                         implicitHeight:         Math.max(selectionRowLayout.height, actionRowLayout.height) + ScreenTools.defaultFontPixelHeight * 2
                         implicitWidth:          Math.max(selectionRowLayout.width, actionRowLayout.width) + ScreenTools.defaultFontPixelHeight * 4
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text: {
                                 let ids = Array.from({length: selectedVehicles.count}, (_, i) =>
                                     selectedVehicles.get(i).id
@@ -125,13 +125,13 @@ Rectangle {
                             id:                 selectionRowLayout
                             Layout.alignment:   Qt.AlignHCenter
 
-                            QGCButton {
+                            beeCopterButton {
                                 text:                  qsTr("Select All")
-                                enabled:               multiVehicleList.selectedVehicles && multiVehicleList.selectedVehicles.count !== QGroundControl.multiVehicleManager.vehicles.count
+                                enabled:               multiVehicleList.selectedVehicles && multiVehicleList.selectedVehicles.count !== beeCopter.multiVehicleManager.vehicles.count
                                 onClicked:             multiVehicleList.selectAll()
                             }
 
-                            QGCButton {
+                            beeCopterButton {
                                 text:                  qsTr("Deselect All")
                                 enabled:               multiVehicleList.selectedVehicles && multiVehicleList.selectedVehicles.count > 0
                                 onClicked:             multiVehicleList.deselectAll()
@@ -140,7 +140,7 @@ Rectangle {
                         }
 
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:              qsTr("Multi Vehicle Actions")
                             Layout.alignment:  Qt.AlignHCenter
                         }
@@ -149,7 +149,7 @@ Rectangle {
                             id:                actionRowLayout
                             Layout.alignment:  Qt.AlignHCenter
 
-                            QGCButton {
+                            beeCopterButton {
                                 text:                  qsTr("Arm")
                                 enabled:               multiVehicleList.armAvailable()
                                 onClicked:             _guidedController.confirmAction(_guidedController.actionMVArm)
@@ -158,7 +158,7 @@ Rectangle {
                                 rightPadding:          0
                             }
 
-                            QGCButton {
+                            beeCopterButton {
                                 text:                  qsTr("Disarm")
                                 enabled:               multiVehicleList.disarmAvailable()
                                 onClicked:             _guidedController.confirmAction(_guidedController.actionMVDisarm)
@@ -167,7 +167,7 @@ Rectangle {
                                 rightPadding:          0
                             }
 
-                            QGCButton {
+                            beeCopterButton {
                                 text:                  qsTr("Start")
                                 enabled:               multiVehicleList.startAvailable()
                                 onClicked:             _guidedController.confirmAction(_guidedController.actionMVStartMission)
@@ -176,7 +176,7 @@ Rectangle {
                                 rightPadding:          0
                             }
 
-                            QGCButton {
+                            beeCopterButton {
                                 text:                  qsTr("Pause")
                                 enabled:               multiVehicleList.pauseAvailable()
                                 onClicked:             _guidedController.confirmAction(_guidedController.actionMVPause)
@@ -213,9 +213,9 @@ Rectangle {
                         }
                     }
                 } // Page 2
-            } // QGCSwipeView
+            } // beeCopterSwipeView
 
-            QGCPageIndicator {
+            beeCopterPageIndicator {
                 id:                       pageIndicator
                 count:                    swipePages.count
                 currentIndex:             swipePages.currentIndex
@@ -227,7 +227,7 @@ Rectangle {
                     height:    ScreenTools.defaultFontPixelHeight  / 2
                     width:     height
                     radius:    width / 2
-                    color:     model.index === pageIndicator.currentIndex ? qgcPal.text : qgcPal.button
+                    color:     model.index === pageIndicator.currentIndex ? beeCopterPal.text : beeCopterPal.button
                     opacity:   model.index === pageIndicator.currentIndex ? 0.9 : 0.3
                 }
             }

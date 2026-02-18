@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 GridLayout {
     property var factList                   ///< List of Facts to show
@@ -15,7 +15,7 @@ GridLayout {
     Repeater {
         model: parent.factList
 
-        QGCLabel {
+        beeCopterLabel {
             text: {
                 if (factLabels) {
                     return factLabels[index]

@@ -1,11 +1,11 @@
 #include "ULogUtility.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <cstring>
 
 #include <ulog_cpp/reader.hpp>
 
-QGC_LOGGING_CATEGORY(ULogUtilityLog, "Utilities.ULogUtility")
+beeCopter_LOGGING_CATEGORY(ULogUtilityLog, "Utilities.ULogUtility")
 
 namespace ULogUtility
 {

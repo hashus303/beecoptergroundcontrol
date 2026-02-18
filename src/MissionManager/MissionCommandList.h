@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
@@ -25,7 +25,7 @@ public:
 
     const QList<MAV_CMD>& commandIds(void) const { return _ids; }
 
-    static constexpr const char* qgcFileType = "MavCmdInfo";
+    static constexpr const char* beeCopterFileType = "MavCmdInfo";
 
 private:
     void _loadMavCmdInfoJson(const QString& jsonFilename, bool baseCommandList);

@@ -2,17 +2,17 @@
 #include "MavlinkAction.h"
 #include "Fact.h"
 #include "JsonHelper.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "SettingsManager.h"
 #include "AppSettings.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "QmlObjectListModel.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QJsonArray>
 #include <QtQml/QQmlEngine>
 
-QGC_LOGGING_CATEGORY(MavlinkActionManagerLog, "QMLControls.MavlinkActionManager")
+beeCopter_LOGGING_CATEGORY(MavlinkActionManagerLog, "QMLControls.MavlinkActionManager")
 
 MavlinkActionManager::MavlinkActionManager(QObject *parent)
     : QObject(parent)
@@ -61,16 +61,16 @@ void MavlinkActionManager::_loadActionsFile()
         return;
     }
 
-    constexpr const char *kQgcFileType = "MavlinkActions";
+    constexpr const char *kbeeCopterFileType = "MavlinkActions";
     constexpr const char *kActionListKey = "actions";
 
     _actions->clearAndDeleteContents();
 
     QString errorString;
     int version;
-    const QJsonObject jsonObject = JsonHelper::openInternalQGCJsonFile(fullPath, kQgcFileType, 1, 1, version, errorString);
+    const QJsonObject jsonObject = JsonHelper::openInternalbeeCopterJsonFile(fullPath, kbeeCopterFileType, 1, 1, version, errorString);
     if (!errorString.isEmpty()) {
-        qgcApp()->showAppMessage(tr("Failed to load custom actions file: `%1` error: `%2`").arg(fullPath, errorString));
+        beeCopterApp()->showAppMessage(tr("Failed to load custom actions file: `%1` error: `%2`").arg(fullPath, errorString));
         return;
     }
 
@@ -78,14 +78,14 @@ void MavlinkActionManager::_loadActionsFile()
         { kActionListKey, QJsonValue::Array, /* required= */ true },
     };
     if (!JsonHelper::validateKeys(jsonObject, keyInfoList, errorString)) {
-        qgcApp()->showAppMessage(tr("Custom actions file - incorrect format: %1").arg(errorString));
+        beeCopterApp()->showAppMessage(tr("Custom actions file - incorrect format: %1").arg(errorString));
         return;
     }
 
     const QJsonArray actionList = jsonObject[kActionListKey].toArray();
     for (const auto &actionJson: actionList) {
         if (!actionJson.isObject()) {
-            qgcApp()->showAppMessage(tr("Custom actions file - incorrect format: JsonValue not an object"));
+            beeCopterApp()->showAppMessage(tr("Custom actions file - incorrect format: JsonValue not an object"));
             _actions->clearAndDeleteContents();
             return;
         }
@@ -107,7 +107,7 @@ void MavlinkActionManager::_loadActionsFile()
 
         const auto actionObj = actionJson.toObject();
         if (!JsonHelper::validateKeys(actionObj, actionKeyInfoList, errorString)) {
-            qgcApp()->showAppMessage(tr("Custom actions file - incorrect format: %1").arg(errorString));
+            beeCopterApp()->showAppMessage(tr("Custom actions file - incorrect format: %1").arg(errorString));
             _actions->clearAndDeleteContents();
             return;
         }

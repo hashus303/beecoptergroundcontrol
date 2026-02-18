@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             tuningPage
@@ -18,13 +18,13 @@ SetupPage {
 
             FactPanelController { id: controller; }
 
-            QGCPalette { id: qgcPal; colorGroupEnabled: true }
+            beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
             property real _margins: ScreenTools.defaultFontPixelHeight
 
             Row {
                 spacing: _margins
-                QGCButton {
+                beeCopterButton {
                     id:             atcButton
                     text:           qsTr("Attitude Controller Parameters")
                     autoExclusive:  true
@@ -32,14 +32,14 @@ SetupPage {
                     onClicked:      checked = true
                 }
 
-                QGCButton {
+                beeCopterButton {
                     id:             posButton
                     text:           qsTr("Position Controller Parameters")
                     autoExclusive:  true
                     onClicked:      checked = true
                 }
 
-                QGCButton {
+                beeCopterButton {
                     id:             navButton
                     text:           qsTr("Waypoint navigation parameters")
                     autoExclusive:  true
@@ -53,7 +53,7 @@ SetupPage {
                 anchors.left:       parent.left
                 anchors.right:      parent.right
                 height:             posColumn.height + _margins*2
-                color:              qgcPal.windowShade
+                color:              beeCopterPal.windowShade
 
                 Column {
                     id:                 posColumn
@@ -89,7 +89,7 @@ SetupPage {
                 anchors.left:       parent.left
                 anchors.right:      parent.right
                 height:             velColumn.height + _margins*2
-                color:              qgcPal.windowShade
+                color:              beeCopterPal.windowShade
 
                 Component {
                     id: velColumnUpTo36
@@ -155,7 +155,7 @@ SetupPage {
                 anchors.left:       parent.left
                 anchors.right:      parent.right
                 height:             wpnavColumn.height + _margins*2
-                color:              qgcPal.windowShade
+                color:              beeCopterPal.windowShade
 
                 // WPNAV parameters up to 3.5
                 Component {

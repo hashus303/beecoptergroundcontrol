@@ -4,13 +4,13 @@
 #include <QtCore/QString>
 #include <QtCore/QVariant>
 
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 Q_DECLARE_LOGGING_CATEGORY(MissionCommandsLog)
 
 class MissionCommandTree;
 class MissionCommandUIInfo;
-#ifdef QGC_UNITTEST_BUILD
+#ifdef beeCopter_UNITTEST_BUILD
 class MissionCommandTreeTest;
 #endif
 
@@ -227,7 +227,7 @@ private:
     static constexpr const char* _advancedCategory             = "Advanced";
 
     friend class MissionCommandTree;
-#ifdef QGC_UNITTEST_BUILD
+#ifdef beeCopter_UNITTEST_BUILD
     friend class MissionCommandTreeTest;
 #endif
 };

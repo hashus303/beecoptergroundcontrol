@@ -1,9 +1,9 @@
 # ----------------------------------------------------------------------------
-# QGroundControl Apple Platform Configuration (macOS and iOS)
+# beeCopter Apple Platform Configuration (macOS and iOS)
 # ----------------------------------------------------------------------------
 
 if(NOT APPLE)
-    message(FATAL_ERROR "QGC: Invalid Platform: Apple.cmake included but platform is not Apple")
+    message(FATAL_ERROR "beeCopter: Invalid Platform: Apple.cmake included but platform is not Apple")
 endif()
 
 if(CMAKE_GENERATOR STREQUAL "Xcode" AND MACOS)
@@ -16,22 +16,22 @@ if(CMAKE_GENERATOR STREQUAL "Xcode" AND MACOS)
     # set(CMAKE_XCODE_ATTRIBUTE_LD_ENTRY_POINT
     # set(CMAKE_XCODE_ATTRIBUTE_MARKETING_VERSION
     # set(CMAKE_XCODE_ATTRIBUTE_CURRENT_PROJECT_VERSION
-    set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_ENTITLEMENTS "${QGC_MACOS_ENTITLEMENTS_PATH}")
+    set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_ENTITLEMENTS "${beeCopter_MACOS_ENTITLEMENTS_PATH}")
 endif()
 
 # ----------------------------------------------------------------------------
 # macOS/iOS Bundle Configuration
 # ----------------------------------------------------------------------------
-cmake_path(GET QGC_MACOS_ICON_PATH FILENAME MACOSX_BUNDLE_ICON_FILE)
+cmake_path(GET beeCopter_MACOS_ICON_PATH FILENAME MACOSX_BUNDLE_ICON_FILE)
 
 set_target_properties(${CMAKE_PROJECT_NAME}
     PROPERTIES
         MACOSX_BUNDLE TRUE
-        MACOSX_BUNDLE_INFO_PLIST "${QGC_MACOS_PLIST_PATH}"
+        MACOSX_BUNDLE_INFO_PLIST "${beeCopter_MACOS_PLIST_PATH}"
         MACOSX_BUNDLE_BUNDLE_NAME "${CMAKE_PROJECT_NAME}"
         MACOSX_BUNDLE_BUNDLE_VERSION "${CMAKE_PROJECT_VERSION}"
-        MACOSX_BUNDLE_COPYRIGHT "${QGC_APP_COPYRIGHT}"
-        MACOSX_BUNDLE_GUI_IDENTIFIER "${QGC_MACOS_BUNDLE_ID}"
+        MACOSX_BUNDLE_COPYRIGHT "${beeCopter_APP_COPYRIGHT}"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "${beeCopter_MACOS_BUNDLE_ID}"
         MACOSX_BUNDLE_ICON_FILE "${MACOSX_BUNDLE_ICON_FILE}"
         MACOSX_BUNDLE_INFO_STRING "${CMAKE_PROJECT_DESCRIPTION}"
         MACOSX_BUNDLE_LONG_VERSION_STRING "${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}.${CMAKE_PROJECT_VERSION_PATCH}"
@@ -43,10 +43,10 @@ set_target_properties(${CMAKE_PROJECT_NAME}
 # ----------------------------------------------------------------------------
 if(MACOS)
     # macOS-specific configuration
-    set(app_icon_macos "${QGC_MACOS_ICON_PATH}")
+    set(app_icon_macos "${beeCopter_MACOS_ICON_PATH}")
     set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
-    set(app_entitlements_macos "${QGC_MACOS_ENTITLEMENTS_PATH}")
+    set(app_entitlements_macos "${beeCopter_MACOS_ENTITLEMENTS_PATH}")
     set_source_files_properties(${app_entitlements_macos} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
     target_sources(${CMAKE_PROJECT_NAME}
@@ -55,27 +55,27 @@ if(MACOS)
             "${app_icon_macos}"
     )
 
-    message(STATUS "QGC: macOS platform configuration applied")
+    message(STATUS "beeCopter: macOS platform configuration applied")
 elseif(IOS)
     # iOS-specific configuration
     enable_language(OBJC)
 
     # set(CMAKE_XCODE_ATTRIBUTE_ARCHS
     # set(CMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE
-    set(CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "${QGC_IOS_DEPLOYMENT_TARGET}")
-    set(CMAKE_XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "${QGC_IOS_TARGETED_DEVICE_FAMILY}")
+    set(CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "${beeCopter_IOS_DEPLOYMENT_TARGET}")
+    set(CMAKE_XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "${beeCopter_IOS_TARGETED_DEVICE_FAMILY}")
     set(CMAKE_XCODE_ATTRIBUTE_INFOPLIST_FILE "${CMAKE_SOURCE_DIR}/deploy/ios/iOS-Info.plist")
 
     set_target_properties(${CMAKE_PROJECT_NAME}
         PROPERTIES
-            QT_IOS_LAUNCH_SCREEN "${CMAKE_SOURCE_DIR}/deploy/ios/QGCLaunchScreen.xib"
-            XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "${QGC_PACKAGE_NAME}"
+            QT_IOS_LAUNCH_SCREEN "${CMAKE_SOURCE_DIR}/deploy/ios/beeCopterLaunchScreen.xib"
+            XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "${beeCopter_PACKAGE_NAME}"
             XCODE_ATTRIBUTE_PRODUCT_NAME "${CMAKE_PROJECT_NAME}"
             XCODE_ATTRIBUTE_CURRENT_PROJECT_VERSION ${CMAKE_PROJECT_VERSION}
             XCODE_ATTRIBUTE_MARKETING_VERSION "${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}"
             XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon"
-            XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "${QGC_IOS_DEPLOYMENT_TARGET}"
-            XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "${QGC_IOS_TARGETED_DEVICE_FAMILY}"
+            XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "${beeCopter_IOS_DEPLOYMENT_TARGET}"
+            XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "${beeCopter_IOS_TARGETED_DEVICE_FAMILY}"
             XCODE_ATTRIBUTE_INFOPLIST_KEY_CFBundleDisplayName ${CMAKE_PROJECT_NAME}
             XCODE_ATTRIBUTE_INFOPLIST_KEY_LSApplicationCategoryType "public.app-category.navigation"
             XCODE_ATTRIBUTE_GCC_GENERATE_DEBUGGING_SYMBOLS "YES"
@@ -87,5 +87,5 @@ elseif(IOS)
         qt_add_ios_ffmpeg_libraries(${CMAKE_PROJECT_NAME})
     endif()
 
-    message(STATUS "QGC: iOS platform configuration applied")
+    message(STATUS "beeCopter: iOS platform configuration applied")
 endif()

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FirmwarePluginFactory.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 #include <QtCore/QLoggingCategory>
 
@@ -20,7 +20,7 @@ public:
     explicit APMFirmwarePluginFactory(QObject *parent = nullptr);
     ~APMFirmwarePluginFactory();
 
-    QList<QGCMAVLink::FirmwareClass_t> supportedFirmwareClasses() const override;
+    QList<beeCopterMAVLink::FirmwareClass_t> supportedFirmwareClasses() const override;
     FirmwarePlugin *firmwarePluginForAutopilot(MAV_AUTOPILOT autopilotType, MAV_TYPE vehicleType) override;
 
 private:

@@ -2,12 +2,12 @@
 #include "Vehicle.h"
 #include "FirmwarePlugin.h"
 #include "MAVLinkProtocol.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "MissionCommandTree.h"
 #include "MissionCommandUIInfo.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(MissionManagerLog, "PlanManager.MissionManager")
+beeCopter_LOGGING_CATEGORY(MissionManagerLog, "PlanManager.MissionManager")
 
 MissionManager::MissionManager(Vehicle* vehicle)
     : PlanManager               (vehicle, MAV_MISSION_TYPE_MISSION)
@@ -79,7 +79,7 @@ void MissionManager::generateResumeMission(int resumeIndex)
     for (int i=0; i<_missionItems.count(); i++) {
         MissionItem* item = _missionItems[i];
         if (item->command() == MAV_CMD_DO_JUMP) {
-            qgcApp()->showAppMessage(tr("Unable to generate resume mission due to MAV_CMD_DO_JUMP command."));
+            beeCopterApp()->showAppMessage(tr("Unable to generate resume mission due to MAV_CMD_DO_JUMP command."));
             return;
         }
     }

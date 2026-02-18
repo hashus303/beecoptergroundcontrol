@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 AnalyzePage {
     id:                 vibrationPage
@@ -13,7 +13,7 @@ AnalyzePage {
     pageDescription:    qsTr("Analyze vibration associated with your vehicle.")
     allowPopout:        true
 
-    property var    _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle ? QGroundControl.multiVehicleManager.activeVehicle : QGroundControl.multiVehicleManager.offlineEditingVehicle
+    property var    _activeVehicle: beeCopter.multiVehicleManager.activeVehicle ? beeCopter.multiVehicleManager.activeVehicle : beeCopter.multiVehicleManager.offlineEditingVehicle
     property bool   _available:     !isNaN(_activeVehicle.vibration.xAxis.rawValue)
     property real   _margins:       ScreenTools.defaultFontPixelWidth / 2
     property real   _barWidth:      ScreenTools.defaultFontPixelWidth * 7
@@ -27,7 +27,7 @@ AnalyzePage {
     readonly property real _barBadValue:    60.0
     readonly property real _barMidValue:    30.0
 
-    QGCPalette { id:qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id:beeCopterPal; colorGroupEnabled: true }
 
     Component {
         id: pageComponent
@@ -48,13 +48,13 @@ AnalyzePage {
                         Layout.alignment:   Qt.AlignHCenter
                         color:              "transparent"
                         border.width:       1
-                        border.color:       qgcPal.text
+                        border.color:       beeCopterPal.text
 
                         Rectangle {
                             anchors.bottom: parent.bottom
                             width:          parent.width
                             height:         parent.height * (Math.min(_barMaximum, _xValue) / (_barMaximum - _barMinimum))
-                            color:          qgcPal.text
+                            color:          beeCopterPal.text
                         }
 
                         // Max vibe indication line at 60
@@ -80,7 +80,7 @@ AnalyzePage {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.alignment:   Qt.AlignHCenter
                         text:               qsTr("X (%1)").arg(_xValue.toFixed(0))
                     }
@@ -93,13 +93,13 @@ AnalyzePage {
                         Layout.alignment:   Qt.AlignHCenter
                         color:              "transparent"
                         border.width:       1
-                        border.color:       qgcPal.text
+                        border.color:       beeCopterPal.text
 
                         Rectangle {
                             anchors.bottom: parent.bottom
                             width:          parent.width
                             height:         parent.height * (Math.min(_barMaximum, _yValue) / (_barMaximum - _barMinimum))
-                            color:          qgcPal.text
+                            color:          beeCopterPal.text
                         }
 
                         // Max vibe indication line at 60
@@ -125,7 +125,7 @@ AnalyzePage {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.alignment:   Qt.AlignHCenter
                         text:               qsTr("Y (%1)").arg(_yValue.toFixed(0))
                     }
@@ -138,13 +138,13 @@ AnalyzePage {
                         Layout.alignment:   Qt.AlignHCenter
                         color:              "transparent"
                         border.width:       1
-                        border.color:       qgcPal.text
+                        border.color:       beeCopterPal.text
 
                         Rectangle {
                             anchors.bottom: parent.bottom
                             width:          parent.width
                             height:         parent.height * (Math.min(_barMaximum, _zValue) / (_barMaximum - _barMinimum))
-                            color:          qgcPal.text
+                            color:          beeCopterPal.text
                         }
 
                         // Max vibe indication line at 60
@@ -170,7 +170,7 @@ AnalyzePage {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.alignment:   Qt.AlignHCenter
                         text:               qsTr("Z (%1)").arg(_zValue.toFixed(0))
                     }
@@ -181,30 +181,30 @@ AnalyzePage {
                 anchors.margins:    ScreenTools.defaultFontPixelWidth
                 anchors.left:       barRow.right
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("Clip count")
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("Accel 1: %1").arg(_activeVehicle.vibration.clipCount1.rawValue)
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("Accel 2: %1").arg(_activeVehicle.vibration.clipCount2.rawValue)
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("Accel 3: %1").arg(_activeVehicle.vibration.clipCount3.rawValue)
                 }
             }
 
             Rectangle {
                 anchors.fill:   parent
-                color:          qgcPal.window
+                color:          beeCopterPal.window
                 opacity:        0.75
                 visible:        !_available
 
-                QGCLabel {
+                beeCopterLabel {
                     anchors.fill:           parent
                     horizontalAlignment:    Text.AlignHCenter
                     verticalAlignment:      Text.AlignVCenter

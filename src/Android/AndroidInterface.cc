@@ -1,10 +1,10 @@
 #include "AndroidInterface.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QJniObject>
 #include <QtCore/QJniEnvironment>
 
-QGC_LOGGING_CATEGORY(AndroidInterfaceLog, "Android.AndroidInterface")
+beeCopter_LOGGING_CATEGORY(AndroidInterfaceLog, "Android.AndroidInterface")
 
 namespace AndroidInterface
 {
@@ -27,12 +27,12 @@ jclass getActivityClass()
             return nullptr;
         }
 
-        if (!QJniObject::isClassAvailable(kJniQGCActivityClassName)) {
+        if (!QJniObject::isClassAvailable(kJnibeeCopterActivityClassName)) {
             qCWarning(AndroidInterfaceLog) << "Class Not Available";
             return nullptr;
         }
 
-        javaClass = env.findClass(kJniQGCActivityClassName);
+        javaClass = env.findClass(kJnibeeCopterActivityClassName);
         if (!javaClass) {
             qCWarning(AndroidInterfaceLog) << "Class Not Found";
             return nullptr;
@@ -49,8 +49,8 @@ void setNativeMethods()
     qCDebug(AndroidInterfaceLog) << "Registering Native Functions";
 
     JNINativeMethod javaMethods[] {
-        {"qgcLogDebug",   "(Ljava/lang/String;)V", reinterpret_cast<void *>(jniLogDebug)},
-        {"qgcLogWarning", "(Ljava/lang/String;)V", reinterpret_cast<void *>(jniLogWarning)}
+        {"beeCopterLogDebug",   "(Ljava/lang/String;)V", reinterpret_cast<void *>(jniLogDebug)},
+        {"beeCopterLogWarning", "(Ljava/lang/String;)V", reinterpret_cast<void *>(jniLogWarning)}
     };
 
     (void) AndroidInterface::cleanJavaException();
@@ -99,7 +99,7 @@ bool checkStoragePermissions()
 {
     // Call the Java method to check and request storage permissions
     const bool hasPermission = QJniObject::callStaticMethod<jboolean>(
-        kJniQGCActivityClassName,
+        kJnibeeCopterActivityClassName,
         "checkStoragePermissions",
         "()Z"
     );
@@ -120,7 +120,7 @@ QString getSDCardPath()
         return QString();
     }
 
-    const QJniObject result = QJniObject::callStaticObjectMethod(kJniQGCActivityClassName, "getSDCardPath", "()Ljava/lang/String;");
+    const QJniObject result = QJniObject::callStaticObjectMethod(kJnibeeCopterActivityClassName, "getSDCardPath", "()Ljava/lang/String;");
     if (!result.isValid()) {
         qCWarning(AndroidInterfaceLog) << "Call to java getSDCardPath failed: Invalid Result";
         return QString();
@@ -133,7 +133,7 @@ void setKeepScreenOn(bool on)
 {
     Q_UNUSED(on);
 
-    //-- Screen is locked on while QGC is running on Android
+    //-- Screen is locked on while beeCopter is running on Android
 }
 
 } // namespace AndroidInterface

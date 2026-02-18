@@ -14,7 +14,7 @@ class Viewer3DMapProvider;
 class Viewer3DManager : public QObject
 {
     Q_OBJECT
-    QML_NAMED_ELEMENT(QGCViewer3DManager)
+    QML_NAMED_ELEMENT(beeCopterViewer3DManager)
     QML_SINGLETON
     Q_MOC_INCLUDE("Viewer3DMapProvider.h")
 

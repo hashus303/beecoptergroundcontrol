@@ -1,13 +1,13 @@
 #include "SimulatedPosition.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "MultiVehicleManager.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 
-QGC_LOGGING_CATEGORY(SimulatedPositionLog, "PositionManager.SimulatedPosition")
+beeCopter_LOGGING_CATEGORY(SimulatedPositionLog, "PositionManager.SimulatedPosition")
 
 SimulatedPosition::SimulatedPosition(QObject* parent)
     : QGeoPositionInfoSource(parent)

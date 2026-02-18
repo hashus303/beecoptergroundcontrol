@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQml.Models
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
 
 ColumnLayout {
     spacing: 0.8 * ScreenTools.defaultFontPixelWidth
@@ -14,7 +14,7 @@ ColumnLayout {
 
     Loader {
         id:     modelContainer
-        source: "qrc:/qml/QGroundControl/FlyView/DefaultChecklist.qml"
+        source: "qrc:/qml/beeCopter/FlyView/DefaultChecklist.qml"
     }
 
     property bool allChecksPassed:  false
@@ -62,21 +62,21 @@ ColumnLayout {
     function _updateModel() {
         var vehicle = globals.activeVehicle
         if (!vehicle) {
-            vehicle = QGroundControl.multiVehicleManager.offlineEditingVehicle
+            vehicle = beeCopter.multiVehicleManager.offlineEditingVehicle
         }
 
         if(vehicle.multiRotor) {
-            modelContainer.source = "qrc:/qml/QGroundControl/FlyView/MultiRotorChecklist.qml"
+            modelContainer.source = "qrc:/qml/beeCopter/FlyView/MultiRotorChecklist.qml"
         } else if(vehicle.vtol) {
-            modelContainer.source = "qrc:/qml/QGroundControl/FlyView/VTOLChecklist.qml"
+            modelContainer.source = "qrc:/qml/beeCopter/FlyView/VTOLChecklist.qml"
         } else if(vehicle.rover) {
-            modelContainer.source = "qrc:/qml/QGroundControl/FlyView/RoverChecklist.qml"
+            modelContainer.source = "qrc:/qml/beeCopter/FlyView/RoverChecklist.qml"
         } else if(vehicle.sub) {
-            modelContainer.source = "qrc:/qml/QGroundControl/FlyView/SubChecklist.qml"
+            modelContainer.source = "qrc:/qml/beeCopter/FlyView/SubChecklist.qml"
         } else if(vehicle.fixedWing) {
-            modelContainer.source = "qrc:/qml/QGroundControl/FlyView/FixedWingChecklist.qml"
+            modelContainer.source = "qrc:/qml/beeCopter/FlyView/FixedWingChecklist.qml"
         } else {
-            modelContainer.source = "qrc:/qml/QGroundControl/FlyView/DefaultChecklist.qml"
+            modelContainer.source = "qrc:/qml/beeCopter/FlyView/DefaultChecklist.qml"
         }
         return
     }
@@ -118,20 +118,20 @@ ColumnLayout {
         height:             1.75 * ScreenTools.defaultFontPixelHeight
         spacing:            0
 
-        QGCLabel {
+        beeCopterLabel {
             Layout.fillWidth:   true
             text:               allChecksPassed ? qsTr("(Passed)") : qsTr("In Progress")
             font.pointSize:     ScreenTools.mediumFontPointSize
         }
-        QGCButton {
+        beeCopterButton {
             width:              1.2 * ScreenTools.defaultFontPixelHeight
             height:             1.2 * ScreenTools.defaultFontPixelHeight
             Layout.alignment:   Qt.AlignVCenter
             onClicked:          checkListRepeater.model.reset()
 
-            QGCColoredImage {
+            beeCopterColoredImage {
                 source:         "/qmlimages/MapSyncBlack.svg"
-                color:          qgcPal.buttonText
+                color:          beeCopterPal.buttonText
                 anchors.fill:   parent
             }
         }

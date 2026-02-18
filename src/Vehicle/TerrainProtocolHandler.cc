@@ -2,11 +2,11 @@
 #include "TerrainQuery.h"
 #include "Vehicle.h"
 #include "MAVLinkProtocol.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QTimer>
 
-QGC_LOGGING_CATEGORY(TerrainProtocolHandlerLog, "Vehicle.TerrainProtocolHandler")
+beeCopter_LOGGING_CATEGORY(TerrainProtocolHandlerLog, "Vehicle.TerrainProtocolHandler")
 
 TerrainProtocolHandler::TerrainProtocolHandler(Vehicle *vehicle, TerrainFactGroup *terrainFactGroup, QObject *parent)
     : QObject(parent)
@@ -63,15 +63,15 @@ void TerrainProtocolHandler::_handleTerrainReport(const mavlink_message_t &messa
         (void) coordinates.append(coord);
         const bool altAvailable = TerrainAtCoordinateQuery::getAltitudesForCoordinates(coordinates, altitudes, error);
         const QString vehicleAlt = terrainReport.spacing ? QStringLiteral("%1").arg(terrainReport.terrain_height) : QStringLiteral("n/a");
-        QString qgcAlt;
+        QString beeCopterAlt;
         if (error) {
-            qgcAlt = QStringLiteral("Error");
+            beeCopterAlt = QStringLiteral("Error");
         } else if (altAvailable && !altitudes.isEmpty()) {
-            qgcAlt = QStringLiteral("%1").arg(altitudes[0]);
+            beeCopterAlt = QStringLiteral("%1").arg(altitudes[0]);
         } else {
-            qgcAlt = QStringLiteral("N/A");
+            beeCopterAlt = QStringLiteral("N/A");
         }
-        qCDebug(TerrainProtocolHandlerLog) << "TERRAIN_REPORT" << coord << QStringLiteral("Vehicle(%1) QGC(%2)").arg(vehicleAlt).arg(qgcAlt);
+        qCDebug(TerrainProtocolHandlerLog) << "TERRAIN_REPORT" << coord << QStringLiteral("Vehicle(%1) beeCopter(%2)").arg(vehicleAlt).arg(beeCopterAlt);
     }
 }
 

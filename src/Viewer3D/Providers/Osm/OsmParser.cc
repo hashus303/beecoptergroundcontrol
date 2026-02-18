@@ -1,7 +1,7 @@
 #include "OsmParser.h"
 
 #include "OsmParserThread.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "SettingsManager.h"
 #include "Viewer3DSettings.h"
 
@@ -9,7 +9,7 @@
 
 #include <array>
 
-QGC_LOGGING_CATEGORY(OsmParserLog, "Viewer3d.OsmParser")
+beeCopter_LOGGING_CATEGORY(OsmParserLog, "Viewer3d.OsmParser")
 
 OsmParser::OsmParser(QObject *parent)
     : Viewer3DMapProvider{parent}

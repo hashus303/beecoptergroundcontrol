@@ -3,8 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Qt.labs.qmlmodels
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 AnalyzePage {
     id: logDownloadPage
@@ -18,7 +18,7 @@ AnalyzePage {
             width: availableWidth
             height: availableHeight
 
-            QGCFlickable {
+            beeCopterFlickable {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 contentWidth: gridLayout.width
@@ -32,7 +32,7 @@ AnalyzePage {
                     columnSpacing: ScreenTools.defaultFontPixelWidth
                     rowSpacing: 0
 
-                    QGCCheckBox {
+                    beeCopterCheckBox {
                         id: headerCheckBox
                         enabled: false
                     }
@@ -40,7 +40,7 @@ AnalyzePage {
                     Repeater {
                         model: LogDownloadController.model
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             Binding on checkState {
                                 value: object.selected ? Qt.Checked : Qt.Unchecked
                             }
@@ -49,20 +49,20 @@ AnalyzePage {
                         }
                     }
 
-                    QGCLabel { text: qsTr("Id") }
+                    beeCopterLabel { text: qsTr("Id") }
 
                     Repeater {
                         model: LogDownloadController.model
 
-                        QGCLabel { text: object.id }
+                        beeCopterLabel { text: object.id }
                     }
 
-                    QGCLabel { text: qsTr("Date") }
+                    beeCopterLabel { text: qsTr("Date") }
 
                     Repeater {
                         model: LogDownloadController.model
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text: {
                                 if (!object.received) {
                                     return ""
@@ -77,20 +77,20 @@ AnalyzePage {
                         }
                     }
 
-                    QGCLabel { text: qsTr("Size") }
+                    beeCopterLabel { text: qsTr("Size") }
 
                     Repeater {
                         model: LogDownloadController.model
 
-                        QGCLabel { text: object.sizeStr }
+                        beeCopterLabel { text: object.sizeStr }
                     }
 
-                    QGCLabel { text: qsTr("Status") }
+                    beeCopterLabel { text: qsTr("Status") }
 
                     Repeater {
                         model: LogDownloadController.model
 
-                        QGCLabel { text: object.status }
+                        beeCopterLabel { text: object.status }
                     }
                 }
             }
@@ -100,13 +100,13 @@ AnalyzePage {
                 Layout.alignment: Qt.AlignTop
                 Layout.fillWidth: false
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth: true
                     enabled: !LogDownloadController.requestingList && !LogDownloadController.downloadingLogs
                     text: qsTr("Refresh")
 
                     onClicked: {
-                        if (!QGroundControl.multiVehicleManager.activeVehicle || QGroundControl.multiVehicleManager.activeVehicle.isOfflineEditingVehicle) {
+                        if (!beeCopter.multiVehicleManager.activeVehicle || beeCopter.multiVehicleManager.activeVehicle.isOfflineEditingVehicle) {
                             mainWindow.showMessageDialog(qsTr("Log Refresh"), qsTr("You must be connected to a vehicle in order to download logs."))
                             return
                         }
@@ -115,7 +115,7 @@ AnalyzePage {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth: true
                     enabled: !LogDownloadController.requestingList && !LogDownloadController.downloadingLogs
                     text: qsTr("Download")
@@ -140,12 +140,12 @@ AnalyzePage {
                         }
 
                         fileDialog.title = qsTr("Select save directory")
-                        fileDialog.folder = QGroundControl.settingsManager.appSettings.logSavePath
+                        fileDialog.folder = beeCopter.settingsManager.appSettings.logSavePath
                         fileDialog.selectFolder = true
                         fileDialog.openForLoad()
                     }
 
-                    QGCFileDialog {
+                    beeCopterFileDialog {
                         id: fileDialog
                         onAcceptedForLoad: (file) => {
                             LogDownloadController.download(file)
@@ -154,7 +154,7 @@ AnalyzePage {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth: true
                     enabled: !LogDownloadController.requestingList && !LogDownloadController.downloadingLogs && (LogDownloadController.model.count > 0)
                     text: qsTr("Erase All")
@@ -166,7 +166,7 @@ AnalyzePage {
                     )
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth: true
                     text: qsTr("Cancel")
                     enabled: LogDownloadController.requestingList || LogDownloadController.downloadingLogs

@@ -1,13 +1,13 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     id:             _joyRoot
 
-    property alias  lightColors:            mapPal.lightColors  ///< true: use light colors from QGCMapPalette for drawing
+    property alias  lightColors:            mapPal.lightColors  ///< true: use light colors from beeCopterMapPalette for drawing
     property real   xAxis:                  0                   ///< Value range [-1,1], negative values left stick, positive values right stick
     property real   yAxis:                  0                   ///< Value range [-1,1], negative values down stick, positive values up stick
     property bool   yAxisPositiveRangeOnly: false               ///< true: value range [0,1], false: value range [-1,1]
@@ -17,8 +17,8 @@ Item {
 
     property real   _centerXY:              width / 2
     property bool   _processTouchPoints:    false
-    property color  _fgColor:               QGroundControl.globalPalette.text
-    property color  _bgColor:               QGroundControl.globalPalette.window
+    property color  _fgColor:               beeCopter.globalPalette.text
+    property color  _bgColor:               beeCopter.globalPalette.window
     property real   _hatWidth:              ScreenTools.defaultFontPixelHeight
     property real   _hatWidthHalf:          _hatWidth / 2
     property bool   calculateYAxisMutex:    true
@@ -26,7 +26,7 @@ Item {
     property real   stickPositionY:         !yAxisReCenter ? height : height / 2
     property bool   alreadyCreated:          false
 
-    QGCMapPalette { id: mapPal }
+    beeCopterMapPalette { id: mapPal }
 
     onStickPositionXChanged:            calculateXAxis()
     onStickPositionYChanged:            calculateYAxis()
@@ -132,8 +132,8 @@ Item {
     /*
     // Keep in for debugging
     Column {
-        QGCLabel { text: xAxis }
-        QGCLabel { text: yAxis }
+        beeCopterLabel { text: xAxis }
+        beeCopterLabel { text: yAxis }
     }
     */
 
@@ -168,7 +168,7 @@ Item {
         }
     }
 
-    QGCColoredImage {
+    beeCopterColoredImage {
         color:                      _fgColor
         visible:                    yAxisPositiveRangeOnly
         height:                     ScreenTools.defaultFontPixelHeight
@@ -182,7 +182,7 @@ Item {
         anchors.verticalCenter:     parent.verticalCenter
     }
 
-    QGCColoredImage {
+    beeCopterColoredImage {
         color:                      _fgColor
         visible:                    yAxisPositiveRangeOnly
         height:                     ScreenTools.defaultFontPixelHeight
@@ -196,7 +196,7 @@ Item {
         anchors.verticalCenter:     parent.verticalCenter
     }
 
-    QGCColoredImage {
+    beeCopterColoredImage {
         color:                      _fgColor
         visible:                    yAxisPositiveRangeOnly
         height:                     ScreenTools.defaultFontPixelHeight
@@ -210,7 +210,7 @@ Item {
         anchors.horizontalCenter:   parent.horizontalCenter
     }
 
-    QGCColoredImage {
+    beeCopterColoredImage {
         color:                      _fgColor
         visible:                    yAxisPositiveRangeOnly
         height:                     ScreenTools.defaultFontPixelHeight

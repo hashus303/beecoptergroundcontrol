@@ -5,18 +5,18 @@ import QtPositioning
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
+import beeCopter.FlightMap
 
 FlightMap {
     id:                         _root
     allowGCSLocationCenter:     true
     allowVehicleLocationCenter: !_keepVehicleCentered
     planView:                   false
-    zoomLevel:                  QGroundControl.flightMapZoom
-    center:                     QGroundControl.flightMapPosition
+    zoomLevel:                  beeCopter.flightMapZoom
+    center:                     beeCopter.flightMapPosition
 
     property Item   pipView
     property Item   pipState:                   _pipState
@@ -25,14 +25,14 @@ FlightMap {
     property bool   pipMode:                    false   // true: map is shown in a small pip mode
     property var    toolInsets                          // Insets for the center viewport area
 
-    property var    _activeVehicle:             QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle:             beeCopter.multiVehicleManager.activeVehicle
     property var    _planMasterController:      planMasterController
     property var    _geoFenceController:        planMasterController.geoFenceController
     property var    _rallyPointController:      planMasterController.rallyPointController
     property var    _activeVehicleCoordinate:   _activeVehicle ? _activeVehicle.coordinate : QtPositioning.coordinate()
     property real   _toolButtonTopMargin:       parent.height - mainWindow.height + (ScreenTools.defaultFontPixelHeight / 2)
     property real   _toolsMargin:               ScreenTools.defaultFontPixelWidth * 0.75
-    property var    _flyViewSettings:           QGroundControl.settingsManager.flyViewSettings
+    property var    _flyViewSettings:           beeCopter.settingsManager.flyViewSettings
     property bool   _keepMapCenteredOnVehicle:  _flyViewSettings.keepMapCenteredOnVehicle.rawValue
 
     property bool   _disableVehicleTracking:    false
@@ -42,11 +42,11 @@ FlightMap {
     function _adjustMapZoomForPipMode() {
         _saveZoomLevelSetting = false
         if (pipMode) {
-            if (QGroundControl.flightMapZoom > 3) {
-                zoomLevel = QGroundControl.flightMapZoom - 3
+            if (beeCopter.flightMapZoom > 3) {
+                zoomLevel = beeCopter.flightMapZoom - 3
             }
         } else {
-            zoomLevel = QGroundControl.flightMapZoom
+            zoomLevel = beeCopter.flightMapZoom
         }
         _saveZoomLevelSetting = true
     }
@@ -56,17 +56,17 @@ FlightMap {
     onVisibleChanged: {
         if (visible) {
             // Synchronize center position with Plan View
-            center = QGroundControl.flightMapPosition
+            center = beeCopter.flightMapPosition
         }
     }
 
     onZoomLevelChanged: {
         if (_saveZoomLevelSetting) {
-            QGroundControl.flightMapZoom = _root.zoomLevel
+            beeCopter.flightMapZoom = _root.zoomLevel
         }
     }
     onCenterChanged: {
-        QGroundControl.flightMapPosition = _root.center
+        beeCopter.flightMapPosition = _root.center
     }
 
     // We track whether the user has panned or not to correctly handle automatic map positioning
@@ -209,7 +209,7 @@ FlightMap {
         onTriggered:    updateMapToVehiclePosition()
     }
 
-    QGCMapPalette { id: mapPal; lightColors: isSatelliteMap }
+    beeCopterMapPalette { id: mapPal; lightColors: isSatelliteMap }
 
     Connections {
         target:                 _missionController
@@ -240,11 +240,11 @@ FlightMap {
         id:         trajectoryPolyline
         line.width: 3
         line.color: "red"
-        z:          QGroundControl.zOrderTrajectoryLines
+        z:          beeCopter.zOrderTrajectoryLines
         visible:    !pipMode
 
         Connections {
-            target:                 QGroundControl.multiVehicleManager
+            target:                 beeCopter.multiVehicleManager
             function onActiveVehicleChanged(activeVehicle) {
                 trajectoryPolyline.path = _activeVehicle ? _activeVehicle.trajectoryPoints.list() : []
             }
@@ -260,28 +260,28 @@ FlightMap {
 
     // Add the vehicles to the map
     MapItemView {
-        model: QGroundControl.multiVehicleManager.vehicles
+        model: beeCopter.multiVehicleManager.vehicles
         delegate: VehicleMapItem {
             vehicle:        object
             coordinate:     object.coordinate
             map:            _root
             size:           pipMode ? ScreenTools.defaultFontPixelHeight : ScreenTools.defaultFontPixelHeight * 3
-            z:              QGroundControl.zOrderVehicles
+            z:              beeCopter.zOrderVehicles
         }
     }
     // Add distance sensor view
     MapItemView{
-        model: QGroundControl.multiVehicleManager.vehicles
+        model: beeCopter.multiVehicleManager.vehicles
         delegate: ProximityRadarMapView {
             vehicle:        object
             coordinate:     object.coordinate
             map:            _root
-            z:              QGroundControl.zOrderVehicles
+            z:              beeCopter.zOrderVehicles
         }
     }
     // Add ADSB vehicles to the map
     MapItemView {
-        model: QGroundControl.adsbVehicleManager.adsbVehicles
+        model: beeCopter.adsbVehicleManager.adsbVehicles
         delegate: VehicleMapItem {
             coordinate:     object.coordinate
             altitude:       object.altitude
@@ -290,13 +290,13 @@ FlightMap {
             alert:          object.alert
             map:            _root
             size:           pipMode ? ScreenTools.defaultFontPixelHeight : ScreenTools.defaultFontPixelHeight * 2.5
-            z:              QGroundControl.zOrderVehicles
+            z:              beeCopter.zOrderVehicles
         }
     }
 
     // Add the items associated with each vehicles flight plan to the map
     Repeater {
-        model: QGroundControl.multiVehicleManager.vehicles
+        model: beeCopter.multiVehicleManager.vehicles
 
         PlanMapItems {
             map:                    _root
@@ -336,7 +336,7 @@ FlightMap {
             anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
             coordinate:     object.coordinate
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
 
             sourceItem: MissionItemIndexLabel {
                 id:         itemIndexLabel
@@ -351,12 +351,12 @@ FlightMap {
 
         delegate: CameraTriggerIndicator {
             coordinate:     object.coordinate
-            z:              QGroundControl.zOrderTopMost
+            z:              beeCopter.zOrderTopMost
         }
     }
 
     // GoTo Location forward flight circle visuals
-    QGCMapCircleVisuals {
+    beeCopterMapCircleVisuals {
         id:                 fwdFlightGotoMapCircle
         mapControl:         parent
         mapCircle:          _fwdFlightGotoMapCircle
@@ -398,7 +398,7 @@ FlightMap {
             _fwdFlightGotoMapCircle._restoreRadius()
         }
 
-        QGCMapCircle {
+        beeCopterMapCircle {
             id:                 _fwdFlightGotoMapCircle
             interactive:        false
             showRotation:       true
@@ -431,7 +431,7 @@ FlightMap {
     MapQuickItem {
         id:             gotoLocationItem
         visible:        false
-        z:              QGroundControl.zOrderMapItems
+        z:              beeCopter.zOrderMapItems
         anchorPoint.x:  sourceItem.anchorPointX
         anchorPoint.y:  sourceItem.anchorPointY
         sourceItem: MissionItemIndexLabel {
@@ -494,7 +494,7 @@ FlightMap {
     }
 
     // Orbit editing visuals
-    QGCMapCircleVisuals {
+    beeCopterMapCircleVisuals {
         id:             orbitMapCircle
         mapControl:     parent
         mapCircle:      _mapCircle
@@ -505,7 +505,7 @@ FlightMap {
         readonly property real defaultRadius: 30
 
         Connections {
-            target: QGroundControl.multiVehicleManager
+            target: beeCopter.multiVehicleManager
             function onActiveVehicleChanged(activeVehicle) {
                 if (!activeVehicle) {
                     orbitMapCircle.visible = false
@@ -538,7 +538,7 @@ FlightMap {
 
         Component.onCompleted: globals.guidedControllerFlyView.orbitMapCircle = orbitMapCircle
 
-        QGCMapCircle {
+        beeCopterMapCircle {
             id:                 _mapCircle
             interactive:        true
             radius.rawValue:    30
@@ -551,7 +551,7 @@ FlightMap {
     MapQuickItem {
         id:             roiLocationItem
         visible:        _activeVehicle && _activeVehicle.isROIEnabled
-        z:              QGroundControl.zOrderMapItems
+        z:              beeCopter.zOrderMapItems
         anchorPoint.x:  sourceItem.anchorPointX
         anchorPoint.y:  sourceItem.anchorPointY
 
@@ -587,7 +587,7 @@ FlightMap {
     }
 
     // Orbit telemetry visuals
-    QGCMapCircleVisuals {
+    beeCopterMapCircleVisuals {
         id:             orbitTelemetryCircle
         mapControl:     parent
         mapCircle:      _activeVehicle ? _activeVehicle.orbitMapCircle : null
@@ -631,7 +631,7 @@ FlightMap {
                 ColumnLayout {
                     spacing: ScreenTools.defaultFontPixelWidth / 2
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Cancel ROI")
                         onClicked: {
@@ -640,7 +640,7 @@ FlightMap {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Edit Position")
                         onClicked: {
@@ -665,7 +665,7 @@ FlightMap {
                 ColumnLayout {
                     spacing: ScreenTools.defaultFontPixelWidth / 2
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Go to location")
                         visible:            globals.guidedControllerFlyView.showGotoLocation
@@ -682,7 +682,7 @@ FlightMap {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Orbit at location")
                         visible:            globals.guidedControllerFlyView.showOrbit
@@ -693,7 +693,7 @@ FlightMap {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("ROI at location")
                         visible:            globals.guidedControllerFlyView.showROI
@@ -703,7 +703,7 @@ FlightMap {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Set home here")
                         visible:            globals.guidedControllerFlyView.showSetHome
@@ -713,7 +713,7 @@ FlightMap {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Set Estimator Origin")
                         visible:            globals.guidedControllerFlyView.showSetEstimatorOrigin
@@ -723,7 +723,7 @@ FlightMap {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Set Heading")
                         visible:            globals.guidedControllerFlyView.showChangeHeading
@@ -735,8 +735,8 @@ FlightMap {
 
                     ColumnLayout {
                         spacing: 0
-                        QGCLabel { text: qsTr("Lat: %1").arg(mapClickCoord.latitude.toFixed(6)) }
-                        QGCLabel { text: qsTr("Lon: %1").arg(mapClickCoord.longitude.toFixed(6)) }
+                        beeCopterLabel { text: qsTr("Lat: %1").arg(mapClickCoord.latitude.toFixed(6)) }
+                        beeCopterLabel { text: qsTr("Lon: %1").arg(mapClickCoord.longitude.toFixed(6)) }
                     }
                 }
             }
@@ -764,7 +764,7 @@ FlightMap {
         anchors.left:       parent.left
         anchors.top:        parent.top
         mapControl:         _root
-        visible:            !ScreenTools.isTinyScreen && QGroundControl.corePlugin.options.flyView.showMapScale && mapControl.pipState.state === mapControl.pipState.windowState
+        visible:            !ScreenTools.isTinyScreen && beeCopter.corePlugin.options.flyView.showMapScale && mapControl.pipState.state === mapControl.pipState.windowState
 
         property real centerInset: visible ? parent.height - y : 0
     }

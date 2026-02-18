@@ -4,12 +4,12 @@ import QtQuick.Dialogs
 import QtQuick.Layouts
 import QtQuick.Window
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
-import QGroundControl.FlyView
-import QGroundControl.FlightMap
-import QGroundControl.Toolbar
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
+import beeCopter.FlyView
+import beeCopter.FlightMap
+import beeCopter.Toolbar
 
 /// @brief Native QML top level window
 /// All properties defined here are visible to all QML pages.
@@ -33,7 +33,7 @@ ApplicationWindow {
         id: firstRunPromptManager
 
         property var currentDialog:     null
-        property var rgPromptIds:       QGroundControl.corePlugin.firstRunPromptsToShow()
+        property var rgPromptIds:       beeCopter.corePlugin.firstRunPromptsToShow()
         property int nextPromptIdIndex: 0
 
         function clearNextPromptSignal() {
@@ -44,7 +44,7 @@ ApplicationWindow {
 
         function nextPrompt() {
             if (nextPromptIdIndex < rgPromptIds.length) {
-                var component = Qt.createComponent(QGroundControl.corePlugin.firstRunPromptResource(rgPromptIds[nextPromptIdIndex]));
+                var component = Qt.createComponent(beeCopter.corePlugin.firstRunPromptResource(rgPromptIds[nextPromptIdIndex]));
                 currentDialog = component.createObject(mainWindow)
                 currentDialog.closed.connect(nextPrompt)
                 currentDialog.open()
@@ -64,13 +64,13 @@ ApplicationWindow {
     QtObject {
         id: globals
 
-        readonly property var       activeVehicle:                  QGroundControl.multiVehicleManager.activeVehicle
+        readonly property var       activeVehicle:                  beeCopter.multiVehicleManager.activeVehicle
         readonly property real      defaultTextHeight:              ScreenTools.defaultFontPixelHeight
         readonly property real      defaultTextWidth:               ScreenTools.defaultFontPixelWidth
         readonly property var       planMasterControllerFlyView:    flyView.planController
         readonly property var       guidedControllerFlyView:        flyView.guidedController
 
-        // Number of QGCTextField's with validation errors. Used to prevent closing panels with validation errors.
+        // Number of beeCopterTextField's with validation errors. Used to prevent closing panels with validation errors.
         property int                validationErrorCount:           0
 
         // Property to manage RemoteID quick access to settings page
@@ -78,7 +78,7 @@ ApplicationWindow {
     }
 
     /// Default color palette used throughout the UI
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     //-------------------------------------------------------------------------
     //-- Actions
@@ -123,11 +123,11 @@ ApplicationWindow {
     }
 
     function showAnalyzeTool() {
-        showTool(qsTr("Analyze Tools"), "qrc:/qml/QGroundControl/AnalyzeView/AnalyzeView.qml", "/qmlimages/Analyze.svg")
+        showTool(qsTr("Analyze Tools"), "qrc:/qml/beeCopter/AnalyzeView/AnalyzeView.qml", "/qmlimages/Analyze.svg")
     }
 
     function showVehicleConfig() {
-        showTool(qsTr("Vehicle Configuration"), "qrc:/qml/QGroundControl/VehicleSetup/SetupView.qml", "/qmlimages/Gears.svg")
+        showTool(qsTr("Vehicle Configuration"), "qrc:/qml/beeCopter/VehicleSetup/SetupView.qml", "/qmlimages/Gears.svg")
     }
 
     function showVehicleConfigParametersPage() {
@@ -144,7 +144,7 @@ ApplicationWindow {
     }
 
     function showSettingsTool(settingsPage = "") {
-        showTool(qsTr("Application Settings"), "qrc:/qml/QGroundControl/Controls/AppSettings.qml", "/res/QGCLogoWhite")
+        showTool(qsTr("Application Settings"), "qrc:/qml/beeCopter/Controls/AppSettings.qml", "/res/beeCopterLogoWhite")
         if (settingsPage !== "") {
             toolDrawerLoader.item.showSettingsPage(settingsPage)
         }
@@ -157,7 +157,7 @@ ApplicationWindow {
         simpleMessageDialogComponent.createObject(mainWindow, { title: dialogTitle, text: dialogText, buttons: buttons, acceptFunction: acceptFunction, closeFunction: closeFunction }).open()
     }
 
-    // This variant is only meant to be called by QGCApplication
+    // This variant is only meant to be called by beeCopterApplication
     function _showMessageDialog(dialogTitle, dialogText) {
         showMessageDialog(dialogTitle, dialogText)
     }
@@ -165,7 +165,7 @@ ApplicationWindow {
     Component {
         id: simpleMessageDialogComponent
 
-        QGCSimpleMessageDialog {
+        beeCopterSimpleMessageDialog {
         }
     }
 
@@ -176,8 +176,8 @@ ApplicationWindow {
         // For some reason on the Qml side Qt doesn't automatically disconnect a signal when an object is destroyed.
         // So we have to do it ourselves otherwise the signal flows through on app shutdown to an object which no longer exists.
         firstRunPromptManager.clearNextPromptSignal()
-        QGroundControl.linkManager.shutdown()
-        QGroundControl.videoManager.stopVideo();
+        beeCopter.linkManager.shutdown()
+        beeCopter.videoManager.stopVideo();
         mainWindow.close()
     }
 
@@ -201,7 +201,7 @@ ApplicationWindow {
         return true
     }
 
-    property string closeDialogTitle: qsTr("Close %1").arg(QGroundControl.appName)
+    property string closeDialogTitle: qsTr("Close %1").arg(beeCopter.appName)
 
     function checkForUnsavedMission() {
         if (planView._planMasterController.dirty) {
@@ -216,8 +216,8 @@ ApplicationWindow {
     }
 
     function checkForPendingParameterWrites() {
-        for (var index=0; index<QGroundControl.multiVehicleManager.vehicles.count; index++) {
-            if (QGroundControl.multiVehicleManager.vehicles.get(index).parameterManager.pendingWrites) {
+        for (var index=0; index<beeCopter.multiVehicleManager.vehicles.count; index++) {
+            if (beeCopter.multiVehicleManager.vehicles.get(index).parameterManager.pendingWrites) {
                 mainWindow.showMessageDialog(closeDialogTitle,
                     qsTr("You have pending parameter updates to a vehicle. If you close you will lose changes. Are you sure you want to close?"),
                     Dialog.Yes | Dialog.No,
@@ -229,7 +229,7 @@ ApplicationWindow {
     }
 
     function checkForActiveConnections() {
-        if (QGroundControl.multiVehicleManager.activeVehicle) {
+        if (beeCopter.multiVehicleManager.activeVehicle) {
             mainWindow.showMessageDialog(closeDialogTitle,
                 qsTr("There are still active connections to vehicles. Are you sure you want to exit?"),
                 Dialog.Yes | Dialog.No,
@@ -249,7 +249,7 @@ ApplicationWindow {
 
     background: Rectangle {
         anchors.fill:   parent
-        color:          QGroundControl.globalPalette.window
+        color:          beeCopter.globalPalette.window
     }
 
     FlyView {
@@ -264,7 +264,7 @@ ApplicationWindow {
     }
 
     footer: LogReplayStatusBar {
-        visible: QGroundControl.settingsManager.flyViewSettings.showLogReplayStatusBar.rawValue
+        visible: beeCopter.settingsManager.flyViewSettings.showLogReplayStatusBar.rawValue
     }
 
     MessageDialog {
@@ -277,11 +277,11 @@ ApplicationWindow {
     MessageDialog {
         id:                 advancedModeOnConfirmation
         title:              qsTr("Advanced Mode")
-        text:               QGroundControl.corePlugin.showAdvancedUIMessage
+        text:               beeCopter.corePlugin.showAdvancedUIMessage
         buttons:            MessageDialog.Yes | MessageDialog.No
         onButtonClicked: function (button, role) {
             if (button === MessageDialog.Yes) {
-                QGroundControl.corePlugin.showAdvancedUI = true
+                beeCopter.corePlugin.showAdvancedUI = true
             }
         }
     }
@@ -293,7 +293,7 @@ ApplicationWindow {
         buttons:            MessageDialog.Yes | MessageDialog.No
         onButtonClicked: function (button, role) {
             if (button === MessageDialog.Yes) {
-                QGroundControl.corePlugin.showAdvancedUI = false
+                beeCopter.corePlugin.showAdvancedUI = false
             }
         }
     }
@@ -315,7 +315,7 @@ ApplicationWindow {
         id:             toolDrawer
         anchors.fill:   parent
         visible:        false
-        color:          qgcPal.window
+        color:          beeCopterPal.window
 
         property var backIcon
         property string toolTitle
@@ -339,7 +339,7 @@ ApplicationWindow {
             anchors.right:  parent.right
             anchors.top:    parent.top
             height:         ScreenTools.toolbarHeight
-            color:          qgcPal.toolbarBackground
+            color:          beeCopterPal.toolbarBackground
 
             RowLayout {
                 id:                 toolDrawerToolbarLayout
@@ -349,15 +349,15 @@ ApplicationWindow {
                 anchors.bottom:     parent.bottom
                 spacing:            ScreenTools.defaultFontPixelWidth
 
-                QGCToolBarButton {
-                    id: qgcButton
+                beeCopterToolBarButton {
+                    id: beeCopterButton
                     height: parent.height
-                    icon.source: "/res/QGCLogoFull.svg"
+                    icon.source: "/res/beeCopterLogoFull.svg"
                     logo: true
                     onClicked: mainWindow.showToolSelectDialog()
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     id:             toolbarDrawerText
                     text:           toolDrawer.toolTitle
                     font.pointSize: ScreenTools.largeFontPointSize
@@ -385,7 +385,7 @@ ApplicationWindow {
 
     function showCriticalVehicleMessage(message) {
         closeIndicatorDrawer()
-        if (criticalVehicleMessagePopup.visible || QGroundControl.videoManager.fullScreen) {
+        if (criticalVehicleMessagePopup.visible || beeCopter.videoManager.fullScreen) {
             // We received additional warning message while an older warning message was still displayed.
             // When the user close the older one drop the message indicator tool so they can see the rest of them.
             criticalVehicleMessagePopup.additionalCriticalMessagesReceived = true
@@ -410,30 +410,30 @@ ApplicationWindow {
 
         background: Rectangle {
             anchors.fill:   parent
-            color:          qgcPal.alertBackground
+            color:          beeCopterPal.alertBackground
             radius:         ScreenTools.defaultFontPixelHeight * 0.5
-            border.color:   qgcPal.alertBorder
+            border.color:   beeCopterPal.alertBorder
             border.width:   2
 
             Rectangle {
                 anchors.horizontalCenter:   parent.horizontalCenter
                 anchors.top:                parent.top
                 anchors.topMargin:          -(height / 2)
-                color:                      qgcPal.alertBackground
+                color:                      beeCopterPal.alertBackground
                 radius:                     ScreenTools.defaultFontPixelHeight * 0.25
-                border.color:               qgcPal.alertBorder
+                border.color:               beeCopterPal.alertBorder
                 border.width:               1
                 width:                      vehicleWarningLabel.contentWidth + _margins
                 height:                     vehicleWarningLabel.contentHeight + _margins
 
                 property real _margins: ScreenTools.defaultFontPixelHeight * 0.25
 
-                QGCLabel {
+                beeCopterLabel {
                     id:                 vehicleWarningLabel
                     anchors.centerIn:   parent
                     text:               qsTr("Vehicle Error")
                     font.pointSize:     ScreenTools.smallFontPointSize
-                    color:              qgcPal.alertText
+                    color:              beeCopterPal.alertText
                 }
             }
 
@@ -442,9 +442,9 @@ ApplicationWindow {
                 anchors.horizontalCenter:   parent.horizontalCenter
                 anchors.bottom:             parent.bottom
                 anchors.bottomMargin:       -(height / 2)
-                color:                      qgcPal.alertBackground
+                color:                      beeCopterPal.alertBackground
                 radius:                     ScreenTools.defaultFontPixelHeight * 0.25
-                border.color:               qgcPal.alertBorder
+                border.color:               beeCopterPal.alertBorder
                 border.width:               1
                 width:                      additionalErrorsLabel.contentWidth + _margins
                 height:                     additionalErrorsLabel.contentHeight + _margins
@@ -452,22 +452,22 @@ ApplicationWindow {
 
                 property real _margins: ScreenTools.defaultFontPixelHeight * 0.25
 
-                QGCLabel {
+                beeCopterLabel {
                     id:                 additionalErrorsLabel
                     anchors.centerIn:   parent
                     text:               qsTr("Additional errors received")
                     font.pointSize:     ScreenTools.smallFontPointSize
-                    color:              qgcPal.alertText
+                    color:              beeCopterPal.alertText
                 }
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             id:                 criticalVehicleMessageText
             width:              criticalVehicleMessagePopup.width - ScreenTools.defaultFontPixelHeight
             anchors.centerIn:   parent
             wrapMode:           Text.WordWrap
-            color:              qgcPal.alertText
+            color:              beeCopterPal.alertText
             textFormat:         TextEdit.RichText
         }
 
@@ -479,7 +479,7 @@ ApplicationWindow {
                     criticalVehicleMessagePopup.additionalCriticalMessagesReceived = false;
                     flyView.dropMainStatusIndicatorTool();
                 } else {
-                    QGroundControl.multiVehicleManager.activeVehicle.resetErrorLevelMessages();
+                    beeCopter.multiVehicleManager.activeVehicle.resetErrorLevelMessages();
                 }
             }
         }
@@ -541,7 +541,7 @@ ApplicationWindow {
             Rectangle {
                 id:             backgroundRect
                 anchors.fill:   parent
-                color:          QGroundControl.globalPalette.window
+                color:          beeCopter.globalPalette.window
                 radius:         indicatorDrawer._margins
                 opacity:        0.85
             }
@@ -552,24 +552,24 @@ ApplicationWindow {
                 width:                      ScreenTools.largeFontPixelHeight
                 height:                     width
                 radius:                     width / 2
-                color:                      QGroundControl.globalPalette.button
-                border.color:               QGroundControl.globalPalette.buttonText
+                color:                      beeCopter.globalPalette.button
+                border.color:               beeCopter.globalPalette.buttonText
                 visible:                    indicatorDrawerLoader.item && indicatorDrawerLoader.item.showExpand && !indicatorDrawer._expanded
 
-                QGCLabel {
+                beeCopterLabel {
                     anchors.centerIn:   parent
                     text:               ">"
-                    color:              QGroundControl.globalPalette.buttonText
+                    color:              beeCopter.globalPalette.buttonText
                 }
 
-                QGCMouseArea {
+                beeCopterMouseArea {
                     fillItem: parent
                     onClicked: indicatorDrawer._expanded = true
                 }
             }
         }
 
-        contentItem: QGCFlickable {
+        contentItem: beeCopterFlickable {
             id:             indicatorDrawerLoaderFlickable
             implicitWidth:  Math.min(mainWindow.contentItem.width - (2 * indicatorDrawer._margins) - (indicatorDrawer.padding * 2), indicatorDrawerLoader.width)
             implicitHeight: Math.min(mainWindow.contentItem.height - ScreenTools.toolbarHeight - (2 * indicatorDrawer._margins) - (indicatorDrawer.padding * 2), indicatorDrawerLoader.height)
@@ -615,7 +615,7 @@ ApplicationWindow {
             property alias source: loader.source
 
             Rectangle {
-                color:          QGroundControl.globalPalette.window
+                color:          beeCopter.globalPalette.window
                 anchors.fill:   parent
 
                 Loader {

@@ -3,17 +3,17 @@
 #include "MavlinkCameraControl.h"
 #include "QmlObjectListModel.h"
 
-class QGCVideoStreamInfo;
+class beeCopterVideoStreamInfo;
 class QNetworkAccessManager;
 class QDomNode;
 class QDomNodeList;
 
 //-----------------------------------------------------------------------------
 /// Camera option exclusions
-class QGCCameraOptionExclusion : public QObject
+class beeCopterCameraOptionExclusion : public QObject
 {
 public:
-    QGCCameraOptionExclusion(QObject* parent, QString param_, QString value_, QStringList exclusions_);
+    beeCopterCameraOptionExclusion(QObject* parent, QString param_, QString value_, QStringList exclusions_);
     QString param;
     QString value;
     QStringList exclusions;
@@ -21,10 +21,10 @@ public:
 
 //-----------------------------------------------------------------------------
 /// Camera option ranges
-class QGCCameraOptionRange : public QObject
+class beeCopterCameraOptionRange : public QObject
 {
 public:
-    QGCCameraOptionRange(QObject* parent, QString param_, QString value_, QString targetParam_, QString condition_, QStringList optNames_, QStringList optValues_);
+    beeCopterCameraOptionRange(QObject* parent, QString param_, QString value_, QString targetParam_, QString condition_, QStringList optNames_, QStringList optValues_);
     QString param;
     QString value;
     QString targetParam;
@@ -92,8 +92,8 @@ public:
     virtual qreal               focusLevel          () const { return _focusLevel; }
 
     virtual QmlObjectListModel* streams             () { return &_streams; }
-    virtual QGCVideoStreamInfo* currentStreamInstance();
-    virtual QGCVideoStreamInfo* thermalStreamInstance();
+    virtual beeCopterVideoStreamInfo* currentStreamInstance();
+    virtual beeCopterVideoStreamInfo* thermalStreamInstance();
     virtual int                 currentStream       () const { return _currentStream; }
     virtual void                setCurrentStream    (int stream);
     virtual bool                autoStream          () const;
@@ -201,8 +201,8 @@ protected:
     virtual void    _requestStreamInfo      (uint8_t streamID);
     virtual void    _requestStreamStatus    (uint8_t streamID);
     virtual void    _requestTrackingStatus  ();
-    virtual QGCVideoStreamInfo* _findStream (uint8_t streamID, bool report = true);
-    virtual QGCVideoStreamInfo* _findStream (const QString name);
+    virtual beeCopterVideoStreamInfo* _findStream (uint8_t streamID, bool report = true);
+    virtual beeCopterVideoStreamInfo* _findStream (const QString name);
 
 protected slots:
     virtual void    _initWhenReady          ();
@@ -262,11 +262,11 @@ protected:
     QStringList                         _activeSettings;
     QStringList                         _settings;
     QTimer                              _captureStatusTimer;
-    QList<QGCCameraOptionExclusion*>    _valueExclusions;
-    QList<QGCCameraOptionRange*>        _optionRanges;
+    QList<beeCopterCameraOptionExclusion*>    _valueExclusions;
+    QList<beeCopterCameraOptionRange*>        _optionRanges;
     QMap<QString, QStringList>          _originalOptNames;
     QMap<QString, QVariantList>         _originalOptValues;
-    QMap<QString, QGCCameraParamIO*>    _paramIO;
+    QMap<QString, beeCopterCameraParamIO*>    _paramIO;
     int                                 _cameraSettingsRetries = 0;
     int                                 _cameraCaptureStatusRetries = 0;
     int                                 _storageInfoRetries = 0;

@@ -28,7 +28,7 @@ CPMAddPackage(
         "EARCUT_BUILD_VIZ OFF"
 )
 
-qgc_disable_dependency_warnings(earcut_hpp)
+beeCopter_disable_dependency_warnings(earcut_hpp)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE earcut_hpp::earcut_hpp)
 
@@ -49,7 +49,7 @@ CPMAddPackage(
         "EXPAT_SHARED_LIBS OFF"
 )
 
-qgc_disable_dependency_warnings(expat)
+beeCopter_disable_dependency_warnings(expat)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE expat)
 

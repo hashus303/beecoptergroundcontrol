@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 ColumnLayout {
     property real _availableHeight: availableHeight
@@ -14,7 +14,7 @@ ColumnLayout {
     GridLayout {
         columns: 2
 
-        QGCLabel {
+        beeCopterLabel {
             text:               qsTr("Position control mode (set this to 'simple' during tuning):")
             visible:            _mcPosMode
         }

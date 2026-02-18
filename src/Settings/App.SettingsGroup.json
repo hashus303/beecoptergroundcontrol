@@ -1,7 +1,7 @@
 {
     "version":      1,
     "fileType":  "FactMetaData",
-    "QGC.MetaData.Facts":
+    "beeCopter.MetaData.Facts":
 [
 {
     "name":             "offlineEditingFirmwareClass",
@@ -117,7 +117,7 @@
     "enumStrings":          "Disabled,Error,Warning,FixMe,Info,Debug,Log,Trace",
     "enumValues":           "0,1,2,3,4,5,6,7",
     "default":              0,
-    "qgcRebootRequired":    true
+    "beeCopterRebootRequired":    true
 },
 {
     "name":             "useChecklist",
@@ -172,7 +172,7 @@
     "longDesc":             "If this option is enabled, application data will not be saved to the SD card.",
     "type":                 "bool",
     "default":              false,
-    "qgcRebootRequired":    true
+    "beeCopterRebootRequired":    true
 },
 {
     "name":             "tiandituToken",
@@ -243,8 +243,8 @@
     "shortDesc":            "Language",
     "type":                 "uint32",
     "default":              0,
-    "qgcRebootRequired":    true,
-    "comment":              "QLocale::Language id. Fact enum metadata is setup in AppSettings code. QGC reboot required in order to load new json translations into FactMetaData."
+    "beeCopterRebootRequired":    true,
+    "comment":              "QLocale::Language id. Fact enum metadata is setup in AppSettings code. beeCopter reboot required in order to load new json translations into FactMetaData."
 },
 {
     "name":             "disableAllPersistence",

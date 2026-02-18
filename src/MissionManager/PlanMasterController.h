@@ -10,7 +10,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(PlanMasterControllerLog)
 
-class QGCCompressionJob;
+class beeCopterCompressionJob;
 class QmlObjectListModel;
 class MultiVehicleManager;
 class Vehicle;
@@ -160,6 +160,6 @@ private:
     bool                    _previousOverallDirty =     false;
     QmlObjectListModel*     _planCreators =             nullptr;
     bool                    _manualCreation =           false;
-    QGCCompressionJob*      _extractionJob =            nullptr;
+    beeCopterCompressionJob*      _extractionJob =            nullptr;
     QString                 _extractionOutputDir;
 };

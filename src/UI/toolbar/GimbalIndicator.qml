@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Item {
     id:             control
@@ -14,13 +14,13 @@ Item {
 
     property bool   showIndicator:              gimbalController.gimbals.count
 
-    property var    activeVehicle:              QGroundControl.multiVehicleManager.activeVehicle
+    property var    activeVehicle:              beeCopter.multiVehicleManager.activeVehicle
     property var    gimbalController:           activeVehicle.gimbalController
     property var    gimbals:                    gimbalController.gimbals
     property var    activeGimbal:               gimbalController.activeGimbal
     property var    multiGimbalSetup:           gimbalController.gimbals.count > 1
     property bool   joystickButtonsAvailable:   activeVehicle ? joystickManager.joystickEnabledForVehicle(activeVehicle) : false
-    property bool   showAzimuth:                QGroundControl.settingsManager.gimbalControllerSettings.toolbarIndicatorShowAzimuth.rawValue
+    property bool   showAzimuth:                beeCopter.settingsManager.gimbalControllerSettings.toolbarIndicatorShowAzimuth.rawValue
 
     property var    margins:                    ScreenTools.defaultFontPixelWidth
     property var    panelRadius:                ScreenTools.defaultFontPixelWidth * 0.5
@@ -29,7 +29,7 @@ Item {
     property var    separatorHeight:            buttonHeight * 0.9
     property var    settingsPanelVisible:       false
 
-    property var _gimbalControllerSettings: QGroundControl.settingsManager.gimbalControllerSettings
+    property var _gimbalControllerSettings: beeCopter.settingsManager.gimbalControllerSettings
 
     function _updateJoystickEnabled() {
         joystickButtonsAvailable = activeVehicle ? joystickManager.joystickEnabledForVehicle(activeVehicle) : false
@@ -40,7 +40,7 @@ Item {
         function onJoystickEnabledChanged() { _updateJoystickEnabled() }
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     Row {
         id:             gimbalIndicatorRow
@@ -53,7 +53,7 @@ Item {
             anchors.bottom: parent.bottom
             spacing:        0
 
-            QGCColoredImage {
+            beeCopterColoredImage {
                 id:                      gimbalIndicatorIcon
                 anchors.horizontalCenter: parent.horizontalCenter
                 width:                   height
@@ -61,16 +61,16 @@ Item {
                 source:                  "/res/CameraGimbal.png"
                 fillMode:                Image.PreserveAspectFit
                 sourceSize.height:       height
-                color:                   qgcPal.windowTransparentText
+                color:                   beeCopterPal.windowTransparentText
 
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                     gimbalIdLabel
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.pointSize:         ScreenTools.smallFontPointSize
                 text:                   activeGimbal ? activeGimbal.deviceId.rawValue : ""
-                color:                  qgcPal.windowTransparentText
+                color:                  beeCopterPal.windowTransparentText
                 visible:                multiGimbalSetup
             }
         }
@@ -83,23 +83,23 @@ Item {
             rowSpacing:     0
             columnSpacing:  margins / 2
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                     statusLabel
                 font.pointSize:         ScreenTools.smallFontPointSize
                 text:                   activeGimbal && activeGimbal.retracted ?
                                             qsTr("Retracted") :
                                             (activeGimbal && activeGimbal.yawLock ? qsTr("Yaw locked") : qsTr("Yaw follow"))
-                color:                  qgcPal.windowTransparentText
+                color:                  beeCopterPal.windowTransparentText
                 Layout.columnSpan:      2
                 Layout.alignment:       Qt.AlignHCenter
             }
-            QGCLabel {
+            beeCopterLabel {
                 id:             pitchLabel
                 font.pointSize: ScreenTools.smallFontPointSize
                 text:           activeGimbal ? qsTr("P: ") + activeGimbal.absolutePitch.valueString : ""
-                color:          qgcPal.windowTransparentText
+                color:          beeCopterPal.windowTransparentText
             }
-            QGCLabel {
+            beeCopterLabel {
                 id:             panLabel
                 font.pointSize: ScreenTools.smallFontPointSize
                 text:           activeGimbal ?
@@ -107,7 +107,7 @@ Item {
                                         (qsTr("Az: ") + activeGimbal.absoluteYaw.valueString) :
                                         (qsTr("Y: ") + activeGimbal.bodyYaw.valueString)) :
                                     ""
-                color:          qgcPal.windowTransparentText
+                color:          beeCopterPal.windowTransparentText
             }
         }
     }
@@ -138,7 +138,7 @@ Item {
                 heading: qsTr("Active Gimbal")
                 visible: multiGimbalSetup
 
-                QGCComboBox {
+                beeCopterComboBox {
                     id:                     gimbalSelectorCombo
                     Layout.fillWidth:       true
                     visible:                multiGimbalSetup
@@ -170,7 +170,7 @@ Item {
                 heading:        qsTr("Commands")
                 showDividers:   false
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth:   true
                     text:               activeGimbal.yawLock ? qsTr("Yaw Follow") : qsTr("Yaw Lock")
                     visible:            activeGimbal.supportsYawLock
@@ -180,7 +180,7 @@ Item {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth:   true
                     text:               qsTr("Center")
                     onClicked: {
@@ -189,7 +189,7 @@ Item {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth:   true
                     text:               qsTr("Tilt 90")
                     onClicked: {
@@ -198,7 +198,7 @@ Item {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth:   true
                     text:               qsTr("Point Home")
                     onClicked: {
@@ -207,7 +207,7 @@ Item {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth:   true
                     text:               qsTr("Retract")
                     visible:            activeGimbal.supportsRetract
@@ -217,7 +217,7 @@ Item {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth:   true
                     text:               activeGimbal.gimbalHaveControl ? qsTr("Release Control") : qsTr("Acquire Control")
                     visible:            _gimbalControllerSettings.toolbarIndicatorShowAcquireReleaseControl.rawValue

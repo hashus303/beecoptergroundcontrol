@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 SetupPage {
     pageComponent:  pageComponent
@@ -16,7 +16,7 @@ SetupPage {
             id:                 backgroundRectangle
             width:              availableWidth
             height:             elementsRow.height * 1.5
-            color:              qgcPal.windowShade
+            color:              beeCopterPal.windowShade
 
             GridLayout {
                 id:               elementsRow
@@ -29,25 +29,25 @@ SetupPage {
                 columnSpacing:          ScreenTools.defaultFontPixelWidth
                 rowSpacing:             ScreenTools.defaultFontPixelWidth
 
-                QGCLabel {
-                    visible:            QGroundControl.settingsManager.mavlinkSettings.forwardMavlinkAPMSupportHostName.visible
+                beeCopterLabel {
+                    visible:            beeCopter.settingsManager.mavlinkSettings.forwardMavlinkAPMSupportHostName.visible
                     text:               qsTr("Host name:")
                 }
                 FactTextField {
                     id:                     mavlinkForwardingHostNameField
-                    fact:                   QGroundControl.settingsManager.mavlinkSettings.forwardMavlinkAPMSupportHostName
+                    fact:                   beeCopter.settingsManager.mavlinkSettings.forwardMavlinkAPMSupportHostName
                     Layout.preferredWidth:  ScreenTools.defaultFontPixelWidth * 40
                 }
-                QGCButton {
+                beeCopterButton {
                     text:    qsTr("Connect")
-                    enabled: !QGroundControl.linkManager.mavlinkSupportForwardingEnabled
+                    enabled: !beeCopter.linkManager.mavlinkSupportForwardingEnabled
 
                     onPressed: {
-                        QGroundControl.linkManager.createMavlinkForwardingSupportLink()
+                        beeCopter.linkManager.createMavlinkForwardingSupportLink()
                     }
                 }
-                QGCLabel {
-                    visible:            QGroundControl.linkManager.mavlinkSupportForwardingEnabled
+                beeCopterLabel {
+                    visible:            beeCopter.linkManager.mavlinkSupportForwardingEnabled
                     text:               qsTr("Forwarding traffic: Mavlink traffic will keep being forwarded until application restarts")
                 }
             }

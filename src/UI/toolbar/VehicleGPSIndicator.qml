@@ -1,11 +1,11 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 GPSIndicator {
     property bool showIndicator: _activeVehicle.gps.telemetryAvailable
 
-    property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    property var _activeVehicle: beeCopter.multiVehicleManager.activeVehicle
 }

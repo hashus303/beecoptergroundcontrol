@@ -1,7 +1,7 @@
 #include "APMFirmwarePlugin.h"
 #include "APMAutoPilotPlugin.h"
-#include "QGCMAVLink.h"
-#include "QGCApplication.h"
+#include "beeCopterMAVLink.h"
+#include "beeCopterApplication.h"
 #include "MissionManager.h"
 #include "ParameterManager.h"
 #include "SettingsManager.h"
@@ -18,14 +18,14 @@
 #include "Vehicle.h"
 #include "StatusTextHandler.h"
 #include "MAVLinkProtocol.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "DeviceInfo.h"
 
 #include <QtNetwork/QTcpSocket>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QRegularExpressionMatch>
 
-QGC_LOGGING_CATEGORY(APMFirmwarePluginLog, "FirmwarePlugin.APMFirmwarePlugin")
+beeCopter_LOGGING_CATEGORY(APMFirmwarePluginLog, "FirmwarePlugin.APMFirmwarePlugin")
 
 APMFirmwarePlugin::APMFirmwarePlugin(QObject *parent)
     : FirmwarePlugin(parent)
@@ -171,7 +171,7 @@ void APMFirmwarePlugin::_handleIncomingParamValue(Vehicle *vehicle, mavlink_mess
     mavlink_status_t *mavlinkStatusReEncode = mavlink_get_channel_status(channel);
     mavlinkStatusReEncode->flags |= MAVLINK_STATUS_FLAG_IN_MAVLINK1;
 
-    Q_ASSERT(qgcApp()->thread() == QThread::currentThread());
+    Q_ASSERT(beeCopterApp()->thread() == QThread::currentThread());
     (void) mavlink_msg_param_value_encode_chan(
         message->sysid,
         message->compid,
@@ -346,7 +346,7 @@ void APMFirmwarePlugin::_setInfoSeverity(mavlink_message_t *message) const
 
     statusText.severity = MAV_SEVERITY_INFO;
 
-    Q_ASSERT(qgcApp()->thread() == QThread::currentThread());
+    Q_ASSERT(beeCopterApp()->thread() == QThread::currentThread());
     (void) mavlink_msg_statustext_encode_chan(
         message->sysid,
         message->compid,
@@ -369,7 +369,7 @@ void APMFirmwarePlugin::_adjustCalibrationMessageSeverity(mavlink_message_t *mes
     mavlinkStatusReEncode->flags |= MAVLINK_STATUS_FLAG_IN_MAVLINK1;
     statusText.severity = MAV_SEVERITY_INFO;
 
-    Q_ASSERT(qgcApp()->thread() == QThread::currentThread());
+    Q_ASSERT(beeCopterApp()->thread() == QThread::currentThread());
     (void) mavlink_msg_statustext_encode_chan(
         message->sysid,
         message->compid,
@@ -421,7 +421,7 @@ void APMFirmwarePlugin::initializeStreamRates(Vehicle *vehicle)
     // Which also means than on older firmwares you may be left with some missing features.
 
     // ArduPilot only sends home position on first boot and then when it arms. It does not stream the position.
-    // This means that depending on when QGC connects to the vehicle it may not have home position.
+    // This means that depending on when beeCopter connects to the vehicle it may not have home position.
     // This can cause various features to not be available. So we request home position streaming ourselves.
     vehicle->sendMavCommand(MAV_COMP_ID_AUTOPILOT1, MAV_CMD_SET_MESSAGE_INTERVAL, false /* showError */, MAVLINK_MSG_ID_HOME_POSITION, 1000000 /* 1 second interval in usec */);
 
@@ -456,7 +456,7 @@ APMFirmwarePlugin::FirmwareParameterHeader APMFirmwarePlugin::_parseParamsHeader
         auto match = reStack.match(line);
         if (match.hasMatch()) {
             const QString firmwareTypeStr = match.captured(1).trimmed();
-            const MAV_AUTOPILOT firmwareType = QGCMAVLink::firmwareTypeFromString(firmwareTypeStr);
+            const MAV_AUTOPILOT firmwareType = beeCopterMAVLink::firmwareTypeFromString(firmwareTypeStr);
             data.firmwareType = firmwareType;
             continue;
         }
@@ -465,7 +465,7 @@ APMFirmwarePlugin::FirmwareParameterHeader APMFirmwarePlugin::_parseParamsHeader
         match = reVehicle.match(line);
         if (match.hasMatch()) {
             const QString vehicleTypeStr = match.captured(1).trimmed();
-            const MAV_TYPE vehicleType = QGCMAVLink::vehicleTypeFromString(vehicleTypeStr);
+            const MAV_TYPE vehicleType = beeCopterMAVLink::vehicleTypeFromString(vehicleTypeStr);
             data.vehicleType = vehicleType;
             continue;
         }
@@ -480,7 +480,7 @@ APMFirmwarePlugin::FirmwareParameterHeader APMFirmwarePlugin::_parseParamsHeader
             if (versionType.isEmpty()) {
                 data.versionType = FIRMWARE_VERSION_TYPE_OFFICIAL;
             } else {
-                data.versionType = QGCMAVLink::firmwareVersionTypeFromString(versionType);
+                data.versionType = beeCopterMAVLink::firmwareVersionTypeFromString(versionType);
             }
             continue;
         }
@@ -531,7 +531,7 @@ void APMFirmwarePlugin::_getParameterMetaDataVersionInfo(const QString& metaData
     APMParameterMetaData::getParameterMetaDataVersionInfo(metaDataFile, majorVersion, minorVersion);
 }
 
-QList<MAV_CMD> APMFirmwarePlugin::supportedMissionCommands(QGCMAVLink::VehicleClass_t vehicleClass) const
+QList<MAV_CMD> APMFirmwarePlugin::supportedMissionCommands(beeCopterMAVLink::VehicleClass_t vehicleClass) const
 {
     QList<MAV_CMD> supportedCommands = {
         MAV_CMD_NAV_WAYPOINT,
@@ -571,14 +571,14 @@ QList<MAV_CMD> APMFirmwarePlugin::supportedMissionCommands(QGCMAVLink::VehicleCl
         MAV_CMD_NAV_LAND, MAV_CMD_NAV_TAKEOFF,
     };
 
-    if (vehicleClass == QGCMAVLink::VehicleClassGeneric) {
+    if (vehicleClass == beeCopterMAVLink::VehicleClassGeneric) {
         supportedCommands   += vtolCommands;
         supportedCommands   += flightCommands;
     }
-    if (vehicleClass == QGCMAVLink::VehicleClassVTOL) {
+    if (vehicleClass == beeCopterMAVLink::VehicleClassVTOL) {
         supportedCommands += vtolCommands;
         supportedCommands += flightCommands;
-    } else if (vehicleClass == QGCMAVLink::VehicleClassFixedWing || vehicleClass == QGCMAVLink::VehicleClassMultiRotor) {
+    } else if (vehicleClass == beeCopterMAVLink::VehicleClassFixedWing || vehicleClass == beeCopterMAVLink::VehicleClassMultiRotor) {
         supportedCommands += flightCommands;
     }
 
@@ -589,20 +589,20 @@ QList<MAV_CMD> APMFirmwarePlugin::supportedMissionCommands(QGCMAVLink::VehicleCl
     return supportedCommands;
 }
 
-QString APMFirmwarePlugin::missionCommandOverrides(QGCMAVLink::VehicleClass_t vehicleClass) const
+QString APMFirmwarePlugin::missionCommandOverrides(beeCopterMAVLink::VehicleClass_t vehicleClass) const
 {
     switch (vehicleClass) {
-    case QGCMAVLink::VehicleClassGeneric:
+    case beeCopterMAVLink::VehicleClassGeneric:
         return QStringLiteral(":/json/APM-MavCmdInfoCommon.json");
-    case QGCMAVLink::VehicleClassFixedWing:
+    case beeCopterMAVLink::VehicleClassFixedWing:
         return QStringLiteral(":/json/APM-MavCmdInfoFixedWing.json");
-    case QGCMAVLink::VehicleClassMultiRotor:
+    case beeCopterMAVLink::VehicleClassMultiRotor:
         return QStringLiteral(":/json/APM-MavCmdInfoMultiRotor.json");
-    case QGCMAVLink::VehicleClassVTOL:
+    case beeCopterMAVLink::VehicleClassVTOL:
         return QStringLiteral(":/json/APM-MavCmdInfoVTOL.json");
-    case QGCMAVLink::VehicleClassSub:
+    case beeCopterMAVLink::VehicleClassSub:
         return QStringLiteral(":/json/APM-MavCmdInfoSub.json");
-    case QGCMAVLink::VehicleClassRoverBoat:
+    case beeCopterMAVLink::VehicleClassRoverBoat:
         return QStringLiteral(":/json/APM-MavCmdInfoRover.json");
     default:
         qCWarning(APMFirmwarePluginLog) << "APMFirmwarePlugin::missionCommandOverrides called with bad VehicleClass_t:" << vehicleClass;
@@ -649,11 +649,11 @@ bool APMFirmwarePlugin::hasGripper(const Vehicle *vehicle) const
 const QVariantList &APMFirmwarePlugin::toolIndicators(const Vehicle *vehicle)
 {
     if (_toolIndicatorList.isEmpty()) {
-        // First call the base class to get the standard QGC list
+        // First call the base class to get the standard beeCopter list
         _toolIndicatorList = FirmwarePlugin::toolIndicators(vehicle);
 
         // Add the forwarding support indicator
-        _toolIndicatorList.append(QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/FirmwarePlugin/APM/APMSupportForwardingIndicator.qml")));
+        _toolIndicatorList.append(QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/FirmwarePlugin/APM/APMSupportForwardingIndicator.qml")));
     }
 
     return _toolIndicatorList;
@@ -694,20 +694,20 @@ void APMFirmwarePlugin::_soloVideoHandshake()
 
 void APMFirmwarePlugin::_artooSocketError(QAbstractSocket::SocketError socketError)
 {
-    qgcApp()->showAppMessage(tr("Error during Solo video link setup: %1").arg(socketError));
+    beeCopterApp()->showAppMessage(tr("Error during Solo video link setup: %1").arg(socketError));
 }
 
-QString APMFirmwarePlugin::_vehicleClassToString(QGCMAVLink::VehicleClass_t vehicleClass) const
+QString APMFirmwarePlugin::_vehicleClassToString(beeCopterMAVLink::VehicleClass_t vehicleClass) const
 {
     switch (vehicleClass) {
-    case QGCMAVLink::VehicleClassMultiRotor:
+    case beeCopterMAVLink::VehicleClassMultiRotor:
         return QStringLiteral("Copter");
-    case QGCMAVLink::VehicleClassFixedWing:
-    case QGCMAVLink::VehicleClassVTOL:
+    case beeCopterMAVLink::VehicleClassFixedWing:
+    case beeCopterMAVLink::VehicleClassVTOL:
         return QStringLiteral("Plane");
-    case QGCMAVLink::VehicleClassRoverBoat:
+    case beeCopterMAVLink::VehicleClassRoverBoat:
         return QStringLiteral("Rover");
-    case QGCMAVLink::VehicleClassSub:
+    case beeCopterMAVLink::VehicleClassSub:
         return QStringLiteral("Sub");
     default:
         qCWarning(APMFirmwarePluginLog) << Q_FUNC_INFO << "called with bad VehicleClass_t:" << vehicleClass;
@@ -717,7 +717,7 @@ QString APMFirmwarePlugin::_vehicleClassToString(QGCMAVLink::VehicleClass_t vehi
 
 QString APMFirmwarePlugin::_internalParameterMetaDataFile(const Vehicle *vehicle) const
 {
-    const QGCMAVLink::VehicleClass_t vehicleClass = QGCMAVLink::vehicleClass(vehicle->vehicleType());
+    const beeCopterMAVLink::VehicleClass_t vehicleClass = beeCopterMAVLink::vehicleClass(vehicle->vehicleType());
 
     const QString vehicleName = _vehicleClassToString(vehicleClass);
     if(vehicleName.isEmpty()) {
@@ -795,7 +795,7 @@ out:
 void APMFirmwarePlugin::guidedModeGotoLocation(Vehicle *vehicle, const QGeoCoordinate &gotoCoord, double forwardFlightLoiterRadius) const
 {
     if (qIsNaN(vehicle->altitudeRelative()->rawValue().toDouble())) {
-        qgcApp()->showAppMessage(QStringLiteral("Unable to go to location, vehicle position not known."));
+        beeCopterApp()->showAppMessage(QStringLiteral("Unable to go to location, vehicle position not known."));
         return;
     }
 
@@ -864,12 +864,12 @@ void APMFirmwarePlugin::guidedModeRTL(Vehicle *vehicle, bool smartRTL) const
 void APMFirmwarePlugin::guidedModeChangeAltitude(Vehicle *vehicle, double altitudeChange, bool pauseVehicle)
 {
     if (qIsNaN(vehicle->altitudeRelative()->rawValue().toDouble())) {
-        qgcApp()->showAppMessage(tr("Unable to change altitude, vehicle altitude not known."));
+        beeCopterApp()->showAppMessage(tr("Unable to change altitude, vehicle altitude not known."));
         return;
     }
 
     if (pauseVehicle && !_setFlightModeAndValidate(vehicle, pauseFlightMode())) {
-        qgcApp()->showAppMessage(tr("Unable to pause vehicle."));
+        beeCopterApp()->showAppMessage(tr("Unable to pause vehicle."));
         return;
     }
 
@@ -945,7 +945,7 @@ void APMFirmwarePlugin::guidedModeTakeoff(Vehicle *vehicle, double altitudeRel) 
 void APMFirmwarePlugin::guidedModeChangeHeading(Vehicle *vehicle, const QGeoCoordinate &headingCoord) const
 {
     if (!isCapable(vehicle, FirmwarePlugin::ChangeHeadingCapability)) {
-        qgcApp()->showAppMessage(tr("Vehicle does not support guided rotate"));
+        beeCopterApp()->showAppMessage(tr("Vehicle does not support guided rotate"));
         return;
     }
 
@@ -999,13 +999,13 @@ double APMFirmwarePlugin::minimumTakeoffAltitudeMeters(Vehicle* vehicle) const
 bool APMFirmwarePlugin::_guidedModeTakeoff(Vehicle *vehicle, double altitudeRel) const
 {
     if (!vehicle->multiRotor() && !vehicle->vtol()) {
-        qgcApp()->showAppMessage(tr("Vehicle does not support guided takeoff"));
+        beeCopterApp()->showAppMessage(tr("Vehicle does not support guided takeoff"));
         return false;
     }
 
     const double vehicleAltitudeAMSL = vehicle->altitudeAMSL()->rawValue().toDouble();
     if (qIsNaN(vehicleAltitudeAMSL)) {
-        qgcApp()->showAppMessage(tr("Unable to takeoff, vehicle position not known."));
+        beeCopterApp()->showAppMessage(tr("Unable to takeoff, vehicle position not known."));
         return false;
     }
 
@@ -1015,12 +1015,12 @@ bool APMFirmwarePlugin::_guidedModeTakeoff(Vehicle *vehicle, double altitudeRel)
     }
 
     if (!_setFlightModeAndValidate(vehicle, guidedFlightMode())) {
-        qgcApp()->showAppMessage(tr("Unable to takeoff: Vehicle failed to change to Guided mode."));
+        beeCopterApp()->showAppMessage(tr("Unable to takeoff: Vehicle failed to change to Guided mode."));
         return false;
     }
 
     if (!_armVehicleAndValidate(vehicle)) {
-        qgcApp()->showAppMessage(tr("Unable to takeoff: Vehicle failed to arm."));
+        beeCopterApp()->showAppMessage(tr("Unable to takeoff: Vehicle failed to arm."));
         return false;
     }
 
@@ -1038,18 +1038,18 @@ bool APMFirmwarePlugin::_guidedModeTakeoff(Vehicle *vehicle, double altitudeRel)
 void APMFirmwarePlugin::startTakeoff(Vehicle *vehicle) const
 {
     if (vehicle->flying()) {
-        qgcApp()->showAppMessage(tr("Unable to start takeoff: Vehicle is already in the air."));
+        beeCopterApp()->showAppMessage(tr("Unable to start takeoff: Vehicle is already in the air."));
         return;
     }
 
     if (!vehicle->armed()) {
         if (!_setFlightModeAndValidate(vehicle, takeOffFlightMode())) {
-            qgcApp()->showAppMessage(tr("Unable to start takeoff: Vehicle failed to change to Takeoff mode."));
+            beeCopterApp()->showAppMessage(tr("Unable to start takeoff: Vehicle failed to change to Takeoff mode."));
             return;
         }
 
         if (!_armVehicleAndValidate(vehicle)) {
-            qgcApp()->showAppMessage(tr("Unable to start takeoff: Vehicle failed to arm."));
+            beeCopterApp()->showAppMessage(tr("Unable to start takeoff: Vehicle failed to arm."));
             return;
         }
     }
@@ -1060,7 +1060,7 @@ void APMFirmwarePlugin::startMission(Vehicle *vehicle) const
     if (vehicle->flying()) {
         // Vehicle already in the air, we just need to switch to auto
         if (!_setFlightModeAndValidate(vehicle, missionFlightMode())) {
-            qgcApp()->showAppMessage(tr("Unable to start mission: Vehicle failed to change to Auto mode."));
+            beeCopterApp()->showAppMessage(tr("Unable to start mission: Vehicle failed to change to Auto mode."));
         }
         return;
     }
@@ -1071,18 +1071,18 @@ void APMFirmwarePlugin::startMission(Vehicle *vehicle) const
         // If the vehicle has tilt rotors, it will arm them in forward flight position, being dangerous.
         if (vehicle->fixedWing()) {
             if (!_setFlightModeAndValidate(vehicle, missionFlightMode())) {
-                qgcApp()->showAppMessage(tr("Unable to start mission: Vehicle failed to change to Auto mode."));
+                beeCopterApp()->showAppMessage(tr("Unable to start mission: Vehicle failed to change to Auto mode."));
                 return;
             }
         } else {
             if (!_setFlightModeAndValidate(vehicle, guidedFlightMode())) {
-                qgcApp()->showAppMessage(tr("Unable to start mission: Vehicle failed to change to Guided mode."));
+                beeCopterApp()->showAppMessage(tr("Unable to start mission: Vehicle failed to change to Guided mode."));
                 return;
             }
         }
 
         if (!_armVehicleAndValidate(vehicle)) {
-            qgcApp()->showAppMessage(tr("Unable to start mission: Vehicle failed to arm."));
+            beeCopterApp()->showAppMessage(tr("Unable to start mission: Vehicle failed to arm."));
             return;
         }
     }
@@ -1118,7 +1118,7 @@ void APMFirmwarePlugin::_handleRCChannels(Vehicle *vehicle, mavlink_message_t *m
         mavlink_rc_channels_t channels{};
 
         mavlink_msg_rc_channels_decode(message, &channels);
-        //-- Ardupilot uses 0-254 to indicate 0-100% where QGC expects 0-100
+        //-- Ardupilot uses 0-254 to indicate 0-100% where beeCopter expects 0-100
         // As per mavlink specs, 255 means invalid, we must leave it like that for indicators to hide if no rssi data
         if (channels.rssi && (channels.rssi != 255)) {
             channels.rssi = static_cast<uint8_t>((static_cast<double>(channels.rssi) / 254.0) * 100.0);
@@ -1140,7 +1140,7 @@ void APMFirmwarePlugin::_handleRCChannelsRaw(Vehicle *vehicle, mavlink_message_t
         mavlink_rc_channels_raw_t channels{};
 
         mavlink_msg_rc_channels_raw_decode(message, &channels);
-        //-- Ardupilot uses 0-255 to indicate 0-100% where QGC expects 0-100
+        //-- Ardupilot uses 0-255 to indicate 0-100% where beeCopter expects 0-100
         if (channels.rssi) {
             channels.rssi = static_cast<uint8_t>((static_cast<double>(channels.rssi) / 255.0) * 100.0);
         }
@@ -1160,7 +1160,7 @@ void APMFirmwarePlugin::sendGCSMotionReport(Vehicle *vehicle, const FollowMe::GC
         static bool sentOnce = false;
         if (!sentOnce) {
             sentOnce = true;
-            qgcApp()->showAppMessage(QStringLiteral("Follow failed: Home position not set."));
+            beeCopterApp()->showAppMessage(QStringLiteral("Follow failed: Home position not set."));
         }
         return;
     }
@@ -1170,7 +1170,7 @@ void APMFirmwarePlugin::sendGCSMotionReport(Vehicle *vehicle, const FollowMe::GC
         if (!sentOnce) {
             sentOnce = true;
             qCWarning(APMFirmwarePluginLog) << "estimateCapabilities" << estimationCapabilities;
-            qgcApp()->showAppMessage(QStringLiteral("Follow failed: Ground station cannot provide required position information."));
+            beeCopterApp()->showAppMessage(QStringLiteral("Follow failed: Ground station cannot provide required position information."));
         }
         return;
     }
@@ -1181,7 +1181,7 @@ void APMFirmwarePlugin::sendGCSMotionReport(Vehicle *vehicle, const FollowMe::GC
     }
 
     const mavlink_global_position_int_t globalPositionInt = {
-        static_cast<uint32_t>(qgcApp()->msecsSinceBoot()),                  /*< [ms] Timestamp (time since system boot).*/
+        static_cast<uint32_t>(beeCopterApp()->msecsSinceBoot()),                  /*< [ms] Timestamp (time since system boot).*/
         motionReport.lat_int,                                               /*< [degE7] Latitude, expressed*/
         motionReport.lon_int,                                               /*< [degE7] Longitude, expressed*/
         static_cast<int32_t>(vehicle->homePosition().altitude() * 1000),    /*< [mm] Altitude (MSL).*/
@@ -1322,7 +1322,7 @@ qreal APMFirmwarePlugin::calcAltOffsetP(uint32_t atmospheric1, uint32_t atmosphe
 QPair<QMetaObject::Connection,QMetaObject::Connection> APMFirmwarePlugin::startCompensatingBaro(Vehicle *vehicle)
 {
     // TODO: Running Average?
-    const QMetaObject::Connection baroPressureUpdater = QObject::connect(QGCDeviceInfo::QGCPressure::instance(), &QGCDeviceInfo::QGCPressure::pressureUpdated, vehicle, [vehicle](qreal pressure, qreal temperature){
+    const QMetaObject::Connection baroPressureUpdater = QObject::connect(beeCopterDeviceInfo::beeCopterPressure::instance(), &beeCopterDeviceInfo::beeCopterPressure::pressureUpdated, vehicle, [vehicle](qreal pressure, qreal temperature){
         if (!vehicle || !vehicle->flying()) {
             return;
         }
@@ -1348,7 +1348,7 @@ QPair<QMetaObject::Connection,QMetaObject::Connection> APMFirmwarePlugin::startC
         APMFirmwarePlugin::_setBaroAltOffset(vehicle, offset);
     });
 
-    const QMetaObject::Connection baroTempUpdater = connect(QGCDeviceInfo::QGCAmbientTemperature::instance(), &QGCDeviceInfo::QGCAmbientTemperature::temperatureUpdated, vehicle, [vehicle](qreal temperature){
+    const QMetaObject::Connection baroTempUpdater = connect(beeCopterDeviceInfo::beeCopterAmbientTemperature::instance(), &beeCopterDeviceInfo::beeCopterAmbientTemperature::temperatureUpdated, vehicle, [vehicle](qreal temperature){
         if (!vehicle || !vehicle->flying()) {
            return;
         }
@@ -1386,11 +1386,11 @@ bool APMFirmwarePlugin::stopCompensatingBaro(const Vehicle *vehicle, QPair<QMeta
 QVariant APMFirmwarePlugin::expandedToolbarIndicatorSource(const Vehicle* vehicle, const QString& indicatorName) const
 {
     if (indicatorName == "Battery") {
-        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/FirmwarePlugin/APM/APMBatteryIndicator.qml"));
+        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/FirmwarePlugin/APM/APMBatteryIndicator.qml"));
     } else if (indicatorName == "FlightMode" && vehicle->multiRotor()) {
-        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/FirmwarePlugin/APM/APMFlightModeIndicator.qml"));
+        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/FirmwarePlugin/APM/APMFlightModeIndicator.qml"));
     } else if (indicatorName == "MainStatus") {
-        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/FirmwarePlugin/APM/APMMainStatusIndicator.qml"));
+        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/FirmwarePlugin/APM/APMMainStatusIndicator.qml"));
     }
 
     return QVariant();

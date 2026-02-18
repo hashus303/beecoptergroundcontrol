@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 /// Simple Mission Item visuals
 Item {
@@ -37,9 +37,9 @@ Item {
         }
     }
 
-    QGCDynamicObjectManager { id: _objMgrCommonVisuals }
-    QGCDynamicObjectManager { id: _objMgrEditingVisuals }
-    QGCDynamicObjectManager { id: _objMgrMouseClick }
+    beeCopterDynamicObjectManager { id: _objMgrCommonVisuals }
+    beeCopterDynamicObjectManager { id: _objMgrEditingVisuals }
+    beeCopterDynamicObjectManager { id: _objMgrMouseClick }
 
     Component.onCompleted: {
         addCommonVisuals()
@@ -98,7 +98,7 @@ Item {
 
         MissionItemIndicator {
             coordinate:     _missionItem.specifiesCoordinate ? _missionItem.coordinate : _missionItem.launchCoordinate
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             missionItem:    _missionItem
             sequenceNumber: _missionItem.sequenceNumber
             onClicked:      _root.clicked(_missionItem.sequenceNumber)
@@ -132,7 +132,7 @@ Item {
 
         MouseArea {
             anchors.fill:   map
-            z:              QGroundControl.zOrderMapItems + 1   // Over item indicators
+            z:              beeCopter.zOrderMapItems + 1   // Over item indicators
             visible:        !_missionItem.launchCoordinate.isValid && _root.interactive
 
             readonly property int   _decimalPlaces: 8

@@ -1,7 +1,7 @@
 qt_add_library(ToolbarModule STATIC)
 
 qt_add_qml_module(ToolbarModule
-    URI QGroundControl.Toolbar
+    URI beeCopter.Toolbar
     VERSION 1.0
     RESOURCE_PREFIX /qml
     QML_FILES

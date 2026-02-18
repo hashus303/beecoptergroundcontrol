@@ -1,7 +1,7 @@
 {
     "version":      1,
     "fileType":  "FactMetaData",
-    "QGC.MetaData.Facts":
+    "beeCopter.MetaData.Facts":
 [
 {
     "name":             "telemetrySave",
@@ -22,7 +22,7 @@
     "shortDesc":     "Request start of MAVLink telemetry streams (ArduPilot only)",
     "type":                 "bool",
     "default":         true,
-    "qgcRebootRequired":    true
+    "beeCopterRebootRequired":    true
 },
 {
     "name":             "saveCsvTelemetry",
@@ -44,7 +44,7 @@
     "longDesc":  "Host name to forward mavlink to. i.e: localhost:14445",
     "type":             "string",
     "default":     "localhost:14445",
-    "qgcRebootRequired":    true
+    "beeCopterRebootRequired":    true
 },
 {
     "name":      "forwardMavlinkAPMSupportHostName",

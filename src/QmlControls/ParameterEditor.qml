@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Item {
     id:         _root
@@ -15,9 +15,9 @@ Item {
     property int    _rowWidth:          10 // Dynamic adjusted at runtime
     property bool   _searchFilter:      searchText.text.trim() != "" || controller.showModifiedOnly  ///< true: showing results of search
     property var    _searchResults      ///< List of parameter names from search results
-    property var    _activeVehicle:     QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle:     beeCopter.multiVehicleManager.activeVehicle
     property bool   _showRCToParam:     _activeVehicle.px4Firmware
-    property var    _appSettings:       QGroundControl.settingsManager.appSettings
+    property var    _appSettings:       beeCopter.settingsManager.appSettings
     property var    _controller:        controller
 
     ParameterEditorController {
@@ -35,20 +35,20 @@ Item {
         }
     }
 
-    QGCMenu {
+    beeCopterMenu {
         id:                 toolsMenu
-        QGCMenuItem {
+        beeCopterMenuItem {
             text:           qsTr("Refresh")
             onTriggered:	controller.refresh()
         }
-        QGCMenuItem {
+        beeCopterMenuItem {
             text:           qsTr("Reset all to firmware's defaults")
             onTriggered:    mainWindow.showMessageDialog(qsTr("Reset All"),
                                                          qsTr("Select Reset to reset all parameters to their defaults.\n\nNote that this will also completely reset everything, including UAVCAN nodes, all vehicle settings, setup and calibrations."),
                                                          Dialog.Cancel | Dialog.Reset,
                                                          function() { controller.resetAllToDefaults() })
         }
-        QGCMenuItem {
+        beeCopterMenuItem {
             text:           qsTr("Reset to vehicle's configuration defaults")
             visible:        !_activeVehicle.apmFirmware
             onTriggered:    mainWindow.showMessageDialog(qsTr("Reset All"),
@@ -56,29 +56,29 @@ Item {
                                                          Dialog.Cancel | Dialog.Reset,
                                                          function() { controller.resetAllToVehicleConfiguration() })
         }
-        QGCMenuSeparator { }
-        QGCMenuItem {
+        beeCopterMenuSeparator { }
+        beeCopterMenuItem {
             text:           qsTr("Load from file for review...")
             onTriggered: {
                 fileDialog.title =          qsTr("Load Parameters")
                 fileDialog.openForLoad()
             }
         }
-        QGCMenuItem {
+        beeCopterMenuItem {
             text:           qsTr("Save to file...")
             onTriggered: {
                 fileDialog.title =          qsTr("Save Parameters")
                 fileDialog.openForSave()
             }
         }
-        QGCMenuSeparator { visible: _showRCToParam }
-        QGCMenuItem {
+        beeCopterMenuSeparator { visible: _showRCToParam }
+        beeCopterMenuItem {
             text:           qsTr("Clear all RC to Param")
             onTriggered:	_activeVehicle.clearAllParamMapRC()
             visible:        _showRCToParam
         }
-        QGCMenuSeparator { }
-        QGCMenuItem {
+        beeCopterMenuSeparator { }
+        beeCopterMenuItem {
             text:           qsTr("Reboot Vehicle")
             onTriggered:    mainWindow.showMessageDialog(qsTr("Reboot Vehicle"),
                                                          qsTr("Select Ok to reboot vehicle."),
@@ -88,7 +88,7 @@ Item {
     }
 
 
-    QGCFileDialog {
+    beeCopterFileDialog {
         id:             fileDialog
         folder:         _appSettings.parameterSavePath
         nameFilters:    [ qsTr("Parameter Files (*.%1)").arg(_appSettings.parameterFileExtension) , qsTr("All Files (*)") ]
@@ -132,13 +132,13 @@ Item {
             Layout.alignment:   Qt.AlignLeft
             spacing:            ScreenTools.defaultFontPixelWidth
 
-            QGCTextField {
+            beeCopterTextField {
                 id:                     searchText
                 placeholderText:        qsTr("Search")
                 onDisplayTextChanged:   controller.searchText = displayText
             }
 
-            QGCButton {
+            beeCopterButton {
                 text: qsTr("Clear")
                 onClicked: {
                     if(ScreenTools.isMobile) {
@@ -148,15 +148,15 @@ Item {
                 }
             }
 
-            QGCCheckBox {
+            beeCopterCheckBox {
                 text:       qsTr("Show modified only")
                 checked:    controller.showModifiedOnly
                 onClicked:  controller.showModifiedOnly = checked
-                visible:    QGroundControl.multiVehicleManager.activeVehicle.px4Firmware
+                visible:    beeCopter.multiVehicleManager.activeVehicle.px4Firmware
             }
         }
 
-        QGCButton {
+        beeCopterButton {
             Layout.alignment:   Qt.AlignRight
             text:               qsTr("Tools")
             onClicked:          toolsMenu.popup()
@@ -164,7 +164,7 @@ Item {
     }
 
     /// Group buttons
-    QGCFlickable {
+    beeCopterFlickable {
         id :                groupScroll
         width:              ScreenTools.defaultFontPixelWidth * 25
         anchors.top:        header.bottom
@@ -206,7 +206,7 @@ Item {
                     Repeater {
                         model: categoryHeader.checked ? object.groups : 0
 
-                        QGCButton {
+                        beeCopterButton {
                             width:          ScreenTools.defaultFontPixelWidth * 25
                             text:           object.name
                             height:         _rowHeight
@@ -258,11 +258,11 @@ Item {
             implicitHeight: label.contentHeight
             clip:           true
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                 label
                 width:              column == 1 ? ScreenTools.defaultFontPixelWidth * 15 : contentWidth
                 text:               column == 1 ? col1String() : display
-                color:              column == 1 ? col1Color() : qgcPal.text
+                color:              column == 1 ? col1Color() : beeCopterPal.text
                 maximumLineCount:   1
                 elide:              column == 1 ? Text.ElideRight : Text.ElideNone
 
@@ -286,14 +286,14 @@ Item {
 
                 function col1Color() {
                     if (fact.defaultValueAvailable) {
-                        return fact.valueEqualsDefault ? qgcPal.text : qgcPal.warningText
+                        return fact.valueEqualsDefault ? beeCopterPal.text : beeCopterPal.warningText
                     } else {
-                        return qgcPal.text
+                        return beeCopterPal.text
                     }
                 }
             }
 
-            QGCMouseArea {
+            beeCopterMouseArea {
                 anchors.fill: parent
                 onClicked: mouse => {
                     _editorDialogFact = fact

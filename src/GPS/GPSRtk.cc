@@ -1,12 +1,12 @@
 #include "GPSRtk.h"
 #include "GPSProvider.h"
 #include "GPSRTKFactGroup.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "RTCMMavlink.h"
 #include "RTKSettings.h"
 #include "SettingsManager.h"
 
-QGC_LOGGING_CATEGORY(GPSRtkLog, "GPS.GPSRtk")
+beeCopter_LOGGING_CATEGORY(GPSRtkLog, "GPS.GPSRtk")
 
 GPSRtk::GPSRtk(QObject *parent)
     : QObject(parent)

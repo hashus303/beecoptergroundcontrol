@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 ColumnLayout {
     Layout.preferredWidth:  ScreenTools.defaultFontPixelWidth * 60
@@ -15,10 +15,10 @@ ColumnLayout {
     property Fact sys_vehicle_resp:         controller.getParameterFact(-1, "SYS_VEHICLE_RESP", false)
     property Fact mpc_xy_vel_all:           controller.getParameterFact(-1, "MPC_XY_VEL_ALL", false)
     property Fact mpc_z_vel_all:            controller.getParameterFact(-1, "MPC_Z_VEL_ALL", false)
-    property var  qgcPal:                   QGroundControl.globalPalette
+    property var  beeCopterPal:                   beeCopter.globalPalette
     property real margins:                  ScreenTools.defaultFontPixelHeight
     property real sliderWidth:              ScreenTools.defaultFontPixelWidth * 40
-    property var  flyViewSettings:          QGroundControl.settingsManager.flyViewSettings
+    property var  flyViewSettings:          beeCopter.settingsManager.flyViewSettings
 
     FactPanelController { id: controller }
 
@@ -30,7 +30,7 @@ ColumnLayout {
             Layout.preferredWidth:  sliderWidth
             label:                  qsTr("RTL Altitude")
             fact:                   controller.getParameterFact(-1, "RTL_RETURN_ALT")
-            to:                     fact.maxIsDefaultForType ? QGroundControl.unitsConversion.metersToAppSettingsVerticalDistanceUnits(121.92) : fact.max
+            to:                     fact.maxIsDefaultForType ? beeCopter.unitsConversion.metersToAppSettingsVerticalDistanceUnits(121.92) : fact.max
             majorTickStepSize:      10
         }
     }
@@ -46,7 +46,7 @@ ColumnLayout {
         }
 
         ColumnLayout {
-            QGCCheckBoxSlider {
+            beeCopterCheckBoxSlider {
                 Layout.fillWidth:   true
                 text:               qsTr("Max Distance")
                 checked:            maxDistanceSlider.value > 0
@@ -74,7 +74,7 @@ ColumnLayout {
         }
 
         ColumnLayout {
-            QGCCheckBoxSlider {
+            beeCopterCheckBoxSlider {
                 Layout.fillWidth:   true
                 text:               qsTr("Max Altitude")
                 checked:            maxAltitudeSlider.value > 0

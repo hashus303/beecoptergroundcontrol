@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 // Used as the base class control for nboth VehicleGPSIndicator and RTKGPSIndicator
 
@@ -12,10 +12,10 @@ Item {
     anchors.top:    parent.top
     anchors.bottom: parent.bottom
 
-    property var    _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
-    property bool   _rtkConnected:  QGroundControl.gpsRtk.connected.value
+    property var    _activeVehicle: beeCopter.multiVehicleManager.activeVehicle
+    property bool   _rtkConnected:  beeCopter.gpsRtk.connected.value
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     Row {
         id:             gpsIndicatorRow
@@ -28,16 +28,16 @@ Item {
             anchors.bottom: parent.bottom
             spacing:        -ScreenTools.defaultFontPixelWidth / 2
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                     gpsLabel
                 rotation:               90
                 text:                   qsTr("RTK")
-                color:                  qgcPal.windowTransparentText
+                color:                  beeCopterPal.windowTransparentText
                 anchors.verticalCenter: parent.verticalCenter
                 visible:                _rtkConnected
             }
 
-            QGCColoredImage {
+            beeCopterColoredImage {
                 id:                 gpsIcon
                 width:              height
                 anchors.top:        parent.top
@@ -46,7 +46,7 @@ Item {
                 fillMode:           Image.PreserveAspectFit
                 sourceSize.height:  height
                 opacity:            (_activeVehicle && _activeVehicle.gps.count.value >= 0) ? 1 : 0.5
-                color:              qgcPal.windowTransparentText
+                color:              beeCopterPal.windowTransparentText
             }
         }
 
@@ -56,15 +56,15 @@ Item {
             visible:                _activeVehicle && !isNaN(_activeVehicle.gps.hdop.value)
             spacing:                0
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.horizontalCenter:   hdopValue.horizontalCenter
-                color:              qgcPal.windowTransparentText
+                color:              beeCopterPal.windowTransparentText
                 text:               _activeVehicle ? _activeVehicle.gps.count.valueString : ""
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 id:     hdopValue
-                color:  qgcPal.windowTransparentText
+                color:  beeCopterPal.windowTransparentText
                 text:   _activeVehicle ? _activeVehicle.gps.hdop.value.toFixed(1) : ""
             }
         }

@@ -3,7 +3,7 @@
 #include "ComplexMissionItem.h"
 #include "MissionItem.h"
 #include "SettingsFact.h"
-#include "QGCMapPolygon.h"
+#include "beeCopterMapPolygon.h"
 #include "CameraCalc.h"
 #include "TerrainQuery.h"
 
@@ -20,7 +20,7 @@ class TransectStyleComplexItem : public ComplexMissionItem
 public:
     TransectStyleComplexItem(PlanMasterController* masterController, bool flyView, QString settignsGroup);
 
-    Q_PROPERTY(QGCMapPolygon*   surveyAreaPolygon           READ surveyAreaPolygon                                  CONSTANT)
+    Q_PROPERTY(beeCopterMapPolygon*   surveyAreaPolygon           READ surveyAreaPolygon                                  CONSTANT)
     Q_PROPERTY(CameraCalc*      cameraCalc                  READ cameraCalc                                         CONSTANT)
     Q_PROPERTY(Fact*            turnAroundDistance          READ turnAroundDistance                                 CONSTANT)
     Q_PROPERTY(Fact*            cameraTriggerInTurnAround   READ cameraTriggerInTurnAround                          CONSTANT)
@@ -37,7 +37,7 @@ public:
     Q_PROPERTY(Fact*            terrainAdjustMaxDescentRate READ terrainAdjustMaxDescentRate                        CONSTANT)
     Q_PROPERTY(Fact*            terrainAdjustMaxClimbRate   READ terrainAdjustMaxClimbRate                          CONSTANT)
 
-    QGCMapPolygon*  surveyAreaPolygon   (void) { return &_surveyAreaPolygon; }
+    beeCopterMapPolygon*  surveyAreaPolygon   (void) { return &_surveyAreaPolygon; }
     CameraCalc*     cameraCalc          (void) { return &_cameraCalc; }
     QVariantList    visualTransectPoints(void) { return _visualTransectPoints; }
 
@@ -148,7 +148,7 @@ protected:
     int                 _sequenceNumber = 0;
     QGeoCoordinate      _coordinate;
     QGeoCoordinate      _exitCoordinate;
-    QGCMapPolygon       _surveyAreaPolygon;
+    beeCopterMapPolygon       _surveyAreaPolygon;
 
     enum CoordType {
         CoordTypeInterior,              ///< Interior waypoint for flight path only (example: interior corridor point)

@@ -3,13 +3,13 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 SettingsPage {
-    property var _linkManager:          QGroundControl.linkManager
-    property var _autoConnectSettings:  QGroundControl.settingsManager.autoConnectSettings
+    property var _linkManager:          beeCopter.linkManager
+    property var _autoConnectSettings:  beeCopter.settingsManager.autoConnectSettings
 
     SettingsGroupLayout {
         heading:        qsTr("AutoConnect")
@@ -40,7 +40,7 @@ SettingsPage {
 
     SettingsGroupLayout {
         heading: qsTr("NMEA GPS")
-        visible: QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaPort.visible && QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaBaud.visible
+        visible: beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaPort.visible && beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaBaud.visible
 
         LabelledComboBox {
             id: nmeaPortCombo
@@ -50,7 +50,7 @@ SettingsPage {
 
             onActivated: (index) => {
                 if (index !== -1) {
-                    QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaPort.value = comboBox.textAt(index);
+                    beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaPort.value = comboBox.textAt(index);
                 }
             }
 
@@ -60,16 +60,16 @@ SettingsPage {
                 model.push(qsTr("Disabled"))
                 model.push(qsTr("UDP Port"))
 
-                if (QGroundControl.linkManager.serialPorts.length === 0) {
+                if (beeCopter.linkManager.serialPorts.length === 0) {
                     model.push(qsTr("Serial <none available>"))
                 } else {
-                    for (var i in QGroundControl.linkManager.serialPorts) {
-                        model.push(QGroundControl.linkManager.serialPorts[i])
+                    for (var i in beeCopter.linkManager.serialPorts) {
+                        model.push(beeCopter.linkManager.serialPorts[i])
                     }
                 }
                 nmeaPortCombo.model = model
 
-                const index = nmeaPortCombo.comboBox.find(QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaPort.valueString);
+                const index = nmeaPortCombo.comboBox.find(beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaPort.valueString);
                 nmeaPortCombo.currentIndex = index;
             }
         }
@@ -78,16 +78,16 @@ SettingsPage {
             id: nmeaBaudCombo
             visible: (nmeaPortCombo.currentText !== "UDP Port") && (nmeaPortCombo.currentText !== "Disabled")
             label: qsTr("Baudrate")
-            model: QGroundControl.linkManager.serialBaudRates
+            model: beeCopter.linkManager.serialBaudRates
 
             onActivated: (index) => {
                 if (index !== -1) {
-                    QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaBaud.value = parseInt(comboBox.textAt(index));
+                    beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaBaud.value = parseInt(comboBox.textAt(index));
                 }
             }
 
             Component.onCompleted: {
-                const index = nmeaBaudCombo.comboBox.find(QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaBaud.valueString);
+                const index = nmeaBaudCombo.comboBox.find(beeCopter.settingsManager.autoConnectSettings.autoConnectNmeaBaud.valueString);
                 nmeaBaudCombo.currentIndex = index;
             }
         }
@@ -95,7 +95,7 @@ SettingsPage {
         LabelledFactTextField {
             visible: nmeaPortCombo.currentText === "UDP Port"
             label: qsTr("NMEA stream UDP port")
-            fact: QGroundControl.settingsManager.autoConnectSettings.nmeaUdpPort
+            fact: beeCopter.settingsManager.autoConnectSettings.nmeaUdpPort
         }
     }
 
@@ -109,27 +109,27 @@ SettingsPage {
                 Layout.fillWidth:   true
                 visible:            !object.dynamic
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     text:               object.name
                 }
-                QGCColoredImage {
+                beeCopterColoredImage {
                     height:                 ScreenTools.minTouchPixels
                     width:                  height
                     sourceSize.height:      height
                     fillMode:               Image.PreserveAspectFit
                     mipmap:                 true
                     smooth:                 true
-                    color:                  qgcPalEdit.text
+                    color:                  beeCopterPalEdit.text
                     source:                 "/res/pencil.svg"
                     enabled:                !object.link
 
-                    QGCPalette {
-                        id: qgcPalEdit
+                    beeCopterPalette {
+                        id: beeCopterPalEdit
                         colorGroupEnabled: parent.enabled
                     }
 
-                    QGCMouseArea {
+                    beeCopterMouseArea {
                         fillItem: parent
                         onClicked: {
                             var editingConfig = _linkManager.startConfigurationEditing(object)
@@ -137,22 +137,22 @@ SettingsPage {
                         }
                     }
                 }
-                QGCColoredImage {
+                beeCopterColoredImage {
                     height:                 ScreenTools.minTouchPixels
                     width:                  height
                     sourceSize.height:      height
                     fillMode:               Image.PreserveAspectFit
                     mipmap:                 true
                     smooth:                 true
-                    color:                  qgcPalDelete.text
+                    color:                  beeCopterPalDelete.text
                     source:                 "/res/TrashDelete.svg"
 
-                    QGCPalette {
-                        id: qgcPalDelete
+                    beeCopterPalette {
+                        id: beeCopterPalDelete
                         colorGroupEnabled: parent.enabled
                     }
 
-                    QGCMouseArea {
+                    beeCopterMouseArea {
                         fillItem:   parent
                         onClicked:  mainWindow.showMessageDialog(
                                         qsTr("Delete Link"),
@@ -163,7 +163,7 @@ SettingsPage {
                                         })
                     }
                 }
-                QGCButton {
+                beeCopterButton {
                     text:       object.link ? qsTr("Disconnect") : qsTr("Connect")
                     onClicked: {
                         if (object.link) {
@@ -190,7 +190,7 @@ SettingsPage {
     Component {
         id: linkDialogComponent
 
-        QGCPopupDialog {
+        beeCopterPopupDialog {
             title:                  originalConfig ? qsTr("Edit Link") : qsTr("Add New Link")
             buttons:                Dialog.Save | Dialog.Cancel
             acceptButtonEnabled:    nameField.text !== ""
@@ -219,8 +219,8 @@ SettingsPage {
                     Layout.fillWidth:   true
                     spacing:            ScreenTools.defaultFontPixelWidth
 
-                    QGCLabel { text: qsTr("Name") }
-                    QGCTextField {
+                    beeCopterLabel { text: qsTr("Name") }
+                    beeCopterTextField {
                         id:                 nameField
                         Layout.fillWidth:   true
                         text:               editingConfig.name
@@ -228,14 +228,14 @@ SettingsPage {
                     }
                 }
 
-                QGCCheckBoxSlider {
+                beeCopterCheckBoxSlider {
                     Layout.fillWidth:   true
                     text:               qsTr("Automatically Connect on Start")
                     checked:            editingConfig.autoConnect
                     onCheckedChanged:   editingConfig.autoConnect = checked
                 }
 
-                QGCCheckBoxSlider {
+                beeCopterCheckBoxSlider {
                     Layout.fillWidth:   true
                     text:               qsTr("High Latency")
                     checked:            editingConfig.highLatency

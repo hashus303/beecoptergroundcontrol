@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
@@ -6,7 +6,7 @@
 #include <QtQmlIntegration/QtQmlIntegration>
 #include <QtQuick/QQuickItem>
 
-#include "QGCSerialPortInfo.h"
+#include "beeCopterSerialPortInfo.h"
 
 class PX4FirmwareUpgradeThread;
 class PX4FirmwareUpgradeThreadController;
@@ -129,7 +129,7 @@ public:
     QString     px4StableVersion    (void) { return _px4StableVersion; }
     QString     px4BetaVersion  (void) { return _px4BetaVersion; }
 
-    bool pixhawkBoard(void) const { return _boardType == QGCSerialPortInfo::BoardTypePixhawk; }
+    bool pixhawkBoard(void) const { return _boardType == beeCopterSerialPortInfo::BoardTypePixhawk; }
 
     /**
      * @brief Return a human friendly string of available boards
@@ -226,7 +226,7 @@ private:
     bool _searchingForBoard;    ///< true: searching for board, false: search for bootloader
 
     QSerialPortInfo                 _boardInfo;
-    QGCSerialPortInfo::BoardType_t  _boardType;
+    beeCopterSerialPortInfo::BoardType_t  _boardType;
     QString                         _boardTypeName;
 
     FirmwareBuildType_t             _selectedFirmwareBuildType;

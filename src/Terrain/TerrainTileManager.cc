@@ -1,14 +1,14 @@
 #include "TerrainTileManager.h"
 #include "TerrainTile.h"
 #include "TerrainTileCopernicus.h"
-#include "QGeoTileFetcherQGC.h"
-#include "QGeoMapReplyQGC.h"
-#include "QGCMapUrlEngine.h"
+#include "QGeoTileFetcherbeeCopter.h"
+#include "QGeoMapReplybeeCopter.h"
+#include "beeCopterMapUrlEngine.h"
 #include "ElevationMapProvider.h"
 #include "SettingsManager.h"
 #include "FlightMapSettings.h"
-#include "QGCLoggingCategory.h"
-#include "QGCGeo.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterGeo.h"
 
 #include <QtLocation/private/qgeotilespec_p.h>
 #include <QtNetwork/QNetworkAccessManager>
@@ -16,9 +16,9 @@
 
 #include <limits>
 
-#include "QGCNetworkHelper.h"
+#include "beeCopterNetworkHelper.h"
 
-QGC_LOGGING_CATEGORY(TerrainTileManagerLog, "Terrain.TerrainTileManager")
+beeCopter_LOGGING_CATEGORY(TerrainTileManagerLog, "Terrain.TerrainTileManager")
 
 namespace {
     constexpr int kMaxCarpetGridSize = 10000;
@@ -37,7 +37,7 @@ TerrainTileManager::TerrainTileManager(QObject *parent)
 {
     qCDebug(TerrainTileManagerLog) << this;
 
-    QGCNetworkHelper::configureProxy(_networkManager);
+    beeCopterNetworkHelper::configureProxy(_networkManager);
 }
 
 TerrainTileManager::~TerrainTileManager()
@@ -78,9 +78,9 @@ bool TerrainTileManager::getAltitudesForCoordinates(const QList<QGeoCoordinate> 
             spec.setY(provider->lat2tileY(coordinate.latitude(), 1));
             spec.setZoom(1);
             spec.setMapId(provider->getMapId());
-            const QNetworkRequest request = QGeoTileFetcherQGC::getNetworkRequest(spec.mapId(), spec.x(), spec.y(), spec.zoom());
-            QGeoTiledMapReplyQGC *reply = new QGeoTiledMapReplyQGC(_networkManager, request, spec, this);
-            (void) connect(reply, &QGeoTiledMapReplyQGC::finished, this, &TerrainTileManager::_terrainDone);
+            const QNetworkRequest request = QGeoTileFetcherbeeCopter::getNetworkRequest(spec.mapId(), spec.x(), spec.y(), spec.zoom());
+            QGeoTiledMapReplybeeCopter *reply = new QGeoTiledMapReplybeeCopter(_networkManager, request, spec, this);
+            (void) connect(reply, &QGeoTiledMapReplybeeCopter::finished, this, &TerrainTileManager::_terrainDone);
             if (reply->init()) {
                 _state = TerrainQuery::State::Downloading;
             } else {
@@ -236,15 +236,15 @@ void TerrainTileManager::addCarpetQuery(TerrainQueryInterface *terrainQueryInter
 
 QList<QGeoCoordinate> TerrainTileManager::_pathQueryToCoords(const QGeoCoordinate &fromCoord, const QGeoCoordinate &toCoord, double &distanceBetween, double &finalDistanceBetween)
 {
-    const double totalDistance = QGCGeo::geodesicDistance(fromCoord, toCoord);
+    const double totalDistance = beeCopterGeo::geodesicDistance(fromCoord, toCoord);
     // TODO: get spacing from terrainQueryInterface
     const int numPoints = qMax(2, qCeil(totalDistance / TerrainTileCopernicus::kTileValueSpacingMeters) + 1);
 
-    QList<QGeoCoordinate> coordinates = QGCGeo::interpolatePath(fromCoord, toCoord, numPoints);
+    QList<QGeoCoordinate> coordinates = beeCopterGeo::interpolatePath(fromCoord, toCoord, numPoints);
 
     if (coordinates.size() >= 2) {
-        distanceBetween = QGCGeo::geodesicDistance(coordinates[0], coordinates[1]);
-        finalDistanceBetween = QGCGeo::geodesicDistance(coordinates[coordinates.size() - 2], coordinates.last());
+        distanceBetween = beeCopterGeo::geodesicDistance(coordinates[0], coordinates[1]);
+        finalDistanceBetween = beeCopterGeo::geodesicDistance(coordinates[coordinates.size() - 2], coordinates.last());
     } else {
         distanceBetween = finalDistanceBetween = totalDistance;
     }
@@ -285,7 +285,7 @@ void TerrainTileManager::_terrainDone()
 {
     _state = TerrainQuery::State::Idle;
 
-    QGeoTiledMapReplyQGC* const reply = qobject_cast<QGeoTiledMapReplyQGC*>(QObject::sender());
+    QGeoTiledMapReplybeeCopter* const reply = qobject_cast<QGeoTiledMapReplybeeCopter*>(QObject::sender());
     if (!reply) {
         qCWarning(TerrainTileManagerLog) << "Elevation tile fetched but invalid reply data type.";
         return;
@@ -295,7 +295,7 @@ void TerrainTileManager::_terrainDone()
     const QByteArray responseBytes = reply->mapImageData();
     const QGeoTileSpec spec = reply->tileSpec();
 
-    if (reply->error() != QGeoTiledMapReplyQGC::NoError) {
+    if (reply->error() != QGeoTiledMapReplybeeCopter::NoError) {
         qCWarning(TerrainTileManagerLog) << "Elevation tile fetching returned error:" << reply->errorString();
         _tileFailed();
         return;

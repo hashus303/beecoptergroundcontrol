@@ -1,5 +1,5 @@
 #include "PX4FlightBehavior.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 #include "Vehicle.h"
 
 PX4FlightBehavior::PX4FlightBehavior(Vehicle* vehicle, AutoPilotPlugin* autopilot, QObject* parent)
@@ -52,7 +52,7 @@ QUrl PX4FlightBehavior::setupSource() const
         case MAV_TYPE_HEXAROTOR:
         case MAV_TYPE_OCTOROTOR:
         case MAV_TYPE_TRICOPTER:
-            qmlFile = "qrc:/qml/QGroundControl/AutoPilotPlugins/PX4/PX4FlightBehaviorCopter.qml";
+            qmlFile = "qrc:/qml/beeCopter/AutoPilotPlugins/PX4/PX4FlightBehaviorCopter.qml";
             break;
         case MAV_TYPE_VTOL_TAILSITTER_DUOROTOR:
         case MAV_TYPE_VTOL_TAILSITTER_QUADROTOR:

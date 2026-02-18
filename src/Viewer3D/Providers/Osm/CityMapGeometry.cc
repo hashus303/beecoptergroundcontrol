@@ -1,12 +1,12 @@
 #include "CityMapGeometry.h"
 
 #include "OsmParser.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "SettingsManager.h"
 #include "Viewer3DMapProvider.h"
 #include "Viewer3DSettings.h"
 
-QGC_LOGGING_CATEGORY(CityMapGeometryLog, "Viewer3d.CityMapGeometry")
+beeCopter_LOGGING_CATEGORY(CityMapGeometryLog, "Viewer3d.CityMapGeometry")
 
 CityMapGeometry::CityMapGeometry()
     : _modelName(QStringLiteral("city_map_default_name"))

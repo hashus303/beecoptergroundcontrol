@@ -1,6 +1,6 @@
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.AutoPilotPlugins.Common
+import beeCopter
+import beeCopter.Controls
+import beeCopter.AutoPilotPlugins.Common
 
 MotorComponent {
     userLetterMotorIndices: true

@@ -1,7 +1,7 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     anchors.margins:    -ScreenTools.defaultFontPixelHeight
@@ -11,7 +11,7 @@ Rectangle {
     radius:             ScreenTools.defaultFontPixelWidth / 2
     visible:            _noGPSLockVisible || _prearmErrorVisible
 
-    property var  _activeVehicle:       QGroundControl.multiVehicleManager.activeVehicle
+    property var  _activeVehicle:       beeCopter.multiVehicleManager.activeVehicle
     property bool _noGPSLockVisible:    _activeVehicle && _activeVehicle.requiresGpsFix && !_activeVehicle.coordinate.isValid
     property bool _prearmErrorVisible:  _activeVehicle && !_activeVehicle.armed && _activeVehicle.prearmError && !_activeVehicle.healthAndArmingCheckReport.supported
 
@@ -19,7 +19,7 @@ Rectangle {
         id:         warningsCol
         spacing:    ScreenTools.defaultFontPixelHeight
 
-        QGCLabel {
+        beeCopterLabel {
             anchors.horizontalCenter:   parent.horizontalCenter
             visible:                    _noGPSLockVisible
             color:                      "black"
@@ -27,7 +27,7 @@ Rectangle {
             text:                       qsTr("No GPS Lock for Vehicle")
         }
 
-        QGCLabel {
+        beeCopterLabel {
             anchors.horizontalCenter:   parent.horizontalCenter
             visible:                    _prearmErrorVisible
             color:                      "black"
@@ -35,7 +35,7 @@ Rectangle {
             text:                       _activeVehicle ? _activeVehicle.prearmError : ""
         }
 
-        QGCLabel {
+        beeCopterLabel {
             anchors.horizontalCenter:   parent.horizontalCenter
             visible:                    _prearmErrorVisible
             width:                      ScreenTools.defaultFontPixelWidth * 50

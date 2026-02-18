@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 AnalyzePage {
     id:                 geoTagPage
@@ -12,7 +12,7 @@ AnalyzePage {
 
     readonly property real _margin: ScreenTools.defaultFontPixelWidth
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     Component {
         id: pageComponent
@@ -25,7 +25,7 @@ AnalyzePage {
             Rectangle {
                 Layout.fillWidth:       true
                 Layout.preferredHeight: statusColumn.height + _margin * 2
-                color:                  qgcPal.windowShade
+                color:                  beeCopterPal.windowShade
                 radius:                 ScreenTools.defaultFontPixelWidth / 2
                 visible:                geoController.inProgress || geoController.errorMessage || geoController.taggedCount > 0
 
@@ -52,7 +52,7 @@ AnalyzePage {
                             Layout.fillWidth: true
                             spacing: _margin / 2
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Geotagging in progress...")
                                 font.bold:          true
                             }
@@ -66,17 +66,17 @@ AnalyzePage {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.fillWidth:       true
                         text:                   geoController.errorMessage
-                        color:                  qgcPal.colorRed
+                        color:                  beeCopterPal.colorRed
                         font.bold:              true
                         wrapMode:               Text.WordWrap
                         horizontalAlignment:    Text.AlignHCenter
                         visible:                geoController.errorMessage && !geoController.inProgress
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.fillWidth:       true
                         text: {
                             if (geoController.taggedCount > 0 && !geoController.inProgress) {
@@ -95,7 +95,7 @@ AnalyzePage {
                             }
                             return ""
                         }
-                        color:                  geoController.failedCount > 0 ? qgcPal.colorOrange : qgcPal.colorGreen
+                        color:                  geoController.failedCount > 0 ? beeCopterPal.colorOrange : beeCopterPal.colorGreen
                         font.bold:              true
                         horizontalAlignment:    Text.AlignHCenter
                         visible:                geoController.taggedCount > 0 && !geoController.inProgress
@@ -107,7 +107,7 @@ AnalyzePage {
             Rectangle {
                 Layout.fillWidth:       true
                 Layout.preferredHeight: step1Column.height + _margin * 2
-                color:                  qgcPal.windowShade
+                color:                  beeCopterPal.windowShade
                 radius:                 ScreenTools.defaultFontPixelWidth / 2
 
                 ColumnLayout {
@@ -126,17 +126,17 @@ AnalyzePage {
                             Layout.preferredWidth:  ScreenTools.defaultFontPixelHeight * 1.5
                             Layout.preferredHeight: ScreenTools.defaultFontPixelHeight * 1.5
                             radius:                 height / 2
-                            color:                  geoController.logFile ? qgcPal.colorGreen : qgcPal.button
+                            color:                  geoController.logFile ? beeCopterPal.colorGreen : beeCopterPal.button
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 anchors.centerIn:   parent
                                 text:               geoController.logFile ? "\u2713" : "1"
-                                color:              geoController.logFile ? "white" : qgcPal.buttonText
+                                color:              geoController.logFile ? "white" : beeCopterPal.buttonText
                                 font.bold:          true
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Select Flight Log")
                             font.bold:  true
                         }
@@ -146,12 +146,12 @@ AnalyzePage {
                         Layout.fillWidth: true
                         spacing: _margin
 
-                        QGCButton {
+                        beeCopterButton {
                             text:               qsTr("Browse...")
                             enabled:            !geoController.inProgress
                             onClicked:          openLogFile.openForLoad()
 
-                            QGCFileDialog {
+                            beeCopterFileDialog {
                                 id:             openLogFile
                                 title:          qsTr("Select Flight Log")
                                 nameFilters:    [qsTr("Flight logs (*.ulg *.bin)"), qsTr("ULog (*.ulg)"), qsTr("DataFlash (*.bin)"), qsTr("All Files (*)")]
@@ -163,7 +163,7 @@ AnalyzePage {
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.fillWidth:   true
                             text:               geoController.logFile ? geoController.logFile : qsTr("No file selected")
                             elide:              Text.ElideMiddle
@@ -177,7 +177,7 @@ AnalyzePage {
             Rectangle {
                 Layout.fillWidth:       true
                 Layout.preferredHeight: step2Column.height + _margin * 2
-                color:                  qgcPal.windowShade
+                color:                  beeCopterPal.windowShade
                 radius:                 ScreenTools.defaultFontPixelWidth / 2
 
                 ColumnLayout {
@@ -196,17 +196,17 @@ AnalyzePage {
                             Layout.preferredWidth:  ScreenTools.defaultFontPixelHeight * 1.5
                             Layout.preferredHeight: ScreenTools.defaultFontPixelHeight * 1.5
                             radius:                 height / 2
-                            color:                  geoController.imageDirectory ? qgcPal.colorGreen : qgcPal.button
+                            color:                  geoController.imageDirectory ? beeCopterPal.colorGreen : beeCopterPal.button
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 anchors.centerIn:   parent
                                 text:               geoController.imageDirectory ? "\u2713" : "2"
-                                color:              geoController.imageDirectory ? "white" : qgcPal.buttonText
+                                color:              geoController.imageDirectory ? "white" : beeCopterPal.buttonText
                                 font.bold:          true
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Select Image Folder")
                             font.bold:  true
                         }
@@ -216,12 +216,12 @@ AnalyzePage {
                         Layout.fillWidth: true
                         spacing: _margin
 
-                        QGCButton {
+                        beeCopterButton {
                             text:               qsTr("Browse...")
                             enabled:            !geoController.inProgress
                             onClicked:          selectImageDir.openForLoad()
 
-                            QGCFileDialog {
+                            beeCopterFileDialog {
                                 id:             selectImageDir
                                 title:          qsTr("Select Image Folder")
                                 selectFolder:   true
@@ -232,7 +232,7 @@ AnalyzePage {
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.fillWidth:   true
                             text:               geoController.imageDirectory ? geoController.imageDirectory : qsTr("No folder selected")
                             elide:              Text.ElideMiddle
@@ -246,7 +246,7 @@ AnalyzePage {
             Rectangle {
                 Layout.fillWidth:       true
                 Layout.preferredHeight: step3Column.height + _margin * 2
-                color:                  qgcPal.windowShade
+                color:                  beeCopterPal.windowShade
                 radius:                 ScreenTools.defaultFontPixelWidth / 2
 
                 ColumnLayout {
@@ -265,17 +265,17 @@ AnalyzePage {
                             Layout.preferredWidth:  ScreenTools.defaultFontPixelHeight * 1.5
                             Layout.preferredHeight: ScreenTools.defaultFontPixelHeight * 1.5
                             radius:                 height / 2
-                            color:                  qgcPal.button
+                            color:                  beeCopterPal.button
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 anchors.centerIn:   parent
                                 text:               "3"
-                                color:              qgcPal.buttonText
+                                color:              beeCopterPal.buttonText
                                 font.bold:          true
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Output Folder (Optional)")
                             font.bold:  true
                         }
@@ -285,12 +285,12 @@ AnalyzePage {
                         Layout.fillWidth: true
                         spacing: _margin
 
-                        QGCButton {
+                        beeCopterButton {
                             text:               qsTr("Browse...")
                             enabled:            !geoController.inProgress
                             onClicked:          selectDestDir.openForLoad()
 
-                            QGCFileDialog {
+                            beeCopterFileDialog {
                                 id:             selectDestDir
                                 title:          qsTr("Select Output Folder")
                                 selectFolder:   true
@@ -301,7 +301,7 @@ AnalyzePage {
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.fillWidth:   true
                             text: {
                                 if (geoController.saveDirectory) {
@@ -322,7 +322,7 @@ AnalyzePage {
             Rectangle {
                 Layout.fillWidth:       true
                 Layout.preferredHeight: advancedColumn.height + _margin * 2
-                color:                  qgcPal.windowShade
+                color:                  beeCopterPal.windowShade
                 radius:                 ScreenTools.defaultFontPixelWidth / 2
 
                 ColumnLayout {
@@ -333,7 +333,7 @@ AnalyzePage {
                     anchors.margins:    _margin
                     spacing:            _margin
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:       qsTr("Advanced Options")
                         font.bold:  true
                     }
@@ -342,11 +342,11 @@ AnalyzePage {
                         Layout.fillWidth: true
                         spacing: _margin
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text: qsTr("Time Offset (seconds):")
                         }
 
-                        QGCTextField {
+                        beeCopterTextField {
                             id:                     timeOffsetField
                             Layout.preferredWidth:  ScreenTools.defaultFontPixelWidth * 10
                             text:                   geoController.timeOffsetSecs.toFixed(1)
@@ -356,7 +356,7 @@ AnalyzePage {
                             onEditingFinished:      geoController.timeOffsetSecs = parseFloat(text) || 0
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.fillWidth:   true
                             text:               qsTr("Adjust if camera clock differs from flight log")
                             opacity:            0.7
@@ -368,7 +368,7 @@ AnalyzePage {
                         Layout.fillWidth: true
                         spacing: _margin
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id:         previewCheckbox
                             text:       qsTr("Preview mode (don't write files)")
                             checked:    geoController.previewMode
@@ -376,7 +376,7 @@ AnalyzePage {
                             onClicked:  geoController.previewMode = checked
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.fillWidth:   true
                             text:               qsTr("Verify time offset before committing")
                             opacity:            0.7
@@ -387,7 +387,7 @@ AnalyzePage {
             }
 
             // Action Button
-            QGCButton {
+            beeCopterButton {
                 Layout.alignment:       Qt.AlignHCenter
                 Layout.preferredWidth:  ScreenTools.defaultFontPixelWidth * 20
                 text: {
@@ -414,7 +414,7 @@ AnalyzePage {
                 Layout.fillWidth:       true
                 Layout.fillHeight:      true
                 Layout.minimumHeight:   ScreenTools.defaultFontPixelHeight * 10
-                color:                  qgcPal.windowShade
+                color:                  beeCopterPal.windowShade
                 radius:                 ScreenTools.defaultFontPixelWidth / 2
                 visible:                geoController.imageModel.count > 0
 
@@ -427,7 +427,7 @@ AnalyzePage {
                         Layout.fillWidth: true
                         spacing: _margin
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Images (%1)").arg(geoController.imageModel.count)
                             font.bold:  true
                         }
@@ -440,28 +440,28 @@ AnalyzePage {
 
                             Row {
                                 spacing: _margin / 4
-                                Rectangle { width: 10; height: 10; radius: 2; color: qgcPal.text; opacity: 0.5 }
-                                QGCLabel { text: qsTr("Pending"); font.pointSize: ScreenTools.smallFontPointSize }
+                                Rectangle { width: 10; height: 10; radius: 2; color: beeCopterPal.text; opacity: 0.5 }
+                                beeCopterLabel { text: qsTr("Pending"); font.pointSize: ScreenTools.smallFontPointSize }
                             }
                             Row {
                                 spacing: _margin / 4
-                                Rectangle { width: 10; height: 10; radius: 2; color: qgcPal.colorBlue }
-                                QGCLabel { text: qsTr("Processing"); font.pointSize: ScreenTools.smallFontPointSize }
+                                Rectangle { width: 10; height: 10; radius: 2; color: beeCopterPal.colorBlue }
+                                beeCopterLabel { text: qsTr("Processing"); font.pointSize: ScreenTools.smallFontPointSize }
                             }
                             Row {
                                 spacing: _margin / 4
-                                Rectangle { width: 10; height: 10; radius: 2; color: qgcPal.colorGreen }
-                                QGCLabel { text: qsTr("Tagged"); font.pointSize: ScreenTools.smallFontPointSize }
+                                Rectangle { width: 10; height: 10; radius: 2; color: beeCopterPal.colorGreen }
+                                beeCopterLabel { text: qsTr("Tagged"); font.pointSize: ScreenTools.smallFontPointSize }
                             }
                             Row {
                                 spacing: _margin / 4
-                                Rectangle { width: 10; height: 10; radius: 2; color: qgcPal.colorOrange }
-                                QGCLabel { text: qsTr("Skipped"); font.pointSize: ScreenTools.smallFontPointSize }
+                                Rectangle { width: 10; height: 10; radius: 2; color: beeCopterPal.colorOrange }
+                                beeCopterLabel { text: qsTr("Skipped"); font.pointSize: ScreenTools.smallFontPointSize }
                             }
                             Row {
                                 spacing: _margin / 4
-                                Rectangle { width: 10; height: 10; radius: 2; color: qgcPal.colorRed }
-                                QGCLabel { text: qsTr("Failed"); font.pointSize: ScreenTools.smallFontPointSize }
+                                Rectangle { width: 10; height: 10; radius: 2; color: beeCopterPal.colorRed }
+                                beeCopterLabel { text: qsTr("Failed"); font.pointSize: ScreenTools.smallFontPointSize }
                             }
                         }
                     }
@@ -469,11 +469,11 @@ AnalyzePage {
                     Rectangle {
                         Layout.fillWidth:   true
                         height:             1
-                        color:              qgcPal.text
+                        color:              beeCopterPal.text
                         opacity:            0.2
                     }
 
-                    QGCListView {
+                    beeCopterListView {
                         id:                 imageListView
                         Layout.fillWidth:   true
                         Layout.fillHeight:  true
@@ -482,7 +482,7 @@ AnalyzePage {
                         delegate: Rectangle {
                             width:      imageListView.width
                             height:     ScreenTools.defaultFontPixelHeight * 2
-                            color:      index % 2 === 0 ? "transparent" : qgcPal.window
+                            color:      index % 2 === 0 ? "transparent" : beeCopterPal.window
                             radius:     ScreenTools.defaultFontPixelWidth / 4
 
                             RowLayout {
@@ -498,12 +498,12 @@ AnalyzePage {
                                     radius:                 ScreenTools.defaultFontPixelWidth / 4
                                     color: {
                                         switch (model.status) {
-                                        case 0: return qgcPal.text    // Pending
-                                        case 1: return qgcPal.colorBlue   // Processing
-                                        case 2: return qgcPal.colorGreen  // Tagged
-                                        case 3: return qgcPal.colorOrange // Skipped
-                                        case 4: return qgcPal.colorRed    // Failed
-                                        default: return qgcPal.text
+                                        case 0: return beeCopterPal.text    // Pending
+                                        case 1: return beeCopterPal.colorBlue   // Processing
+                                        case 2: return beeCopterPal.colorGreen  // Tagged
+                                        case 3: return beeCopterPal.colorOrange // Skipped
+                                        case 4: return beeCopterPal.colorRed    // Failed
+                                        default: return beeCopterPal.text
                                         }
                                     }
                                     opacity: model.status === 0 ? 0.5 : 1.0
@@ -518,14 +518,14 @@ AnalyzePage {
                                 }
 
                                 // File name
-                                QGCLabel {
+                                beeCopterLabel {
                                     Layout.fillWidth:   true
                                     text:               model.fileName
                                     elide:              Text.ElideMiddle
                                 }
 
                                 // Coordinate (if tagged)
-                                QGCLabel {
+                                beeCopterLabel {
                                     Layout.preferredWidth: ScreenTools.defaultFontPixelWidth * 20
                                     text: {
                                         if (model.coordinate && model.coordinate.isValid) {
@@ -539,11 +539,11 @@ AnalyzePage {
                                 }
 
                                 // Status text or error
-                                QGCLabel {
+                                beeCopterLabel {
                                     Layout.preferredWidth: ScreenTools.defaultFontPixelWidth * 12
                                     text:               model.errorMessage ? model.errorMessage : model.statusString
                                     font.pointSize:     ScreenTools.smallFontPointSize
-                                    color:              model.status === 4 ? qgcPal.colorRed : (model.status === 3 ? qgcPal.colorOrange : qgcPal.text)
+                                    color:              model.status === 4 ? beeCopterPal.colorRed : (model.status === 3 ? beeCopterPal.colorOrange : beeCopterPal.text)
                                     elide:              Text.ElideRight
                                     horizontalAlignment: Text.AlignRight
                                 }

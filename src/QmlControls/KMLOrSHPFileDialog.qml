@@ -1,11 +1,11 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
-QGCFileDialog {
+beeCopterFileDialog {
     id:             kmlOrSHPLoadDialog
-    folder:         QGroundControl.settingsManager.appSettings.missionSavePath
+    folder:         beeCopter.settingsManager.appSettings.missionSavePath
     title:          qsTr("Select File")
     nameFilters:    ShapeFileHelper.fileDialogKMLOrSHPFilters
 }

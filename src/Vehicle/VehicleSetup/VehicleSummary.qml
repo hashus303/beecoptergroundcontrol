@@ -1,15 +1,15 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     id:             _summaryRoot
     anchors.fill:   parent
     anchors.rightMargin: ScreenTools.defaultFontPixelWidth
     anchors.leftMargin:  ScreenTools.defaultFontPixelWidth
-    color:          qgcPal.window
+    color:          beeCopterPal.window
 
     property real _minSummaryW:     ScreenTools.isTinyScreen ? ScreenTools.defaultFontPixelWidth * 28 : ScreenTools.defaultFontPixelWidth * 36
     property real _summaryBoxWidth: _minSummaryW
@@ -37,8 +37,8 @@ Rectangle {
         return sentence.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
     }
 
-    QGCPalette {
-        id:                 qgcPal
+    beeCopterPalette {
+        id:                 beeCopterPal
         colorGroupEnabled:  enabled
     }
 
@@ -50,7 +50,7 @@ Rectangle {
         computeSummaryBoxSize()
     }
 
-    QGCFlickable {
+    beeCopterFlickable {
         clip:               true
         anchors.fill:       parent
         contentHeight:      summaryColumn.height
@@ -62,17 +62,17 @@ Rectangle {
             width:          _summaryRoot.width
             spacing:        ScreenTools.defaultFontPixelHeight
 
-            QGCLabel {
+            beeCopterLabel {
                 width:			parent.width
                 wrapMode:		Text.WordWrap
-                color:			setupComplete ? qgcPal.text : qgcPal.warningText
+                color:			setupComplete ? beeCopterPal.text : beeCopterPal.warningText
                 font.bold:      true
                 horizontalAlignment: Text.AlignHCenter
                 text:           setupComplete ?
                     qsTr("Your vehicle configuration summary appears below. Select components on the left to review or fine-tune settings.") :
                     qsTr("WARNING: Configuration tasks remain before this vehicle is ready to fly. Open the red-marked components on the left to finish setup.")
 
-                property bool setupComplete: QGroundControl.multiVehicleManager.activeVehicle ? QGroundControl.multiVehicleManager.activeVehicle.autopilotPlugin.setupComplete : false
+                property bool setupComplete: beeCopter.multiVehicleManager.activeVehicle ? beeCopter.multiVehicleManager.activeVehicle.autopilotPlugin.setupComplete : false
             }
 
             Flow {
@@ -81,16 +81,16 @@ Rectangle {
                 spacing:    _summaryBoxSpace
 
                 Repeater {
-                    model: QGroundControl.multiVehicleManager.activeVehicle ? QGroundControl.multiVehicleManager.activeVehicle.autopilotPlugin.vehicleComponents : undefined
+                    model: beeCopter.multiVehicleManager.activeVehicle ? beeCopter.multiVehicleManager.activeVehicle.autopilotPlugin.vehicleComponents : undefined
 
                     // Outer summary item rectangle
                     Rectangle {
                         width:      _summaryBoxWidth
                         height:     ScreenTools.defaultFontPixelHeight * 13
-                        color:      qgcPal.windowShade
+                        color:      beeCopterPal.windowShade
                         visible:    modelData.summaryQmlSource.toString() !== ""
                         border.width: 1
-                        border.color: qgcPal.text
+                        border.color: beeCopterPal.text
                         Component.onCompleted: {
                             border.color = Qt.rgba(border.color.r, border.color.g, border.color.b, 0.1)
                         }
@@ -98,7 +98,7 @@ Rectangle {
                         readonly property real titleHeight: ScreenTools.defaultFontPixelHeight * 2
 
                         // Title bar
-                        QGCButton {
+                        beeCopterButton {
                             id:     titleBar
                             width:  parent.width
                             height: titleHeight

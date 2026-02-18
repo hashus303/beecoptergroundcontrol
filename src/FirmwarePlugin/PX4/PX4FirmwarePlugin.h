@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FirmwarePlugin.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 class PX4FirmwarePlugin : public FirmwarePlugin
 {
@@ -16,7 +16,7 @@ public:
 
     // Overrides from FirmwarePlugin
 
-    QList<MAV_CMD> supportedMissionCommands(QGCMAVLink::VehicleClass_t vehicleClass) const override;
+    QList<MAV_CMD> supportedMissionCommands(beeCopterMAVLink::VehicleClass_t vehicleClass) const override;
 
     AutoPilotPlugin*    autopilotPlugin                 (Vehicle* vehicle) const override;
     bool                isCapable                       (const Vehicle *vehicle, FirmwareCapabilities capabilities) const override;
@@ -52,7 +52,7 @@ public:
     bool                isGuidedMode                    (const Vehicle* vehicle) const override;
     void                initializeVehicle               (Vehicle* vehicle) override;
     bool                sendHomePositionToVehicle       (void) const override;
-    QString             missionCommandOverrides         (QGCMAVLink::VehicleClass_t vehicleClass) const override;
+    QString             missionCommandOverrides         (beeCopterMAVLink::VehicleClass_t vehicleClass) const override;
     FactMetaData*       _getMetaDataForFact             (QObject* parameterMetaData, const QString& name, FactMetaData::ValueType_t type, MAV_TYPE vehicleType) const override;
     QString             _internalParameterMetaDataFile  (const Vehicle* vehicle) const override { Q_UNUSED(vehicle); return QString(":/FirmwarePlugin/PX4/PX4ParameterFactMetaData.xml"); }
     void                _getParameterMetaDataVersionInfo(const QString& metaDataFile, int& majorVersion, int& minorVersion) const override;

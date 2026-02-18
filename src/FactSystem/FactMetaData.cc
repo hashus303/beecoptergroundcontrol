@@ -1,13 +1,13 @@
 #include "FactMetaData.h"
 #include "JsonHelper.h"
 #include "MAVLinkLib.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "SettingsManager.h"
 #include "UnitsSettings.h"
 
 #include <QtCore/QtMath>
 
-QGC_LOGGING_CATEGORY(FactMetaDataLog, "FactSystem.FactMetaData")
+beeCopter_LOGGING_CATEGORY(FactMetaDataLog, "FactSystem.FactMetaData")
 
 // Built in translations for all Facts
 const FactMetaData::BuiltInTranslation_s FactMetaData::_rgBuiltInTranslations[] = {
@@ -108,7 +108,7 @@ const FactMetaData &FactMetaData::operator=(const FactMetaData &other)
     _rawTranslator = other._rawTranslator;
     _cookedTranslator = other._cookedTranslator;
     _vehicleRebootRequired = other._vehicleRebootRequired;
-    _qgcRebootRequired = other._qgcRebootRequired;
+    _beeCopterRebootRequired = other._beeCopterRebootRequired;
     _rawIncrement = other._rawIncrement;
     _hasControl = other._hasControl;
     _readOnly = other._readOnly;
@@ -1182,7 +1182,7 @@ FactMetaData *FactMetaData::createFromJsonObject(const QJsonObject &json, const 
         { _userMinJsonKey,              QJsonValue::Double, false },
         { _userMaxJsonKey,              QJsonValue::Double, false },
         { _hasControlJsonKey,           QJsonValue::Bool,   false },
-        { _qgcRebootRequiredJsonKey,    QJsonValue::Bool,   false },
+        { _beeCopterRebootRequiredJsonKey,    QJsonValue::Bool,   false },
         { _rebootRequiredJsonKey,       QJsonValue::Bool,   false },
         { _categoryJsonKey,             QJsonValue::String, false },
         { _groupJsonKey,                QJsonValue::String, false },
@@ -1370,11 +1370,11 @@ FactMetaData *FactMetaData::createFromJsonObject(const QJsonObject &json, const 
     }
     metaData->setHasControl(hasControlJsonKey);
 
-    bool qgcRebootRequired = false;
-    if (json.contains(_qgcRebootRequiredJsonKey)) {
-        qgcRebootRequired = json[_qgcRebootRequiredJsonKey].toBool();
+    bool beeCopterRebootRequired = false;
+    if (json.contains(_beeCopterRebootRequiredJsonKey)) {
+        beeCopterRebootRequired = json[_beeCopterRebootRequiredJsonKey].toBool();
     }
-    metaData->setQGCRebootRequired(qgcRebootRequired);
+    metaData->setbeeCopterRebootRequired(beeCopterRebootRequired);
 
     bool rebootRequired = false;
     if (json.contains(_rebootRequiredJsonKey)) {
@@ -1413,7 +1413,7 @@ QMap<QString, FactMetaData*> FactMetaData::createMapFromJsonFile(const QString &
 
     QString errorString;
     int version;
-    const QJsonObject jsonObject = JsonHelper::openInternalQGCJsonFile(jsonFilename, qgcFileType, 1, 1, version, errorString);
+    const QJsonObject jsonObject = JsonHelper::openInternalbeeCopterJsonFile(jsonFilename, beeCopterFileType, 1, 1, version, errorString);
     if (!errorString.isEmpty()) {
         qWarning(FactMetaDataLog) << "Internal Error:" << errorString;
         return metaDataMap;

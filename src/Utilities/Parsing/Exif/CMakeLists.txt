@@ -101,7 +101,7 @@ typedef SSIZE_T ssize_t;
     )
 
     # Suppress warnings in third-party code
-    qgc_disable_dependency_warnings(exif)
+    beeCopter_disable_dependency_warnings(exif)
 endif()
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE exif)

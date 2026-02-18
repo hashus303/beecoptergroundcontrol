@@ -1,13 +1,13 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.Toolbar
+import beeCopter
+import beeCopter.Controls
+import beeCopter.Toolbar
 
 Item {
     implicitWidth: mainLayout.width + _widthMargin
 
-    property var  _activeVehicle:           QGroundControl.multiVehicleManager.activeVehicle
+    property var  _activeVehicle:           beeCopter.multiVehicleManager.activeVehicle
     property real _toolIndicatorMargins:    ScreenTools.defaultFontPixelHeight * 0.66
     property real _widthMargin:             _toolIndicatorMargins * 2
 
@@ -21,7 +21,7 @@ Item {
 
         Repeater {
             id:     appRepeater
-            model:  QGroundControl.corePlugin.toolBarIndicators
+            model:  beeCopter.corePlugin.toolBarIndicators
             Loader {
                 anchors.top:        parent.top
                 anchors.bottom:     parent.bottom

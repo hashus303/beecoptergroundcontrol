@@ -1,5 +1,5 @@
 #include "ActuatorActions.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 
 using namespace ActuatorActions;
 
@@ -42,7 +42,7 @@ void Action::ackHandler(MAV_RESULT commandResult, Vehicle::MavCmdResultFailureCo
 {
     _commandInProgress = false;
     if (failureCode != Vehicle::MavCmdResultFailureNoResponseToCommand && commandResult != MAV_RESULT_ACCEPTED) {
-        qgcApp()->showAppMessage(tr("Actuator action command failed"));
+        beeCopterApp()->showAppMessage(tr("Actuator action command failed"));
     }
 }
 

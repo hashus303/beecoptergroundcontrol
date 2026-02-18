@@ -14,7 +14,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_
 # ----------------------------------------------------------------------------
 # Firmware Upgrade (requires serial link)
 # ----------------------------------------------------------------------------
-if(NOT QGC_NO_SERIAL_LINK)
+if(NOT beeCopter_NO_SERIAL_LINK)
     target_sources(${CMAKE_PROJECT_NAME}
         PRIVATE
             Bootloader.cc
@@ -36,7 +36,7 @@ endif()
 qt_add_library(VehicleSetupModule STATIC)
 
 qt_add_qml_module(VehicleSetupModule
-    URI QGroundControl.VehicleSetup
+    URI beeCopter.VehicleSetup
     VERSION 1.0
     RESOURCE_PREFIX /qml
     QML_FILES

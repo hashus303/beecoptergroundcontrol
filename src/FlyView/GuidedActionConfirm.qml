@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     id:         control
@@ -70,7 +70,7 @@ Item {
         onTriggered:    _reallyShow()
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     RowLayout {
         id:         mainLayout
@@ -78,7 +78,7 @@ Item {
         height:     parent.height - 4
         spacing:    ScreenTools.defaultFontPixelWidth
 
-        QGCDelayButton {
+        beeCopterDelayButton {
             text:               control.title
             enabled:            true
 
@@ -98,21 +98,21 @@ Item {
             }
         }
 
-        QGCCheckBox {
+        beeCopterCheckBox {
             id:                 optionCheckBox
             visible:            text !== ""
         }
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             id:                 closeButton
             Layout.alignment:   Qt.AlignTop
             width:              height
             height:             ScreenTools.defaultFontPixelHeight * 0.5
             source:             "/res/XDelete.svg"
             fillMode:           Image.PreserveAspectFit
-            color:              qgcPal.text
+            color:              beeCopterPal.text
 
-            QGCMouseArea {
+            beeCopterMouseArea {
                 fillItem:   parent
                 onClicked:  confirmCancelled()
             }

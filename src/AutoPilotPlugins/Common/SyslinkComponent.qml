@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             syslinkPage
@@ -26,7 +26,7 @@ SetupPage {
                 id:         controller
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 text: qsTr("Radio Settings")
                 font.bold:   true
             }
@@ -34,7 +34,7 @@ SetupPage {
             Rectangle {
                 width:  parent.width
                 height: radioGrid.height + ScreenTools.defaultFontPixelHeight
-                color:  qgcPal.windowShade
+                color:  beeCopterPal.windowShade
 
                 GridLayout {
                     id:                 radioGrid
@@ -44,11 +44,11 @@ SetupPage {
                     columns:            2
                     columnSpacing:      ScreenTools.defaultFontPixelWidth
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:               qsTr("Channel")
                     }
 
-                    QGCTextField {
+                    beeCopterTextField {
                         id:                     channelField
                         width:                  textEditWidth
                         text:                   controller.radioChannel
@@ -59,7 +59,7 @@ SetupPage {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:                 channelHelp
                         Layout.columnSpan:  radioGrid.columns
                         Layout.fillWidth:   true
@@ -68,12 +68,12 @@ SetupPage {
                         text:               "Channel can be between 0 and 125"
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:                 addressLabel
                         text:               qsTr("Address")
                     }
 
-                    QGCTextField {
+                    beeCopterTextField {
                         id:                     addressField
                         width:                  textEditWidth
                         text:                   controller.radioAddress
@@ -84,7 +84,7 @@ SetupPage {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:                 addressHelp
                         Layout.columnSpan:  radioGrid.columns
                         Layout.fillWidth:   true
@@ -94,12 +94,12 @@ SetupPage {
                     }
 
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:                 rateLabel
                         text:               qsTr("Data Rate")
                     }
 
-                    QGCComboBox {
+                    beeCopterComboBox {
                         id:                     rateField
                         Layout.fillWidth:       true
                         model:                  controller.radioRates
@@ -109,7 +109,7 @@ SetupPage {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         text:                           qsTr("Restore Defaults")
                         width:                          textEditWidth
                         onClicked: {

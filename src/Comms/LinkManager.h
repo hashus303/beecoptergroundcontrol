@@ -11,8 +11,8 @@
 
 #include "LinkConfiguration.h"
 #include "LinkInterface.h"
-#ifndef QGC_NO_SERIAL_LINK
-    #include "QGCSerialPortInfo.h"
+#ifndef beeCopter_NO_SERIAL_LINK
+    #include "beeCopterSerialPortInfo.h"
 #endif
 
 Q_DECLARE_LOGGING_CATEGORY(LinkManagerLog)
@@ -131,7 +131,7 @@ private:
     void _addUDPAutoConnectLink();
     void _addMAVLinkForwardingLink();
     void _createDynamicForwardLink(const char *linkName, const QString &hostName);
-#ifdef QGC_ZEROCONF_ENABLED
+#ifdef beeCopter_ZEROCONF_ENABLED
     void _addZeroConfAutoConnectLink();
 #endif
 
@@ -162,7 +162,7 @@ private:
     static constexpr int _autoconnectConnectDelayMSecs = 1000;
 #endif
 
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
 private:
     Q_PROPERTY(QStringList serialBaudRates   READ serialBaudRates   CONSTANT)
     Q_PROPERTY(QStringList serialPortStrings READ serialPortStrings NOTIFY commPortStringsChanged)
@@ -180,13 +180,13 @@ signals:
 private:
     bool _isSerialPortConnected();
     void _updateSerialPorts();
-    bool _allowAutoConnectToBoard(QGCSerialPortInfo::BoardType_t boardType) const;
+    bool _allowAutoConnectToBoard(beeCopterSerialPortInfo::BoardType_t boardType) const;
     void _addSerialAutoConnectLink();
     bool _portAlreadyConnected(const QString &portName);
-    void _filterCompositePorts(QList<QGCSerialPortInfo> &portList);
+    void _filterCompositePorts(QList<beeCopterSerialPortInfo> &portList);
 
     UdpIODevice *_nmeaSocket = nullptr;
-    QMap<QString, int> _autoconnectPortWaitList;   ///< key: QGCSerialPortInfo::systemLocation, value: wait count
+    QMap<QString, int> _autoconnectPortWaitList;   ///< key: beeCopterSerialPortInfo::systemLocation, value: wait count
     QList<SerialLink*> _activeLinkCheckList;       ///< List of links we are waiting for a vehicle to show up on
     QStringList _commPortList;
     QStringList _commPortDisplayList;
@@ -194,5 +194,5 @@ private:
     QString _nmeaDeviceName;
     uint32_t _nmeaBaud = 0;
     QSerialPort *_nmeaPort = nullptr;
-#endif // QGC_NO_SERIAL_LINK
+#endif // beeCopter_NO_SERIAL_LINK
 };

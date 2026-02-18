@@ -5,7 +5,7 @@
 #include <QtCore/QTimer>
 #include <QtQmlIntegration/QtQmlIntegration>
 
-class QGCVideoStreamInfo;
+class beeCopterVideoStreamInfo;
 class QQuickItem;
 
 class VideoReceiver : public QObject
@@ -26,7 +26,7 @@ public:
     QString uri() const { return _uri; }
     bool started() const { return _started; }
     bool lowLatency() const { return _lowLatency; }
-    QGCVideoStreamInfo *videoStreamInfo() { return _videoStreamInfo; }
+    beeCopterVideoStreamInfo *videoStreamInfo() { return _videoStreamInfo; }
     QString recordingOutput() const { return _recordingOutput; }
 
     virtual void setSink(void *sink) { if (sink != _sink) { _sink = sink; emit sinkChanged(_sink); } }
@@ -35,7 +35,7 @@ public:
     void setUri(const QString &uri) { if (uri != _uri) { _uri = uri; emit uriChanged(_uri); } }
     void setStarted(bool started) { if (started != _started) { _started = started; emit startedChanged(_started); } }
     void setLowLatency(bool lowLatency) { if (lowLatency != _lowLatency) { _lowLatency = lowLatency; emit lowLatencyChanged(_lowLatency); } }
-    void setVideoStreamInfo(QGCVideoStreamInfo *videoStreamInfo) { if (videoStreamInfo != _videoStreamInfo) { _videoStreamInfo = videoStreamInfo; emit videoStreamInfoChanged(); } }
+    void setVideoStreamInfo(beeCopterVideoStreamInfo *videoStreamInfo) { if (videoStreamInfo != _videoStreamInfo) { _videoStreamInfo = videoStreamInfo; emit videoStreamInfoChanged(); } }
 
     // QMediaFormat::FileFormat
     enum FILE_FORMAT {
@@ -96,7 +96,7 @@ public slots:
 protected:
     void *_sink = nullptr;
     QQuickItem *_widget = nullptr;
-    QGCVideoStreamInfo *_videoStreamInfo = nullptr;
+    beeCopterVideoStreamInfo *_videoStreamInfo = nullptr;
     QString _name;
     QString _uri;
     bool _started = false;

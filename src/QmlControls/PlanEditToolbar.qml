@@ -2,14 +2,14 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Toolbar used for things like Polygon editing tools
 Item {
     width:  Math.min(toolsRowLayout.width + (_margins * 2), availableWidth)
     height: toolsFlickable.y + toolsFlickable.height + _margins
-    z:      QGroundControl.zOrderMapItems + 2
+    z:      beeCopter.zOrderMapItems + 2
 
     property real availableWidth
 
@@ -32,10 +32,10 @@ Item {
     Rectangle {
         anchors.fill:    parent
         radius:         _radius
-        color:          QGroundControl.globalPalette.toolbarBackground
+        color:          beeCopter.globalPalette.toolbarBackground
     }
 
-    QGCFlickable {
+    beeCopterFlickable {
         id:                 toolsFlickable
         anchors.margins:    _margins
         anchors.top:        parent.top
@@ -55,7 +55,7 @@ Item {
     Component {
         id: instructionComponent
 
-        QGCLabel {
+        beeCopterLabel {
             id:             instructionLabel
             text:           _instructionText
         }

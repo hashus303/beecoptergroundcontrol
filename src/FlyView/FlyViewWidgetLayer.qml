@@ -8,11 +8,11 @@ import QtPositioning
 import QtQuick.Window
 import QtQml.Models
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
-import QGroundControl.FlightMap
-import QGroundControl.Viewer3D
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
+import beeCopter.FlightMap
+import beeCopter.Viewer3D
 
 // This is the ui overlay layer for the widgets/tools for Fly View
 Item {
@@ -22,7 +22,7 @@ Item {
     property var    totalToolInsets:        _totalToolInsets
     property var    mapControl
 
-    property var    _activeVehicle:         QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle:         beeCopter.multiVehicleManager.activeVehicle
     property var    _planMasterController:  globals.planMasterControllerFlyView
     property var    _missionController:     _planMasterController.missionController
     property var    _geoFenceController:    _planMasterController.geoFenceController
@@ -36,7 +36,7 @@ Item {
     property bool   _layoutSpacing:         ScreenTools.defaultFontPixelWidth
     property bool   _showSingleVehicleUI:   true
 
-    QGCToolInsets {
+    beeCopterToolInsets {
         id:                     _totalToolInsets
         leftEdgeTopInset:       toolStrip.leftEdgeTopInset
         leftEdgeCenterInset:    toolStrip.leftEdgeCenterInset
@@ -95,22 +95,22 @@ Item {
     //-- Virtual Joystick
     Loader {
         id:                         virtualJoystickMultiTouch
-        z:                          QGroundControl.zOrderTopMost + 1
+        z:                          beeCopter.zOrderTopMost + 1
         anchors.right:              parent.right
         anchors.rightMargin:        anchors.leftMargin
         height:                     Math.min(parent.height * 0.25, ScreenTools.defaultFontPixelWidth * 16)
-        visible:                    _virtualJoystickEnabled && !QGroundControl.videoManager.fullScreen && !(_activeVehicle ? _activeVehicle.usingHighLatencyLink : false)
+        visible:                    _virtualJoystickEnabled && !beeCopter.videoManager.fullScreen && !(_activeVehicle ? _activeVehicle.usingHighLatencyLink : false)
         anchors.bottom:             parent.bottom
         anchors.bottomMargin:       bottomLoaderMargin
         anchors.left:               parent.left
         anchors.leftMargin:         ( y > toolStrip.y + toolStrip.height ? toolStrip.width / 2 : toolStrip.width * 1.05 + toolStrip.x)
-        source:                     "qrc:/qml/QGroundControl/FlyView/VirtualJoystick.qml"
+        source:                     "qrc:/qml/beeCopter/FlyView/VirtualJoystick.qml"
         active:                     _virtualJoystickEnabled && !(_activeVehicle ? _activeVehicle.usingHighLatencyLink : false)
 
         property real bottomEdgeLeftInset:     parent.height-y
-        property bool autoCenterThrottle:      QGroundControl.settingsManager.appSettings.virtualJoystickAutoCenterThrottle.rawValue
-        property bool leftHandedMode:          QGroundControl.settingsManager.appSettings.virtualJoystickLeftHandedMode.rawValue
-        property bool _virtualJoystickEnabled: QGroundControl.settingsManager.appSettings.virtualJoystick.rawValue
+        property bool autoCenterThrottle:      beeCopter.settingsManager.appSettings.virtualJoystickAutoCenterThrottle.rawValue
+        property bool leftHandedMode:          beeCopter.settingsManager.appSettings.virtualJoystickLeftHandedMode.rawValue
+        property bool _virtualJoystickEnabled: beeCopter.settingsManager.appSettings.virtualJoystick.rawValue
         property real bottomEdgeRightInset:    parent.height-y
         property var  _pipViewMargin:          _pipView.visible ? parentToolInsets.bottomEdgeLeftInset + ScreenTools.defaultFontPixelHeight * 2 :
                                                bottomRightRowLayout.height + ScreenTools.defaultFontPixelHeight * 1.5
@@ -142,9 +142,9 @@ Item {
         id:                     toolStrip
         anchors.left:           parent.left
         anchors.top:            parent.top
-        z:                      QGroundControl.zOrderWidgets
+        z:                      beeCopter.zOrderWidgets
         maxHeight:              parent.height - y - parentToolInsets.bottomEdgeLeftInset - _toolsMargin
-        visible:                !QGroundControl.videoManager.fullScreen
+        visible:                !beeCopter.videoManager.fullScreen
 
         onDisplayPreFlightChecklist: {
             if (!preFlightChecklistLoader.active) {
@@ -160,7 +160,7 @@ Item {
 
     VehicleWarnings {
         anchors.centerIn:   parent
-        z:                  QGroundControl.zOrderTopMost
+        z:                  beeCopter.zOrderTopMost
     }
 
     MapScale {
@@ -169,7 +169,7 @@ Item {
         anchors.top:        parent.top
         mapControl:         _mapControl
         autoHide:           true
-        visible:            !ScreenTools.isTinyScreen && QGroundControl.corePlugin.options.flyView.showMapScale && QGCViewer3DManager.displayMode !== QGCViewer3DManager.View3D && mapControl.pipState.state === mapControl.pipState.fullState
+        visible:            !ScreenTools.isTinyScreen && beeCopter.corePlugin.options.flyView.showMapScale && beeCopterViewer3DManager.displayMode !== beeCopterViewer3DManager.View3D && mapControl.pipState.state === mapControl.pipState.fullState
 
         property real topEdgeCenterInset: visible ? y + height : 0
     }

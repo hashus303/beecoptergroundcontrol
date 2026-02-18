@@ -1,13 +1,13 @@
 #include "TerrainQueryInterface.h"
 #include "TerrainTileManager.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtPositioning/QGeoCoordinate>
 
-#include "QGCNetworkHelper.h"
+#include "beeCopterNetworkHelper.h"
 
-QGC_LOGGING_CATEGORY(TerrainQueryInterfaceLog, "Terrain.TerrainQueryInterface")
+beeCopter_LOGGING_CATEGORY(TerrainQueryInterfaceLog, "Terrain.TerrainQueryInterface")
 
 TerrainQueryInterface::TerrainQueryInterface(QObject *parent)
     : QObject(parent)
@@ -119,7 +119,7 @@ TerrainOnlineQuery::TerrainOnlineQuery(QObject *parent)
 
     qCDebug(TerrainQueryInterfaceLog) << "supportsSsl" << QSslSocket::supportsSsl() << "sslLibraryBuildVersionString" << QSslSocket::sslLibraryBuildVersionString();
 
-    QGCNetworkHelper::configureProxy(_networkManager);
+    beeCopterNetworkHelper::configureProxy(_networkManager);
 }
 
 TerrainOnlineQuery::~TerrainOnlineQuery()

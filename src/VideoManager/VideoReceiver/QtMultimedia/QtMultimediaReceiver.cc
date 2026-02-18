@@ -1,5 +1,5 @@
 #include "QtMultimediaReceiver.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtMultimedia/QMediaCaptureSession>
 #include <QtMultimedia/QMediaFormat>
@@ -12,7 +12,7 @@
 #include <QtQuick/QQuickItem>
 #include <QtQuick/QQuickItemGrabResult>
 
-QGC_LOGGING_CATEGORY(QtMultimediaReceiverLog, "Video.QtMultimediaReceiver")
+beeCopter_LOGGING_CATEGORY(QtMultimediaReceiverLog, "Video.QtMultimediaReceiver")
 
 QtMultimediaReceiver::QtMultimediaReceiver(QObject *parent)
     : VideoReceiver(parent)
@@ -95,7 +95,7 @@ QtMultimediaReceiver::~QtMultimediaReceiver()
 
 bool QtMultimediaReceiver::enabled()
 {
-#ifdef QGC_QT_STREAMING
+#ifdef beeCopter_QT_STREAMING
     return true;
 #else
     return false;

@@ -3,8 +3,8 @@ import QtQuick.Controls
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Mission item map visual
 Item {

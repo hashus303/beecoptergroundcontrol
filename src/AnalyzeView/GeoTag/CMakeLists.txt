@@ -26,7 +26,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_
 qt_add_library(GeoTagModule STATIC)
 
 qt_add_qml_module(GeoTagModule
-    URI QGroundControl.AnalyzeView.GeoTag
+    URI beeCopter.AnalyzeView.GeoTag
     VERSION 1.0
     RESOURCE_PREFIX /qml
     QML_FILES

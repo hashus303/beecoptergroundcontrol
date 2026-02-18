@@ -14,8 +14,8 @@ target_sources(${CMAKE_PROJECT_NAME}
         MAVLinkSigning.h
         MAVLinkStreamConfig.cc
         MAVLinkStreamConfig.h
-        QGCMAVLink.cc
-        QGCMAVLink.h
+        beeCopterMAVLink.cc
+        beeCopterMAVLink.h
         StatusTextHandler.cc
         StatusTextHandler.h
         SysStatusSensorInfo.cc
@@ -28,15 +28,15 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_
 # MAVLink Protocol Library Integration
 # ============================================================================
 
-message(STATUS "QGC: Building MAVLink")
+message(STATUS "beeCopter: Building MAVLink")
 
 CPMAddPackage(
     NAME mavlink
-    GIT_REPOSITORY ${QGC_MAVLINK_GIT_REPO}
-    GIT_TAG ${QGC_MAVLINK_GIT_TAG}
+    GIT_REPOSITORY ${beeCopter_MAVLINK_GIT_REPO}
+    GIT_TAG ${beeCopter_MAVLINK_GIT_TAG}
     OPTIONS
-        "MAVLINK_DIALECT ${QGC_MAVLINK_DIALECT}"
-        "MAVLINK_VERSION ${QGC_MAVLINK_VERSION}"
+        "MAVLINK_DIALECT ${beeCopter_MAVLINK_DIALECT}"
+        "MAVLINK_VERSION ${beeCopter_MAVLINK_VERSION}"
 )
 
 if(mavlink_ADDED)
@@ -44,7 +44,7 @@ if(mavlink_ADDED)
     target_include_directories(${CMAKE_PROJECT_NAME}
         PRIVATE
             ${mavlink_BINARY_DIR}/include/mavlink
-            ${mavlink_BINARY_DIR}/include/mavlink/${QGC_MAVLINK_DIALECT}
+            ${mavlink_BINARY_DIR}/include/mavlink/${beeCopter_MAVLINK_DIALECT}
     )
 endif()
 

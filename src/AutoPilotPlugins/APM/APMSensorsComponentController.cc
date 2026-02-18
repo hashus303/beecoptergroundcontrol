@@ -3,14 +3,14 @@
 #include "APMSensorsComponent.h"
 #include "MAVLinkProtocol.h"
 #include "ParameterManager.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "Vehicle.h"
 
 #include <QtCore/QVariant>
 
-QGC_LOGGING_CATEGORY(APMSensorsComponentControllerLog, "AutoPilotPlugins.APMSensorsComponentController")
-QGC_LOGGING_CATEGORY(APMSensorsComponentControllerVerboseLog, "AutoPilotPlugins.APMSensorsComponentController:verbose")
+beeCopter_LOGGING_CATEGORY(APMSensorsComponentControllerLog, "AutoPilotPlugins.APMSensorsComponentController")
+beeCopter_LOGGING_CATEGORY(APMSensorsComponentControllerVerboseLog, "AutoPilotPlugins.APMSensorsComponentController:verbose")
 
 APMSensorsComponentController::APMSensorsComponentController(QObject *parent)
     : FactPanelController(parent)
@@ -53,10 +53,10 @@ void APMSensorsComponentController::_startLogCalibration()
     (void) connect(_vehicle, &Vehicle::textMessageReceived, this, &APMSensorsComponentController::_handleTextMessage);
 
     emit setAllCalButtonsEnabled(false);
-    if ((_calTypeInProgress == QGCMAVLink::CalibrationAccel) || (_calTypeInProgress == QGCMAVLink::CalibrationAPMCompassMot)) {
+    if ((_calTypeInProgress == beeCopterMAVLink::CalibrationAccel) || (_calTypeInProgress == beeCopterMAVLink::CalibrationAPMCompassMot)) {
         _nextButton->setEnabled(true);
     }
-    _cancelButton->setEnabled(_calTypeInProgress == QGCMAVLink::CalibrationMag);
+    _cancelButton->setEnabled(_calTypeInProgress == beeCopterMAVLink::CalibrationMag);
 
     (void) connect(MAVLinkProtocol::instance(), &MAVLinkProtocol::messageReceived, this, &APMSensorsComponentController::_mavlinkMessageReceived);
 }
@@ -111,7 +111,7 @@ void APMSensorsComponentController::_stopCalibration(APMSensorsComponentControll
     _nextButton->setEnabled(false);
     _cancelButton->setEnabled(false);
 
-    if (_calTypeInProgress == QGCMAVLink::CalibrationMag) {
+    if (_calTypeInProgress == beeCopterMAVLink::CalibrationMag) {
         _restorePreviousCompassCalFitness();
     }
 
@@ -146,11 +146,11 @@ void APMSensorsComponentController::_stopCalibration(APMSensorsComponentControll
     default:
         // Assume failed
         _hideAllCalAreas();
-        qgcApp()->showAppMessage(tr("Calibration failed. Calibration log will be displayed."));
+        beeCopterApp()->showAppMessage(tr("Calibration failed. Calibration log will be displayed."));
         break;
     }
 
-    _calTypeInProgress = QGCMAVLink::CalibrationNone;
+    _calTypeInProgress = beeCopterMAVLink::CalibrationNone;
 }
 
 void APMSensorsComponentController::_mavCommandResult(int vehicleId, int component, int command, int result, int failureCode)
@@ -166,7 +166,7 @@ void APMSensorsComponentController::_mavCommandResult(int vehicleId, int compone
         (void) disconnect(_vehicle, &Vehicle::mavCommandResult, this, &APMSensorsComponentController::_mavCommandResult);
         if (result == MAV_RESULT_ACCEPTED) {
             // Onboard mag cal is supported
-            _calTypeInProgress = QGCMAVLink::CalibrationMag;
+            _calTypeInProgress = beeCopterMAVLink::CalibrationMag;
             _rgCompassCalProgress[0] = 0;
             _rgCompassCalProgress[1] = 0;
             _rgCompassCalProgress[2] = 0;
@@ -262,10 +262,10 @@ void APMSensorsComponentController::calibrateCompassNorth(float lat, float lon, 
 
 void APMSensorsComponentController::calibrateAccel(bool doSimpleAccelCal)
 {
-    _calTypeInProgress = QGCMAVLink::CalibrationAccel;
+    _calTypeInProgress = beeCopterMAVLink::CalibrationAccel;
     if (doSimpleAccelCal) {
         _startLogCalibration();
-        _calTypeInProgress = QGCMAVLink::CalibrationAPMAccelSimple;
+        _calTypeInProgress = beeCopterMAVLink::CalibrationAPMAccelSimple;
         _vehicle->startCalibration(_calTypeInProgress);
         return;
     }
@@ -296,7 +296,7 @@ void APMSensorsComponentController::calibrateAccel(bool doSimpleAccelCal)
     _orientationCalTailDownSideVisible = false;
     _orientationCalNoseDownSideVisible = false;
 
-    _calTypeInProgress = QGCMAVLink::CalibrationAccel;
+    _calTypeInProgress = beeCopterMAVLink::CalibrationAccel;
     _orientationCalDownSideVisible = true;
     _orientationCalUpsideDownSideVisible = true;
     _orientationCalLeftSideVisible = true;
@@ -314,7 +314,7 @@ void APMSensorsComponentController::calibrateAccel(bool doSimpleAccelCal)
 
 void APMSensorsComponentController::calibrateMotorInterference()
 {
-    _calTypeInProgress = QGCMAVLink::CalibrationAPMCompassMot;
+    _calTypeInProgress = beeCopterMAVLink::CalibrationAPMCompassMot;
     _vehicle->vehicleLinkManager()->setCommunicationLostEnabled(false);
     _startLogCalibration();
     _appendStatusLog(tr("Raise the throttle slowly to between 50% ~ 75% (the props will spin!) for 5 ~ 10 seconds."));
@@ -325,7 +325,7 @@ void APMSensorsComponentController::calibrateMotorInterference()
 
 void APMSensorsComponentController::levelHorizon()
 {
-    _calTypeInProgress = QGCMAVLink::CalibrationLevel;
+    _calTypeInProgress = beeCopterMAVLink::CalibrationLevel;
     _vehicle->vehicleLinkManager()->setCommunicationLostEnabled(false);
     _startLogCalibration();
     _appendStatusLog(tr("Hold the vehicle in its level flight position."));
@@ -334,7 +334,7 @@ void APMSensorsComponentController::levelHorizon()
 
 void APMSensorsComponentController::calibratePressure()
 {
-    _calTypeInProgress = QGCMAVLink::CalibrationAPMPressureAirspeed;
+    _calTypeInProgress = beeCopterMAVLink::CalibrationAPMPressureAirspeed;
     _vehicle->vehicleLinkManager()->setCommunicationLostEnabled(false);
     _startLogCalibration();
     _appendStatusLog(tr("Requesting pressure calibration..."));
@@ -343,7 +343,7 @@ void APMSensorsComponentController::calibratePressure()
 
 void APMSensorsComponentController::calibrateGyro()
 {
-    _calTypeInProgress = QGCMAVLink::CalibrationGyro;
+    _calTypeInProgress = beeCopterMAVLink::CalibrationGyro;
     _vehicle->vehicleLinkManager()->setCommunicationLostEnabled(false);
     _startLogCalibration();
     _appendStatusLog(tr("Requesting gyro calibration..."));
@@ -403,7 +403,7 @@ void APMSensorsComponentController::cancelCalibration()
 {
     _cancelButton->setEnabled(false);
 
-    if (_calTypeInProgress == QGCMAVLink::CalibrationMag) {
+    if (_calTypeInProgress == beeCopterMAVLink::CalibrationMag) {
         _vehicle->sendMavCommand(_vehicle->defaultComponentId(), MAV_CMD_DO_CANCEL_MAG_CAL, true /* showError */);
         _stopCalibration(StopCalibrationCancelled);
     } else {
@@ -436,7 +436,7 @@ void APMSensorsComponentController::nextClicked()
 
         (void) _vehicle->sendMessageOnLinkThreadSafe(sharedLink.get(), msg);
 
-        if (_calTypeInProgress == QGCMAVLink::CalibrationAPMCompassMot) {
+        if (_calTypeInProgress == beeCopterMAVLink::CalibrationAPMCompassMot) {
             _stopCalibration(StopCalibrationSuccess);
         }
     }
@@ -464,7 +464,7 @@ bool APMSensorsComponentController::usingUDPLink() const
 
 void APMSensorsComponentController::_handleCommandAck(const mavlink_message_t &message)
 {
-    if ((_calTypeInProgress == QGCMAVLink::CalibrationLevel) || (_calTypeInProgress == QGCMAVLink::CalibrationGyro) || (_calTypeInProgress == QGCMAVLink::CalibrationAPMPressureAirspeed) || (_calTypeInProgress == QGCMAVLink::CalibrationAPMAccelSimple)) {
+    if ((_calTypeInProgress == beeCopterMAVLink::CalibrationLevel) || (_calTypeInProgress == beeCopterMAVLink::CalibrationGyro) || (_calTypeInProgress == beeCopterMAVLink::CalibrationAPMPressureAirspeed) || (_calTypeInProgress == beeCopterMAVLink::CalibrationAPMAccelSimple)) {
         mavlink_command_ack_t commandAck{};
         mavlink_msg_command_ack_decode(&message, &commandAck);
 
@@ -488,7 +488,7 @@ void APMSensorsComponentController::_handleCommandAck(const mavlink_message_t &m
 
 void APMSensorsComponentController::_handleMagCalProgress(const mavlink_message_t &message)
 {
-    if (_calTypeInProgress != QGCMAVLink::CalibrationMag) {
+    if (_calTypeInProgress != beeCopterMAVLink::CalibrationMag) {
         return;
     }
 
@@ -520,7 +520,7 @@ void APMSensorsComponentController::_handleMagCalProgress(const mavlink_message_
 
 void APMSensorsComponentController::_handleMagCalReport(const mavlink_message_t &message)
 {
-    if (_calTypeInProgress != QGCMAVLink::CalibrationMag) {
+    if (_calTypeInProgress != beeCopterMAVLink::CalibrationMag) {
         return;
     }
 

@@ -11,7 +11,7 @@ qt_add_library(gstqml6gl STATIC)
 if(MACOS)
     # macOS uses framework path directly (FindGStreamer.cmake bypassed)
     find_library(GSTREAMER_FRAMEWORK GStreamer)
-    set(GST_REQUIRED_FRAMEWORK_VERSION ${QGC_CONFIG_GSTREAMER_MACOS_VERSION})
+    set(GST_REQUIRED_FRAMEWORK_VERSION ${beeCopter_CONFIG_GSTREAMER_MACOS_VERSION})
     set(GST_PLUGINS_VERSION ${GST_REQUIRED_FRAMEWORK_VERSION})
     set(GSTREAMER_FRAMEWORK_PATH "/Library/Frameworks/GStreamer.framework")
     if(NOT EXISTS "${GSTREAMER_FRAMEWORK_PATH}")
@@ -68,9 +68,9 @@ if(GStreamer_VERSION VERSION_GREATER_EQUAL "1.22")
         # TODO: Add URL_HASH for verification
         # URL_HASH https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-${GST_PLUGINS_VERSION}.tar.xz.sha256sum
     )
-    set(QGC_GST_QT6_PLUGIN_PATH "${gstreamer_good_plugins_SOURCE_DIR}/ext/qt6")
+    set(beeCopter_GST_QT6_PLUGIN_PATH "${gstreamer_good_plugins_SOURCE_DIR}/ext/qt6")
 else()
-    set(QGC_GST_QT6_PLUGIN_PATH "${CMAKE_CURRENT_SOURCE_DIR}/qt6")
+    set(beeCopter_GST_QT6_PLUGIN_PATH "${CMAKE_CURRENT_SOURCE_DIR}/qt6")
 endif()
 
 # ============================================================================
@@ -78,11 +78,11 @@ endif()
 # ============================================================================
 
 # Fix missing includes in GStreamer Qt6 plugin
-file(READ "${QGC_GST_QT6_PLUGIN_PATH}/qt6glitem.h" FILE_CONTENTS)
+file(READ "${beeCopter_GST_QT6_PLUGIN_PATH}/qt6glitem.h" FILE_CONTENTS)
 string(FIND "${FILE_CONTENTS}" "#include <QtQuick/QQuickWindow>" GST_FIX_INCLUDES)
 if(GST_FIX_INCLUDES EQUAL -1)
     string(REPLACE "#include <QtGui/QOpenGLFunctions>" "#include <QtGui/QOpenGLFunctions>\n#include <QtQuick/QQuickWindow>" FILE_CONTENTS "${FILE_CONTENTS}")
-    file(WRITE "${QGC_GST_QT6_PLUGIN_PATH}/qt6glitem.h" "${FILE_CONTENTS}")
+    file(WRITE "${beeCopter_GST_QT6_PLUGIN_PATH}/qt6glitem.h" "${FILE_CONTENTS}")
 endif()
 
 # ----------------------------------------------------------------------------
@@ -93,13 +93,13 @@ endif()
 # CONFIGURE_DEPENDS ensures CMake re-runs if files are added/removed
 file(GLOB gstqml6gl_SRCS
     CONFIGURE_DEPENDS
-    "${QGC_GST_QT6_PLUGIN_PATH}/*.cc"
-    "${QGC_GST_QT6_PLUGIN_PATH}/*.h"
+    "${beeCopter_GST_QT6_PLUGIN_PATH}/*.cc"
+    "${beeCopter_GST_QT6_PLUGIN_PATH}/*.h"
 )
 target_sources(gstqml6gl PRIVATE ${gstqml6gl_SRCS})
 
 # Suppress compiler warnings for third-party GStreamer plugin sources
-qgc_disable_dependency_warnings(gstqml6gl)
+beeCopter_disable_dependency_warnings(gstqml6gl)
 
 target_link_libraries(gstqml6gl
     PRIVATE
@@ -111,7 +111,7 @@ target_link_libraries(gstqml6gl
         Qt6::Quick
 )
 
-target_include_directories(gstqml6gl PUBLIC ${QGC_GST_QT6_PLUGIN_PATH})
+target_include_directories(gstqml6gl PUBLIC ${beeCopter_GST_QT6_PLUGIN_PATH})
 
 target_precompile_headers(gstqml6gl
     PRIVATE
@@ -124,13 +124,13 @@ target_precompile_headers(gstqml6gl
 # Shader Compilation
 # ============================================================================
 
-if(EXISTS "${QGC_GST_QT6_PLUGIN_PATH}/resources.qrc")
+if(EXISTS "${beeCopter_GST_QT6_PLUGIN_PATH}/resources.qrc")
     find_package(Qt6 REQUIRED COMPONENTS ShaderTools)
 
     set(SHADERS
-        "${QGC_GST_QT6_PLUGIN_PATH}/vertex.vert"
-        "${QGC_GST_QT6_PLUGIN_PATH}/YUV_TRIPLANAR.frag"
-        "${QGC_GST_QT6_PLUGIN_PATH}/RGBA.frag"
+        "${beeCopter_GST_QT6_PLUGIN_PATH}/vertex.vert"
+        "${beeCopter_GST_QT6_PLUGIN_PATH}/YUV_TRIPLANAR.frag"
+        "${beeCopter_GST_QT6_PLUGIN_PATH}/RGBA.frag"
     )
 
     set(OUTPUTS
@@ -139,8 +139,8 @@ if(EXISTS "${QGC_GST_QT6_PLUGIN_PATH}/resources.qrc")
         RGBA.frag.qsb
     )
 
-    if(EXISTS "${QGC_GST_QT6_PLUGIN_PATH}/YUV_BIPLANAR.frag")
-        LIST(APPEND SHADERS "${QGC_GST_QT6_PLUGIN_PATH}/YUV_BIPLANAR.frag")
+    if(EXISTS "${beeCopter_GST_QT6_PLUGIN_PATH}/YUV_BIPLANAR.frag")
+        LIST(APPEND SHADERS "${beeCopter_GST_QT6_PLUGIN_PATH}/YUV_BIPLANAR.frag")
         LIST(APPEND OUTPUTS "YUV_BIPLANAR.frag.qsb")
     endif()
 
@@ -155,7 +155,7 @@ if(EXISTS "${QGC_GST_QT6_PLUGIN_PATH}/resources.qrc")
     )
 
     # Handle additional GLES-specific RGBA shader if present
-    if(EXISTS "${QGC_GST_QT6_PLUGIN_PATH}/RGBA_gles.frag")
+    if(EXISTS "${beeCopter_GST_QT6_PLUGIN_PATH}/RGBA_gles.frag")
         find_program(QSB_PROGRAM
             NAMES qsb
             HINTS ${QT_HOST_PATH} ${QT_ROOT_DIR} ${QTDIR}
@@ -166,12 +166,12 @@ if(EXISTS "${QGC_GST_QT6_PLUGIN_PATH}/resources.qrc")
 
         find_program(QSB_WRAPPER
             NAMES qsb-wrapper.py
-            PATHS "${QGC_GST_QT6_PLUGIN_PATH}"
+            PATHS "${beeCopter_GST_QT6_PLUGIN_PATH}"
             REQUIRED
         )
 
         set(RGBA_BASE_QSB "${CMAKE_CURRENT_BINARY_DIR}/.qsb/RGBA.frag.qsb")
-        set(RGBA_GLES_SRC "${QGC_GST_QT6_PLUGIN_PATH}/RGBA_gles.frag")
+        set(RGBA_GLES_SRC "${beeCopter_GST_QT6_PLUGIN_PATH}/RGBA_gles.frag")
         set(RGBA_EXTERNAL "${CMAKE_CURRENT_BINARY_DIR}/.qsb/RGBA.frag.qsb.external")
 
         add_custom_command(

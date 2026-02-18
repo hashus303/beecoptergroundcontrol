@@ -12,7 +12,7 @@
 
 #include <atomic>
 
-#ifdef QGC_ZEROCONF_ENABLED
+#ifdef beeCopter_ZEROCONF_ENABLED
 #ifdef Q_OS_WIN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -144,7 +144,7 @@ private:
 
     static const QHostAddress _multicastGroup;
 
-#ifdef QGC_ZEROCONF_ENABLED
+#ifdef beeCopter_ZEROCONF_ENABLED
     void _registerZeroconf(uint16_t port);
     void _deregisterZeroconf();
     static void _zeroconfRegisterCallback(DNSServiceRef sdRef, DNSServiceFlags flags, DNSServiceErrorType errorCode, const char *name, const char *regtype, const char *domain, void *context);

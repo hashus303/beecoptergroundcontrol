@@ -7,9 +7,9 @@
 #include <QtCore/QSocketNotifier>
 #endif
 
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(SignalHandlerLog, "Utilities.SignalHandler")
+beeCopter_LOGGING_CATEGORY(SignalHandlerLog, "Utilities.SignalHandler")
 
 std::atomic<SignalHandler*> SignalHandler::s_current{nullptr};
 

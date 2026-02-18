@@ -1,9 +1,9 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
-QGCLabel {
+beeCopterLabel {
     anchors.fill:           parent
     text:                   qsTr("Not supported")
     horizontalAlignment:    Text.AlignHCenter

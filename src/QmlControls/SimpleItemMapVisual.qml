@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 /// Simple Mission Item visuals
 Item {
@@ -153,7 +153,7 @@ Item {
         MissionItemIndicator {
             coordinate:     _missionItem.coordinate
             visible:        _missionItem.specifiesCoordinate
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             missionItem:    _missionItem
             sequenceNumber: _missionItem.sequenceNumber
             onClicked:      if(_root.interactive)  _root.clicked(_missionItem.sequenceNumber)
@@ -186,12 +186,12 @@ Item {
 
             onCoordinateChanged:              _mapCircle.center = coordinate
 
-            sourceItem: QGCMapCircleVisuals {
+            sourceItem: beeCopterMapCircleVisuals {
                 id:                      loiterMapCircleVisuals
                 mapControl:              _root.map
                 mapCircle:               _mapCircle
                 centerDragHandleVisible: false
-                borderColor:             _missionItem.terrainCollision ? "red" : QGroundControl.globalPalette.mapMissionTrajectory
+                borderColor:             _missionItem.terrainCollision ? "red" : beeCopter.globalPalette.mapMissionTrajectory
 
                 property bool blockSignals: false
 
@@ -199,7 +199,7 @@ Item {
                     _missionItem.loiterRadius = _mapCircle.clockwiseRotation ? _mapCircle.radius.rawValue : -_mapCircle.radius.rawValue
                 }
 
-                QGCMapCircle {
+                beeCopterMapCircle {
                     id:                         _mapCircle
                     center:                     loiterMapQuickItem.coordinate
                     interactive:                _root.interactive && _missionItem.isCurrentItem && map.planView

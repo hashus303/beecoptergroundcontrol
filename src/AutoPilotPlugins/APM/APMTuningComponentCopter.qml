@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             tuningPage
@@ -194,7 +194,7 @@ SetupPage {
                             RowLayout {
                                 spacing: _margins
 
-                                QGCLabel { text: qsTr("Axes to AutoTune:") }
+                                beeCopterLabel { text: qsTr("Axes to AutoTune:") }
                                 FactBitmask { fact: _autoTuneAxes }
                             }
 

@@ -5,10 +5,10 @@
 
 target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE
-        QGCCorePlugin.cc
-        QGCCorePlugin.h
-        QGCOptions.cc
-        QGCOptions.h
+        beeCopterCorePlugin.cc
+        beeCopterCorePlugin.h
+        beeCopterOptions.cc
+        beeCopterOptions.h
         QmlComponentInfo.cc
         QmlComponentInfo.h
 )

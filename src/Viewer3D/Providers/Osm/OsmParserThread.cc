@@ -1,7 +1,7 @@
 #include "OsmParserThread.h"
 
-#include "QGCGeo.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterGeo.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFileInfo>
 
@@ -12,7 +12,7 @@
 
 #include <cmath>
 
-QGC_LOGGING_CATEGORY(OsmParserThreadLog, "Viewer3d.OsmParserThread")
+beeCopter_LOGGING_CATEGORY(OsmParserThreadLog, "Viewer3d.OsmParserThread")
 
 // ============================================================================
 // OsmBuildingHandler — libosmium streaming handler
@@ -72,7 +72,7 @@ public:
 
             const QGeoCoordinate &gpsCoord = it.value();
             gpsPoints.push_back(gpsCoord);
-            const QVector3D localPt = QGCGeo::convertGpsToEnu(gpsCoord, _gpsRef);
+            const QVector3D localPt = beeCopterGeo::convertGpsToEnu(gpsCoord, _gpsRef);
             localPoints.push_back(QVector2D(localPt.x(), localPt.y()));
 
             xMax = std::fmax(xMax, localPt.x());

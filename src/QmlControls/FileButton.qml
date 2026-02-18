@@ -1,15 +1,15 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
-/// File Button controls used by QGCFileDialog control
+/// File Button controls used by beeCopterFileDialog control
 Rectangle {
     implicitWidth:  ScreenTools.implicitButtonWidth
     implicitHeight: ScreenTools.implicitButtonHeight
-    color:          highlight ? qgcPal.buttonHighlight : qgcPal.button
-    border.color:   highlight ? qgcPal.buttonHighlightText : qgcPal.buttonText
+    color:          highlight ? beeCopterPal.buttonHighlight : beeCopterPal.button
+    border.color:   highlight ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
 
     property alias  text:       label.text
     property bool   highlight:  false
@@ -19,9 +19,9 @@ Rectangle {
 
     property real _margins: ScreenTools.defaultFontPixelWidth / 2
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: enabled }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: enabled }
 
-    QGCLabel {
+    beeCopterLabel {
         id:                     label
         anchors.margins:         _margins
         anchors.left:           parent.left
@@ -30,11 +30,11 @@ Rectangle {
         anchors.bottom:         parent.bottom
         verticalAlignment:      Text.AlignVCenter
         horizontalAlignment:    Text.AlignHCenter
-        color:                  highlight ? qgcPal.buttonHighlightText : qgcPal.buttonText
+        color:                  highlight ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
         elide:                  Text.ElideRight
     }
 
-    QGCColoredImage {
+    beeCopterColoredImage {
         id:                     hamburger
         anchors.rightMargin:    _margins
         anchors.right:          parent.right
@@ -43,17 +43,17 @@ Rectangle {
         height:                 _hamburgerSize
         sourceSize.height:      _hamburgerSize
         source:                 "qrc:/qmlimages/Hamburger.svg"
-        color:                  highlight ? qgcPal.buttonHighlightText : qgcPal.buttonText
+        color:                  highlight ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
 
         property real _hamburgerSize: parent.height * 0.75
     }
 
-    QGCMouseArea {
+    beeCopterMouseArea {
         anchors.fill:   parent
         onClicked:      parent.clicked()
     }
 
-    QGCMouseArea {
+    beeCopterMouseArea {
         anchors.leftMargin: -_margins * 2
         anchors.top:        parent.top
         anchors.bottom:     parent.bottom

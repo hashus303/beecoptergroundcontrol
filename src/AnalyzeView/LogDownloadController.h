@@ -7,7 +7,7 @@
 Q_DECLARE_LOGGING_CATEGORY(LogDownloadControllerLog)
 
 struct LogDownloadData;
-class QGCLogEntry;
+class beeCopterLogEntry;
 class QmlObjectListModel;
 class QTimer;
 class QThread;
@@ -89,7 +89,7 @@ private:
     void _setListing(bool active);
     void _updateDataRate();
 
-    QGCLogEntry *_getNextSelected() const;
+    beeCopterLogEntry *_getNextSelected() const;
 
     QTimer *_timer = nullptr;
     QmlObjectListModel *_logEntriesModel = nullptr;

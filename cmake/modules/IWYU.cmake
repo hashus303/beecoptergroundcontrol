@@ -8,7 +8,7 @@
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     find_program(INCLUDE_WHAT_YOU_USE_PROGRAM include-what-you-use)
     if(INCLUDE_WHAT_YOU_USE_PROGRAM)
-        message(STATUS "QGC: Found include-what-you-use: ${INCLUDE_WHAT_YOU_USE_PROGRAM}")
+        message(STATUS "beeCopter: Found include-what-you-use: ${INCLUDE_WHAT_YOU_USE_PROGRAM}")
         set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${INCLUDE_WHAT_YOU_USE_PROGRAM})
         set(CMAKE_C_INCLUDE_WHAT_YOU_USE ${INCLUDE_WHAT_YOU_USE_PROGRAM})
     endif()

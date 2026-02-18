@@ -6,7 +6,7 @@
 qt_add_library(FlyViewModule STATIC)
 
 qt_add_qml_module(FlyViewModule
-    URI QGroundControl.FlyView
+    URI beeCopter.FlyView
     VERSION 1.0
     RESOURCE_PREFIX /qml
     QML_FILES
@@ -62,7 +62,7 @@ qt_add_qml_module(FlyViewModule
         PreFlightSoundCheck.qml
         ProximityRadarValues.qml
         ProximityRadarVideoView.qml
-        QGCVideoBackground.qml
+        beeCopterVideoBackground.qml
         RoverChecklist.qml
         SubChecklist.qml
         TelemetryValuesBar.qml

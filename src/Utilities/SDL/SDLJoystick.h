@@ -15,7 +15,7 @@ namespace SDLJoystick {
 // Initialization
 // ============================================================================
 
-/// Initialize SDL joystick/gamepad subsystems with QGC-specific hints
+/// Initialize SDL joystick/gamepad subsystems with beeCopter-specific hints
 bool init();
 
 /// Shutdown SDL joystick/gamepad subsystems

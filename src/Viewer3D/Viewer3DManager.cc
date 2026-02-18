@@ -2,14 +2,14 @@
 
 #include "MultiVehicleManager.h"
 #include "OsmParser.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "Fact.h"
 #include "SettingsManager.h"
 #include "Vehicle.h"
 #include "Viewer3DMapProvider.h"
 #include "Viewer3DSettings.h"
 
-QGC_LOGGING_CATEGORY(Viewer3DManagerLog, "Viewer3d.Viewer3DManager")
+beeCopter_LOGGING_CATEGORY(Viewer3DManagerLog, "Viewer3d.Viewer3DManager")
 
 Viewer3DManager::Viewer3DManager(QObject *parent)
     : QObject(parent)

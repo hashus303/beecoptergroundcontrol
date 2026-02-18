@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
 
 ToolStripAction {
     id:         action
@@ -20,9 +20,9 @@ ToolStripAction {
     }
 
     property var _mavlinkActions: MavlinkActionManager {
-        actionFileNameFact: QGroundControl.settingsManager.mavlinkActionsSettings.flyViewActionsFile
+        actionFileNameFact: beeCopter.settingsManager.mavlinkActionsSettings.flyViewActionsFile
 
-        property bool anyActionAvailable: QGroundControl.multiVehicleManager.activeVehicle && actions.count > 0
+        property bool anyActionAvailable: beeCopter.multiVehicleManager.activeVehicle && actions.count > 0
     }
 
     property var _customActions: FlyViewAdditionalCustomActionsList {

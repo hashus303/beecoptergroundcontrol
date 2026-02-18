@@ -1,16 +1,16 @@
-# QGroundControl
+# beeCopter
 
 ## Video Streaming
 
-QGroundControl implements an UDP RTP and RSTP video streaming receiver in its Main Flight Display using GStreamer.
+beeCopter implements an UDP RTP and RSTP video streaming receiver in its Main Flight Display using GStreamer.
 Current suggested version of GStreamer is **1.22.12** - other versions of GStreamer may break the build as some dependent libraries may change.
 To build video streaming support, you will need to install the GStreamer development packages for the desired target platform.
 
-If you do have the proper GStreamer development libraries installed where QGC looks for it, the QGC build system will automatically use it and build video streaming support. If you would like to disable GStreamer video streaming support, set the **QGC_ENABLE_GST_VIDEOSTREAMING** CMake option to **OFF**.
+If you do have the proper GStreamer development libraries installed where beeCopter looks for it, the beeCopter build system will automatically use it and build video streaming support. If you would like to disable GStreamer video streaming support, set the **beeCopter_ENABLE_GST_VIDEOSTREAMING** CMake option to **OFF**.
 
 ### Gstreamer logs
 
-For cases, when it is need to have more control over gstreamer logging than is availabe via QGroundControl's UI, it is possible to configure gstreamer logging via environment variables. Please see <https://developer.gnome.org/gstreamer/stable/gst-running.html> for details.
+For cases, when it is need to have more control over gstreamer logging than is availabe via beeCopter's UI, it is possible to configure gstreamer logging via environment variables. Please see <https://developer.gnome.org/gstreamer/stable/gst-running.html> for details.
 
 ### UDP Pipeline
 
@@ -28,7 +28,7 @@ h.265
 ffmpeg -f v4l2 -i /dev/video1 -pix_fmt yuv420p -c:v libx265 -preset ultrafast -x265-params crf=23 -strict experimental -f rtp udp://xxx.xxx.xxx.xxx:5600
 ```
 
-Where xxx.xxx.xxx.xxx is the IP address where QGC is running.
+Where xxx.xxx.xxx.xxx is the IP address where beeCopter is running.
 
 To test using a test source on localhost, you can run this command:
 
@@ -62,13 +62,13 @@ gst-launch-1.0 udpsrc port=5600 caps='application/x-rtp, media=(string)video, cl
 
 ### Additional Protocols
 
-QGC also supports RTSP, TCP-MPEG2 and MPEG-TS pipelines.
+beeCopter also supports RTSP, TCP-MPEG2 and MPEG-TS pipelines.
 
 ## Setup
 
 ### Linux
 
-For a quick setup, use `python3 qgroundcontrol/tools/setup/install_dependencies.py --platform debian`.
+For a quick setup, use `python3 beeCopter/tools/setup/install_dependencies.py --platform debian`.
 
 Alternatively for a manual approach you can use apt-get to install GStreamer 1.0:
 
@@ -96,7 +96,7 @@ You need two packages:
 - [gstreamer-1.0-devel-1.22.12-x86_64.pkg](https://gstreamer.freedesktop.org/data/pkg/osx/1.22.12/gstreamer-1.0-devel-1.22.12-universal.pkg)
 - [gstreamer-1.0-1.22.12-x86_64.pkg](https://gstreamer.freedesktop.org/data/pkg/osx/1.22.12/gstreamer-1.0-1.22.12-universal.pkg)
 
-The installer places them under /Library/Frameworks/GStreamer.framework, which is where the QGC build system will look for it. That's all that is needed. When you build QGC and it finds the gstreamer framework, it automatically builds video streaming support.
+The installer places them under /Library/Frameworks/GStreamer.framework, which is where the beeCopter build system will look for it. That's all that is needed. When you build beeCopter and it finds the gstreamer framework, it automatically builds video streaming support.
 
 :point_right: To run gstreamer commands from the command line, you can add the path to find them (either in ~/.profile or ~/.bashrc):
 
@@ -108,7 +108,7 @@ export PATH=$PATH:/Library/Frameworks/GStreamer.framework/Commands
 
 Download the gstreamer framework from here: [gstreamer-1.0-devel-1.22.12-ios-universal.pkg](https://gstreamer.freedesktop.org/data/pkg/ios/1.22.12/gstreamer-1.0-devel-1.22.12-ios-universal.pkg)
 
-The installer places them under ~/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework, which is where the QGC build system will look for it. That's all that is needed. When you build QGC and it finds the gstreamer framework, it automatically builds video streaming support.
+The installer places them under ~/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework, which is where the beeCopter build system will look for it. That's all that is needed. When you build beeCopter and it finds the gstreamer framework, it automatically builds video streaming support.
 
 ### Android
 
@@ -126,7 +126,7 @@ To enable Developer Mode:
 
 ### Windows
 
-Download the gstreamer framework from here: <http://gstreamer.freedesktop.org/data/pkg/windows>. Supported version is 1.22.12. QGC may work with newer version, but it is untested.
+Download the gstreamer framework from here: <http://gstreamer.freedesktop.org/data/pkg/windows>. Supported version is 1.22.12. beeCopter may work with newer version, but it is untested.
 
 You need two packages:
 
@@ -142,7 +142,7 @@ GSTREAMER_1_0_ROOT_MINGW_X86_64
 
 ### Gstreamer Config
 
-When running QGC, you can provide the command line options to configure GStreamer:
+When running beeCopter, you can provide the command line options to configure GStreamer:
 --gst-version                   "Print the GStreamer version"
 --gst-fatal-warnings            "Make all warnings fatal"
 --gst-debug-help                "Print available debug categories and exit"

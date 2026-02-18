@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     id:             _root
@@ -35,7 +35,7 @@ Rectangle {
         color:                      indicatorColor
     }
 
-    QGCMouseArea {
+    beeCopterMouseArea {
         fillItem:   parent
         onClicked:  _root.clicked()
     }

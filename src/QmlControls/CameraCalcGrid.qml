@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 // Camera calculator "Grid" section for mission item editors
 Column {
@@ -18,14 +18,14 @@ Column {
 
     property real   _margin:            ScreenTools.defaultFontPixelWidth / 2
     property real   _fieldWidth:        ScreenTools.defaultFontPixelWidth * 10.5
-    property var    _vehicle:           QGroundControl.multiVehicleManager.activeVehicle ? QGroundControl.multiVehicleManager.activeVehicle : QGroundControl.multiVehicleManager.offlineEditingVehicle
+    property var    _vehicle:           beeCopter.multiVehicleManager.activeVehicle ? beeCopter.multiVehicleManager.activeVehicle : beeCopter.multiVehicleManager.offlineEditingVehicle
     property bool   _cameraComboFilled: false
 
     readonly property int _gridTypeManual:          0
     readonly property int _gridTypeCustomCamera:    1
     readonly property int _gridTypeCamera:          2
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     Column {
         anchors.left:   parent.left
@@ -38,11 +38,11 @@ Column {
             anchors.right:  parent.right
             spacing:        _margin
             Item { Layout.fillWidth: true }
-            QGCLabel {
+            beeCopterLabel {
                 Layout.preferredWidth:  _root._fieldWidth
                 text:                   qsTr("Front Lap")
             }
-            QGCLabel {
+            beeCopterLabel {
                 Layout.preferredWidth:  _root._fieldWidth
                 text:                   qsTr("Side Lap")
             }
@@ -52,7 +52,7 @@ Column {
             anchors.left:   parent.left
             anchors.right:  parent.right
             spacing:        _margin
-            QGCLabel { text: qsTr("Overlap"); Layout.fillWidth: true }
+            beeCopterLabel { text: qsTr("Overlap"); Layout.fillWidth: true }
             FactTextField {
                 Layout.preferredWidth:  _root._fieldWidth
                 fact:                   cameraCalc.frontalOverlap
@@ -63,7 +63,7 @@ Column {
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             wrapMode:               Text.WordWrap
             text:                   qsTr("Select one:")
             Layout.preferredWidth:  parent.width
@@ -77,7 +77,7 @@ Column {
             rowSpacing:     _margin
             columns:        2
 
-            QGCRadioButton {
+            beeCopterRadioButton {
                 id:                     fixedDistanceRadio
                 leftPadding:            0
                 text:                   distanceToSurfaceLabel
@@ -92,7 +92,7 @@ Column {
                 Layout.fillWidth:           true
             }
 
-            QGCRadioButton {
+            beeCopterRadioButton {
                 id:                     fixedImageDensityRadio
                 leftPadding:            0
                 text:                   qsTr("Grnd Res")
@@ -117,20 +117,20 @@ Column {
         columns:        2
         visible:        cameraCalc.isManualCamera
 
-        QGCLabel { text: distanceToSurfaceLabel }
+        beeCopterLabel { text: distanceToSurfaceLabel }
         AltitudeFactTextField {
             fact:                       cameraCalc.distanceToSurface
             altitudeMode:               cameraCalc.distanceMode
             Layout.fillWidth:           true
         }
 
-        QGCLabel { text: frontalDistanceLabel }
+        beeCopterLabel { text: frontalDistanceLabel }
         FactTextField {
             Layout.fillWidth:   true
             fact:               cameraCalc.adjustedFootprintFrontal
         }
 
-        QGCLabel { text: sideDistanceLabel }
+        beeCopterLabel { text: sideDistanceLabel }
         FactTextField {
             Layout.fillWidth:   true
             fact:               cameraCalc.adjustedFootprintSide

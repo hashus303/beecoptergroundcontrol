@@ -3,13 +3,13 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 Rectangle {
     id:             __mavlinkRoot
-    color:          qgcPal.window
+    color:          beeCopterPal.window
     anchors.fill:   parent
 
     property real _labelWidth:          ScreenTools.defaultFontPixelWidth * 28
@@ -17,16 +17,16 @@ Rectangle {
     property int  _selectedCount:       0
     property real _columnSpacing:       ScreenTools.defaultFontPixelHeight * 0.25
     property bool _uploadedSelected:    false
-    property bool _showMavlinkLog:      QGroundControl.corePlugin.options.showPX4LogTransferOptions
-    property bool _showAPMStreamRates:  QGroundControl.apmFirmwareSupported && QGroundControl.settingsManager.apmMavlinkStreamRateSettings.visible && _isAPM
-    property var  _activeVehicle:       QGroundControl.multiVehicleManager.activeVehicle
+    property bool _showMavlinkLog:      beeCopter.corePlugin.options.showPX4LogTransferOptions
+    property bool _showAPMStreamRates:  beeCopter.apmFirmwareSupported && beeCopter.settingsManager.apmMavlinkStreamRateSettings.visible && _isAPM
+    property var  _activeVehicle:       beeCopter.multiVehicleManager.activeVehicle
     property bool _isPX4:               _activeVehicle ? _activeVehicle.px4Firmware : true
     property bool _isAPM:               _activeVehicle ? _activeVehicle.apmFirmware : true
-    property Fact _disableDataPersistenceFact: QGroundControl.settingsManager.appSettings.disableAllPersistence
+    property Fact _disableDataPersistenceFact: beeCopter.settingsManager.appSettings.disableAllPersistence
     property bool _disableDataPersistence:     _disableDataPersistenceFact ? _disableDataPersistenceFact.rawValue : false
     property var  _mavlinkLogManager:   _activeVehicle ? _activeVehicle.mavlinkLogManager : null
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     Connections {
         target: _mavlinkLogManager
@@ -70,7 +70,7 @@ Rectangle {
         text:       qsTr("Please enter an email address before uploading MAVLink log files.")
     }
 
-    QGCFlickable {
+    beeCopterFlickable {
         clip:               true
         anchors.fill:       parent
         anchors.margins:    ScreenTools.defaultFontPixelWidth
@@ -92,7 +92,7 @@ Rectangle {
                 anchors.margins:    ScreenTools.defaultFontPixelWidth
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible:            _showMavlinkLog && _isPX4
-                QGCLabel {
+                beeCopterLabel {
                     id:             mavlogLabel
                     text:           qsTr("MAVLink 2.0 Logging (PX4 Pro Only)")
                     font.bold:      true
@@ -101,7 +101,7 @@ Rectangle {
             Rectangle {
                 height:         mavlogColumn.height + (ScreenTools.defaultFontPixelHeight * 2)
                 width:          __mavlinkRoot.width * 0.8
-                color:          qgcPal.windowShade
+                color:          beeCopterPal.windowShade
                 anchors.margins: ScreenTools.defaultFontPixelWidth
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible:        _showMavlinkLog && _isPX4
@@ -114,19 +114,19 @@ Rectangle {
                     Row {
                         spacing:    ScreenTools.defaultFontPixelWidth
                         anchors.horizontalCenter: parent.horizontalCenter
-                        QGCLabel {
+                        beeCopterLabel {
                             width:              _labelWidth
                             text:               qsTr("Manual Start/Stop:")
                             anchors.verticalCenter: parent.verticalCenter
                         }
-                        QGCButton {
+                        beeCopterButton {
                             text:               qsTr("Start Logging")
                             width:              (_valueWidth * 0.5) - (ScreenTools.defaultFontPixelWidth * 0.5)
                             enabled:            !_mavlinkLogManager.logRunning && _mavlinkLogManager.canStartLog && !_disableDataPersistence
                             onClicked:          _mavlinkLogManager.startLogging()
                             anchors.verticalCenter: parent.verticalCenter
                         }
-                        QGCButton {
+                        beeCopterButton {
                             text:               qsTr("Stop Logging")
                             width:              (_valueWidth * 0.5) - (ScreenTools.defaultFontPixelWidth * 0.5)
                             enabled:            _mavlinkLogManager.logRunning && !_disableDataPersistence
@@ -136,7 +136,7 @@ Rectangle {
                     }
                     //-----------------------------------------------------------------
                     //-- Enable auto log on arming
-                    QGCCheckBox {
+                    beeCopterCheckBox {
                         text:       qsTr("Enable automatic logging")
                         checked:    _mavlinkLogManager.enableAutoStart
                         enabled:    !_disableDataPersistence
@@ -154,7 +154,7 @@ Rectangle {
                 anchors.margins:    ScreenTools.defaultFontPixelWidth
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible:            _showMavlinkLog && _isPX4
-                QGCLabel {
+                beeCopterLabel {
                     id:             logLabel
                     text:           qsTr("MAVLink 2.0 Log Uploads (PX4 Pro Only)")
                     font.bold:      true
@@ -163,7 +163,7 @@ Rectangle {
             Rectangle {
                 height:         logColumn.height + (ScreenTools.defaultFontPixelHeight * 2)
                 width:          __mavlinkRoot.width * 0.8
-                color:          qgcPal.windowShade
+                color:          beeCopterPal.windowShade
                 anchors.margins: ScreenTools.defaultFontPixelWidth
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible:        _showMavlinkLog && _isPX4
@@ -175,12 +175,12 @@ Rectangle {
                     //-- Email address Field
                     Row {
                         spacing:    ScreenTools.defaultFontPixelWidth
-                        QGCLabel {
+                        beeCopterLabel {
                             width:              _labelWidth
                             anchors.baseline:   emailField.baseline
                             text:               qsTr("Email address for Log Upload:")
                         }
-                        QGCTextField {
+                        beeCopterTextField {
                             id:         emailField
                             text:       _mavlinkLogManager.emailAddress
                             width:      _valueWidth
@@ -196,12 +196,12 @@ Rectangle {
                     //-- Description Field
                     Row {
                         spacing:    ScreenTools.defaultFontPixelWidth
-                        QGCLabel {
+                        beeCopterLabel {
                             width:              _labelWidth
                             anchors.baseline:   descField.baseline
                             text:               qsTr("Default Description:")
                         }
-                        QGCTextField {
+                        beeCopterTextField {
                             id:         descField
                             text:       _mavlinkLogManager.description
                             width:      _valueWidth
@@ -216,12 +216,12 @@ Rectangle {
                     //-- Upload URL
                     Row {
                         spacing:    ScreenTools.defaultFontPixelWidth
-                        QGCLabel {
+                        beeCopterLabel {
                             width:              _labelWidth
                             anchors.baseline:   urlField.baseline
                             text:               qsTr("Default Upload URL")
                         }
-                        QGCTextField {
+                        beeCopterTextField {
                             id:         urlField
                             text:       _mavlinkLogManager.uploadURL
                             width:      _valueWidth
@@ -237,12 +237,12 @@ Rectangle {
                     //-- Video URL
                     Row {
                         spacing:    ScreenTools.defaultFontPixelWidth
-                        QGCLabel {
+                        beeCopterLabel {
                             width:              _labelWidth
                             anchors.baseline:   videoUrlField.baseline
                             text:               qsTr("Video URL:")
                         }
-                        QGCTextField {
+                        beeCopterTextField {
                             id:         videoUrlField
                             text:       _mavlinkLogManager.videoURL
                             width:      _valueWidth
@@ -255,12 +255,12 @@ Rectangle {
                     //-- Wind Speed
                     Row {
                         spacing:                ScreenTools.defaultFontPixelWidth
-                        QGCLabel {
+                        beeCopterLabel {
                             width:              _labelWidth
                             anchors.baseline:   windCombo.baseline
                             text:               qsTr("Wind Speed:")
                         }
-                        QGCComboBox {
+                        beeCopterComboBox {
                             id:         windCombo
                             width:      _valueWidth
                             enabled:    !_disableDataPersistence
@@ -293,12 +293,12 @@ Rectangle {
                     //-- Flight Rating
                     Row {
                         spacing:                ScreenTools.defaultFontPixelWidth
-                        QGCLabel {
+                        beeCopterLabel {
                             width:              _labelWidth
                             anchors.baseline:   ratingCombo.baseline
                             text:               qsTr("Flight Rating:")
                         }
-                        QGCComboBox {
+                        beeCopterComboBox {
                             id:         ratingCombo
                             width:      _valueWidth
                             enabled:    !_disableDataPersistence
@@ -332,7 +332,7 @@ Rectangle {
                     //-- Feedback
                     Row {
                         spacing:                ScreenTools.defaultFontPixelWidth
-                        QGCLabel {
+                        beeCopterLabel {
                             width:              _labelWidth
                             text:               qsTr("Additional Feedback:")
                         }
@@ -343,13 +343,13 @@ Rectangle {
                             font.pointSize:     ScreenTools.defaultFontPointSize
                             text:               _mavlinkLogManager.feedback
                             enabled:            !_disableDataPersistence
-                            color:              qgcPal.textFieldText
-                            background:         Rectangle { color: qgcPal.textField }
+                            color:              beeCopterPal.textFieldText
+                            background:         Rectangle { color: beeCopterPal.textField }
                         }
                     }
                     //-----------------------------------------------------------------
                     //-- Public Log
-                    QGCCheckBox {
+                    beeCopterCheckBox {
                         text:       qsTr("Make this log publicly available")
                         checked:    _mavlinkLogManager.publicLog
                         enabled:    !_disableDataPersistence
@@ -359,7 +359,7 @@ Rectangle {
                     }
                     //-----------------------------------------------------------------
                     //-- Automatic Upload
-                    QGCCheckBox {
+                    beeCopterCheckBox {
                         id:         autoUploadCheck
                         text:       qsTr("Enable automatic log uploads")
                         checked:    _mavlinkLogManager.enableAutoUpload
@@ -372,7 +372,7 @@ Rectangle {
                     }
                     //-----------------------------------------------------------------
                     //-- Delete log after upload
-                    QGCCheckBox {
+                    beeCopterCheckBox {
                         text:       qsTr("Delete log file after uploading")
                         checked:    _mavlinkLogManager.deleteAfterUpload
                         enabled:    autoUploadCheck.checked && !_disableDataPersistence
@@ -390,7 +390,7 @@ Rectangle {
                 anchors.margins:    ScreenTools.defaultFontPixelWidth
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible:            _showMavlinkLog
-                QGCLabel {
+                beeCopterLabel {
                     id:             logFilesLabel
                     text:           qsTr("Saved Log Files")
                     font.bold:      true
@@ -399,7 +399,7 @@ Rectangle {
             Rectangle {
                 height:         logFilesColumn.height + (ScreenTools.defaultFontPixelHeight * 2)
                 width:          __mavlinkRoot.width * 0.8
-                color:          qgcPal.windowShade
+                color:          beeCopterPal.windowShade
                 anchors.margins: ScreenTools.defaultFontPixelWidth
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible:        _showMavlinkLog
@@ -412,10 +412,10 @@ Rectangle {
                         width:          ScreenTools.defaultFontPixelWidth  * 64
                         height:         ScreenTools.defaultFontPixelHeight * 14
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color:          qgcPal.window
-                        border.color:   qgcPal.text
+                        color:          beeCopterPal.window
+                        border.color:   beeCopterPal.text
                         border.width:   0.5
-                        QGCListView {
+                        beeCopterListView {
                             width:          ScreenTools.defaultFontPixelWidth  * 56
                             height:         ScreenTools.defaultFontPixelHeight * 12
                             anchors.centerIn: parent
@@ -425,12 +425,12 @@ Rectangle {
                             delegate: Rectangle {
                                 width:          ScreenTools.defaultFontPixelWidth  * 52
                                 height:         selectCheck.height
-                                color:          qgcPal.window
+                                color:          beeCopterPal.window
                                 Row {
                                     width:  ScreenTools.defaultFontPixelWidth  * 50
                                     anchors.centerIn: parent
                                     spacing: ScreenTools.defaultFontPixelWidth
-                                    QGCCheckBox {
+                                    beeCopterCheckBox {
                                         id:         selectCheck
                                         width:      ScreenTools.defaultFontPixelWidth * 4
                                         checked:    object.selected
@@ -440,21 +440,21 @@ Rectangle {
                                             object.selected = checked
                                         }
                                     }
-                                    QGCLabel {
+                                    beeCopterLabel {
                                         text:       object.name
                                         width:      ScreenTools.defaultFontPixelWidth * 28
-                                        color:      object.writing ? qgcPal.warningText : qgcPal.text
+                                        color:      object.writing ? beeCopterPal.warningText : beeCopterPal.text
                                         anchors.verticalCenter: parent.verticalCenter
                                     }
-                                    QGCLabel {
+                                    beeCopterLabel {
                                         text:       Number(object.size).toLocaleString(Qt.locale(), 'f', 0)
                                         visible:    !object.uploading && !object.uploaded
                                         width:      ScreenTools.defaultFontPixelWidth * 20;
-                                        color:      object.writing ? qgcPal.warningText : qgcPal.text
+                                        color:      object.writing ? beeCopterPal.warningText : beeCopterPal.text
                                         horizontalAlignment: Text.AlignRight
                                         anchors.verticalCenter: parent.verticalCenter
                                     }
-                                    QGCLabel {
+                                    beeCopterLabel {
                                         text:      qsTr("Uploaded")
                                         visible:    object.uploaded
                                         width:      ScreenTools.defaultFontPixelWidth * 20;
@@ -477,7 +477,7 @@ Rectangle {
                     Row {
                         spacing:    ScreenTools.defaultFontPixelWidth
                         anchors.horizontalCenter: parent.horizontalCenter
-                        QGCButton {
+                        beeCopterButton {
                             text:      qsTr("Check All")
                             enabled:    !_mavlinkLogManager.uploading && !_mavlinkLogManager.logRunning
                             onClicked: {
@@ -487,7 +487,7 @@ Rectangle {
                                 }
                             }
                         }
-                        QGCButton {
+                        beeCopterButton {
                             text:      qsTr("Check None")
                             enabled:    !_mavlinkLogManager.uploading && !_mavlinkLogManager.logRunning
                             onClicked: {
@@ -497,7 +497,7 @@ Rectangle {
                                 }
                             }
                         }
-                        QGCButton {
+                        beeCopterButton {
                             text:      qsTr("Delete Selected")
                             enabled:    _selectedCount > 0 && !_mavlinkLogManager.uploading && !_mavlinkLogManager.logRunning
                             onClicked:  deleteDialog.open()
@@ -517,7 +517,7 @@ Rectangle {
                                 }
                             }
                         }
-                        QGCButton {
+                        beeCopterButton {
                             text:      qsTr("Upload Selected")
                             enabled:    _selectedCount > 0 && !_mavlinkLogManager.uploading && !_mavlinkLogManager.logRunning && !_uploadedSelected
                             visible:    !_mavlinkLogManager.uploading
@@ -544,7 +544,7 @@ Rectangle {
                                 }
                             }
                         }
-                        QGCButton {
+                        beeCopterButton {
                             text:      qsTr("Cancel")
                             enabled:    _mavlinkLogManager.uploading && !_mavlinkLogManager.logRunning
                             visible:    _mavlinkLogManager.uploading

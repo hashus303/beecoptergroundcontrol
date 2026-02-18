@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 RowLayout {
     property string label:                   fact.shortDescription
@@ -14,7 +14,7 @@ RowLayout {
 
     spacing: ScreenTools.defaultFontPixelWidth * 2
 
-    QGCLabel {
+    beeCopterLabel {
         Layout.fillWidth:   true
         text:               label
     }

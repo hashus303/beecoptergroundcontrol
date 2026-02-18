@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 //-------------------------------------------------------------------------
 //-- Remote ID Indicator
@@ -14,7 +14,7 @@ Item {
 
     property bool   showIndicator:      remoteIDManager.available
 
-    property var    activeVehicle:      QGroundControl.multiVehicleManager.activeVehicle
+    property var    activeVehicle:      beeCopter.multiVehicleManager.activeVehicle
     property var    remoteIDManager:    activeVehicle ? activeVehicle.remoteIDManager : null
 
     property bool   gpsFlag:            activeVehicle && remoteIDManager ? remoteIDManager.gcsGPSGood         : false
@@ -25,7 +25,7 @@ Item {
     property bool   operatorIDFlag:     activeVehicle && remoteIDManager ? remoteIDManager.operatorIDGood     : false
     property int    remoteIDState:      getRemoteIDState()
 
-    property int    regionOperation:    QGroundControl.settingsManager.remoteIDSettings.region.value
+    property int    regionOperation:    beeCopter.settingsManager.remoteIDSettings.region.value
 
     enum RIDState {
         HEALTHY,
@@ -42,19 +42,19 @@ Item {
     function getRidColor() {
         switch (remoteIDState) {
             case RemoteIDIndicator.RIDState.HEALTHY:
-                return qgcPal.colorGreen
+                return beeCopterPal.colorGreen
                 break
             case RemoteIDIndicator.RIDState.WARNING:
-                return qgcPal.colorYellow
+                return beeCopterPal.colorYellow
                 break
             case RemoteIDIndicator.RIDState.ERROR:
-                return qgcPal.colorRed
+                return beeCopterPal.colorRed
                 break
             case RemoteIDIndicator.RIDState.UNAVAILABLE:
-                return qgcPal.colorGrey
+                return beeCopterPal.colorGrey
                 break
             default:
-                return qgcPal.colorGrey
+                return beeCopterPal.colorGrey
         }
     }
 
@@ -69,7 +69,7 @@ Item {
         if (!gpsFlag || !basicIDFlag) {
             return RemoteIDIndicator.RIDState.WARNING
         }
-        if (regionOperation == RemoteIDIndicator.RegionOperation.EU || QGroundControl.settingsManager.remoteIDSettings.sendOperatorID.value) {
+        if (regionOperation == RemoteIDIndicator.RegionOperation.EU || beeCopter.settingsManager.remoteIDSettings.sendOperatorID.value) {
             if (!operatorIDFlag) {
                 return RemoteIDIndicator.RIDState.WARNING
             }
@@ -84,9 +84,9 @@ Item {
         }
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
-    QGCColoredImage {
+    beeCopterColoredImage {
         id:                 remoteIDIcon
         width:              height
         anchors.top:        parent.top
@@ -96,13 +96,13 @@ Item {
         fillMode:           Image.PreserveAspectFit
         sourceSize.height:  height
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             width:              height
             anchors.fill:       parent
             sourceSize.height:  height
             source:             "/qmlimages/RidIconText.svg"
             fillMode:           Image.PreserveAspectFit
-            color:              qgcPal.text
+            color:              beeCopterPal.text
         }
     }
 

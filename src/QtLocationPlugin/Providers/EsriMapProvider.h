@@ -31,7 +31,7 @@ public:
         : EsriMapProvider(
             QStringLiteral("Esri World Street"),
             QStringLiteral("World_Street_Map"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::StreetMap) {}
 };
 
@@ -42,7 +42,7 @@ public:
         : EsriMapProvider(
             QStringLiteral("Esri World Satellite"),
             QStringLiteral("World_Imagery"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::SatelliteMapDay) {}
 };
 
@@ -53,6 +53,6 @@ public:
         : EsriMapProvider(
             QStringLiteral("Esri Terrain"),
             QStringLiteral("World_Terrain_Base"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::TerrainMap) {}
 };

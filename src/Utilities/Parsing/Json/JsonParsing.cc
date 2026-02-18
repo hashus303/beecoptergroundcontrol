@@ -5,11 +5,11 @@
 #include <QtCore/QObject>
 #include <QtCore/QJsonParseError>
 
-#include "QGCFileHelper.h"
-#include "QGCLoggingCategory.h"
-#include "QGCNetworkHelper.h"
+#include "beeCopterFileHelper.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterNetworkHelper.h"
 
-QGC_LOGGING_CATEGORY(JsonParsingLog, "Utilities.Parsing.Json")
+beeCopter_LOGGING_CATEGORY(JsonParsingLog, "Utilities.Parsing.Json")
 
 namespace {
 
@@ -93,7 +93,7 @@ bool validateKeyTypes(const QJsonObject& jsonObject, const QStringList& keys, co
 bool isJsonFile(const QByteArray& bytes, QJsonDocument& jsonDoc, QString& errorString)
 {
     QJsonParseError parseError;
-    jsonDoc = QGCNetworkHelper::parseCompressedJson(bytes, &parseError);
+    jsonDoc = beeCopterNetworkHelper::parseCompressedJson(bytes, &parseError);
 
     if (parseError.error == QJsonParseError::NoError) {
         return true;
@@ -109,7 +109,7 @@ bool isJsonFile(const QByteArray& bytes, QJsonDocument& jsonDoc, QString& errorS
 
 bool isJsonFile(const QString& fileName, QJsonDocument& jsonDoc, QString& errorString)
 {
-    const QByteArray jsonBytes = QGCFileHelper::readFile(fileName, &errorString);
+    const QByteArray jsonBytes = beeCopterFileHelper::readFile(fileName, &errorString);
     if (jsonBytes.isEmpty() && !errorString.isEmpty()) {
         return false;
     }

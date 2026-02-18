@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 // Important Note: SubMenuButtons must manage their checked state manually in order to support
 // view switch prevention. This means they can't be checkable or autoExclusive.
@@ -31,24 +31,24 @@ Button {
 
     onCheckedChanged: checkable = false
 
-    QGCPalette {
-        id:                 qgcPal
+    beeCopterPalette {
+        id:                 beeCopterPal
         colorGroupEnabled:  control.enabled
     }
 
     background: Rectangle {
         id:     innerRect
-        color:  qgcPal.windowShade
+        color:  beeCopterPal.windowShade
 
         implicitWidth: titleBar.x + titleBar.contentWidth + ScreenTools.defaultFontPixelWidth
 
         Rectangle {
             anchors.fill:   parent
-            color:          qgcPal.buttonHighlight
+            color:          beeCopterPal.buttonHighlight
             opacity:        showHighlight ? 1 : control.enabled && control.hovered ? .2 : 0
         }
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             id:                     image
             anchors.leftMargin:     ScreenTools.defaultFontPixelWidth
             anchors.left:           parent.left
@@ -62,13 +62,13 @@ Button {
             sourceSize:             control.sourceSize
         }
 
-        QGCLabel {
+        beeCopterLabel {
             id:                     titleBar
             anchors.leftMargin:     ScreenTools.defaultFontPixelWidth
             anchors.left:           image.right
             anchors.verticalCenter: parent.verticalCenter
             verticalAlignment:      TextEdit.AlignVCenter
-            color:                  showHighlight ? qgcPal.buttonHighlightText : qgcPal.buttonText
+            color:                  showHighlight ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
             text:                   control.text
         }
     }

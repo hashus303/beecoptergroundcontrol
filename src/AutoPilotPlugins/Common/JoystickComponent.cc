@@ -1,10 +1,10 @@
 #include "JoystickComponent.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include "Joystick.h"
 #include "JoystickManager.h"
 
-QGC_LOGGING_CATEGORY(JoystickComponentLog, "AutoPilotPlugins.JoystickComponent")
+beeCopter_LOGGING_CATEGORY(JoystickComponentLog, "AutoPilotPlugins.JoystickComponent")
 
 JoystickComponent::JoystickComponent(Vehicle *vehicle, AutoPilotPlugin *autopilot, QObject *parent)
     : VehicleComponent(vehicle, autopilot, AutoPilotPlugin::KnownJoystickVehicleComponent, parent)
@@ -35,12 +35,12 @@ bool JoystickComponent::setupComplete() const
 
 QUrl JoystickComponent::setupSource() const
 {
-    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/QGroundControl/VehicleSetup/JoystickComponent.qml"));
+    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/beeCopter/VehicleSetup/JoystickComponent.qml"));
 }
 
 QUrl JoystickComponent::summaryQmlSource() const
 {
-    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/QGroundControl/AutoPilotPlugins/Common/JoystickComponentSummary.qml"));
+    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/beeCopter/AutoPilotPlugins/Common/JoystickComponentSummary.qml"));
 }
 
 QString JoystickComponent::joystickStatusText() const

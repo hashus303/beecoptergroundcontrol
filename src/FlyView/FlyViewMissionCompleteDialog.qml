@@ -3,8 +3,8 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Dialog which shows up when a flight completes. Prompts the user for things like whether they should remove the plan from the vehicle.
 Item {
@@ -15,7 +15,7 @@ Item {
     property var rallyPointController
 
     // The following code is used to track vehicle states for showing the mission complete dialog
-    property var  _activeVehicle:                   QGroundControl.multiVehicleManager.activeVehicle
+    property var  _activeVehicle:                   beeCopter.multiVehicleManager.activeVehicle
     property bool _vehicleArmed:                    _activeVehicle ? _activeVehicle.armed : true // true here prevents pop up from showing during shutdown
     property bool _vehicleWasArmed:                 false
     property bool _vehicleInMissionFlightMode:      _activeVehicle ? (_activeVehicle.flightMode === _activeVehicle.missionFlightMode) : false
@@ -46,7 +46,7 @@ Item {
     Component {
         id: missionCompleteDialogComponent
 
-        QGCPopupDialog {
+        beeCopterPopupDialog {
             id:         missionCompleteDialog
             title:      qsTr("Flight Plan complete")
             buttons:    Dialog.Close
@@ -62,14 +62,14 @@ Item {
                 width:      40 * ScreenTools.defaultFontPixelWidth
                 spacing:    ScreenTools.defaultFontPixelHeight
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:       true
                     text:                   qsTr("%1 Images Taken").arg(_activeVehicle.cameraTriggerPoints.count)
                     horizontalAlignment:    Text.AlignHCenter
                     visible:                _activeVehicle.cameraTriggerPoints.count !== 0
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth:   true
                     text:               qsTr("Remove plan from vehicle")
                     visible:            !_activeVehicle.communicationLost// && !_activeVehicle.apmFirmware  // ArduPilot has a bug somewhere with mission clear
@@ -79,7 +79,7 @@ Item {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth:   true
                     Layout.alignment:   Qt.AlignHCenter
                     text:               qsTr("Leave plan on vehicle")
@@ -89,7 +89,7 @@ Item {
 
                 Rectangle {
                     Layout.fillWidth:   true
-                    color:              qgcPal.text
+                    color:              beeCopterPal.text
                     height:             1
                 }
 
@@ -98,7 +98,7 @@ Item {
                     spacing:            ScreenTools.defaultFontPixelHeight
                     visible:            !_activeVehicle.communicationLost && globals.guidedControllerFlyView.showResumeMission
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         Layout.alignment:   Qt.AlignHCenter
                         text:               qsTr("Resume Mission From Waypoint %1").arg(globals.guidedControllerFlyView._resumeMissionIndex)
@@ -109,17 +109,17 @@ Item {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.fillWidth:   true
                         wrapMode:           Text.WordWrap
                         text:               qsTr("Resume Mission will rebuild the current mission from the last flown waypoint and upload it to the vehicle for the next flight.")
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     wrapMode:           Text.WordWrap
-                    color:              qgcPal.warningText
+                    color:              beeCopterPal.warningText
                     text:               qsTr("If you are changing batteries for Resume Mission do not disconnect from the vehicle.")
                     visible:            globals.guidedControllerFlyView.showResumeMission
                 }

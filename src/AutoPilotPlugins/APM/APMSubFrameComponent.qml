@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:                 subFramePage
@@ -49,7 +49,7 @@ SetupPage {
             id:     mainColumn
             width:  availableWidth
 
-            QGCPalette { id: qgcPal; colorGroupEnabled: true }
+            beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
             property real _minW:        ScreenTools.defaultFontPixelWidth * 30
             property real _boxWidth:    _minW
@@ -132,9 +132,9 @@ SetupPage {
                     Rectangle {
                         width:  _boxWidth
                         height: ScreenTools.defaultFontPixelHeight * 14
-                        color:  qgcPal.window
+                        color:  beeCopterPal.window
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:     title
                             text:   subFrameModel.get(index).name
                         }
@@ -145,7 +145,7 @@ SetupPage {
                             anchors.bottom:     parent.bottom
                             anchors.left:       parent.left
                             anchors.right:      parent.right
-                            color:              subFrameModel.get(index).paramValue == _frameConfig.value ? qgcPal.buttonHighlight: qgcPal.windowShade
+                            color:              subFrameModel.get(index).paramValue == _frameConfig.value ? beeCopterPal.buttonHighlight: beeCopterPal.windowShade
 
                             Image {
                                 anchors.margins:    ScreenTools.defaultFontPixelWidth
@@ -183,13 +183,13 @@ SetupPage {
     Component {
         id: confirmFrameComponent
 
-        QGCPopupDialog {
+        beeCopterPopupDialog {
             id:         confirmFrameDialog
             title:      qsTr("Frame selection")
             buttons:    Dialog.Close
 
             ColumnLayout {
-                QGCLabel {
+                beeCopterLabel {
                     id:                 applyParamsText
                     width:              firstButton.width
                     wrapMode:           Text.WordWrap
@@ -198,7 +198,7 @@ SetupPage {
                                             qsTr("Would you like to set the desired frame?")
                 }
 
-                QGCButton {
+                beeCopterButton {
                     id:                 firstButton
                     Layout.fillWidth:   true
                     text:               qsTr("Yes, Load default parameter set for %1").arg(frameModelSelected.name)
@@ -211,7 +211,7 @@ SetupPage {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth:   true
                     text:               frameModelSelected.paramFileName != undefined ?
                                             qsTr("No, set frame only") :

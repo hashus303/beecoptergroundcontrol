@@ -1,13 +1,13 @@
 import QtQuick3D
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 View3D {
     id: topView
 
     readonly property real _viewDistance: 50000
-    readonly property var _gpsRef: QGCViewer3DManager.gpsRef
+    readonly property var _gpsRef: beeCopterViewer3DManager.gpsRef
 
     property real movementSpeed: 1
     property real rotationSpeed: 0.1
@@ -80,9 +80,9 @@ View3D {
         }
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
-    readonly property color _skyColor: qgcPal.window
+    readonly property color _skyColor: beeCopterPal.window
     importScene: CameraLightModel {
         id: standAloneScene
 
@@ -132,7 +132,7 @@ View3D {
                 geometry: CityMapGeometry {
                     id: cityMapGeometry
 
-                    mapProvider: QGCViewer3DManager.mapProvider
+                    mapProvider: beeCopterViewer3DManager.mapProvider
                     modelName: "city_map"
                 }
                 materials: [
@@ -165,15 +165,15 @@ View3D {
                         }
                     }
 
-                    fragmentShader: "/qml/QGroundControl/Viewer3D/ShaderFragment/earthMaterial.frag"
-                    vertexShader: "/qml/QGroundControl/Viewer3D/ShaderVertex/earthMaterial.vert"
+                    fragmentShader: "/qml/beeCopter/Viewer3D/ShaderFragment/earthMaterial.frag"
+                    vertexShader: "/qml/beeCopter/Viewer3D/ShaderVertex/earthMaterial.vert"
                 }
             }
 
             Viewer3DTerrainTexture {
                 id: _terrainTextureManager
 
-                mapProvider: QGCViewer3DManager.mapProvider
+                mapProvider: beeCopterViewer3DManager.mapProvider
 
                 onTextureGeometryDoneChanged: {
                     if (textureGeometryDone === true) {
@@ -199,10 +199,10 @@ View3D {
         id: vehicle3DComponent
 
         Repeater3D {
-            model: QGroundControl.multiVehicleManager.vehicles
+            model: beeCopter.multiVehicleManager.vehicles
 
             delegate: Viewer3DVehicleItems {
-                _backendQml: QGCViewer3DManager
+                _backendQml: beeCopterViewer3DManager
                 _camera: standAloneScene.cameraOne
                 _planMasterController: masterController
                 _vehicle: object

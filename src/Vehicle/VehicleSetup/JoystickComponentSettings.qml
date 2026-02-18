@@ -3,10 +3,10 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.VehicleSetup
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.VehicleSetup
+import beeCopter.FactControls
 
 ColumnLayout {
     spacing: ScreenTools.defaultFontPixelHeight / 2
@@ -42,7 +42,7 @@ ColumnLayout {
         visible: globals.activeVehicle.supportsNegativeThrust && fact.visible
     }
 
-    QGCCheckBoxSlider {
+    beeCopterCheckBoxSlider {
         id: advancedSettingsCheckbox
         Layout.fillWidth: true
         text: qsTr("Advanced Settings")
@@ -87,7 +87,7 @@ ColumnLayout {
             visible: fact.visible
         }
 
-        QGCLabel{
+        beeCopterLabel{
             Layout.fillWidth: true
             font.pointSize: ScreenTools.smallFontPointSize
             wrapMode: Text.WordWrap

@@ -1,10 +1,10 @@
 #include "ExifUtility.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <cassert>
 #include <cmath>
 
-QGC_LOGGING_CATEGORY(ExifUtilityLog, "Utilities.ExifUtility")
+beeCopter_LOGGING_CATEGORY(ExifUtilityLog, "Utilities.ExifUtility")
 
 namespace ExifUtility
 {

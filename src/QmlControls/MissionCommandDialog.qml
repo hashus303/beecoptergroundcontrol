@@ -3,10 +3,10 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
-QGCPopupDialog {
+beeCopterPopupDialog {
     id:         root
     title:      qsTr("Select Mission Command")
     buttons:    Dialog.Cancel
@@ -20,17 +20,17 @@ QGCPopupDialog {
         RowLayout {
             spacing: ScreenTools.defaultFontPixelWidth
 
-            QGCLabel {
+            beeCopterLabel {
                 text: qsTr("Category:")
             }
 
-            QGCComboBox {
+            beeCopterComboBox {
                 id:                     categoryCombo
                 Layout.preferredWidth:  30 * ScreenTools.defaultFontPixelWidth
-                model:                  QGroundControl.missionCommandTree.categoriesForVehicle(vehicle)
+                model:                  beeCopter.missionCommandTree.categoriesForVehicle(vehicle)
 
                 function categorySelected(category) {
-                    commandList.model = QGroundControl.missionCommandTree.getCommandsForCategory(vehicle, category, flyThroughCommandsAllowed)
+                    commandList.model = beeCopter.missionCommandTree.getCommandsForCategory(vehicle, category, flyThroughCommandsAllowed)
                 }
 
                 Component.onCompleted: {
@@ -50,10 +50,10 @@ QGCPopupDialog {
             delegate: Rectangle {
                 width:  parent.width
                 height: commandColumn.height + ScreenTools.defaultFontPixelHeight
-                color:  QGroundControl.globalPalette.button
+                color:  beeCopter.globalPalette.button
 
                 property var    mavCmdInfo: modelData
-                property color  textColor:  QGroundControl.globalPalette.buttonText
+                property color  textColor:  beeCopter.globalPalette.buttonText
 
                 Column {
                     id:                 commandColumn
@@ -62,13 +62,13 @@ QGCPopupDialog {
                     anchors.right:      parent.right
                     anchors.top:        parent.top
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:           mavCmdInfo.friendlyName
                         color:          textColor
                         font.bold:      true
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         anchors.margins:    ScreenTools.defaultFontPixelWidth
                         anchors.left:       parent.left
                         anchors.right:      parent.right

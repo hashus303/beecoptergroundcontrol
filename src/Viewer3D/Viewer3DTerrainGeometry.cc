@@ -1,13 +1,13 @@
 #include "Viewer3DTerrainGeometry.h"
 
-#include "QGCGeo.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterGeo.h"
+#include "beeCopterLoggingCategory.h"
 #include "SettingsManager.h"
 #include "Viewer3DSettings.h"
 
 #include <cmath>
 
-QGC_LOGGING_CATEGORY(Viewer3DTerrainGeometryLog, "Viewer3d.Viewer3DTerrainGeometry")
+beeCopter_LOGGING_CATEGORY(Viewer3DTerrainGeometryLog, "Viewer3d.Viewer3DTerrainGeometry")
 
 static constexpr double kMaxLatitude = 85.05112878;
 
@@ -156,7 +156,7 @@ bool Viewer3DTerrainGeometry::_buildTerrain(const QGeoCoordinate &roiMinCoordina
             sectorAngle = sectorRef + j * sectorStep;
 
             Vertex vertex;
-            const QVector3D localPoint = QGCGeo::convertGpsToEnu(QGeoCoordinate(stackAngle, sectorAngle, 0), refCoordinate);
+            const QVector3D localPoint = beeCopterGeo::convertGpsToEnu(QGeoCoordinate(stackAngle, sectorAngle, 0), refCoordinate);
             vertex.x = localPoint.x();
             vertex.y = localPoint.y();
             vertex.z = 0;

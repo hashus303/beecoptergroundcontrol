@@ -1,6 +1,6 @@
 #include "PX4FirmwarePlugin.h"
 #include "PX4ParameterMetaData.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "PX4AutoPilotPlugin.h"
 #include "SettingsManager.h"
 #include "PlanViewSettings.h"
@@ -193,7 +193,7 @@ void PX4FirmwarePlugin::_getParameterMetaDataVersionInfo(const QString& metaData
     return PX4ParameterMetaData::getParameterMetaDataVersionInfo(metaDataFile, majorVersion, minorVersion);
 }
 
-QList<MAV_CMD> PX4FirmwarePlugin::supportedMissionCommands(QGCMAVLink::VehicleClass_t vehicleClass) const
+QList<MAV_CMD> PX4FirmwarePlugin::supportedMissionCommands(beeCopterMAVLink::VehicleClass_t vehicleClass) const
 {
     QList<MAV_CMD> supportedCommands = {
         MAV_CMD_NAV_WAYPOINT,
@@ -226,14 +226,14 @@ QList<MAV_CMD> PX4FirmwarePlugin::supportedMissionCommands(QGCMAVLink::VehicleCl
         MAV_CMD_NAV_LAND, MAV_CMD_NAV_TAKEOFF,
     };
 
-    if (vehicleClass == QGCMAVLink::VehicleClassGeneric) {
+    if (vehicleClass == beeCopterMAVLink::VehicleClassGeneric) {
         supportedCommands   += vtolCommands;
         supportedCommands   += flightCommands;
     }
-    if (vehicleClass == QGCMAVLink::VehicleClassVTOL) {
+    if (vehicleClass == beeCopterMAVLink::VehicleClassVTOL) {
         supportedCommands += vtolCommands;
         supportedCommands += flightCommands;
-    } else if (vehicleClass == QGCMAVLink::VehicleClassFixedWing || vehicleClass == QGCMAVLink::VehicleClassMultiRotor) {
+    } else if (vehicleClass == beeCopterMAVLink::VehicleClassFixedWing || vehicleClass == beeCopterMAVLink::VehicleClassMultiRotor) {
         supportedCommands += flightCommands;
     }
 
@@ -244,20 +244,20 @@ QList<MAV_CMD> PX4FirmwarePlugin::supportedMissionCommands(QGCMAVLink::VehicleCl
     return supportedCommands;
 }
 
-QString PX4FirmwarePlugin::missionCommandOverrides(QGCMAVLink::VehicleClass_t vehicleClass) const
+QString PX4FirmwarePlugin::missionCommandOverrides(beeCopterMAVLink::VehicleClass_t vehicleClass) const
 {
     switch (vehicleClass) {
-    case QGCMAVLink::VehicleClassGeneric:
+    case beeCopterMAVLink::VehicleClassGeneric:
         return QStringLiteral(":/json/PX4-MavCmdInfoCommon.json");
-    case QGCMAVLink::VehicleClassFixedWing:
+    case beeCopterMAVLink::VehicleClassFixedWing:
         return QStringLiteral(":/json/PX4-MavCmdInfoFixedWing.json");
-    case QGCMAVLink::VehicleClassMultiRotor:
+    case beeCopterMAVLink::VehicleClassMultiRotor:
         return QStringLiteral(":/json/PX4-MavCmdInfoMultiRotor.json");
-    case QGCMAVLink::VehicleClassVTOL:
+    case beeCopterMAVLink::VehicleClassVTOL:
         return QStringLiteral(":/json/PX4-MavCmdInfoVTOL.json");
-    case QGCMAVLink::VehicleClassSub:
+    case beeCopterMAVLink::VehicleClassSub:
         return QStringLiteral(":/json/PX4-MavCmdInfoSub.json");
-    case QGCMAVLink::VehicleClassRoverBoat:
+    case beeCopterMAVLink::VehicleClassRoverBoat:
         return QStringLiteral(":/json/PX4-MavCmdInfoRover.json");
     default:
         qWarning() << "PX4FirmwarePlugin::missionCommandOverrides called with bad VehicleClass_t:" << vehicleClass;
@@ -324,7 +324,7 @@ void PX4FirmwarePlugin::guidedModeTakeoff(Vehicle* vehicle, double takeoffAltRel
 {
     double vehicleAltitudeAMSL = vehicle->altitudeAMSL()->rawValue().toDouble();
     if (qIsNaN(vehicleAltitudeAMSL)) {
-        qgcApp()->showAppMessage(tr("Unable to takeoff, vehicle position not known."));
+        beeCopterApp()->showAppMessage(tr("Unable to takeoff, vehicle position not known."));
         return;
     }
 
@@ -392,7 +392,7 @@ void PX4FirmwarePlugin::guidedModeGotoLocation(Vehicle* vehicle, const QGeoCoord
     Q_UNUSED(forwardFlightLoiterRadius)
 
     if (qIsNaN(vehicle->altitudeAMSL()->rawValue().toDouble())) {
-        qgcApp()->showAppMessage(tr("Unable to go to location, vehicle position not known."));
+        beeCopterApp()->showAppMessage(tr("Unable to go to location, vehicle position not known."));
         return;
     }
 
@@ -463,7 +463,7 @@ void PX4FirmwarePlugin::_changeAltAfterPause(void* resultHandlerData, bool pause
                     qQNaN(), qQNaN(), qQNaN(),              // No change to yaw, lat, lon
                     static_cast<float>(pData->newAMSLAlt));
     } else {
-        qgcApp()->showAppMessage(tr("Unable to pause vehicle."));
+        beeCopterApp()->showAppMessage(tr("Unable to pause vehicle."));
     }
 
     delete pData;
@@ -472,11 +472,11 @@ void PX4FirmwarePlugin::_changeAltAfterPause(void* resultHandlerData, bool pause
 void PX4FirmwarePlugin::guidedModeChangeAltitude(Vehicle* vehicle, double altitudeChange, bool pauseVehicle)
 {
     if (!vehicle->homePosition().isValid()) {
-        qgcApp()->showAppMessage(tr("Unable to change altitude, home position unknown."));
+        beeCopterApp()->showAppMessage(tr("Unable to change altitude, home position unknown."));
         return;
     }
     if (qIsNaN(vehicle->homePosition().altitude())) {
-        qgcApp()->showAppMessage(tr("Unable to change altitude, home position altitude unknown."));
+        beeCopterApp()->showAppMessage(tr("Unable to change altitude, home position altitude unknown."));
         return;
     }
 
@@ -537,7 +537,7 @@ void PX4FirmwarePlugin::guidedModeChangeEquivalentAirspeedMetersSecond(Vehicle* 
 void PX4FirmwarePlugin::guidedModeChangeHeading(Vehicle* vehicle, const QGeoCoordinate &headingCoord) const
 {
     if (!isCapable(vehicle, FirmwarePlugin::ChangeHeadingCapability)) {
-        qgcApp()->showAppMessage(tr("Vehicle does not support guided rotate"));
+        beeCopterApp()->showAppMessage(tr("Vehicle does not support guided rotate"));
         return;
     }
 
@@ -559,11 +559,11 @@ void PX4FirmwarePlugin::startTakeoff(Vehicle* vehicle) const
 {
     if (_setFlightModeAndValidate(vehicle, takeOffFlightMode())) {
         if (!_armVehicleAndValidate(vehicle)) {
-            qgcApp()->showAppMessage(tr("Unable to start takeoff: Vehicle rejected arming."));
+            beeCopterApp()->showAppMessage(tr("Unable to start takeoff: Vehicle rejected arming."));
             return;
         }
     } else {
-        qgcApp()->showAppMessage(tr("Unable to start takeoff: Vehicle not changing to %1 flight mode.").arg(takeOffFlightMode()));
+        beeCopterApp()->showAppMessage(tr("Unable to start takeoff: Vehicle not changing to %1 flight mode.").arg(takeOffFlightMode()));
     }
 }
 
@@ -571,11 +571,11 @@ void PX4FirmwarePlugin::startMission(Vehicle* vehicle) const
 {
     if (_setFlightModeAndValidate(vehicle, missionFlightMode())) {
         if (!_armVehicleAndValidate(vehicle)) {
-            qgcApp()->showAppMessage(tr("Unable to start mission: Vehicle rejected arming."));
+            beeCopterApp()->showAppMessage(tr("Unable to start mission: Vehicle rejected arming."));
             return;
         }
     } else {
-        qgcApp()->showAppMessage(tr("Unable to start mission: Vehicle not changing to %1 flight mode.").arg(missionFlightMode()));
+        beeCopterApp()->showAppMessage(tr("Unable to start mission: Vehicle not changing to %1 flight mode.").arg(missionFlightMode()));
     }
 }
 
@@ -691,7 +691,7 @@ void PX4FirmwarePlugin::_handleAutopilotVersion(Vehicle* vehicle, mavlink_messag
 
         if (notifyUser) {
             instanceData->versionNotified = true;
-            qgcApp()->showAppMessage(tr("QGroundControl supports PX4 Pro firmware Version %1.%2.%3 and above. You are using a version prior to that which will lead to unpredictable results. Please upgrade your firmware.").arg(supportedMajorVersion).arg(supportedMinorVersion).arg(supportedPatchVersion));
+            beeCopterApp()->showAppMessage(tr("beeCopter supports PX4 Pro firmware Version %1.%2.%3 and above. You are using a version prior to that which will lead to unpredictable results. Please upgrade your firmware.").arg(supportedMajorVersion).arg(supportedMinorVersion).arg(supportedPatchVersion));
         }
     }
 }
@@ -815,11 +815,11 @@ void PX4FirmwarePlugin::updateAvailableFlightModes(FlightModeList &modeList)
 QVariant PX4FirmwarePlugin::expandedToolbarIndicatorSource(const Vehicle* /*vehicle*/, const QString& indicatorName) const
 {
     if (indicatorName == "Battery") {
-        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/FirmwarePlugin/PX4/PX4BatteryIndicator.qml"));
+        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/FirmwarePlugin/PX4/PX4BatteryIndicator.qml"));
     } else if (indicatorName == "FlightMode") {
-        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/FirmwarePlugin/PX4/PX4FlightModeIndicator.qml"));
+        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/FirmwarePlugin/PX4/PX4FlightModeIndicator.qml"));
     } else if (indicatorName == "MainStatus") {
-        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/FirmwarePlugin/PX4/PX4MainStatusIndicator.qml"));
+        return QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/FirmwarePlugin/PX4/PX4MainStatusIndicator.qml"));
     }
 
     return QVariant();

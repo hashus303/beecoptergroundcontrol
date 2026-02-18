@@ -1,7 +1,7 @@
 #include "MockConfiguration.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(MockConfigurationLog, "Comms.MockLink.MockConfiguration")
+beeCopter_LOGGING_CATEGORY(MockConfigurationLog, "Comms.MockLink.MockConfiguration")
 
 MockConfiguration::MockConfiguration(const QString &name, QObject *parent)
     : LinkConfiguration(name, parent)

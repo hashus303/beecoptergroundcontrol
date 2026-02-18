@@ -1,11 +1,11 @@
 import QtQuick
 
-import QGroundControl
+import beeCopter
 
 Canvas {
     id: canvas
     anchors.fill: parent
-    visible: QGroundControl.settingsManager.flyViewSettings.showObstacleDistanceOverlay.value > 0 && _activeVehicle && _activeVehicle.objectAvoidance.available
+    visible: beeCopter.settingsManager.flyViewSettings.showObstacleDistanceOverlay.value > 0 && _activeVehicle && _activeVehicle.objectAvoidance.available
 
     property var showText: true
     property var interval: 200
@@ -19,7 +19,7 @@ Canvas {
         return rangeIdx(deg, _incrementDeg, _offsetDeg, _rangesLen, useHeading ? _heading : 0)
     }
     property var _rangeToShow: function(range) {
-        const feets = QGroundControl.settingsManager.unitsSettings.horizontalDistanceUnits.value === UnitsSettings.HorizontalDistanceUnitsFeet
+        const feets = beeCopter.settingsManager.unitsSettings.horizontalDistanceUnits.value === UnitsSettings.HorizontalDistanceUnitsFeet
         range = feets ? range * 3.2808399 : range
         return range.toFixed(2)
     }

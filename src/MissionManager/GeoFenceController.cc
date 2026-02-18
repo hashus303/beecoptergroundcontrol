@@ -6,14 +6,14 @@
 #include "SettingsManager.h"
 #include "AppSettings.h"
 #include "GeoFenceManager.h"
-#include "QGCFenceCircle.h"
-#include "QGCFencePolygon.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterFenceCircle.h"
+#include "beeCopterFencePolygon.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 
-QGC_LOGGING_CATEGORY(GeoFenceControllerLog, "PlanManager.GeoFenceController")
+beeCopter_LOGGING_CATEGORY(GeoFenceControllerLog, "PlanManager.GeoFenceController")
 
 QMap<QString, FactMetaData*> GeoFenceController::_metaDataMap;
 
@@ -137,7 +137,7 @@ bool GeoFenceController::load(const QJsonObject& json, QString& errorString)
             return false;
         }
 
-        QGCFencePolygon* fencePolygon = new QGCFencePolygon(false /* inclusion */, this /* parent */);
+        beeCopterFencePolygon* fencePolygon = new beeCopterFencePolygon(false /* inclusion */, this /* parent */);
         if (!fencePolygon->loadFromJson(jsonPolygonValue.toObject(), true /* required */, errorString)) {
             return false;
         }
@@ -151,7 +151,7 @@ bool GeoFenceController::load(const QJsonObject& json, QString& errorString)
             return false;
         }
 
-        QGCFenceCircle* fenceCircle = new QGCFenceCircle(this /* parent */);
+        beeCopterFenceCircle* fenceCircle = new beeCopterFenceCircle(this /* parent */);
         if (!fenceCircle->loadFromJson(jsonCircleValue.toObject(), errorString)) {
             return false;
         }
@@ -181,7 +181,7 @@ void GeoFenceController::save(QJsonObject& json)
     QJsonArray jsonPolygonArray;
     for (int i=0; i<_polygons.count(); i++) {
         QJsonObject jsonPolygon;
-        QGCFencePolygon* fencePolygon = _polygons.value<QGCFencePolygon*>(i);
+        beeCopterFencePolygon* fencePolygon = _polygons.value<beeCopterFencePolygon*>(i);
         fencePolygon->saveToJson(jsonPolygon);
         jsonPolygonArray.append(jsonPolygon);
     }
@@ -190,7 +190,7 @@ void GeoFenceController::save(QJsonObject& json)
     QJsonArray jsonCircleArray;
     for (int i=0; i<_circles.count(); i++) {
         QJsonObject jsonCircle;
-        QGCFenceCircle* fenceCircle = _circles.value<QGCFenceCircle*>(i);
+        beeCopterFenceCircle* fenceCircle = _circles.value<beeCopterFenceCircle*>(i);
         fenceCircle->saveToJson(jsonCircle);
         jsonCircleArray.append(jsonCircle);
     }
@@ -265,11 +265,11 @@ void GeoFenceController::setDirty(bool dirty)
         _dirty = dirty;
         if (!dirty) {
             for (int i=0; i<_polygons.count(); i++) {
-                QGCFencePolygon* polygon = _polygons.value<QGCFencePolygon*>(i);
+                beeCopterFencePolygon* polygon = _polygons.value<beeCopterFencePolygon*>(i);
                 polygon->setDirty(false);
             }
             for (int i=0; i<_circles.count(); i++) {
-                QGCFenceCircle* circle = _circles.value<QGCFenceCircle*>(i);
+                beeCopterFenceCircle* circle = _circles.value<beeCopterFenceCircle*>(i);
                 circle->setDirty(false);
             }
         }
@@ -289,18 +289,18 @@ void GeoFenceController::_setDirty(void)
     setDirty(true);
 }
 
-void GeoFenceController::_setFenceFromManager(const QList<QGCFencePolygon>& polygons,
-                                              const QList<QGCFenceCircle>&  circles)
+void GeoFenceController::_setFenceFromManager(const QList<beeCopterFencePolygon>& polygons,
+                                              const QList<beeCopterFenceCircle>&  circles)
 {
     _polygons.clearAndDeleteContents();
     _circles.clearAndDeleteContents();
 
     for (int i=0; i<polygons.count(); i++) {
-        _polygons.append(new QGCFencePolygon(polygons[i], this));
+        _polygons.append(new beeCopterFencePolygon(polygons[i], this));
     }
 
     for (int i=0; i<circles.count(); i++) {
-        _circles.append(new QGCFenceCircle(circles[i], this));
+        _circles.append(new beeCopterFenceCircle(circles[i], this));
     }
 
     setDirty(false);
@@ -401,7 +401,7 @@ void GeoFenceController::addInclusionPolygon(QGeoCoordinate topLeft, QGeoCoordin
     bottomLeft =        center.atDistanceAndAzimuth(halfWidthMeters, -90).atDistanceAndAzimuth(halfHeightMeters, 180);
     bottomRight =       center.atDistanceAndAzimuth(halfWidthMeters, 90).atDistanceAndAzimuth(halfHeightMeters, 180);
 
-    QGCFencePolygon* polygon = new QGCFencePolygon(true /* inclusion */, this);
+    beeCopterFencePolygon* polygon = new beeCopterFencePolygon(true /* inclusion */, this);
     polygon->appendVertex(topLeft);
     polygon->appendVertex(topRight);
     polygon->appendVertex(bottomRight);
@@ -426,7 +426,7 @@ void GeoFenceController::addInclusionCircle(QGeoCoordinate topLeft, QGeoCoordina
     QGeoCoordinate centerTopEdge = topLeft.atDistanceAndAzimuth(halfWidthMeters, 90);
     QGeoCoordinate center(centerLeftEdge.latitude(), centerTopEdge.longitude());
 
-    QGCFenceCircle* circle = new QGCFenceCircle(center, radius, true /* inclusion */, this);
+    beeCopterFenceCircle* circle = new beeCopterFenceCircle(center, radius, true /* inclusion */, this);
     _circles.append(circle);
 
     clearAllInteractive();
@@ -439,7 +439,7 @@ void GeoFenceController::deletePolygon(int index)
         return;
     }
 
-    QGCFencePolygon* polygon = qobject_cast<QGCFencePolygon*>(_polygons.removeAt(index));
+    beeCopterFencePolygon* polygon = qobject_cast<beeCopterFencePolygon*>(_polygons.removeAt(index));
     polygon->deleteLater();
 }
 
@@ -449,17 +449,17 @@ void GeoFenceController::deleteCircle(int index)
         return;
     }
 
-    QGCFenceCircle* circle = qobject_cast<QGCFenceCircle*>(_circles.removeAt(index));
+    beeCopterFenceCircle* circle = qobject_cast<beeCopterFenceCircle*>(_circles.removeAt(index));
     circle->deleteLater();
 }
 
 void GeoFenceController::clearAllInteractive(void)
 {
     for (int i=0; i<_polygons.count(); i++) {
-        _polygons.value<QGCFencePolygon*>(i)->setInteractive(false);
+        _polygons.value<beeCopterFencePolygon*>(i)->setInteractive(false);
     }
     for (int i=0; i<_circles.count(); i++) {
-        _circles.value<QGCFenceCircle*>(i)->setInteractive(false);
+        _circles.value<beeCopterFenceCircle*>(i)->setInteractive(false);
     }
 }
 

@@ -1,11 +1,11 @@
 #include "ExifParser.h"
 #include "ExifUtility.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QByteArray>
 #include <QtCore/QDateTime>
 
-QGC_LOGGING_CATEGORY(ExifParserLog, "AnalyzeView.ExifParser")
+beeCopter_LOGGING_CATEGORY(ExifParserLog, "AnalyzeView.ExifParser")
 
 namespace ExifParser
 {

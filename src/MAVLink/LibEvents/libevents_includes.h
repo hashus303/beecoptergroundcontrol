@@ -7,10 +7,10 @@
 
 Q_DECLARE_LOGGING_CATEGORY(EventsLog)
 
-void qgc_events_parser_debug_printf(const char *fmt, ...);
+void beeCopter_events_parser_debug_printf(const char *fmt, ...);
 
-//#define LIBEVENTS_PARSER_DEBUG_PRINTF qgc_events_parser_debug_printf
-#define LIBEVENTS_DEBUG_PRINTF qgc_events_parser_debug_printf
+//#define LIBEVENTS_PARSER_DEBUG_PRINTF beeCopter_events_parser_debug_printf
+#define LIBEVENTS_DEBUG_PRINTF beeCopter_events_parser_debug_printf
 
 #include <MAVLinkLib.h>
 

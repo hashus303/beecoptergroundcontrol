@@ -1,11 +1,11 @@
 #include "DataFlashParser.h"
 #include "DataFlashUtility.h"
 #include "GeoTagData.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <cmath>
 
-QGC_LOGGING_CATEGORY(DataFlashParserLog, "AnalyzeView.DataFlashParser")
+beeCopter_LOGGING_CATEGORY(DataFlashParserLog, "AnalyzeView.DataFlashParser")
 
 namespace DataFlashParser
 {

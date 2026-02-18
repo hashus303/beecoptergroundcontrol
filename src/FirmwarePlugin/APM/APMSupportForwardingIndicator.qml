@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 //-------------------------------------------------------------------------
 //-- Telemetry RSSI
@@ -12,18 +12,18 @@ Item {
     anchors.bottom: parent.bottom
     width:          forwardingSupportIcon.width * 1.1
 
-    property bool showIndicator: QGroundControl.linkManager.mavlinkSupportForwardingEnabled
+    property bool showIndicator: beeCopter.linkManager.mavlinkSupportForwardingEnabled
 
     Component {
         id: forwardingSupportInfoPage
 
         ToolIndicatorPage {
             contentComponent: SettingsGroupLayout {
-                QGCLabel { text: qsTr("Mavlink traffic is being forwarded to a support server") }
+                beeCopterLabel { text: qsTr("Mavlink traffic is being forwarded to a support server") }
 
                 LabelledLabel {
                     label:      qsTr("Server name:")
-                    labelText:  QGroundControl.settingsManager.mavlinkSettings.forwardMavlinkAPMSupportHostName.value
+                    labelText:  beeCopter.settingsManager.mavlinkSettings.forwardMavlinkAPMSupportHostName.value
                 }
             }
         }

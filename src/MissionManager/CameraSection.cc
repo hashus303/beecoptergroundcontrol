@@ -4,9 +4,9 @@
 #include "PlanMasterController.h"
 #include "MissionItem.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(CameraSectionLog, "Plan.CameraSection")
+beeCopter_LOGGING_CATEGORY(CameraSectionLog, "Plan.CameraSection")
 
 QMap<QString, FactMetaData*> CameraSection::_metaDataMap;
 
@@ -568,7 +568,7 @@ void CameraSection::_cameraActionChanged(void)
 
 bool CameraSection::cameraModeSupported(void) const
 {
-    return _specifyCameraMode || _masterController->controllerVehicle()->firmwarePlugin()->supportedMissionCommands(QGCMAVLink::VehicleClassGeneric).contains(MAV_CMD_SET_CAMERA_MODE);
+    return _specifyCameraMode || _masterController->controllerVehicle()->firmwarePlugin()->supportedMissionCommands(beeCopterMAVLink::VehicleClassGeneric).contains(MAV_CMD_SET_CAMERA_MODE);
 }
 
 void CameraSection::_dirtyIfSpecified(void)

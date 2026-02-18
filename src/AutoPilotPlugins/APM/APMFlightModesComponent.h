@@ -16,8 +16,8 @@ public:
     QString iconResource() const final { return QStringLiteral("/qmlimages/FlightModesComponentIcon.png"); }
     bool requiresSetup() const final { return true; }
     bool setupComplete() const final { return true; }
-    QUrl setupSource() const final { return QUrl::fromUserInput(QStringLiteral("qrc:/qml/QGroundControl/AutoPilotPlugins/APM/APMFlightModesComponent.qml")); }
-    QUrl summaryQmlSource() const final { return QUrl::fromUserInput(QStringLiteral("qrc:/qml/QGroundControl/AutoPilotPlugins/APM/APMFlightModesComponentSummary.qml")); }
+    QUrl setupSource() const final { return QUrl::fromUserInput(QStringLiteral("qrc:/qml/beeCopter/AutoPilotPlugins/APM/APMFlightModesComponent.qml")); }
+    QUrl summaryQmlSource() const final { return QUrl::fromUserInput(QStringLiteral("qrc:/qml/beeCopter/AutoPilotPlugins/APM/APMFlightModesComponentSummary.qml")); }
 
 private:
     const QString _name = tr("Flight Modes");

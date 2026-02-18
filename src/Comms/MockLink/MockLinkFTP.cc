@@ -1,11 +1,11 @@
 #include "MockLinkFTP.h"
 #include "MockLink.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QTemporaryFile>
 
-QGC_LOGGING_CATEGORY(MockLinkFTPLog, "Comms.MockLink.MockLinkFTP")
+beeCopter_LOGGING_CATEGORY(MockLinkFTPLog, "Comms.MockLink.MockLinkFTP")
 
 MockLinkFTP::MockLinkFTP(uint8_t systemIdServer, uint8_t componentIdServer, MockLink *mockLink)
     : QObject(mockLink)

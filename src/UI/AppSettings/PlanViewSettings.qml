@@ -2,13 +2,13 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SettingsPage {
-    property var _settingsManager:  QGroundControl.settingsManager
-    property var _planViewSettings: QGroundControl.settingsManager.planViewSettings
+    property var _settingsManager:  beeCopter.settingsManager
+    property var _planViewSettings: beeCopter.settingsManager.planViewSettings
 
     SettingsGroupLayout {
         Layout.fillWidth: true

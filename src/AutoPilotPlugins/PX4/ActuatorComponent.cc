@@ -1,5 +1,5 @@
 #include "ActuatorComponent.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "GeometryImage.h"
 #include "Actuators/Actuators.h"
 
@@ -14,7 +14,7 @@ ActuatorComponent::ActuatorComponent(Vehicle* vehicle, AutoPilotPlugin* autopilo
 {
     if (!imageProviderAdded) {
         // TODO: qmlAppEngine should not be accessed inside app
-        qgcApp()->qmlAppEngine()->addImageProvider(QLatin1String("actuators"), GeometryImage::VehicleGeometryImageProvider::instance());
+        beeCopterApp()->qmlAppEngine()->addImageProvider(QLatin1String("actuators"), GeometryImage::VehicleGeometryImageProvider::instance());
         imageProviderAdded = true;
     }
 
@@ -53,7 +53,7 @@ QStringList ActuatorComponent::setupCompleteChangedTriggerList(void) const
 
 QUrl ActuatorComponent::setupSource(void) const
 {
-    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/QGroundControl/AutoPilotPlugins/PX4/ActuatorComponent.qml"));
+    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/beeCopter/AutoPilotPlugins/PX4/ActuatorComponent.qml"));
 }
 
 QUrl ActuatorComponent::summaryQmlSource(void) const

@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 RowLayout {
     id:     _root
@@ -13,7 +13,7 @@ RowLayout {
     property bool showIndicator: true
 
     property real fontPointSize: ScreenTools.largeFontPointSize
-    property var  activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    property var  activeVehicle: beeCopter.multiVehicleManager.activeVehicle
 
     property var    _editFieldWidth:        ScreenTools.defaultFontPixelWidth * 13
     property Fact   _mpcLandSpeedFact:      controller.getParameterFact(-1, "MPC_LAND_SPEED", false)
@@ -26,13 +26,13 @@ RowLayout {
         spacing:    0
         height:     parent.height
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             id:         flightModeIcon
             width:      ScreenTools.defaultFontPixelWidth * 2
             height:     ScreenTools.defaultFontPixelHeight * 0.75
             fillMode:   Image.PreserveAspectFit
             mipmap:     true
-            color:      qgcPal.text
+            color:      beeCopterPal.text
             source:     "/qmlimages/FlightModesComponentIcon.png"
             Layout.alignment:   Qt.AlignVCenter
         }
@@ -42,7 +42,7 @@ RowLayout {
             height:                 1
         }
 
-        QGCLabel {
+        beeCopterLabel {
             text:               activeVehicle ? activeVehicle.flightMode : qsTr("N/A", "No data to display")
             font.pointSize:     fontPointSize
             Layout.alignment:   Qt.AlignCenter
@@ -66,7 +66,7 @@ RowLayout {
         closePolicy:    Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
         background: Rectangle {
-            color:      QGroundControl.globalPalette.window
+            color:      beeCopter.globalPalette.window
             opacity:    0.75
         }
 
@@ -79,7 +79,7 @@ RowLayout {
             spacing:            ScreenTools.defaultFontPixelWidth * 2
 
             // Mode list
-            QGCFlickable {
+            beeCopterFlickable {
                 anchors.top:        parent.top
                 anchors.bottom:     parent.bottom
                 width:              modeColumn.width
@@ -92,7 +92,7 @@ RowLayout {
                     Repeater {
                         model: activeVehicle ? activeVehicle.flightModes : []
 
-                        QGCButton {
+                        beeCopterButton {
                             text:               modelData
                             Layout.fillWidth:   true
 
@@ -113,7 +113,7 @@ RowLayout {
                 RowLayout {
                     Layout.fillWidth: true
 
-                    QGCLabel { Layout.fillWidth: true; text: qsTr("RTL Altitude") }
+                    beeCopterLabel { Layout.fillWidth: true; text: qsTr("RTL Altitude") }
                     FactTextField {
                         fact:                   controller.getParameterFact(-1, "RTL_RETURN_ALT")
                         Layout.minimumWidth:    _editFieldWidth
@@ -124,7 +124,7 @@ RowLayout {
                     Layout.fillWidth:   true
                     visible:            _mpcLandSpeedFact && controller.vehicle && !controller.vehicle.fixedWing
 
-                    QGCLabel { Layout.fillWidth: true; text: qsTr("Land Descent Rate:") }
+                    beeCopterLabel { Layout.fillWidth: true; text: qsTr("Land Descent Rate:") }
                     FactTextField {
                         fact:                   _mpcLandSpeedFact
                         Layout.minimumWidth:    _editFieldWidth
@@ -135,7 +135,7 @@ RowLayout {
                     Layout.fillWidth:   true
                     visible:            _precisionLandingFact
 
-                    QGCLabel { Layout.fillWidth: true; text: qsTr("Precision Landing") }
+                    beeCopterLabel { Layout.fillWidth: true; text: qsTr("Precision Landing") }
                     FactComboBox {
                         fact:                   _precisionLandingFact
                         indexModel:             false

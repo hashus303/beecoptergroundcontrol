@@ -1,9 +1,9 @@
 #include "GeoFenceManager.h"
 #include "Vehicle.h"
 #include "QmlObjectListModel.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(GeoFenceManagerLog, "PlanManager.GeoFenceManager")
+beeCopter_LOGGING_CATEGORY(GeoFenceManagerLog, "PlanManager.GeoFenceManager")
 
 GeoFenceManager::GeoFenceManager(Vehicle* vehicle)
     : PlanManager       (vehicle, MAV_MISSION_TYPE_FENCE)
@@ -30,15 +30,15 @@ void GeoFenceManager::sendToVehicle(const QGeoCoordinate&   breachReturn,
     _sendCircles.clear();
 
     for (int i=0; i<polygons.count(); i++) {
-        _sendPolygons.append(*polygons.value<QGCFencePolygon*>(i));
+        _sendPolygons.append(*polygons.value<beeCopterFencePolygon*>(i));
     }
     for (int i=0; i<circles.count(); i++) {
-        _sendCircles.append(*circles.value<QGCFenceCircle*>(i));
+        _sendCircles.append(*circles.value<beeCopterFenceCircle*>(i));
     }
     _breachReturnPoint = breachReturn;
 
     for (int i=0; i<_sendPolygons.count(); i++) {
-        const QGCFencePolygon& polygon = _sendPolygons[i];
+        const beeCopterFencePolygon& polygon = _sendPolygons[i];
 
         for (int j=0; j<polygon.count(); j++) {
             const QGeoCoordinate& vertex = polygon.path()[j].value<QGeoCoordinate>();
@@ -59,7 +59,7 @@ void GeoFenceManager::sendToVehicle(const QGeoCoordinate&   breachReturn,
     }
 
     for (int i=0; i<_sendCircles.count(); i++) {
-        QGCFenceCircle& circle = _sendCircles[i];
+        beeCopterFenceCircle& circle = _sendCircles[i];
 
         MissionItem* item = new MissionItem(0,
                                             circle.inclusion() ? MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION : MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION,
@@ -128,7 +128,7 @@ void GeoFenceManager::_planManagerLoadComplete(bool removeAllRequested)
 
     MAV_CMD expectedCommand = (MAV_CMD)0;
     int expectedVertexCount = 0;
-    QGCFencePolygon nextPolygon(true /* inclusion */);
+    beeCopterFencePolygon nextPolygon(true /* inclusion */);
     const QList<MissionItem*>& fenceItems = missionItems();
 
     for (int i=0; i<fenceItems.count(); i++) {
@@ -163,7 +163,7 @@ void GeoFenceManager::_planManagerLoadComplete(bool removeAllRequested)
                 emit error(IncompletePolygonLoad, tr("GeoFence load: Incomplete polygon loaded"));
                 break;
             }
-            QGCFenceCircle circle(QGeoCoordinate(item->param5(), item->param6()), item->param1(), command == MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION /* inclusion */);
+            beeCopterFenceCircle circle(QGeoCoordinate(item->param5(), item->param6()), item->param1(), command == MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION /* inclusion */);
             _circles.append(circle);
         } else if (command == MAV_CMD_NAV_FENCE_RETURN_POINT) {
             _breachReturnPoint = QGeoCoordinate(item->param5(), item->param6(), item->param7());

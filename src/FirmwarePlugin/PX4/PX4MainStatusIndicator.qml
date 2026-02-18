@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 ColumnLayout {
     spacing: ScreenTools.defaultFontPixelHeight / 2
@@ -19,7 +19,7 @@ ColumnLayout {
             Layout.fillWidth: true
             spacing:          ScreenTools.defaultFontPixelWidth * 2
 
-            QGCLabel {
+            beeCopterLabel {
                 Layout.fillWidth:   true;
                 text:               qsTr("Vehicle Action")
             }

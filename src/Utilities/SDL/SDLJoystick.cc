@@ -1,5 +1,5 @@
 #include "SDLJoystick.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
@@ -7,7 +7,7 @@
 
 #include <SDL3/SDL.h>
 
-QGC_LOGGING_CATEGORY(SDLJoystickLog, "qgc.utilities.sdl.joystick")
+beeCopter_LOGGING_CATEGORY(SDLJoystickLog, "beeCopter.utilities.sdl.joystick")
 
 namespace SDLJoystick {
 
@@ -416,7 +416,7 @@ bool addMappingPersistent(const QString &mapping)
     }
 
     QTextStream out(&file);
-    out << "# QGroundControl User Gamepad Mappings\n";
+    out << "# beeCopter User Gamepad Mappings\n";
     out << "# Generated automatically - edit with caution\n\n";
     for (const QString &line : existingMappings) {
         if (!line.isEmpty()) {

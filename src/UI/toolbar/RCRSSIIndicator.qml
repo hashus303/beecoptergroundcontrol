@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 //-------------------------------------------------------------------------
 //-- RC RSSI Indicator
@@ -14,7 +14,7 @@ Item {
 
     property bool showIndicator: _activeVehicle.supportsRadio && _rcRSSIAvailable
 
-    property var    _activeVehicle:     QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle:     beeCopter.multiVehicleManager.activeVehicle
     property bool   _rcRSSIAvailable:   _activeVehicle.rcRSSI > 0 && _activeVehicle.rcRSSI <= 100
 
     Component {
@@ -40,7 +40,7 @@ Item {
         anchors.bottom: parent.bottom
         spacing:        ScreenTools.defaultFontPixelWidth
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             width:              height
             anchors.top:        parent.top
             anchors.bottom:     parent.bottom
@@ -48,7 +48,7 @@ Item {
             source:             "/qmlimages/RC.svg"
             fillMode:           Image.PreserveAspectFit
             opacity:            _rcRSSIAvailable ? 1 : 0.5
-            color:              qgcPal.buttonText
+            color:              beeCopterPal.buttonText
         }
 
         SignalStrength {

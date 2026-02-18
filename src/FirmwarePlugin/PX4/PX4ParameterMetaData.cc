@@ -1,12 +1,12 @@
 #include "PX4ParameterMetaData.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
 #include <QtCore/QXmlStreamReader>
 
-QGC_LOGGING_CATEGORY(PX4ParameterMetaDataLog, "FirmwarePlugin.PX4ParameterMetaData")
+beeCopter_LOGGING_CATEGORY(PX4ParameterMetaDataLog, "FirmwarePlugin.PX4ParameterMetaData")
 
 PX4ParameterMetaData::PX4ParameterMetaData(QObject* parent)
     : QObject(parent)

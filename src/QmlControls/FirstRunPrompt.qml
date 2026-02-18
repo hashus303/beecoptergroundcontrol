@@ -2,11 +2,11 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 // Base class for all first run prompt dialogs
-QGCPopupDialog {
+beeCopterPopupDialog {
     buttons: Dialog.Ok
 
     property int  promptId
@@ -14,7 +14,7 @@ QGCPopupDialog {
 
     onClosed: {
         if (markAsShownOnClose) {
-            QGroundControl.settingsManager.appSettings.firstRunPromptIdsMarkIdAsShown(promptId)
+            beeCopter.settingsManager.appSettings.firstRunPromptIdsMarkIdAsShown(promptId)
         }
     }
 }

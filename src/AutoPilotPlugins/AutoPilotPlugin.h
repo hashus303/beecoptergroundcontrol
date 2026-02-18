@@ -14,7 +14,7 @@ Q_DECLARE_LOGGING_CATEGORY(AutoPilotPluginLog)
 
 /// The AutoPilotPlugin class is an abstract base class which represent the methods and objects
 /// which are specific to a certain AutoPilot. This is the only place where AutoPilot specific
-/// code should reside in QGroundControl. The remainder of the QGroundControl source is
+/// code should reside in beeCopter. The remainder of the beeCopter source is
 /// generic to a common mavlink implementation.
 class AutoPilotPlugin : public QObject
 {

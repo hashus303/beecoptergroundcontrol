@@ -1,10 +1,10 @@
 #include "LinkManager.h"
 #include "LogReplayLink.h"
-#include "QGCNetworkHelper.h"
+#include "beeCopterNetworkHelper.h"
 #include "MAVLinkProtocol.h"
 #include "MultiVehicleManager.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "QmlObjectListModel.h"
 #include "SettingsManager.h"
 #include "MavlinkSettings.h"
@@ -12,11 +12,11 @@
 #include "TCPLink.h"
 #include "UDPLink.h"
 
-#ifdef QGC_ENABLE_BLUETOOTH
+#ifdef beeCopter_ENABLE_BLUETOOTH
 #include "BluetoothLink.h"
 #endif
 
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
 #include "SerialLink.h"
 #include "GPSManager.h"
 #include "PositionManager.h"
@@ -28,7 +28,7 @@
 #include "MockLink.h"
 #endif
 
-#ifdef QGC_ZEROCONF_ENABLED
+#ifdef beeCopter_ZEROCONF_ENABLED
 #include <qmdnsengine/browser.h>
 #include <qmdnsengine/cache.h>
 #include <qmdnsengine/mdns.h>
@@ -39,8 +39,8 @@
 #include <QtCore/QApplicationStatic>
 #include <QtCore/QTimer>
 
-QGC_LOGGING_CATEGORY(LinkManagerLog, "Comms.LinkManager")
-QGC_LOGGING_CATEGORY(LinkManagerVerboseLog, "Comms.LinkManager:verbose")
+beeCopter_LOGGING_CATEGORY(LinkManagerLog, "Comms.LinkManager")
+beeCopter_LOGGING_CATEGORY(LinkManagerVerboseLog, "Comms.LinkManager:verbose")
 
 Q_APPLICATION_STATIC(LinkManager, _linkManagerInstance);
 
@@ -48,7 +48,7 @@ LinkManager::LinkManager(QObject *parent)
     : QObject(parent)
     , _portListTimer(new QTimer(this))
     , _qmlConfigurations(new QmlObjectListModel(this))
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     , _nmeaSocket(new UdpIODevice(this))
 #endif
 {
@@ -56,8 +56,8 @@ LinkManager::LinkManager(QObject *parent)
 
     (void) qRegisterMetaType<QAbstractSocket::SocketError>("QAbstractSocket::SocketError");
     (void) qRegisterMetaType<LinkInterface*>("LinkInterface*");
-#ifndef QGC_NO_SERIAL_LINK
-    (void) qRegisterMetaType<QGCSerialPortInfo>("QGCSerialPortInfo");
+#ifndef beeCopter_NO_SERIAL_LINK
+    (void) qRegisterMetaType<beeCopterSerialPortInfo>("beeCopterSerialPortInfo");
 #endif
 }
 
@@ -75,7 +75,7 @@ void LinkManager::init()
 {
     _autoConnectSettings = SettingsManager::instance()->autoConnectSettings();
 
-    if (!qgcApp()->runningUnitTests()) {
+    if (!beeCopterApp()->runningUnitTests()) {
         (void) connect(_portListTimer, &QTimer::timeout, this, &LinkManager::_updateAutoConnectLinks);
         _portListTimer->start(_autoconnectUpdateTimerMSecs); // timeout must be long enough to get past bootloader on second pass
     }
@@ -106,7 +106,7 @@ bool LinkManager::createConnectedLink(SharedLinkConfigurationPtr &config)
     SharedLinkInterfacePtr link = nullptr;
 
     switch(config->type()) {
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     case LinkConfiguration::TypeSerial:
         link = std::make_shared<SerialLink>(config);
         break;
@@ -117,7 +117,7 @@ bool LinkManager::createConnectedLink(SharedLinkConfigurationPtr &config)
     case LinkConfiguration::TypeTcp:
         link = std::make_shared<TCPLink>(config);
         break;
-#ifdef QGC_ENABLE_BLUETOOTH
+#ifdef beeCopter_ENABLE_BLUETOOTH
     case LinkConfiguration::TypeBluetooth:
         link = std::make_shared<BluetoothLink>(config);
         break;
@@ -174,7 +174,7 @@ bool LinkManager::createConnectedLink(SharedLinkConfigurationPtr &config)
 
 void LinkManager::_communicationError(const QString &title, const QString &error)
 {
-    qgcApp()->showAppMessage(error, title);
+    beeCopterApp()->showAppMessage(error, title);
 }
 
 SharedLinkInterfacePtr LinkManager::mavlinkForwardingLink()
@@ -279,7 +279,7 @@ SharedLinkInterfacePtr LinkManager::sharedLinkInterfacePointerForLink(const Link
 bool LinkManager::_connectionsSuspendedMsg() const
 {
     if (_connectionsSuspended) {
-        qgcApp()->showAppMessage(tr("Connect not allowed: %1").arg(_connectionsSuspendedReason));
+        beeCopterApp()->showAppMessage(tr("Connect not allowed: %1").arg(_connectionsSuspendedReason));
         return true;
     }
 
@@ -348,7 +348,7 @@ void LinkManager::loadLinkConfigurationList()
 
             LinkConfiguration* link = nullptr;
             switch(type) {
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
             case LinkConfiguration::TypeSerial:
                 link = new SerialConfiguration(name);
                 break;
@@ -359,7 +359,7 @@ void LinkManager::loadLinkConfigurationList()
             case LinkConfiguration::TypeTcp:
                 link = new TCPConfiguration(name);
                 break;
-#ifdef QGC_ENABLE_BLUETOOTH
+#ifdef beeCopter_ENABLE_BLUETOOTH
             case LinkConfiguration::TypeBluetooth:
                 link = new BluetoothConfiguration(name);
                 break;
@@ -437,7 +437,7 @@ void LinkManager::_addMAVLinkForwardingLink()
     _createDynamicForwardLink(_mavlinkForwardingLinkName, hostName);
 }
 
-#ifdef QGC_ZEROCONF_ENABLED
+#ifdef beeCopter_ZEROCONF_ENABLED
 void LinkManager::_addZeroConfAutoConnectLink()
 {
     if (!_autoConnectSettings->autoConnectZeroConf()->rawValue().toBool()) {
@@ -520,7 +520,7 @@ void LinkManager::_updateAutoConnectLinks()
 
     _addUDPAutoConnectLink();
     _addMAVLinkForwardingLink();
-#ifdef QGC_ZEROCONF_ENABLED
+#ifdef beeCopter_ZEROCONF_ENABLED
     _addZeroConfAutoConnectLink();
 #endif
 
@@ -530,9 +530,9 @@ void LinkManager::_updateAutoConnectLinks()
             qCDebug(LinkManagerLog) << "Changing port for UDP NMEA stream";
             _nmeaSocket->close();
             _nmeaSocket->bind(QHostAddress::AnyIPv4, _autoConnectSettings->nmeaUdpPort()->rawValue().toUInt());
-            QGCPositionManager::instance()->setNmeaSourceDevice(_nmeaSocket);
+            beeCopterPositionManager::instance()->setNmeaSourceDevice(_nmeaSocket);
         }
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
         if (_nmeaPort) {
             _nmeaPort->close();
             delete _nmeaPort;
@@ -544,7 +544,7 @@ void LinkManager::_updateAutoConnectLinks()
         _nmeaSocket->close();
     }
 
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     _addSerialAutoConnectLink();
 #endif
 }
@@ -568,12 +568,12 @@ QStringList LinkManager::linkTypeStrings() const
         return list;
     }
 
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     list += tr("Serial");
 #endif
     list += tr("UDP");
     list += tr("TCP");
-#ifdef QGC_ENABLE_BLUETOOTH
+#ifdef beeCopter_ENABLE_BLUETOOTH
     list += tr("Bluetooth");
 #endif
 #ifdef QT_DEBUG
@@ -615,7 +615,7 @@ void LinkManager::endCreateConfiguration(LinkConfiguration *config)
 
 LinkConfiguration *LinkManager::createConfiguration(int type, const QString &name)
 {
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     if (static_cast<LinkConfiguration::LinkType>(type) == LinkConfiguration::TypeSerial) {
         _updateSerialPorts();
     }
@@ -631,7 +631,7 @@ LinkConfiguration *LinkManager::startConfigurationEditing(LinkConfiguration *con
         return nullptr;
     }
 
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     if (config->type() == LinkConfiguration::TypeSerial) {
         _updateSerialPorts();
     }
@@ -680,7 +680,7 @@ void LinkManager::_removeConfiguration(const LinkConfiguration *config)
 
 bool LinkManager::isBluetoothAvailable()
 {
-    return QGCNetworkHelper::isBluetoothAvailable();
+    return beeCopterNetworkHelper::isBluetoothAvailable();
 }
 
 bool LinkManager::containsLink(const LinkInterface *link)
@@ -773,7 +773,7 @@ void LinkManager::_createDynamicForwardLink(const char *linkName, const QString 
 
 bool LinkManager::isLinkUSBDirect(const LinkInterface *link)
 {
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     const SerialLink* const serialLink = qobject_cast<const SerialLink*>(link);
     if (!serialLink) {
         return false;
@@ -807,16 +807,16 @@ void LinkManager::resetMavlinkSigning()
     }
 }
 
-#ifndef QGC_NO_SERIAL_LINK // Serial Only Functions
+#ifndef beeCopter_NO_SERIAL_LINK // Serial Only Functions
 
-void LinkManager::_filterCompositePorts(QList<QGCSerialPortInfo> &portList)
+void LinkManager::_filterCompositePorts(QList<beeCopterSerialPortInfo> &portList)
 {
     typedef QPair<quint16, quint16> VidPidPair_t;
 
     QMap<VidPidPair_t, QStringList> seenSerialNumbers;
 
     for (auto it = portList.begin(); it != portList.end();) {
-        const QGCSerialPortInfo &portInfo = *it;
+        const beeCopterSerialPortInfo &portInfo = *it;
         if (portInfo.hasVendorIdentifier() && portInfo.hasProductIdentifier() && !portInfo.serialNumber().isEmpty() && portInfo.serialNumber() != "0") {
             VidPidPair_t vidPid(portInfo.vendorIdentifier(), portInfo.productIdentifier());
             if (seenSerialNumbers.contains(vidPid) && seenSerialNumbers[vidPid].contains(portInfo.serialNumber())) {
@@ -836,22 +836,22 @@ void LinkManager::_filterCompositePorts(QList<QGCSerialPortInfo> &portList)
 
 void LinkManager::_addSerialAutoConnectLink()
 {
-    QList<QGCSerialPortInfo> portList;
+    QList<beeCopterSerialPortInfo> portList;
 #ifdef Q_OS_ANDROID
     // Android builds only support a single serial connection. Repeatedly calling availablePorts after that one serial
     // port is connected leaks file handles due to a bug somewhere in android serial code. In order to work around that
     // bug after we connect the first serial port we stop probing for additional ports.
     if (!_isSerialPortConnected()) {
-        portList = QGCSerialPortInfo::availablePorts();
+        portList = beeCopterSerialPortInfo::availablePorts();
     }
 #else
-    portList = QGCSerialPortInfo::availablePorts();
+    portList = beeCopterSerialPortInfo::availablePorts();
 #endif
 
     _filterCompositePorts(portList);
 
     QStringList currentPorts;
-    for (const QGCSerialPortInfo &portInfo: portList) {
+    for (const beeCopterSerialPortInfo &portInfo: portList) {
         qCDebug(LinkManagerVerboseLog) << "-----------------------------------------------------";
         qCDebug(LinkManagerVerboseLog) << "portName:          " << portInfo.portName();
         qCDebug(LinkManagerVerboseLog) << "systemLocation:    " << portInfo.systemLocation();
@@ -863,7 +863,7 @@ void LinkManager::_addSerialAutoConnectLink()
 
         currentPorts << portInfo.systemLocation();
 
-        QGCSerialPortInfo::BoardType_t boardType;
+        beeCopterSerialPortInfo::BoardType_t boardType;
         QString boardName;
 
         // check to see if nmea gps is configured for current Serial port, if so, set it up to connect
@@ -876,7 +876,7 @@ void LinkManager::_addSerialAutoConnectLink()
                 newPort->setBaudRate(static_cast<qint32>(_nmeaBaud));
                 qCDebug(LinkManagerLog) << "Configuring nmea baudrate" << _nmeaBaud;
                 // This will stop polling old device if previously set
-                QGCPositionManager::instance()->setNmeaSourceDevice(newPort);
+                beeCopterPositionManager::instance()->setNmeaSourceDevice(newPort);
                 if (_nmeaPort) {
                     delete _nmeaPort;
                 }
@@ -909,17 +909,17 @@ void LinkManager::_addSerialAutoConnectLink()
                 SerialConfiguration* pSerialConfig = nullptr;
                 _autoconnectPortWaitList.remove(portInfo.systemLocation());
                 switch (boardType) {
-                case QGCSerialPortInfo::BoardTypePixhawk:
+                case beeCopterSerialPortInfo::BoardTypePixhawk:
                     pSerialConfig = new SerialConfiguration(tr("%1 on %2 (AutoConnect)").arg(boardName, portInfo.portName().trimmed()));
                     pSerialConfig->setUsbDirect(true);
                     break;
-                case QGCSerialPortInfo::BoardTypeSiKRadio:
+                case beeCopterSerialPortInfo::BoardTypeSiKRadio:
                     pSerialConfig = new SerialConfiguration(tr("%1 on %2 (AutoConnect)").arg(boardName, portInfo.portName().trimmed()));
                     break;
-                case QGCSerialPortInfo::BoardTypeOpenPilot:
+                case beeCopterSerialPortInfo::BoardTypeOpenPilot:
                     pSerialConfig = new SerialConfiguration(tr("%1 on %2 (AutoConnect)").arg(boardName, portInfo.portName().trimmed()));
                     break;
-                case QGCSerialPortInfo::BoardTypeRTKGPS:
+                case beeCopterSerialPortInfo::BoardTypeRTKGPS:
                     qCDebug(LinkManagerLog) << "RTK GPS auto-connected" << portInfo.portName().trimmed();
                     _autoConnectRTKPort = portInfo.systemLocation();
                     GPSManager::instance()->gpsRtk()->connectGPS(portInfo.systemLocation(), boardName);
@@ -931,7 +931,7 @@ void LinkManager::_addSerialAutoConnectLink()
 
                 if (pSerialConfig) {
                     qCDebug(LinkManagerLog) << "New auto-connect port added: " << pSerialConfig->name() << portInfo.systemLocation();
-                    pSerialConfig->setBaud((boardType == QGCSerialPortInfo::BoardTypeSiKRadio) ? 57600 : 115200);
+                    pSerialConfig->setBaud((boardType == beeCopterSerialPortInfo::BoardTypeSiKRadio) ? 57600 : 115200);
                     pSerialConfig->setDynamic(true);
                     pSerialConfig->setPortName(portInfo.systemLocation());
                     pSerialConfig->setAutoConnect(true);
@@ -951,25 +951,25 @@ void LinkManager::_addSerialAutoConnectLink()
     }
 }
 
-bool LinkManager::_allowAutoConnectToBoard(QGCSerialPortInfo::BoardType_t boardType) const
+bool LinkManager::_allowAutoConnectToBoard(beeCopterSerialPortInfo::BoardType_t boardType) const
 {
     switch (boardType) {
-    case QGCSerialPortInfo::BoardTypePixhawk:
+    case beeCopterSerialPortInfo::BoardTypePixhawk:
         if (_autoConnectSettings->autoConnectPixhawk()->rawValue().toBool()) {
             return true;
         }
         break;
-    case QGCSerialPortInfo::BoardTypeSiKRadio:
+    case beeCopterSerialPortInfo::BoardTypeSiKRadio:
         if (_autoConnectSettings->autoConnectSiKRadio()->rawValue().toBool()) {
             return true;
         }
         break;
-    case QGCSerialPortInfo::BoardTypeOpenPilot:
+    case beeCopterSerialPortInfo::BoardTypeOpenPilot:
         if (_autoConnectSettings->autoConnectLibrePilot()->rawValue().toBool()) {
             return true;
         }
         break;
-    case QGCSerialPortInfo::BoardTypeRTKGPS:
+    case beeCopterSerialPortInfo::BoardTypeRTKGPS:
         if (_autoConnectSettings->autoConnectRTKGPS()->rawValue().toBool() && !GPSManager::instance()->gpsRtk()->connected()) {
             return true;
         }
@@ -1002,8 +1002,8 @@ void LinkManager::_updateSerialPorts()
 {
     _commPortList.clear();
     _commPortDisplayList.clear();
-    const QList<QGCSerialPortInfo> portList = QGCSerialPortInfo::availablePorts();
-    for (const QGCSerialPortInfo &info: portList) {
+    const QList<beeCopterSerialPortInfo> portList = beeCopterSerialPortInfo::availablePorts();
+    for (const beeCopterSerialPortInfo &info: portList) {
         const QString port = info.systemLocation().trimmed();
         _commPortList += port;
         _commPortDisplayList += SerialConfiguration::cleanPortDisplayName(port);
@@ -1046,4 +1046,4 @@ bool LinkManager::_isSerialPortConnected()
     return false;
 }
 
-#endif // QGC_NO_SERIAL_LINK
+#endif // beeCopter_NO_SERIAL_LINK

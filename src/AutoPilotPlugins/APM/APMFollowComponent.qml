@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             followPage
@@ -51,7 +51,7 @@ SetupPage {
             Component.onCompleted: _setUIFromParams()
 
             function validateSupportedParamSetup() {
-                var followSysIdOk = _followSysId.rawValue == QGroundControl.settingsManager.mavlinkSettings.gcsMavlinkSystemID.rawValue
+                var followSysIdOk = _followSysId.rawValue == beeCopter.settingsManager.mavlinkSettings.gcsMavlinkSystemID.rawValue
                 var followOffsetOk = _followOffsetType.rawValue == _followOffsetTypeRelative
                 var followAltOk = true
                 var followYawOk = true
@@ -99,7 +99,7 @@ SetupPage {
             }
 
             function _setFollowMeParamDefaults() {
-                _followSysId.rawValue = QGroundControl.settingsManager.mavlinkSettings.gcsMavlinkSystemID.rawValue
+                _followSysId.rawValue = beeCopter.settingsManager.mavlinkSettings.gcsMavlinkSystemID.rawValue
                 _followOffsetType.rawValue = _followOffsetTypeRelative
                 if (!_roverFirmware) {
                     _followAltitudeType.rawValue = _followAltitudeTypeRelative
@@ -137,7 +137,7 @@ SetupPage {
             }
 
             function _radiansToHeading(radians) {
-                var geometricAngle = QGroundControl.unitsConversion.radiansToDegrees(radians)
+                var geometricAngle = beeCopter.unitsConversion.radiansToDegrees(radians)
                 var headingAngle = 90 - geometricAngle
                 if (headingAngle < 0) {
                     headingAngle += 360
@@ -149,7 +149,7 @@ SetupPage {
 
             function _headingToRadians(heading) {
                 var geometricAngle = -(heading - 90)
-                return QGroundControl.unitsConversion.degreesToRadians(geometricAngle)
+                return beeCopter.unitsConversion.degreesToRadians(geometricAngle)
             }
 
             APMFollowComponentController {
@@ -173,9 +173,9 @@ SetupPage {
                 }
             }
 
-            QGCPalette { id: ggcPal; colorGroupEnabled: true }
+            beeCopterPalette { id: ggcPal; colorGroupEnabled: true }
 
-            QGCCheckBox {
+            beeCopterCheckBox {
                 text:       qsTr("Enable Follow Me")
                 checked:    _followEnabled.rawValue == 1
                 onClicked: {
@@ -193,7 +193,7 @@ SetupPage {
                 }
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 id:         vehicleParamRefreshLabel
                 text:       qsTr("Waiting for Vehicle to update")
                 visible:    false
@@ -204,7 +204,7 @@ SetupPage {
                 spacing:    ScreenTools.defaultFontPixelWidth
                 visible:    !_supportedSetup
 
-                QGCLabel {
+                beeCopterLabel {
                     anchors.left:   parent.left
                     anchors.right:  parent.right
                     text:           qsTr("The vehicle parameters required for follow me are currently set in a way which is not supported. Using follow with this setup may lead to unpredictable/hazardous results.")
@@ -212,7 +212,7 @@ SetupPage {
                     onWidthChanged: console.log('width', width)
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:       qsTr("Reset To Supported Settings")
                     onClicked:  _setFollowMeParamDefaults()
                 }
@@ -231,8 +231,8 @@ SetupPage {
                         Layout.fillWidth:   true
                         columns:            2
 
-                        QGCLabel { text: qsTr("Vehicle Position") }
-                        QGCComboBox {
+                        beeCopterLabel { text: qsTr("Vehicle Position") }
+                        beeCopterComboBox {
                             id:                 followPositionCombo
                             Layout.fillWidth:   true
                             model:              [ qsTr("Maintain Current Offsets"), qsTr("Specify Offsets")]
@@ -247,11 +247,11 @@ SetupPage {
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Point Vehicle")
                             visible:    !_roverFirmware
                         }
-                        QGCComboBox {
+                        beeCopterComboBox {
                             id:                     pointVehicleCombo
                             Layout.fillWidth:       true
                             model:                  rgText
@@ -268,25 +268,25 @@ SetupPage {
                         columns:            4
                         visible:            !_followMaintain
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.columnSpan:  2
                             Layout.alignment:   Qt.AlignHCenter
                             text:               qsTr("Vehicle Offsets")
                         }
 
-                        QGCLabel { text: qsTr("Angle") }
+                        beeCopterLabel { text: qsTr("Angle") }
                         FactTextField {
                             fact:       controller.angle
                             onUpdated:  { console.log("updated"); _setXYOffsetByAngleAndDistance(controller.angle.rawValue, controller.distance.rawValue) }
                         }
 
-                        QGCLabel { text: qsTr("Distance") }
+                        beeCopterLabel { text: qsTr("Distance") }
                         FactTextField {
                             fact:       controller.distance
                             onUpdated:  _setXYOffsetByAngleAndDistance(controller.angle.rawValue, controller.distance.rawValue)
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:         heightLabel
                             text:       qsTr("Height")
                             visible:    !_roverFirmware && !_followMaintain
@@ -314,7 +314,7 @@ SetupPage {
                         anchors.bottom:             parent.bottom
                         anchors.horizontalCenter:   parent.horizontalCenter
                         width:                      3
-                        color:                      qgcPal.windowShade
+                        color:                      beeCopterPal.windowShade
                     }
 
                     Rectangle {
@@ -322,10 +322,10 @@ SetupPage {
                         anchors.right:          parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         height:                 3
-                        color:                  qgcPal.windowShade
+                        color:                  beeCopterPal.windowShade
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         anchors.horizontalCenter:   parent.horizontalCenter
                         anchors.topMargin:          parent.height / 4
                         anchors.top:                parent.top
@@ -336,7 +336,7 @@ SetupPage {
                     Image {
                         id:                 gcsIcon
                         anchors.centerIn:   parent
-                        source:             "/res/QGCLogoArrow.svg"
+                        source:             "/res/beeCopterLogoArrow.svg"
                         mipmap:             true
                         antialiasing:       true
                         fillMode:           Image.PreserveAspectFit
@@ -382,7 +382,7 @@ SetupPage {
                             y:          vehicleIcon.height
                             height:     (parent.height / 2) - (vehicleIcon.height + (gcsIcon.height / 2))
                             width:      2
-                            color:      qgcPal.text
+                            color:      beeCopterPal.text
                             opacity:    0.4
 
                             Rectangle {
@@ -390,7 +390,7 @@ SetupPage {
                                 anchors.horizontalCenter:   parent.horizontalCenter
                                 width:                      ScreenTools.defaultFontPixelWidth * 2
                                 height:                     2
-                                color:                      qgcPal.text
+                                color:                      beeCopterPal.text
                             }
 
                             Rectangle {
@@ -398,14 +398,14 @@ SetupPage {
                                 anchors.horizontalCenter:   parent.horizontalCenter
                                 width:                      ScreenTools.defaultFontPixelWidth * 2
                                 height:                     2
-                                color:                      qgcPal.text
+                                color:                      beeCopterPal.text
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:                 distanceLabel
                             anchors.centerIn:   distanceLine
-                            text:               controller.distance.valueString + " " + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString
+                            text:               controller.distance.valueString + " " + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString
 
                             transform: Rotation {
                                 origin.x:       distanceLabel.width  / 2
@@ -460,7 +460,7 @@ SetupPage {
                             anchors.bottom:             parent.bottom
                             anchors.horizontalCenter:   parent.horizontalCenter
                             width:                      2
-                            color:                      qgcPal.text
+                            color:                      beeCopterPal.text
                             opacity:                    0.4
 
                             Rectangle {
@@ -468,7 +468,7 @@ SetupPage {
                                 anchors.horizontalCenter:   parent.horizontalCenter
                                 width:                      ScreenTools.defaultFontPixelWidth * 2
                                 height:                     2
-                                color:                      qgcPal.text
+                                color:                      beeCopterPal.text
                             }
 
                             Rectangle {
@@ -476,14 +476,14 @@ SetupPage {
                                 anchors.horizontalCenter:   parent.horizontalCenter
                                 width:                      ScreenTools.defaultFontPixelWidth * 2
                                 height:                     2
-                                color:                      qgcPal.text
+                                color:                      beeCopterPal.text
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:                 heightValueLabel
                             anchors.centerIn:   parent
-                            text:               controller.height.valueString + " " + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString
+                            text:               controller.height.valueString + " " + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString
                         }
                     }
 

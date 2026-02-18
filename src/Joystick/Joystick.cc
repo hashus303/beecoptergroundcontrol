@@ -4,8 +4,8 @@
 #include "MavlinkActionsSettings.h"
 #include "FirmwarePlugin.h"
 #include "GimbalController.h"
-#include "QGCCorePlugin.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterCorePlugin.h"
+#include "beeCopterLoggingCategory.h"
 #include "QmlObjectListModel.h"
 #include "SettingsManager.h"
 #include "Vehicle.h"
@@ -17,8 +17,8 @@
 #include <QtCore/QSettings>
 #include <QtCore/QThread>
 
-QGC_LOGGING_CATEGORY(JoystickLog, "Joystick.Joystick")
-QGC_LOGGING_CATEGORY(JoystickVerboseLog, "Joystick.Joystick:verbose")
+beeCopter_LOGGING_CATEGORY(JoystickLog, "Joystick.Joystick")
+beeCopter_LOGGING_CATEGORY(JoystickVerboseLog, "Joystick.Joystick:verbose")
 
 namespace
 {
@@ -1293,9 +1293,9 @@ void Joystick::_executeButtonAction(const QString &action, const ButtonEvent_t b
         { _buttonActionGimbalYawLock,           ButtonEventDownTransition,  [this]() { emit gimbalYawLock(true); } },
         { _buttonActionGimbalYawFollow,         ButtonEventDownTransition,  [this]() { emit gimbalYawLock(false); } },
         { _buttonActionEmergencyStop,           ButtonEventDownTransition,  [this]() { emit emergencyStop(); } },
-        { _buttonActionGripperGrab,             ButtonEventDownTransition,  [this]() { emit gripperAction(QGCMAVLink::GripperActionGrab); } },
-        { _buttonActionGripperRelease,          ButtonEventDownTransition,  [this]() { emit gripperAction(QGCMAVLink::GripperActionRelease); } },
-        { _buttonActionGripperHold,             ButtonEventDownTransition,  [this]() { emit gripperAction(QGCMAVLink::GripperActionHold); } },
+        { _buttonActionGripperGrab,             ButtonEventDownTransition,  [this]() { emit gripperAction(beeCopterMAVLink::GripperActionGrab); } },
+        { _buttonActionGripperRelease,          ButtonEventDownTransition,  [this]() { emit gripperAction(beeCopterMAVLink::GripperActionRelease); } },
+        { _buttonActionGripperHold,             ButtonEventDownTransition,  [this]() { emit gripperAction(beeCopterMAVLink::GripperActionHold); } },
         { _buttonActionLandingGearDeploy,       ButtonEventDownTransition,  [this]() { emit landingGearDeploy(); } },
         { _buttonActionLandingGearRetract,      ButtonEventDownTransition,  [this]() { emit landingGearRetract(); } },
         { _buttonActionMotorInterlockEnable,    ButtonEventDownTransition,  [this]() { emit motorInterlock(true); } },
@@ -1409,12 +1409,12 @@ void Joystick::_buildActionList(Vehicle *vehicle)
     _availableButtonActions->append(new AvailableButtonAction(_buttonActionGripperHold, false));
     _availableButtonActions->append(new AvailableButtonAction(_buttonActionLandingGearDeploy, false));
     _availableButtonActions->append(new AvailableButtonAction(_buttonActionLandingGearRetract, false));
-#ifndef QGC_NO_ARDUPILOT_DIALECT
+#ifndef beeCopter_NO_ARDUPILOT_DIALECT
     _availableButtonActions->append(new AvailableButtonAction(_buttonActionMotorInterlockEnable, false));
     _availableButtonActions->append(new AvailableButtonAction(_buttonActionMotorInterlockDisable, false));
 #endif
 
-    const auto customActions = QGCCorePlugin::instance()->joystickActions();
+    const auto customActions = beeCopterCorePlugin::instance()->joystickActions();
     for (const auto &action : customActions) {
         _availableButtonActions->append(new AvailableButtonAction(action.name, action.canRepeat));
     }

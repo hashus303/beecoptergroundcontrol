@@ -1,14 +1,14 @@
 #include "VehicleLinkManager.h"
 #include "Vehicle.h"
 #include "LinkManager.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "AudioOutput.h"
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     #include "SerialLink.h"
 #endif
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(VehicleLinkManagerLog, "Vehicle.VehicleLinkManager")
+beeCopter_LOGGING_CATEGORY(VehicleLinkManagerLog, "Vehicle.VehicleLinkManager")
 
 VehicleLinkManager::VehicleLinkManager(Vehicle *vehicle)
     : QObject(vehicle)
@@ -80,7 +80,7 @@ void VehicleLinkManager::_commRegainedOnLink(LinkInterface *link)
 
     if (!primarySwitchMessage.isEmpty()) {
         AudioOutput::instance()->say(primarySwitchMessage.toLower());
-        qgcApp()->showAppMessage(primarySwitchMessage);
+        beeCopterApp()->showAppMessage(primarySwitchMessage);
     }
 
     emit linkStatusesChanged();
@@ -111,7 +111,7 @@ void VehicleLinkManager::_commLostCheck()
     }
 
     // Use much shorter heartbeat timeout in unit tests since MockLink sends heartbeats instantly
-    const int heartbeatTimeout = qgcApp()->runningUnitTests() ? kTestHeartbeatTimeoutMs : _heartbeatMaxElpasedMSecs;
+    const int heartbeatTimeout = beeCopterApp()->runningUnitTests() ? kTestHeartbeatTimeoutMs : _heartbeatMaxElpasedMSecs;
 
     bool linkStatusChange = false;
     for (LinkInfo_t &linkInfo: _rgLinkInfo) {
@@ -135,7 +135,7 @@ void VehicleLinkManager::_commLostCheck()
     if (_updatePrimaryLink()) {
         QString msg = tr("%1Switching communication to secondary link.").arg(_vehicle->_vehicleIdSpeech());
         AudioOutput::instance()->say(msg.toLower());
-        qgcApp()->showAppMessage(msg);
+        beeCopterApp()->showAppMessage(msg);
     }
 
     if (_communicationLost) {
@@ -257,7 +257,7 @@ void VehicleLinkManager::_linkDisconnected()
 
 SharedLinkInterfacePtr VehicleLinkManager::_bestActivePrimaryLink()
 {
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     // Best choice is a USB connection
     for (const LinkInfo_t &linkInfo: _rgLinkInfo) {
         if (linkInfo.commLost) {

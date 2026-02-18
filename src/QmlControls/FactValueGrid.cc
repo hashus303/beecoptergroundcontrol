@@ -1,7 +1,7 @@
 #include "FactValueGrid.h"
 #include "InstrumentValueData.h"
-#include "QGCApplication.h"
-#include "QGCCorePlugin.h"
+#include "beeCopterApplication.h"
+#include "beeCopterCorePlugin.h"
 #include "MultiVehicleManager.h"
 #include "Vehicle.h"
 
@@ -90,9 +90,9 @@ FactValueGrid::~FactValueGrid()
     _vehicleCardInstanceList.removeAll(this);
 }
 
-QGCMAVLink::VehicleClass_t FactValueGrid::vehicleClass(void) const
+beeCopterMAVLink::VehicleClass_t FactValueGrid::vehicleClass(void) const
 {
-    return QGCMAVLink::vehicleClass(currentVehicle()->vehicleType());
+    return beeCopterMAVLink::vehicleClass(currentVehicle()->vehicleType());
 }
 
 void FactValueGrid::resetToDefaults(void)
@@ -320,9 +320,9 @@ void FactValueGrid::_resetFromSettings(void)
 
         int version = settings.value(_versionKey, 0).toInt();
         if (version != 1) {
-            qgcApp()->showAppMessage(tr("Settings version %1 for %2 is not supported. Setup will be reset to defaults.").arg(version).arg(_settingsGroup), tr("Load Settings"));
+            beeCopterApp()->showAppMessage(tr("Settings version %1 for %2 is not supported. Setup will be reset to defaults.").arg(version).arg(_settingsGroup), tr("Load Settings"));
             settings.remove("");
-            QGCCorePlugin::instance()->factValueGridCreateDefaultSettings(this);
+            beeCopterCorePlugin::instance()->factValueGridCreateDefaultSettings(this);
         }
         _fontSize = settings.value(_fontSizeKey, DefaultFontSize).value<FontSize>();
 
@@ -354,7 +354,7 @@ void FactValueGrid::_resetFromSettings(void)
         settings.endArray();
     } else {
         // Default settings are added directly to this FactValueGrid
-        QGCCorePlugin::instance()->factValueGridCreateDefaultSettings(this);
+        beeCopterCorePlugin::instance()->factValueGridCreateDefaultSettings(this);
     }
 
     emit columnsChanged(_columns);

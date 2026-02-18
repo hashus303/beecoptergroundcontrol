@@ -78,9 +78,9 @@ CPMAddPackage(
 # Suppress compiler warnings for SDL3 dependency
 if(SDL3_ADDED)
     if(ANDROID)
-        qgc_disable_dependency_warnings(SDL3-shared)
+        beeCopter_disable_dependency_warnings(SDL3-shared)
     else()
-        qgc_disable_dependency_warnings(SDL3-static)
+        beeCopter_disable_dependency_warnings(SDL3-static)
     endif()
 endif()
 
@@ -109,9 +109,9 @@ CPMAddPackage(
 
 set(SDL_GAMECONTROLLERDB_PATH "${sdl_gamecontrollerdb_SOURCE_DIR}/gamecontrollerdb.txt")
 
-qgc_set_qt_resource_alias("${SDL_GAMECONTROLLERDB_PATH}")
+beeCopter_set_qt_resource_alias("${SDL_GAMECONTROLLERDB_PATH}")
 
-qt_add_resources(${CMAKE_PROJECT_NAME} "qgcresources_sdl"
+qt_add_resources(${CMAKE_PROJECT_NAME} "beeCopterresources_sdl"
     PREFIX "/"
     FILES
         "${SDL_GAMECONTROLLERDB_PATH}"

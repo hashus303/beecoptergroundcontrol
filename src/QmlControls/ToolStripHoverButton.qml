@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Button {
     id:             control
@@ -27,8 +27,8 @@ Button {
     property real imageScale:        forceImageScale11 && (text == "") ? 0.8 : 0.6
     property real contentMargins:    innerText.height * 0.1
 
-    property color _currentContentColor:  (checked || pressed) ? qgcPal.buttonHighlightText : qgcPal.windowTransparentText
-    property color _currentContentColorSecondary:  (checked || pressed) ? qgcPal.windowTransparentText : qgcPal.buttonHighlight
+    property color _currentContentColor:  (checked || pressed) ? beeCopterPal.buttonHighlightText : beeCopterPal.windowTransparentText
+    property color _currentContentColorSecondary:  (checked || pressed) ? beeCopterPal.windowTransparentText : beeCopterPal.buttonHighlight
 
     signal dropped(int index)
 
@@ -50,7 +50,7 @@ Button {
         }
     }
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: control.enabled }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: control.enabled }
 
     contentItem: Item {
         id:                 contentLayoutItem
@@ -76,7 +76,7 @@ Button {
                 visible:                    source != "" && modelData.fullColorIcon
             }
 
-            QGCColoredImage {
+            beeCopterColoredImage {
                 id:                         innerImage
                 height:                     contentLayoutItem.height * imageScale
                 width:                      contentLayoutItem.width  * imageScale
@@ -90,7 +90,7 @@ Button {
                 anchors.horizontalCenter:   parent.horizontalCenter
                 visible:                    source != "" && !modelData.fullColorIcon
 
-                QGCColoredImage {
+                beeCopterColoredImage {
                     id:                         innerImageSecondColor
                     source:                     modelData.alternateIconSource
                     height:                     contentLayoutItem.height * imageScale
@@ -107,7 +107,7 @@ Button {
                 }
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                         innerText
                 text:                       control.text
                 color:                      _currentContentColor
@@ -121,7 +121,7 @@ Button {
     background: Rectangle {
         id:     buttonBkRect
         color:  (control.checked || control.pressed) ?
-                    qgcPal.buttonHighlight :
-                    ((control.enabled && control.hovered) ? qgcPal.toolStripHoverColor : "transparent")
+                    beeCopterPal.buttonHighlight :
+                    ((control.enabled && control.hovered) ? beeCopterPal.toolStripHoverColor : "transparent")
     }
 }

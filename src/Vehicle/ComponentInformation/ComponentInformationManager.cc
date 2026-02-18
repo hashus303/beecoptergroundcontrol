@@ -3,24 +3,24 @@
 #include "ComponentInformationCache.h"
 #include "Vehicle.h"
 #include "FTPManager.h"
-#include "QGCCompression.h"
+#include "beeCopterCompression.h"
 #include "CompInfoGeneral.h"
 #include "CompInfoParam.h"
 #include "CompInfoEvents.h"
 #include "CompInfoActuators.h"
-#include "QGCApplication.h"
-#include "QGCCachedFileDownload.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterCachedFileDownload.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QStandardPaths>
 
-QGC_LOGGING_CATEGORY(ComponentInformationManagerLog, "Vehicle.ComponentInformationManager")
+beeCopter_LOGGING_CATEGORY(ComponentInformationManagerLog, "Vehicle.ComponentInformationManager")
 
 ComponentInformationManager::ComponentInformationManager(Vehicle *vehicle, QObject *parent)
     : StateMachine(parent)
     , _vehicle(vehicle)
     , _requestTypeStateMachine(this, this)
-    , _cachedFileDownload(new QGCCachedFileDownload(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/QGCCompInfoFileDownloadCache"), this))
+    , _cachedFileDownload(new beeCopterCachedFileDownload(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/beeCopterCompInfoFileDownloadCache"), this))
     , _fileCache(ComponentInformationCache::defaultInstance())
     , _translation(new ComponentInformationTranslation(this, _cachedFileDownload))
 {
@@ -240,7 +240,7 @@ static void _requestMessageResultHandlerDeprecated(void* resultHandlerData, MAV_
     } else {
         switch (failureCode) {
         case Vehicle::RequestMessageFailureCommandError:
-            qCDebug(ComponentInformationManagerLog) << QStringLiteral("MAV_CMD_REQUEST_MESSAGE COMPONENT_INFORMATION %1 error(%2)").arg(requestMachine->typeToString()).arg(QGCMAVLink::mavResultToString(result));
+            qCDebug(ComponentInformationManagerLog) << QStringLiteral("MAV_CMD_REQUEST_MESSAGE COMPONENT_INFORMATION %1 error(%2)").arg(requestMachine->typeToString()).arg(beeCopterMAVLink::mavResultToString(result));
             break;
         case Vehicle::RequestMessageFailureCommandNotAcked:
             qCDebug(ComponentInformationManagerLog) << QStringLiteral("MAV_CMD_REQUEST_MESSAGE COMPONENT_INFORMATION %1 no response to command from vehicle").arg(requestMachine->typeToString());
@@ -321,7 +321,7 @@ void RequestMetaDataTypeStateMachine::_stateRequestCompInfoDeprecated(StateMachi
 QString RequestMetaDataTypeStateMachine::_downloadCompleteJsonWorker(const QString& fileName)
 {
     const QString tempPath = QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).absoluteFilePath(_currentCacheFileTag);
-    QString outputFileName = QGCCompression::decompressIfNeeded(fileName, tempPath);
+    QString outputFileName = beeCopterCompression::decompressIfNeeded(fileName, tempPath);
     if (outputFileName.isEmpty()) {
         qCWarning(ComponentInformationManagerLog) << "Inflate of compressed json failed" << _currentCacheFileTag;
     }
@@ -343,7 +343,7 @@ void RequestMetaDataTypeStateMachine::_ftpDownloadComplete(const QString& fileNa
         if (_currentFileName) {
             *_currentFileName = _downloadCompleteJsonWorker(fileName);
         }
-    } else if (qgcApp()->runningUnitTests()) {
+    } else if (beeCopterApp()->runningUnitTests()) {
         // Unit test should always succeed
         qCWarning(ComponentInformationManagerLog) << "RequestMetaDataTypeStateMachine::_ftpDownloadComplete failed filename:errorMsg" << fileName << errorMsg;
     }
@@ -368,12 +368,12 @@ void RequestMetaDataTypeStateMachine::_httpDownloadComplete(bool success, const 
 {
     qCDebug(ComponentInformationManagerLog) << "RequestMetaDataTypeStateMachine::_httpDownloadComplete success:localFile:errorMsg" << success << localFile << errorMsg;
 
-    disconnect(_compMgr->_cachedFileDownload, &QGCCachedFileDownload::finished, this, &RequestMetaDataTypeStateMachine::_httpDownloadComplete);
+    disconnect(_compMgr->_cachedFileDownload, &beeCopterCachedFileDownload::finished, this, &RequestMetaDataTypeStateMachine::_httpDownloadComplete);
     if (success) {
         if (_currentFileName) {
             *_currentFileName = _downloadCompleteJsonWorker(localFile);
         }
-    } else if (qgcApp()->runningUnitTests()) {
+    } else if (beeCopterApp()->runningUnitTests()) {
         // Unit test should always succeed
         qCWarning(ComponentInformationManagerLog) << "RequestMetaDataTypeStateMachine::_httpDownloadCompleteMetaDataJson failed localFile:errorMsg" << localFile << errorMsg;
     }
@@ -405,13 +405,13 @@ void RequestMetaDataTypeStateMachine::_requestFile(const QString& cacheFileTag, 
                     advance();
                 }
             } else {
-                connect(_compMgr->_cachedFileDownload, &QGCCachedFileDownload::finished, this,
+                connect(_compMgr->_cachedFileDownload, &beeCopterCachedFileDownload::finished, this,
                         &RequestMetaDataTypeStateMachine::_httpDownloadComplete);
                 if (_compMgr->_cachedFileDownload->download(uri, crcValid ? 0 : ComponentInformationManager::cachedFileMaxAgeSec)) {
                     _downloadStartTime.start();
                 } else {
-                    qCWarning(ComponentInformationManagerLog) << "RequestMetaDataTypeStateMachine::_requestFile QGCCachedFileDownload::download returned failure";
-                    disconnect(_compMgr->_cachedFileDownload, &QGCCachedFileDownload::finished, this,
+                    qCWarning(ComponentInformationManagerLog) << "RequestMetaDataTypeStateMachine::_requestFile beeCopterCachedFileDownload::download returned failure";
+                    disconnect(_compMgr->_cachedFileDownload, &beeCopterCachedFileDownload::finished, this,
                                &RequestMetaDataTypeStateMachine::_httpDownloadComplete);
                     advance();
                 }

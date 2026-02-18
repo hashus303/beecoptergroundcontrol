@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 SetupPage {
     id:             firmwarePage
@@ -27,20 +27,20 @@ SetupPage {
 
             // User visible strings
             readonly property string title:             qsTr("Firmware Setup") // Popup dialog title
-            readonly property string highlightPrefix:   "<font color=\"" + qgcPal.warningText + "\">"
+            readonly property string highlightPrefix:   "<font color=\"" + beeCopterPal.warningText + "\">"
             readonly property string highlightSuffix:   "</font>"
-            readonly property string welcomeText:       qsTr("%1 can upgrade the firmware on Pixhawk devices and SiK Radios.").arg(QGroundControl.appName)
+            readonly property string welcomeText:       qsTr("%1 can upgrade the firmware on Pixhawk devices and SiK Radios.").arg(beeCopter.appName)
             readonly property string welcomeTextSingle: qsTr("Update the autopilot firmware to the latest version")
             readonly property string plugInText:        "<big>" + highlightPrefix + qsTr("Plug in your device") + highlightSuffix + qsTr(" via USB to ") + highlightPrefix + qsTr("start") + highlightSuffix + qsTr(" firmware upgrade.") + "</big>"
             readonly property string flashFailText:     qsTr("If upgrade failed, make sure to connect ") + highlightPrefix + qsTr("directly") + highlightSuffix + qsTr(" to a powered USB port on your computer, not through a USB hub. ") +
                                                         qsTr("Also make sure you are only powered via USB ") + highlightPrefix + qsTr("not battery") + highlightSuffix + "."
-            readonly property string qgcUnplugText1:    qsTr("All %1 connections to vehicles must be ").arg(QGroundControl.appName) + highlightPrefix + qsTr(" disconnected ") + highlightSuffix + qsTr("prior to firmware upgrade.")
-            readonly property string qgcUnplugText2:    highlightPrefix + "<big>" + qsTr("Please unplug your Pixhawk and/or Radio from USB.") + "</big>" + highlightSuffix
+            readonly property string beeCopterUnplugText1:    qsTr("All %1 connections to vehicles must be ").arg(beeCopter.appName) + highlightPrefix + qsTr(" disconnected ") + highlightSuffix + qsTr("prior to firmware upgrade.")
+            readonly property string beeCopterUnplugText2:    highlightPrefix + "<big>" + qsTr("Please unplug your Pixhawk and/or Radio from USB.") + "</big>" + highlightSuffix
 
             readonly property int _defaultFimwareTypePX4:   12
             readonly property int _defaultFimwareTypeAPM:   3
 
-            property var    _firmwareUpgradeSettings:   QGroundControl.settingsManager.firmwareUpgradeSettings
+            property var    _firmwareUpgradeSettings:   beeCopter.settingsManager.firmwareUpgradeSettings
             property var    _defaultFirmwareFact:       _firmwareUpgradeSettings.defaultFirmwareType
             property bool   _defaultFirmwareIsPX4:      true
 
@@ -49,18 +49,18 @@ SetupPage {
             property bool   initialBoardSearch:             true
             property string firmwareName
 
-            property bool _singleFirmwareMode:          QGroundControl.corePlugin.options.firmwareUpgradeSingleURL.length != 0   ///< true: running in special single firmware download mode
+            property bool _singleFirmwareMode:          beeCopter.corePlugin.options.firmwareUpgradeSingleURL.length != 0   ///< true: running in special single firmware download mode
 
             function setupPageCompleted() {
                 controller.startBoardSearch()
                 _defaultFirmwareIsPX4 = _defaultFirmwareFact.rawValue === _defaultFimwareTypePX4 // we don't want this to be bound and change as radios are selected
             }
 
-            QGCFileDialog {
+            beeCopterFileDialog {
                 id:                 customFirmwareDialog
                 title:              qsTr("Select Firmware File")
                 nameFilters:        [qsTr("Firmware Files (*.px4 *.apj *.bin *.ihx)"), qsTr("All Files (*)")]
-                folder:             QGroundControl.settingsManager.appSettings.logSavePath
+                folder:             beeCopter.settingsManager.appSettings.logSavePath
                 onAcceptedForLoad: (file) => {
                     controller.flashFirmwareUrl(file)
                     close()
@@ -72,7 +72,7 @@ SetupPage {
                 progressBar:    progressBar
                 statusLog:      statusTextArea
 
-                property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+                property var activeVehicle: beeCopter.multiVehicleManager.activeVehicle
 
                 onActiveVehicleChanged: {
                     if (!globals.activeVehicle) {
@@ -82,14 +82,14 @@ SetupPage {
 
                 onNoBoardFound: {
                     initialBoardSearch = false
-                    if (!QGroundControl.multiVehicleManager.activeVehicleAvailable) {
+                    if (!beeCopter.multiVehicleManager.activeVehicleAvailable) {
                         statusTextArea.append(plugInText)
                     }
                 }
 
                 onBoardGone: {
                     initialBoardSearch = false
-                    if (!QGroundControl.multiVehicleManager.activeVehicleAvailable) {
+                    if (!beeCopter.multiVehicleManager.activeVehicleAvailable) {
                         statusTextArea.append(plugInText)
                     }
                 }
@@ -97,16 +97,16 @@ SetupPage {
                 onBoardFound: {
                     if (initialBoardSearch) {
                         // Board was found right away, so something is already plugged in before we've started upgrade
-                        statusTextArea.append(qgcUnplugText1)
-                        statusTextArea.append(qgcUnplugText2)
+                        statusTextArea.append(beeCopterUnplugText1)
+                        statusTextArea.append(beeCopterUnplugText2)
 
                         var availableDevices = controller.availableBoardsName()
                         if (availableDevices.length > 1) {
                             statusTextArea.append(highlightPrefix + qsTr("Multiple devices detected! Remove all detected devices to perform the firmware upgrade."))
                             statusTextArea.append(qsTr("Detected [%1]: ").arg(availableDevices.length) + availableDevices.join(", "))
                         }
-                        if (QGroundControl.multiVehicleManager.activeVehicle) {
-                            QGroundControl.multiVehicleManager.activeVehicle.vehicleLinkManager.autoDisconnect = true
+                        if (beeCopter.multiVehicleManager.activeVehicle) {
+                            beeCopter.multiVehicleManager.activeVehicle.vehicleLinkManager.autoDisconnect = true
                         }
                     } else {
                         // We end up here when we detect a board plugged in after we've started upgrade
@@ -121,7 +121,7 @@ SetupPage {
             Component {
                 id: firmwareSelectDialogComponent
 
-                QGCPopupDialog {
+                beeCopterPopupDialog {
                     id:         firmwareSelectDialog
                     title:      qsTr("Firmware Setup")
                     buttons:    Dialog.Ok | Dialog.Cancel
@@ -256,10 +256,10 @@ SetupPage {
                         width:      Math.max(ScreenTools.defaultFontPixelWidth * 40, firmwareRadiosColumn.width)
                         spacing:    globals.defaultTextHeight / 2
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.fillWidth:   true
                             wrapMode:           Text.WordWrap
-                            text:               (_singleFirmwareMode || !QGroundControl.apmFirmwareSupported) ? _singleFirmwareLabel : _pixhawkLabel
+                            text:               (_singleFirmwareMode || !beeCopter.apmFirmwareSupported) ? _singleFirmwareLabel : _pixhawkLabel
 
                             readonly property string _pixhawkLabel:          qsTr("Detected Pixhawk board. You can select from the following flight stacks:")
                             readonly property string _singleFirmwareLabel:   qsTr("Press Ok to upgrade your vehicle.")
@@ -269,16 +269,16 @@ SetupPage {
                             id:         firmwareRadiosColumn
                             spacing:    0
 
-                            visible: !_singleFirmwareMode && QGroundControl.apmFirmwareSupported
+                            visible: !_singleFirmwareMode && beeCopter.apmFirmwareSupported
 
                             Component.onCompleted: {
-                                if(!QGroundControl.apmFirmwareSupported) {
+                                if(!beeCopter.apmFirmwareSupported) {
                                     _defaultFirmwareFact.rawValue = _defaultFimwareTypePX4
                                     firmwareVersionChanged(firmwareBuildTypeList)
                                 }
                             }
 
-                            QGCRadioButton {
+                            beeCopterRadioButton {
                                 id:             px4FlightStackRadio
                                 text:           qsTr("PX4 Pro ")
                                 font.bold:      _defaultFirmwareIsPX4
@@ -290,7 +290,7 @@ SetupPage {
                                 }
                             }
 
-                            QGCRadioButton {
+                            beeCopterRadioButton {
                                 id:             apmFlightStack
                                 text:           qsTr("ArduPilot")
                                 font.bold:      !_defaultFirmwareIsPX4
@@ -318,7 +318,7 @@ SetupPage {
                             indexModel:         false
                         }
 
-                        QGCComboBox {
+                        beeCopterComboBox {
                             id:                 ardupilotFirmwareSelectionCombo
                             Layout.fillWidth:   true
                             visible:            apmFlightStack.checked && !controller.downloadingFirmwareList && controller.apmFirmwareNames.length !== 0
@@ -326,21 +326,21 @@ SetupPage {
                             onModelChanged:     currentIndex = controller.apmFirmwareNamesBestIndex
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.fillWidth:   true
                             wrapMode:           Text.WordWrap
                             text:               qsTr("Downloading list of available firmwares...")
                             visible:            controller.downloadingFirmwareList
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.fillWidth:   true
                             wrapMode:           Text.WordWrap
                             text:               qsTr("No Firmware Available")
-                            visible:            !controller.downloadingFirmwareList && (QGroundControl.apmFirmwareSupported && controller.apmFirmwareNames.length === 0)
+                            visible:            !controller.downloadingFirmwareList && (beeCopter.apmFirmwareSupported && controller.apmFirmwareNames.length === 0)
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id:         _advanced
                             text:       qsTr("Advanced settings")
                             checked:    false
@@ -352,7 +352,7 @@ SetupPage {
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.fillWidth:   true
                             wrapMode:           Text.WordWrap
                             visible:            showFirmwareTypeSelection
@@ -360,7 +360,7 @@ SetupPage {
                                                                       qsTr("Select which version of the above flight stack you would like to install:")
                         }
 
-                        QGCComboBox {
+                        beeCopterComboBox {
                             id:                 firmwareBuildTypeCombo
                             Layout.fillWidth:   true
                             visible:            showFirmwareTypeSelection
@@ -390,14 +390,14 @@ SetupPage {
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:                 firmwareVersionWarningLabel
                             Layout.fillWidth:   true
                             wrapMode:           Text.WordWrap
                             visible:            firmwareWarningMessageVisible
                         }
                     } // ColumnLayout
-                } // QGCPopupDialog
+                } // beeCopterPopupDialog
             } // Component - firmwareSelectDialogComponent
 
             ProgressBar {
@@ -406,7 +406,7 @@ SetupPage {
                 visible:                !flashBootloaderButton.visible
             }
 
-            QGCButton {
+            beeCopterButton {
                 id:         flashBootloaderButton
                 text:       qsTr("Flash ChibiOS Bootloader")
                 visible:    firmwarePage.advanced
@@ -421,10 +421,10 @@ SetupPage {
                 font.pointSize:     ScreenTools.defaultFontPointSize
                 textFormat:         TextEdit.RichText
                 text:               _singleFirmwareMode ? welcomeTextSingle : welcomeText
-                color:              qgcPal.text
+                color:              beeCopterPal.text
 
                 background: Rectangle {
-                    color: qgcPal.windowShade
+                    color: beeCopterPal.windowShade
                 }
             }
         } // ColumnLayout

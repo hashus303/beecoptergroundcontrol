@@ -1,9 +1,9 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
-QGCComboBox {
+beeCopterComboBox {
     required property int altitudeMode
     required property var vehicle
 
@@ -19,30 +19,30 @@ QGCComboBox {
 
         ListElement {
             modeName: qsTr("Relative")
-            modeValue: QGroundControl.AltitudeModeRelative
+            modeValue: beeCopter.AltitudeModeRelative
         }
         ListElement {
             modeName: qsTr("Absolute")
-            modeValue: QGroundControl.AltitudeModeAbsolute
+            modeValue: beeCopter.AltitudeModeAbsolute
         }
         ListElement {
             modeName: qsTr("Terrain")
-            modeValue: QGroundControl.AltitudeModeTerrainFrame
+            modeValue: beeCopter.AltitudeModeTerrainFrame
         }
         ListElement {
             modeName: qsTr("TerrainC")
-            modeValue: QGroundControl.AltitudeModeCalcAboveTerrain
+            modeValue: beeCopter.AltitudeModeCalcAboveTerrain
         }
     }
 
     Component.onCompleted: {
         let removeModes = []
 
-        if (!QGroundControl.corePlugin.options.showMissionAbsoluteAltitude && altitudeMode != QGroundControl.AltitudeModeAbsolute) {
-            removeModes.push(QGroundControl.AltitudeModeAbsolute)
+        if (!beeCopter.corePlugin.options.showMissionAbsoluteAltitude && altitudeMode != beeCopter.AltitudeModeAbsolute) {
+            removeModes.push(beeCopter.AltitudeModeAbsolute)
         }
         if (!vehicle.supportsTerrainFrame) {
-            removeModes.push(QGroundControl.AltitudeModeTerrainFrame)
+            removeModes.push(beeCopter.AltitudeModeTerrainFrame)
         }
 
         // Remove modes specified by consumer

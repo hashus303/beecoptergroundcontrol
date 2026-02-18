@@ -2,16 +2,16 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 // Editor for Mission Settings
 Rectangle {
     id: root
     width: availableWidth
     height: valuesColumn.height + (_margin * 2)
-    color: qgcPal.windowShadeDark
+    color: beeCopterPal.windowShadeDark
     radius: ScreenTools.defaultBorderRadius
 
     property var _masterController: masterController
@@ -21,15 +21,15 @@ Rectangle {
     property bool _vehicleHasHomePosition: _controllerVehicle.homePosition.isValid
     property bool _showCruiseSpeed: !_controllerVehicle.multiRotor
     property bool _showHoverSpeed: _controllerVehicle.multiRotor || _controllerVehicle.vtol
-    property bool _multipleFirmware: !QGroundControl.singleFirmwareSupport
-    property bool _multipleVehicleTypes: !QGroundControl.singleVehicleSupport
+    property bool _multipleFirmware: !beeCopter.singleFirmwareSupport
+    property bool _multipleVehicleTypes: !beeCopter.singleVehicleSupport
     property real _fieldWidth: ScreenTools.defaultFontPixelWidth * 16
     property bool _mobile: ScreenTools.isMobile
-    property var _savePath: QGroundControl.settingsManager.appSettings.missionSavePath
-    property var _appSettings: QGroundControl.settingsManager.appSettings
-    property bool _waypointsOnlyMode: QGroundControl.corePlugin.options.missionWaypointsOnly
-    property bool _showCameraSection: _waypointsOnlyMode || QGroundControl.corePlugin.showAdvancedUI
-    property bool _simpleMissionStart: QGroundControl.corePlugin.options.showSimpleMissionStart
+    property var _savePath: beeCopter.settingsManager.appSettings.missionSavePath
+    property var _appSettings: beeCopter.settingsManager.appSettings
+    property bool _waypointsOnlyMode: beeCopter.corePlugin.options.missionWaypointsOnly
+    property bool _showCameraSection: _waypointsOnlyMode || beeCopter.corePlugin.showAdvancedUI
+    property bool _simpleMissionStart: beeCopter.corePlugin.options.showSimpleMissionStart
     property bool _showFlightSpeed: !_controllerVehicle.vtol && !_simpleMissionStart && !_controllerVehicle.apmFirmware
     property bool _allowFWVehicleTypeSelection: _noMissionItemsAdded && !globals.activeVehicle
 
@@ -37,14 +37,14 @@ Rectangle {
     readonly property string _vehicleLabel: qsTr("Vehicle")
     readonly property real _margin: ScreenTools.defaultFontPixelWidth / 2
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
     Component { id: altModeDialogComponent; AltModeDialog { } }
 
     Connections {
         target: _controllerVehicle
         function onSupportsTerrainFrameChanged() {
-            if (!_controllerVehicle.supportsTerrainFrame && _missionController.globalAltitudeMode === QGroundControl.AltitudeModeTerrainFrame) {
-                _missionController.globalAltitudeMode = QGroundControl.AltitudeModeCalcAboveTerrain
+            if (!_controllerVehicle.supportsTerrainFrame && _missionController.globalAltitudeMode === beeCopter.AltitudeModeTerrainFrame) {
+                _missionController.globalAltitudeMode = beeCopter.AltitudeModeCalcAboveTerrain
             }
         }
     }
@@ -60,26 +60,26 @@ Rectangle {
         LabelledButton {
             Layout.fillWidth: true
             label: qsTr("Altitude Mode")
-            buttonText: QGroundControl.altitudeModeShortDescription(_missionController.globalAltitudeMode)
+            buttonText: beeCopter.altitudeModeShortDescription(_missionController.globalAltitudeMode)
 
             onClicked: {
                 var removeModes = []
                 var updateFunction = function(altMode){ _missionController.globalAltitudeMode = altMode }
                 if (!_controllerVehicle.supportsTerrainFrame) {
-                    removeModes.push(QGroundControl.AltitudeModeTerrainFrame)
+                    removeModes.push(beeCopter.AltitudeModeTerrainFrame)
                 }
                 if (!_noMissionItemsAdded) {
-                    if (_missionController.globalAltitudeMode !== QGroundControl.AltitudeModeRelative) {
-                        removeModes.push(QGroundControl.AltitudeModeRelative)
+                    if (_missionController.globalAltitudeMode !== beeCopter.AltitudeModeRelative) {
+                        removeModes.push(beeCopter.AltitudeModeRelative)
                     }
-                    if (_missionController.globalAltitudeMode !== QGroundControl.AltitudeModeAbsolute) {
-                        removeModes.push(QGroundControl.AltitudeModeAbsolute)
+                    if (_missionController.globalAltitudeMode !== beeCopter.AltitudeModeAbsolute) {
+                        removeModes.push(beeCopter.AltitudeModeAbsolute)
                     }
-                    if (_missionController.globalAltitudeMode !== QGroundControl.AltitudeModeCalcAboveTerrain) {
-                        removeModes.push(QGroundControl.AltitudeModeCalcAboveTerrain)
+                    if (_missionController.globalAltitudeMode !== beeCopter.AltitudeModeCalcAboveTerrain) {
+                        removeModes.push(beeCopter.AltitudeModeCalcAboveTerrain)
                     }
-                    if (_missionController.globalAltitudeMode !== QGroundControl.AltitudeModeTerrainFrame) {
-                        removeModes.push(QGroundControl.AltitudeModeTerrainFrame)
+                    if (_missionController.globalAltitudeMode !== beeCopter.AltitudeModeTerrainFrame) {
+                        removeModes.push(beeCopter.AltitudeModeTerrainFrame)
                     }
                 }
                 altModeDialogComponent.createObject(mainWindow, { rgRemoveModes: removeModes, updateAltModeFn: updateFunction }).open()
@@ -89,10 +89,10 @@ Rectangle {
         FactTextFieldSlider {
             Layout.fillWidth: true
             label: qsTr("Waypoints Altitude")
-            fact: QGroundControl.settingsManager.appSettings.defaultMissionItemAltitude
+            fact: beeCopter.settingsManager.appSettings.defaultMissionItemAltitude
         }
 
-        QGCButton {
+        beeCopterButton {
             id: applyDefaultAltitudeButton
             Layout.fillWidth: true
             text: qsTr("Apply New Altitude")
@@ -157,7 +157,7 @@ Rectangle {
                     id: planCreatorButton
                     Layout.fillWidth: true
                     implicitHeight: planCreatorLayout.implicitHeight
-                    color: planCreatorButtonMouseArea.pressed || planCreatorButtonMouseArea.containsMouse ? qgcPal.buttonHighlight : qgcPal.button
+                    color: planCreatorButtonMouseArea.pressed || planCreatorButtonMouseArea.containsMouse ? beeCopterPal.buttonHighlight : beeCopterPal.button
 
                     ColumnLayout {
                         id: planCreatorLayout
@@ -173,17 +173,17 @@ Rectangle {
                             mipmap: true
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id: planCreatorNameLabel
                             Layout.fillWidth: true
                             Layout.maximumWidth: parent.width
                             horizontalAlignment: Text.AlignHCenter
                             text: object.name
-                            color: planCreatorButtonMouseArea.pressed || planCreatorButtonMouseArea.containsMouse ? qgcPal.buttonHighlightText : qgcPal.buttonText
+                            color: planCreatorButtonMouseArea.pressed || planCreatorButtonMouseArea.containsMouse ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
                         }
                     }
 
-                    QGCMouseArea {
+                    beeCopterMouseArea {
                         id: planCreatorButtonMouseArea
                         anchors.fill: parent
                         hoverEnabled: true
@@ -220,7 +220,7 @@ Rectangle {
                 Component.onCompleted: checked = !_waypointsOnlyMode && missionItem.cameraSection.settingsSpecified
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 text: qsTr("Above camera commands will take affect immediately upon mission start.")
@@ -247,39 +247,39 @@ Rectangle {
                 columns: 2
                 visible: vehicleInfoSectionHeader.visible && vehicleInfoSectionHeader.checked
 
-                QGCLabel {
+                beeCopterLabel {
                     text: _firmwareLabel
                     Layout.fillWidth: true
                     visible: _multipleFirmware
                 }
                 FactComboBox {
-                    fact: QGroundControl.settingsManager.appSettings.offlineEditingFirmwareClass
+                    fact: beeCopter.settingsManager.appSettings.offlineEditingFirmwareClass
                     indexModel: false
                     Layout.preferredWidth: _fieldWidth
                     visible: _multipleFirmware && _allowFWVehicleTypeSelection
                 }
-                QGCLabel {
+                beeCopterLabel {
                     text: _controllerVehicle.firmwareTypeString
                     visible: _multipleFirmware && !_allowFWVehicleTypeSelection
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text: _vehicleLabel
                     Layout.fillWidth: true
                     visible: _multipleVehicleTypes
                 }
                 FactComboBox {
-                    fact: QGroundControl.settingsManager.appSettings.offlineEditingVehicleClass
+                    fact: beeCopter.settingsManager.appSettings.offlineEditingVehicleClass
                     indexModel: false
                     Layout.preferredWidth: _fieldWidth
                     visible: _multipleVehicleTypes && _allowFWVehicleTypeSelection
                 }
-                QGCLabel {
+                beeCopterLabel {
                     text: _controllerVehicle.vehicleTypeString
                     visible: _multipleVehicleTypes && !_allowFWVehicleTypeSelection
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.columnSpan: 2
                     Layout.alignment: Qt.AlignHCenter
                     Layout.fillWidth: true
@@ -289,24 +289,24 @@ Rectangle {
                     visible: _showCruiseSpeed || _showHoverSpeed
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("Cruise speed")
                     visible: _showCruiseSpeed
                     Layout.fillWidth: true
                 }
                 FactTextField {
-                    fact: QGroundControl.settingsManager.appSettings.offlineEditingCruiseSpeed
+                    fact: beeCopter.settingsManager.appSettings.offlineEditingCruiseSpeed
                     visible: _showCruiseSpeed
                     Layout.preferredWidth: _fieldWidth
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("Hover speed")
                     visible: _showHoverSpeed
                     Layout.fillWidth: true
                 }
                 FactTextField {
-                    fact: QGroundControl.settingsManager.appSettings.offlineEditingHoverSpeed
+                    fact: beeCopter.settingsManager.appSettings.offlineEditingHoverSpeed
                     visible: _showHoverSpeed
                     Layout.preferredWidth: _fieldWidth
                 }
@@ -334,7 +334,7 @@ Rectangle {
                     rowSpacing: columnSpacing
                     columns: 2
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text: qsTr("Altitude")
                     }
                     FactTextField {
@@ -343,7 +343,7 @@ Rectangle {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     width: parent.width
                     wrapMode: Text.WordWrap
                     font.pointSize: ScreenTools.smallFontPointSize
@@ -351,7 +351,7 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text: qsTr("Set To Map Center")
                     onClicked: missionItem.coordinate = map.center
                     anchors.horizontalCenter: parent.horizontalCenter

@@ -56,7 +56,7 @@ protected:
     JoystickComponent *_joystickComponent = nullptr;
     ScriptingComponent *_scriptingComponent = nullptr;
 
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
 private slots:
     /// Executed when the Vehicle is parameter ready. It checks for the service bulletin against Cube Blacks.
     void _checkForBadCubeBlack(bool parametersReady);

@@ -7,12 +7,12 @@
 #include <QtCore/QSizeF>
 
 #include "FactGroup.h"
-#include "QGCVideoStreamInfo.h"
+#include "beeCopterVideoStreamInfo.h"
 #include "QmlObjectListModel.h"
 
 #include <QtQmlIntegration/QtQmlIntegration>
 
-class QGCCameraParamIO;
+class beeCopterCameraParamIO;
 class Vehicle;
 
 Q_DECLARE_LOGGING_CATEGORY(CameraControlLog)
@@ -69,8 +69,8 @@ class MavlinkCameraControl : public FactGroup
     Q_PROPERTY(int                  currentStream           READ currentStream          WRITE setCurrentStream      NOTIFY currentStreamChanged)
     Q_PROPERTY(bool                 autoStream              READ autoStream                                         NOTIFY autoStreamChanged)
     Q_PROPERTY(QmlObjectListModel*  streams                 READ streams                                            NOTIFY streamsChanged)
-    Q_PROPERTY(QGCVideoStreamInfo*  currentStreamInstance   READ currentStreamInstance                              NOTIFY currentStreamChanged)
-    Q_PROPERTY(QGCVideoStreamInfo*  thermalStreamInstance   READ thermalStreamInstance                              NOTIFY thermalStreamChanged)
+    Q_PROPERTY(beeCopterVideoStreamInfo*  currentStreamInstance   READ currentStreamInstance                              NOTIFY currentStreamChanged)
+    Q_PROPERTY(beeCopterVideoStreamInfo*  thermalStreamInstance   READ thermalStreamInstance                              NOTIFY thermalStreamChanged)
     Q_PROPERTY(quint32              recordTime              READ recordTime                                         NOTIFY recordTimeChanged)
     Q_PROPERTY(QString              recordTimeStr           READ recordTimeStr                                      NOTIFY recordTimeChanged)
     Q_PROPERTY(QStringList          streamLabels            READ streamLabels                                       NOTIFY streamLabelsChanged)
@@ -81,7 +81,7 @@ class MavlinkCameraControl : public FactGroup
     Q_PROPERTY(bool                 trackingImageStatus     READ trackingImageStatus                                NOTIFY trackingImageStatusChanged)
     Q_PROPERTY(QRectF               trackingImageRect       READ trackingImageRect                                  NOTIFY trackingImageStatusChanged)
 
-    friend class QGCCameraParamIO;
+    friend class beeCopterCameraParamIO;
 
 public:
     explicit MavlinkCameraControl(Vehicle *vehicle, QObject *parent = nullptr);
@@ -200,8 +200,8 @@ public:
     virtual qreal focusLevel() const = 0;
 
     virtual QmlObjectListModel *streams() = 0;
-    virtual QGCVideoStreamInfo *currentStreamInstance() = 0;
-    virtual QGCVideoStreamInfo *thermalStreamInstance() = 0;
+    virtual beeCopterVideoStreamInfo *currentStreamInstance() = 0;
+    virtual beeCopterVideoStreamInfo *thermalStreamInstance() = 0;
     virtual int currentStream() const = 0;
     virtual void setCurrentStream(int stream) = 0;
     virtual bool autoStream() const = 0;

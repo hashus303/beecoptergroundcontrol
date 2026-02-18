@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 ColumnLayout {
     property real _availableHeight:     availableHeight
@@ -15,7 +15,7 @@ ColumnLayout {
     RowLayout {
         spacing: ScreenTools.defaultFontPixelWidth
 
-        QGCLabel {
+        beeCopterLabel {
             textFormat:         Text.RichText
             text:               qsTr("Airmode (disable during tuning) <b><a href=\"https://docs.px4.io/main/en/config_mc/pid_tuning_guide_multicopter.html#airmode-mixer-saturation\">?</a></b>")
             onLinkActivated:    (link) => Qt.openUrlExternally(link)
@@ -32,7 +32,7 @@ ColumnLayout {
             height: 1
         }
 
-        QGCLabel {
+        beeCopterLabel {
             textFormat:         Text.RichText
             text:               qsTr("Thrust curve <b><a href=\"https://docs.px4.io/main/en/config_mc/pid_tuning_guide_multicopter.html#thrust-curve\">?</a></b>")
             onLinkActivated:    (link) => Qt.openUrlExternally(link)

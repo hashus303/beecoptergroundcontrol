@@ -3,10 +3,10 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
-import QGroundControl.VehicleSetup
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
+import beeCopter.VehicleSetup
 
 SetupPage {
     id: radioPage
@@ -39,8 +39,8 @@ SetupPage {
                     Layout.fillWidth: true
 
                     Repeater {
-                        model: QGroundControl.multiVehicleManager.activeVehicle.px4Firmware ?
-                                    (QGroundControl.multiVehicleManager.activeVehicle.multiRotor ?
+                        model: beeCopter.multiVehicleManager.activeVehicle.px4Firmware ?
+                                    (beeCopter.multiVehicleManager.activeVehicle.multiRotor ?
                                         [ "RC_MAP_AUX1", "RC_MAP_AUX2", "RC_MAP_PARAM1", "RC_MAP_PARAM2", "RC_MAP_PARAM3", "RC_MAP_PAY_SW"] :
                                         [ "RC_MAP_FLAPS", "RC_MAP_AUX1", "RC_MAP_AUX2", "RC_MAP_PARAM1", "RC_MAP_PARAM2", "RC_MAP_PARAM3", "RC_MAP_PAY_SW"]) :
                                     0
@@ -56,19 +56,19 @@ SetupPage {
                 Rectangle {
                     Layout.fillWidth: true
                     implicitHeight: 1
-                    color: qgcPal.text
+                    color: beeCopterPal.text
                 }
 
                 RowLayout {
                     spacing: ScreenTools.defaultFontPixelWidth
 
-                    QGCButton {
+                    beeCopterButton {
                         id: bindButton
                         text: qsTr("Spektrum Bind")
                         onClicked: spektrumBindDialogComponent.createObject(mainWindow).open()
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         text: qsTr("CRSF Bind")
                         onClicked: mainWindow.showMessageDialog(qsTr("CRSF Bind"),
                                                                 qsTr("Click Ok to place your CRSF receiver in the bind mode."),
@@ -76,7 +76,7 @@ SetupPage {
                                                                 function() { controller.crsfBindMode() })
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         text: qsTr("Copy Trims")
                         onClicked: mainWindow.showMessageDialog(qsTr("Copy Trims"),
                                                                 qsTr("Center your sticks and move throttle all the way down, then press Ok to copy trims. After pressing Ok, reset the trims on your radio back to zero."),
@@ -88,7 +88,7 @@ SetupPage {
                 Component {
                     id: spektrumBindDialogComponent
 
-                    QGCPopupDialog {
+                    beeCopterPopupDialog {
                         title: qsTr("Spektrum Bind")
                         buttons: Dialog.Ok | Dialog.Cancel
 
@@ -99,29 +99,29 @@ SetupPage {
                         ColumnLayout {
                             spacing: ScreenTools.defaultFontPixelHeight / 2
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 wrapMode: Text.WordWrap
                                 text: qsTr("Click Ok to place your Spektrum receiver in the bind mode.")
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 wrapMode: Text.WordWrap
                                 text: qsTr("Select the specific receiver type below:")
                             }
 
-                            QGCRadioButton {
+                            beeCopterRadioButton {
                                 text: qsTr("DSM2 Mode")
                                 ButtonGroup.group: radioGroup
                                 property int bindMode: RadioComponentController.DSM2
                             }
 
-                            QGCRadioButton {
+                            beeCopterRadioButton {
                                 text: qsTr("DSMX (7 channels or less)")
                                 ButtonGroup.group: radioGroup
                                 property int bindMode: RadioComponentController.DSMX7
                             }
 
-                            QGCRadioButton {
+                            beeCopterRadioButton {
                                 checked: true
                                 text: qsTr("DSMX (8 channels or more)")
                                 ButtonGroup.group: radioGroup

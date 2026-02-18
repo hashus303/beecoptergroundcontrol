@@ -1,14 +1,14 @@
 #include "RadioComponentController.h"
 #include "Fact.h"
 #include "ParameterManager.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "Vehicle.h"
 
 #include <QtCore/QSettings>
 
-QGC_LOGGING_CATEGORY(RadioComponentControllerLog, "AutoPilotPlugins.RadioComponentController")
-QGC_LOGGING_CATEGORY(RadioComponentControllerVerboseLog, "AutoPilotPlugins.RadioComponentController:verbose")
+beeCopter_LOGGING_CATEGORY(RadioComponentControllerLog, "AutoPilotPlugins.RadioComponentController")
+beeCopter_LOGGING_CATEGORY(RadioComponentControllerVerboseLog, "AutoPilotPlugins.RadioComponentController:verbose")
 
 RadioComponentController::RadioComponentController(QObject *parent)
     : RemoteControlCalibrationController(parent)
@@ -37,7 +37,7 @@ RadioComponentController::RadioComponentController(QObject *parent)
     }
 
     // Let the mav known we are starting calibration. This should turn off motors and so forth.
-    _vehicle->startCalibration(QGCMAVLink::CalibrationRadio);
+    _vehicle->startCalibration(beeCopterMAVLink::CalibrationRadio);
 }
 
 RadioComponentController::~RadioComponentController()

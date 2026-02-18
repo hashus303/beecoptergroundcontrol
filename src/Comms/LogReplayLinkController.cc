@@ -1,7 +1,7 @@
 #include "LogReplayLinkController.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(LogReplayLinkControllerLog, "Comms.LogReplayLinkController")
+beeCopter_LOGGING_CATEGORY(LogReplayLinkControllerLog, "Comms.LogReplayLinkController")
 
 LogReplayLinkController::LogReplayLinkController(QObject *parent)
     : QObject(parent)

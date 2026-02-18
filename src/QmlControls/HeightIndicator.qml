@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ColumnLayout {
     id:         _root
@@ -14,7 +14,7 @@ ColumnLayout {
 
     property color _textColor:  _mapPalette.text
 
-    QGCMapPalette { id: _mapPalette; lightColors: _root.map.isSatelliteMap }
+    beeCopterMapPalette { id: _mapPalette; lightColors: _root.map.isSatelliteMap }
 
     Rectangle {
         width:              ScreenTools.defaultFontPixelWidth * 3
@@ -30,7 +30,7 @@ ColumnLayout {
         Layout.alignment:   Qt.AlignHCenter
     }
 
-    QGCMapLabel {
+    beeCopterMapLabel {
         map:                _root.map
         text:               heightText
         Layout.alignment:   Qt.AlignHCenter

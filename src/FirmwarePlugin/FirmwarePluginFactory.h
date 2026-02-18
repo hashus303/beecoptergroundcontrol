@@ -3,7 +3,7 @@
 #include <QtCore/QList>
 #include <QtCore/QLoggingCategory>
 
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 class FirmwarePlugin;
 
@@ -24,10 +24,10 @@ public:
     virtual FirmwarePlugin *firmwarePluginForAutopilot(MAV_AUTOPILOT autopilotType, MAV_TYPE vehicleType) = 0;
 
     /// @return List of firmware classes this plugin supports.
-    virtual QList<QGCMAVLink::FirmwareClass_t> supportedFirmwareClasses() const = 0;
+    virtual QList<beeCopterMAVLink::FirmwareClass_t> supportedFirmwareClasses() const = 0;
 
     /// @return List of vehicle classes this plugin supports.
-    virtual QList<QGCMAVLink::VehicleClass_t> supportedVehicleClasses() const { return QGCMAVLink::allVehicleClasses(); }
+    virtual QList<beeCopterMAVLink::VehicleClass_t> supportedVehicleClasses() const { return beeCopterMAVLink::allVehicleClasses(); }
 };
 
 /*===========================================================================*/

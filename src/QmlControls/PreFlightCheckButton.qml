@@ -1,11 +1,11 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// The PreFlightCheckButton supports creating a button which the user then has to verify/click to confirm a check.
-/// It also supports failing the check based on values from within the system: telemetry or QGC app values. These
+/// It also supports failing the check based on values from within the system: telemetry or beeCopter app values. These
 /// controls are normally placed within a PreFlightCheckGroup.
 ///
 /// Two types of checks may be included on the button:
@@ -14,7 +14,7 @@ import QGroundControl.Controls
 ///                 a hard stop in that there is no way to pass the checklist until the system state resolves itself.
 ///                 Or it can also optionally be override by the user.
 /// If a button uses both manual and telemetry checks, the telemetry check takes precendence and must be passed first.
-QGCButton {
+beeCopterButton {
     property string name:                           ""
     property string manualText:                     ""      ///< text to show for a manual check, "" signals no manual check
     property string telemetryTextFailure                    ///< text to show if telemetry check failed (override not allowed)
@@ -56,8 +56,8 @@ QGCButton {
     rightPadding:   _horizontalPadding
 
     background: Rectangle {
-        color:          qgcPal.button
-        border.color:   qgcPal.button;
+        color:          beeCopterPal.button
+        border.color:   beeCopterPal.button;
 
         Rectangle {
             color:          _color
@@ -68,10 +68,10 @@ QGCButton {
         }
     }
 
-    contentItem: QGCLabel {
+    contentItem: beeCopterLabel {
         wrapMode:               Text.WordWrap
         horizontalAlignment:    Text.AlignHCenter
-        color:                  qgcPal.buttonText
+        color:                  beeCopterPal.buttonText
         text:                   _text
     }
 

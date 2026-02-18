@@ -12,24 +12,24 @@ target_sources(${CMAKE_PROJECT_NAME}
         DeviceInfo.h
         JsonHelper.cc
         JsonHelper.h
-        FileSystem/QGCCachedFileDownload.cc
-        FileSystem/QGCCachedFileDownload.h
-        FileSystem/QGCFileDownload.cc
-        FileSystem/QGCFileDownload.h
-        FileSystem/QGCFileHelper.cc
-        FileSystem/QGCFileHelper.h
-        FileSystem/QGCArchiveWatcher.cc
-        FileSystem/QGCArchiveWatcher.h
-        FileSystem/QGCFileWatcher.cc
-        FileSystem/QGCFileWatcher.h
-        QGC.cc
-        QGC.h
-        QGCCommandLineParser.cc
-        QGCCommandLineParser.h
-        QGCLogging.cc
-        QGCLogging.h
-        QGCLoggingCategory.cc
-        QGCLoggingCategory.h
+        FileSystem/beeCopterCachedFileDownload.cc
+        FileSystem/beeCopterCachedFileDownload.h
+        FileSystem/beeCopterFileDownload.cc
+        FileSystem/beeCopterFileDownload.h
+        FileSystem/beeCopterFileHelper.cc
+        FileSystem/beeCopterFileHelper.h
+        FileSystem/beeCopterArchiveWatcher.cc
+        FileSystem/beeCopterArchiveWatcher.h
+        FileSystem/beeCopterFileWatcher.cc
+        FileSystem/beeCopterFileWatcher.h
+        beeCopter.cc
+        beeCopter.h
+        beeCopterCommandLineParser.cc
+        beeCopterCommandLineParser.h
+        beeCopterLogging.cc
+        beeCopterLogging.h
+        beeCopterLoggingCategory.cc
+        beeCopterLoggingCategory.h
         StateMachine.cc
         StateMachine.h
 )

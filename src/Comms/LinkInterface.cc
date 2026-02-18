@@ -1,14 +1,14 @@
 #include "LinkInterface.h"
 #include "LinkManager.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "MAVLinkSigning.h"
 #include "SettingsManager.h"
 #include "MavlinkSettings.h"
 
 #include <QtQml/QQmlEngine>
 
-QGC_LOGGING_CATEGORY(LinkInterfaceLog, "Comms.LinkInterface")
+beeCopter_LOGGING_CATEGORY(LinkInterfaceLog, "Comms.LinkInterface")
 
 LinkInterface::LinkInterface(SharedLinkConfigurationPtr &config, QObject *parent)
     : QObject(parent)
@@ -144,7 +144,7 @@ void LinkInterface::reportMavlinkV1Traffic()
         const QString message = tr("MAVLink v1 traffic detected on link '%1'. "
                                    "%2 only supports MAVLink v2. "
                                    "Please ensure your vehicle is configured to use MAVLink v2.")
-                                    .arg(linkName).arg(qgcApp()->applicationName());
-        qgcApp()->showAppMessage(message);
+                                    .arg(linkName).arg(beeCopterApp()->applicationName());
+        beeCopterApp()->showAppMessage(message);
     }
 }

@@ -6,7 +6,7 @@
 
 RunGuard::RunGuard(const QString &key)
     : _key(key)
-    , _lockFilePath(lockDir() + QLatin1String("/qgc-") + generateKeyHash(key, QLatin1String("_lock")) + QLatin1String(".lock"))
+    , _lockFilePath(lockDir() + QLatin1String("/beeCopter-") + generateKeyHash(key, QLatin1String("_lock")) + QLatin1String(".lock"))
     , _lockFile(_lockFilePath)
 {
     // Recover instantly from stale locks after crashes.

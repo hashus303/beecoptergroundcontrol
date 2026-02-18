@@ -1,9 +1,9 @@
 #include "AndroidEvents.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QApplicationStatic>
 
-QGC_LOGGING_CATEGORY(AndroidEventsLog, "Android.AndroidEvents")
+beeCopter_LOGGING_CATEGORY(AndroidEventsLog, "Android.AndroidEvents")
 
 Q_APPLICATION_STATIC(AndroidEvents, _androidEvents);
 

@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Canvas {
     id:     root
@@ -18,7 +18,7 @@ Canvas {
     property bool   small:                  !checked
     property bool   child:                  false
     property bool   highlightSelected:      false
-    property var    color:                  checked ? "green" : (child ? qgcPal.mapIndicatorChild : qgcPal.mapIndicator)
+    property var    color:                  checked ? "green" : (child ? beeCopterPal.mapIndicatorChild : beeCopterPal.mapIndicator)
     property real   anchorPointX:           _height / 2
     property real   anchorPointY:           _height / 2
     property bool   specifiesCoordinate:    true
@@ -47,7 +47,7 @@ Canvas {
     onGimbalYawChanged:     requestPaint()
     onVehicleYawChanged:    requestPaint()
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     function degreesToRadians(degrees) {
         return (Math.PI/180)*degrees
@@ -84,7 +84,7 @@ Canvas {
         visible:                _label.length !== 0 && !small
     }
 
-    QGCLabel {
+    beeCopterLabel {
         id:                     labelControlLabel
         anchors.topMargin:      -_labelMargin
         anchors.bottomMargin:   -_labelMargin
@@ -109,7 +109,7 @@ Canvas {
         color:                          root.color
         radius:                         _indicatorRadius
 
-        QGCLabel {
+        beeCopterLabel {
             anchors.fill:           parent
             horizontalAlignment:    Text.AlignHCenter
             verticalAlignment:      Text.AlignVCenter
@@ -139,7 +139,7 @@ Canvas {
         anchors.fill:       indicator
     }
 
-    QGCMouseArea {
+    beeCopterMouseArea {
         fillItem:   mouseAreaFill
         onClicked: (mouse) => {
             focus = true

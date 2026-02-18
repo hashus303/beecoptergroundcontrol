@@ -1,5 +1,5 @@
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ToolStripAction {
     property int    actionID

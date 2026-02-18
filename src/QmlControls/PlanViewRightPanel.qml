@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     required property var editorMap
@@ -35,12 +35,12 @@ Item {
         }
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     Rectangle {
         id:             rightPanelBackground
         anchors.fill:   parent
-        color:          qgcPal.window
+        color:          beeCopterPal.window
         opacity:        0.85
     }
 
@@ -64,16 +64,16 @@ Item {
             color:          rightPanelBackground.color
             opacity:        rightPanelBackground.opacity
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                 toggleButtonLabel
                 anchors.centerIn:   parent
                 text:               panelOpenCloseButton._expanded ? ">" : "<"
-                color:              qgcPal.buttonText
+                color:              beeCopterPal.buttonText
             }
 
         }
 
-        QGCMouseArea {
+        beeCopterMouseArea {
             anchors.fill: parent
 
             onClicked: {
@@ -103,20 +103,20 @@ Item {
             anchors.fill:   parent
             spacing:        ScreenTools.defaultFontPixelHeight * 0.5
 
-            QGCTabBar {
+            beeCopterTabBar {
                 Layout.fillWidth: true
 
-                QGCTabButton {
+                beeCopterTabButton {
                     text:       qsTr("Mission")
                     onClicked:  { root._editingTool = root._editingToolMission; _editingLayer = _layerMission }
                 }
 
-                QGCTabButton {
+                beeCopterTabButton {
                     text:       qsTr("Fence")
                     onClicked:  { root._editingTool = root._editingToolFence; _editingLayer = _layerFence }
                 }
 
-                QGCTabButton {
+                beeCopterTabButton {
                     text:       qsTr("Rally")
                     onClicked:  { root._editingTool = root._editingToolRally; _editingLayer = _layerRally }
                 }
@@ -136,7 +136,7 @@ Item {
             ColumnLayout {
                 spacing: ScreenTools.defaultFontPixelHeight / 2
 
-                QGCListView {
+                beeCopterListView {
                     id:                 missionItemEditorListView
                     Layout.fillWidth:   true
                     Layout.fillHeight:  true

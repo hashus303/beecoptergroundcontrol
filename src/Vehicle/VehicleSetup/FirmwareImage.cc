@@ -1,9 +1,9 @@
 #include "FirmwareImage.h"
 #include "JsonParsing.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "CompInfoParam.h"
 #include "Bootloader.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
@@ -245,8 +245,8 @@ bool FirmwareImage::_px4Load(const QString& imageFilename)
                                         _jsonParamXmlKey,      // key which holds compressed bytes
                                         decompressedBytes);    // Returned decompressed bytes
     if (success) {
-        QString parameterFilename = QGCApplication::cachedParameterMetaDataFile();
-        QFile parameterFile(QGCApplication::cachedParameterMetaDataFile());
+        QString parameterFilename = beeCopterApplication::cachedParameterMetaDataFile();
+        QFile parameterFile(beeCopterApplication::cachedParameterMetaDataFile());
 
         if (parameterFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
             qint64 bytesWritten = parameterFile.write(decompressedBytes);
@@ -272,9 +272,9 @@ bool FirmwareImage::_px4Load(const QString& imageFilename)
                                         _jsonAirframeXmlKey,        // key which holds compressed bytes
                                         decompressedBytes);         // Returned decompressed bytes
     if (success) {
-        QString airframeFilename = QGCApplication::cachedAirframeMetaDataFile();
+        QString airframeFilename = beeCopterApplication::cachedAirframeMetaDataFile();
         //qDebug() << airframeFilename;
-        QFile airframeFile(QGCApplication::cachedAirframeMetaDataFile());
+        QFile airframeFile(beeCopterApplication::cachedAirframeMetaDataFile());
 
         if (airframeFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
             qint64 bytesWritten = airframeFile.write(decompressedBytes);

@@ -50,12 +50,12 @@ public:
     double vehicleLongitude() const { return _vehicleLongitude; }
     double vehicleAltitudeAMSL() const { return _vehicleAltitudeAMSL; }
 
-    /// Sends the specified mavlink message to QGC
+    /// Sends the specified mavlink message to beeCopter
     void respondWithMavlinkMessage(const mavlink_message_t &msg);
 
     MockLinkFTP *mockLinkFTP() const;
 
-    /// Sets a failure mode for unit testingqgcm
+    /// Sets a failure mode for unit testingbeeCopterm
     ///     @param failureMode Type of failure to simulate
     ///     @param failureAckResult Error to send if one the ack error modes
     void setMissionItemFailureMode(MockLinkMissionItemHandler::FailureMode_t failureMode, MAV_MISSION_RESULT failureAckResult) const { _missionItemHandler->setFailureMode(failureMode, failureAckResult); }
@@ -132,7 +132,7 @@ signals:
     void highLatencyTransmissionEnabledChanged(bool highLatencyTransmissionEnabled);
 
 private slots:
-    /// Called when QGC wants to write bytes to the MAV
+    /// Called when beeCopter wants to write bytes to the MAV
     void _writeBytes(const QByteArray &bytes) final;
     void _writeBytesQueued(const QByteArray &bytes);
 

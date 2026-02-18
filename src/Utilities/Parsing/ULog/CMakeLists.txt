@@ -22,9 +22,9 @@ CPMAddPackage(
     GIT_TAG v1.0.1
 )
 
-qgc_disable_dependency_warnings(ulog_cpp)
+beeCopter_disable_dependency_warnings(ulog_cpp)
 
-# Suppress warnings from ulog_cpp headers when included in QGC source code
+# Suppress warnings from ulog_cpp headers when included in beeCopter source code
 target_include_directories(${CMAKE_PROJECT_NAME} SYSTEM PRIVATE ${ulog_cpp_SOURCE_DIR})
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ulog_cpp::ulog_cpp)

@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 // Toolbar for Plan View
 RowLayout {
@@ -94,16 +94,16 @@ RowLayout {
         }
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
-    QGCButton {
+    beeCopterButton {
         text: qsTr("Open")
         iconSource: "/qmlimages/Plan.svg"
         enabled: !_planMasterController.syncInProgress
         onClicked: _openButtonClicked()
     }
 
-    QGCButton {
+    beeCopterButton {
         text: _planMasterController.currentPlanFile === "" ? qsTr("Save As") : qsTr("Save")
         iconSource: "/res/SaveToDisk.svg"
         enabled: !_syncInProgress && _hasPlanItems
@@ -111,7 +111,7 @@ RowLayout {
         onClicked: _saveButtonClicked()
     }
 
-    QGCButton {
+    beeCopterButton {
         id: uploadButton
         text: qsTr("Upload")
         iconSource: "/res/UploadToVehicle.svg"
@@ -121,14 +121,14 @@ RowLayout {
         onClicked: _uploadClicked()
     }
 
-    QGCButton {
+    beeCopterButton {
         text: qsTr("Clear")
         iconSource: "/res/TrashCan.svg"
         enabled: !_syncInProgress
         onClicked: _clearClicked()
     }
 
-    QGCButton {
+    beeCopterButton {
         iconSource: "qrc:/qmlimages/Hamburger.svg"
 
         onClicked: {
@@ -144,7 +144,7 @@ RowLayout {
         Layout.alignment: Qt.AlignVCenter
         spacing: 0
 
-        QGCLabel {
+        beeCopterLabel {
             text: _leftClickText()
             font.pointSize: ScreenTools.smallFontPointSize
             visible: _editingLayer === _layerMission || _editingLayer === _layerRally
@@ -158,7 +158,7 @@ RowLayout {
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             text: qsTr("- %1 to add ROI %2").arg(ScreenTools.isMobile ? qsTr("Press and hold") : qsTr("Right click")).arg(_missionController.isROIActive ? qsTr("or Cancel ROI") : "")
             font.pointSize: ScreenTools.smallFontPointSize
             visible: _editingLayer === _layerMission && _planMasterController.controllerVehicle.roiModeSupported
@@ -175,7 +175,7 @@ RowLayout {
                 ColumnLayout {
                     spacing: ScreenTools.defaultFontPixelHeight / 2
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth: true
                         text: qsTr("Save as KML")
                         enabled: !_syncInProgress && _hasPlanItems
@@ -186,7 +186,7 @@ RowLayout {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth: true
                         text: qsTr("Download")
                         enabled: !_syncInProgress

@@ -5,27 +5,27 @@ import QtPositioning
 import QtQuick.Dialogs
 import Qt.labs.animation
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 Map {
     id: _map
 
-    plugin:     Plugin { name: "QGroundControl" }
+    plugin:     Plugin { name: "beeCopter" }
     opacity:    0.99 // https://bugreports.qt.io/browse/QTBUG-82185
 
     property string mapName:                        'defaultMap'
     property bool   isSatelliteMap:                 activeMapType.name.indexOf("Satellite") > -1 || activeMapType.name.indexOf("Hybrid") > -1
-    property var    gcsPosition:                    QGroundControl.qgcPositionManger.gcsPosition
-    property real   gcsHeading:                     QGroundControl.qgcPositionManger.gcsHeading
+    property var    gcsPosition:                    beeCopter.beeCopterPositionManger.gcsPosition
+    property real   gcsHeading:                     beeCopter.beeCopterPositionManger.gcsHeading
     property bool   allowGCSLocationCenter:         false   ///< true: map will center/zoom to gcs location one time
     property bool   allowVehicleLocationCenter:     false   ///< true: map will center/zoom to vehicle location one time
     property bool   firstGCSPositionReceived:       false   ///< true: first gcs position update was responded to
     property bool   firstVehiclePositionReceived:   false   ///< true: first vehicle position update was responded to
     property bool   planView:                       false   ///< true: map being using for Plan view, items should be draggable
 
-    property var    _activeVehicle:             QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle:             beeCopter.multiVehicleManager.activeVehicle
     property var    _activeVehicleCoordinate:   _activeVehicle ? _activeVehicle.coordinate : QtPositioning.coordinate()
 
     function setVisibleRegion(region) {
@@ -45,7 +45,7 @@ Map {
         if (!firstVehiclePositionReceived && allowVehicleLocationCenter && _activeVehicleCoordinate.isValid) {
             firstVehiclePositionReceived = true
             center = _activeVehicleCoordinate
-            zoomLevel = QGroundControl.flightMapInitialZoom
+            zoomLevel = beeCopter.flightMapInitialZoom
         }
     }
 
@@ -68,13 +68,13 @@ Map {
             firstGCSPositionReceived = true
             //-- Only center on gsc if we have no vehicle (and we are supposed to do so)
             var _activeVehicleCoordinate = _activeVehicle ? _activeVehicle.coordinate : QtPositioning.coordinate()
-            if(QGroundControl.settingsManager.flyViewSettings.keepMapCenteredOnVehicle.rawValue || !_activeVehicleCoordinate.isValid)
+            if(beeCopter.settingsManager.flyViewSettings.keepMapCenteredOnVehicle.rawValue || !_activeVehicleCoordinate.isValid)
                 center = gcsPosition
         }
     }
 
     function updateActiveMapType() {
-        var settings =  QGroundControl.settingsManager.flightMapSettings
+        var settings =  beeCopter.settingsManager.flightMapSettings
         var fullMapName = settings.mapProvider.value + " " + settings.mapType.value
 
         for (var i = 0; i < _map.supportedMapTypes.length; i++) {
@@ -95,12 +95,12 @@ Map {
     }
 
     Connections {
-        target: QGroundControl.settingsManager.flightMapSettings.mapType
+        target: beeCopter.settingsManager.flightMapSettings.mapType
         function onRawValueChanged() { updateActiveMapType() }
     }
 
     Connections {
-        target: QGroundControl.settingsManager.flightMapSettings.mapProvider
+        target: beeCopter.settingsManager.flightMapSettings.mapProvider
         function onRawValueChanged() { updateActiveMapType() }
     }
 
@@ -228,7 +228,7 @@ Map {
 
         sourceItem: Image {
             id:             mapItemImage
-            source:         isNaN(gcsHeading) ? "/res/QGCLogoFull.svg" : "/res/QGCLogoArrow.svg"
+            source:         isNaN(gcsHeading) ? "/res/beeCopterLogoFull.svg" : "/res/beeCopterLogoArrow.svg"
             mipmap:         true
             antialiasing:   true
             fillMode:       Image.PreserveAspectFit

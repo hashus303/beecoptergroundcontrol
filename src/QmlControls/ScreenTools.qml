@@ -4,19 +4,19 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Window
 
-import QGroundControl
+import beeCopter
 
 /*!
- The ScreenTools Singleton provides information on QGC's standard font metrics. It also provides information on screen
+ The ScreenTools Singleton provides information on beeCopter's standard font metrics. It also provides information on screen
  size which can be used to adjust user interface for varying available screen real estate.
 
- QGC has four standard font sizes: default, small, medium and large. The QGC controls use the default font for display and you should use this font
- for most text within the system that is drawn using something other than a standard QGC control. The small font is smaller than the default font.
+ beeCopter has four standard font sizes: default, small, medium and large. The beeCopter controls use the default font for display and you should use this font
+ for most text within the system that is drawn using something other than a standard beeCopter control. The small font is smaller than the default font.
  The medium and large fonts are larger than the default font.
 
  Usage:
 
-        import QGroundControl.Controls
+        import beeCopter.Controls
         Rectangle {
             anchors.fill:       parent
             anchors.margins:    ScreenTools.defaultFontPixelWidth
@@ -65,8 +65,8 @@ Item {
 
     property real realPixelDensity: {
         //-- If a plugin defines it, just use what it tells us
-        if(QGroundControl.corePlugin.options.devicePixelDensity != 0) {
-            return QGroundControl.corePlugin.options.devicePixelDensity
+        if(beeCopter.corePlugin.options.devicePixelDensity != 0) {
+            return beeCopter.corePlugin.options.devicePixelDensity
         }
         //-- Android is rather unreliable
         if(isAndroid) {
@@ -124,9 +124,9 @@ Item {
        I've disabled (in release builds) until I figure out why. Changes require a restart for now.
     */
     Connections {
-        target: QGroundControl.settingsManager.appSettings.appFontPointSize
+        target: beeCopter.settingsManager.appSettings.appFontPointSize
         function onValueChanged() {
-            _setBasePointSize(QGroundControl.settingsManager.appSettings.appFontPointSize.value)
+            _setBasePointSize(beeCopter.settingsManager.appSettings.appFontPointSize.value)
         }
     }
 
@@ -164,7 +164,7 @@ Item {
             minTouchPixels      = defaultFontPixelHeight * 3
         }
         toolbarHeight           = defaultFontPixelHeight * 3
-        toolbarHeight           = toolbarHeight * QGroundControl.corePlugin.options.toolbarHeightMultiplier
+        toolbarHeight           = toolbarHeight * beeCopter.corePlugin.options.toolbarHeightMultiplier
     }
 
     Text {
@@ -200,7 +200,7 @@ Item {
                 platformFontPointSize = _defaultFont.font.pointSize;
             }
             //-- See if we are using a custom size
-            var _appFontPointSizeFact = QGroundControl.settingsManager.appSettings.appFontPointSize
+            var _appFontPointSizeFact = beeCopter.settingsManager.appSettings.appFontPointSize
             var baseSize = _appFontPointSizeFact.value
             //-- Sanity check
             if(baseSize < _appFontPointSizeFact.min || baseSize > _appFontPointSizeFact.max) {

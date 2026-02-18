@@ -1,6 +1,6 @@
 import QtQuick
 
-import QGroundControl
+import beeCopter
 
 Item {
     id: root

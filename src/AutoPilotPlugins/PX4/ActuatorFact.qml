@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Loader {
 	property var fact
@@ -35,13 +35,13 @@ Loader {
 	}
 	Component {
 		id: factReadOnly
-		QGCLabel {
+		beeCopterLabel {
 			text:           loader.fact.valueString
 		}
 	}
 	Component {
 		id: notAvailable
-		QGCLabel {
+		beeCopterLabel {
 			text:           qsTr("(Param not available)")
 		}
 	}

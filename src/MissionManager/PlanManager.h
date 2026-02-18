@@ -5,7 +5,7 @@
 #include <QtCore/QLoggingCategory>
 
 #include "MissionItem.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 class Vehicle;
 

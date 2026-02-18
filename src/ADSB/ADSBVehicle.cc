@@ -1,10 +1,10 @@
 #include "ADSBVehicle.h"
-#include "QGC.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopter.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QtNumeric>
 
-QGC_LOGGING_CATEGORY(ADSBVehicleLog, "ADSB.ADSBVehicle")
+beeCopter_LOGGING_CATEGORY(ADSBVehicleLog, "ADSB.ADSBVehicle")
 
 ADSBVehicle::ADSBVehicle(const ADSB::VehicleInfo_t &vehicleInfo, QObject *parent)
     : QObject(parent)
@@ -30,7 +30,7 @@ void ADSBVehicle::update(const ADSB::VehicleInfo_t &vehicleInfo)
     qCDebug(ADSBVehicleLog) << "Updating" << QStringLiteral("%1 Flags: %2").arg(vehicleInfo.icaoAddress, 0, 16).arg(vehicleInfo.availableFlags.toInt(), 0, 2);
 
     if (vehicleInfo.availableFlags & ADSB::LocationAvailable) {
-        if (!QGC::fuzzyCompare(vehicleInfo.location.latitude(), coordinate().latitude()) || !QGC::fuzzyCompare(vehicleInfo.location.longitude(), coordinate().longitude())) {
+        if (!beeCopter::fuzzyCompare(vehicleInfo.location.latitude(), coordinate().latitude()) || !beeCopter::fuzzyCompare(vehicleInfo.location.longitude(), coordinate().longitude())) {
             _info.location.setLatitude(vehicleInfo.location.latitude());
             _info.location.setLongitude(vehicleInfo.location.longitude());
             emit coordinateChanged();
@@ -38,21 +38,21 @@ void ADSBVehicle::update(const ADSB::VehicleInfo_t &vehicleInfo)
     }
 
     if (vehicleInfo.availableFlags & ADSB::AltitudeAvailable) {
-        if (!QGC::fuzzyCompare(vehicleInfo.location.altitude(), altitude())) {
+        if (!beeCopter::fuzzyCompare(vehicleInfo.location.altitude(), altitude())) {
             _info.location.setAltitude(vehicleInfo.location.altitude());
             emit altitudeChanged();
         }
     }
 
     if (vehicleInfo.availableFlags & ADSB::HeadingAvailable) {
-        if (!QGC::fuzzyCompare(vehicleInfo.heading, heading())) {
+        if (!beeCopter::fuzzyCompare(vehicleInfo.heading, heading())) {
             _info.heading = vehicleInfo.heading;
             emit headingChanged();
         }
     }
 
     if (vehicleInfo.availableFlags & ADSB::VelocityAvailable) {
-        if (!QGC::fuzzyCompare(vehicleInfo.velocity, velocity())) {
+        if (!beeCopter::fuzzyCompare(vehicleInfo.velocity, velocity())) {
             _info.velocity = vehicleInfo.velocity;
             emit velocityChanged();
         }
@@ -66,14 +66,14 @@ void ADSBVehicle::update(const ADSB::VehicleInfo_t &vehicleInfo)
     }
 
     if (vehicleInfo.availableFlags & ADSB::SquawkAvailable) {
-        if (!QGC::fuzzyCompare(vehicleInfo.velocity, squawk())) {
+        if (!beeCopter::fuzzyCompare(vehicleInfo.velocity, squawk())) {
             _info.squawk = vehicleInfo.squawk;
             emit squawkChanged();
         }
     }
 
     if (vehicleInfo.availableFlags & ADSB::VerticalVelAvailable) {
-        if (!QGC::fuzzyCompare(vehicleInfo.verticalVel, verticalVel())) {
+        if (!beeCopter::fuzzyCompare(vehicleInfo.verticalVel, verticalVel())) {
             _info.verticalVel = vehicleInfo.verticalVel;
             emit verticalVelChanged();
         }

@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-# QGroundControl Toolchain Configuration
+# beeCopter Toolchain Configuration
 # Sets compiler, linker, and build tool settings
 # ----------------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ if(CMAKE_EXPORT_COMPILE_COMMANDS AND NOT WIN32)
     )
 endif()
 
-if(QGC_UNITY_BUILD)
+if(beeCopter_UNITY_BUILD)
     set(CMAKE_UNITY_BUILD ON)
     set(CMAKE_UNITY_BUILD_BATCH_SIZE 16)
 endif()
@@ -57,13 +57,13 @@ endif()
 # ----------------------------------------------------------------------------
 # Static Analysis (clang-tidy)
 # ----------------------------------------------------------------------------
-if(QGC_ENABLE_CLANG_TIDY)
-    find_program(QGC_CLANG_TIDY_PROGRAM NAMES clang-tidy)
-    if(QGC_CLANG_TIDY_PROGRAM)
-        set(CMAKE_CXX_CLANG_TIDY "${QGC_CLANG_TIDY_PROGRAM}" CACHE STRING "clang-tidy executable" FORCE)
-        message(STATUS "QGC: clang-tidy enabled (${QGC_CLANG_TIDY_PROGRAM})")
+if(beeCopter_ENABLE_CLANG_TIDY)
+    find_program(beeCopter_CLANG_TIDY_PROGRAM NAMES clang-tidy)
+    if(beeCopter_CLANG_TIDY_PROGRAM)
+        set(CMAKE_CXX_CLANG_TIDY "${beeCopter_CLANG_TIDY_PROGRAM}" CACHE STRING "clang-tidy executable" FORCE)
+        message(STATUS "beeCopter: clang-tidy enabled (${beeCopter_CLANG_TIDY_PROGRAM})")
     else()
-        message(WARNING "QGC: QGC_ENABLE_CLANG_TIDY is ON but clang-tidy not found")
+        message(WARNING "beeCopter: beeCopter_ENABLE_CLANG_TIDY is ON but clang-tidy not found")
     endif()
 endif()
 
@@ -71,8 +71,8 @@ endif()
 # Security & Optimization Settings
 # ----------------------------------------------------------------------------
 
-qgc_enable_pie()
-qgc_enable_ipo()
+beeCopter_enable_pie()
+beeCopter_enable_ipo()
 
 # ----------------------------------------------------------------------------
 # Compiler & Linker Optimizations
@@ -80,10 +80,10 @@ qgc_enable_ipo()
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     # Use faster alternative linkers on non-Apple platforms
     if(NOT APPLE)
-        qgc_set_linker()
+        beeCopter_set_linker()
     endif()
 
-    # LTO is handled by qgc_enable_ipo() above
+    # LTO is handled by beeCopter_enable_ipo() above
 elseif(MSVC)
     # MSVC-specific optimizations
     add_link_options("$<$<CONFIG:Release>:/LTCG:INCREMENTAL>")
@@ -95,7 +95,7 @@ endif()
 # Link Job Pool (Ninja only)
 # ----------------------------------------------------------------------------
 if(CMAKE_GENERATOR MATCHES "Ninja")
-    set_property(GLOBAL APPEND PROPERTY JOB_POOLS link_pool=${QGC_LINK_PARALLEL_LEVEL})
+    set_property(GLOBAL APPEND PROPERTY JOB_POOLS link_pool=${beeCopter_LINK_PARALLEL_LEVEL})
     set(CMAKE_JOB_POOL_LINK link_pool)
 endif()
 

@@ -3,7 +3,7 @@
 #include "ComplexMissionItem.h"
 #include "MissionItem.h"
 #include "SettingsFact.h"
-#include "QGCMapPolygon.h"
+#include "beeCopterMapPolygon.h"
 #include "CameraCalc.h"
 
 #include <QtCore/QLoggingCategory>
@@ -32,8 +32,8 @@ public:
     Q_PROPERTY(double           topFlightAlt                READ topFlightAlt                                               NOTIFY topFlightAltChanged)
     Q_PROPERTY(int              cameraShots                 READ cameraShots                                                NOTIFY cameraShotsChanged)
     Q_PROPERTY(double           timeBetweenShots            READ timeBetweenShots                                           NOTIFY timeBetweenShotsChanged)
-    Q_PROPERTY(QGCMapPolygon*   structurePolygon            READ structurePolygon                                           CONSTANT)
-    Q_PROPERTY(QGCMapPolygon*   flightPolygon               READ flightPolygon                                              CONSTANT)
+    Q_PROPERTY(beeCopterMapPolygon*   structurePolygon            READ structurePolygon                                           CONSTANT)
+    Q_PROPERTY(beeCopterMapPolygon*   flightPolygon               READ flightPolygon                                              CONSTANT)
 
     CameraCalc* cameraCalc  (void) { return &_cameraCalc; }
     Fact* entranceAlt       (void) { return &_entranceAltFact; }
@@ -47,8 +47,8 @@ public:
     double          topFlightAlt            (void) const;
     int             cameraShots             (void) const;
     double          timeBetweenShots        (void);
-    QGCMapPolygon*  structurePolygon        (void) { return &_structurePolygon; }
-    QGCMapPolygon*  flightPolygon           (void) { return &_flightPolygon; }
+    beeCopterMapPolygon*  structurePolygon        (void) { return &_structurePolygon; }
+    beeCopterMapPolygon*  flightPolygon           (void) { return &_flightPolygon; }
 
     Q_INVOKABLE void rotateEntryPoint(void);
 
@@ -132,8 +132,8 @@ private:
     QMap<QString, FactMetaData*> _metaDataMap;
 
     int             _sequenceNumber;
-    QGCMapPolygon   _structurePolygon;
-    QGCMapPolygon   _flightPolygon;
+    beeCopterMapPolygon   _structurePolygon;
+    beeCopterMapPolygon   _flightPolygon;
     int             _entryVertex;       // Polygon vertex which is used as the mission entry point
     bool            _ignoreRecalc;
     double          _scanDistance;

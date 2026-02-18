@@ -1,8 +1,8 @@
 import QtQuick
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.FlightMap
 
 /// Set of functions for fitting the map view to a specific constraint
 Item {
@@ -16,7 +16,7 @@ Item {
 
     function fitHomePosition() {
         var homePosition = QtPositioning.coordinate()
-        var activeVehicle = QGroundControl.multiVehicleManager.activeVehicle
+        var activeVehicle = beeCopter.multiVehicleManager.activeVehicle
         if (usePlannedHomePosition) {
             homePosition = _missionController.visualItems.get(0).coordinate
         } else if (activeVehicle) {

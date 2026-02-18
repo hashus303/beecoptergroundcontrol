@@ -5,10 +5,10 @@
 #include <QtCore/QJsonObject>
 
 #include "JsonHelper.h"
-#include "QGCLoggingCategory.h"
-#include "QGCNetworkHelper.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterNetworkHelper.h"
 
-QGC_LOGGING_CATEGORY(TerrainTileCopernicusLog, "Terrain.TerrainTileCopernicus");
+beeCopter_LOGGING_CATEGORY(TerrainTileCopernicusLog, "Terrain.TerrainTileCopernicus");
 
 TerrainTileCopernicus::TerrainTileCopernicus(const QByteArray& byteArray) : TerrainTile(byteArray)
 {
@@ -23,7 +23,7 @@ TerrainTileCopernicus::~TerrainTileCopernicus()
 QJsonValue TerrainTileCopernicus::getJsonFromData(const QByteArray& input)
 {
     QJsonParseError parseError;
-    const QJsonDocument document = QGCNetworkHelper::parseCompressedJson(input, &parseError);
+    const QJsonDocument document = beeCopterNetworkHelper::parseCompressedJson(input, &parseError);
     if (parseError.error != QJsonParseError::NoError) {
         qCWarning(TerrainTileCopernicusLog)
             << "Terrain tile json doc parse error" << parseError.errorString();

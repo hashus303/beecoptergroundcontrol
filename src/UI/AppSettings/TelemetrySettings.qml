@@ -3,19 +3,19 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SettingsPage {
-    property var    _settingsManager:           QGroundControl.settingsManager
+    property var    _settingsManager:           beeCopter.settingsManager
     property var    _mavlinkSettings:           _settingsManager.mavlinkSettings
     property var    _appSettings:               _settingsManager.appSettings
     property bool   _disableAllDataPersistence: _appSettings.disableAllPersistence.rawValue
-    property var    _activeVehicle:             QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle:             beeCopter.multiVehicleManager.activeVehicle
     property string _notConnectedStr:           qsTr("Not Connected")
     property bool   _isAPM:                     _activeVehicle ? _activeVehicle.apmFirmware : true
-    property bool   _showAPMStreamRates:        QGroundControl.apmFirmwareSupported && _settingsManager.apmMavlinkStreamRateSettings.visible && _isAPM
+    property bool   _showAPMStreamRates:        beeCopter.apmFirmwareSupported && _settingsManager.apmMavlinkStreamRateSettings.visible && _isAPM
     property var    _apmStartMavlinkStreams:    _mavlinkSettings.apmStartMavlinkStreams
 
     SettingsGroupLayout {
@@ -59,7 +59,7 @@ SettingsPage {
                 fact:                       mavlink2SigningGroup._mavlink2SigningKey
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:       qsTr("Send to Vehicle")
                 enabled:    _activeVehicle
 
@@ -70,7 +70,7 @@ SettingsPage {
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             id:                 sendToVehiclePrompt
             Layout.fillWidth:   true
             text:               qsTr("Signing key has changed. Don't forget to send to Vehicle(s) if needed.")
@@ -135,7 +135,7 @@ SettingsPage {
         heading:            qsTr("Stream Rates (ArduPilot Only)")
         visible:            _showAPMStreamRates
 
-        QGCCheckBoxSlider {
+        beeCopterCheckBoxSlider {
             id:                 controllerByVehicleCheckBox
             Layout.fillWidth:   true
             text:               qsTr("Controlled By vehicle")

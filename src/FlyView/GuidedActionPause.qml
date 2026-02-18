@@ -1,5 +1,5 @@
-import QGroundControl
-import QGroundControl.FlyView
+import beeCopter
+import beeCopter.FlyView
 
 GuidedToolStripAction {
     text:       _guidedController.pauseTitle

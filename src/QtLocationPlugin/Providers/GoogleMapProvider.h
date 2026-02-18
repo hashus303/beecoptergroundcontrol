@@ -80,7 +80,7 @@ public:
             QStringLiteral("lyrs"),
             QStringLiteral("h"),
             QStringLiteral("png"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::CustomMap) {}
 };
 

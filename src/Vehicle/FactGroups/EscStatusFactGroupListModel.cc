@@ -1,5 +1,5 @@
 #include "EscStatusFactGroupListModel.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 EscStatusFactGroupListModel::EscStatusFactGroupListModel(QObject* parent)
     : FactGroupListModel("escStatus", parent)

@@ -4,13 +4,13 @@
 #include "Vehicle.h"
 
 SendMavlinkCommandState::SendMavlinkCommandState(QState* parentState, MAV_CMD command, double param1, double param2, double param3, double param4, double param5, double param6, double param7)
-    : QGCState("SendMavlinkCommandState", parentState)
+    : beeCopterState("SendMavlinkCommandState", parentState)
 {
     setup(command, param1, param2, param3, param4, param5, param6, param7);
 }
 
 SendMavlinkCommandState::SendMavlinkCommandState(QState* parentState)
-    : QGCState("SendMavlinkCommandState", parentState)
+    : beeCopterState("SendMavlinkCommandState", parentState)
 {
 
 }
@@ -28,7 +28,7 @@ void SendMavlinkCommandState::setup(MAV_CMD command, double param1, double param
 
     connect(this, &QState::entered, this, [this] ()
         {
-            qCDebug(QGCStateMachineLog) << QStringLiteral("Sending %1 command").arg(MissionCommandTree::instance()->friendlyName(_command)) << " - " << Q_FUNC_INFO;
+            qCDebug(beeCopterStateMachineLog) << QStringLiteral("Sending %1 command").arg(MissionCommandTree::instance()->friendlyName(_command)) << " - " << Q_FUNC_INFO;
             _sendMavlinkCommand();
         });
 
@@ -61,11 +61,11 @@ void SendMavlinkCommandState::_mavCommandResult(int vehicleId, int targetCompone
         return;
     }
     if (senderVehicle != vehicle()) {
-        qCWarning(QGCStateMachineLog) << "Received mavCommandResult from unexpected vehicle" << " - " << Q_FUNC_INFO;
+        qCWarning(beeCopterStateMachineLog) << "Received mavCommandResult from unexpected vehicle" << " - " << Q_FUNC_INFO;
         return;
     }
     if (command != _command) {
-        qCWarning(QGCStateMachineLog) << "Received mavCommandResult for unexpected command - expected:actual" << _command << command << " - " << Q_FUNC_INFO;
+        qCWarning(beeCopterStateMachineLog) << "Received mavCommandResult for unexpected command - expected:actual" << _command << command << " - " << Q_FUNC_INFO;
         return;
     }
 
@@ -74,17 +74,17 @@ void SendMavlinkCommandState::_mavCommandResult(int vehicleId, int targetCompone
     QString commandName = MissionCommandTree::instance()->friendlyName(_command);
 
     if (failureCode == Vehicle::MavCmdResultFailureNoResponseToCommand) {
-        qCDebug(QGCStateMachineLog) << QStringLiteral("%1 Command - No response from vehicle").arg(commandName);
+        qCDebug(beeCopterStateMachineLog) << QStringLiteral("%1 Command - No response from vehicle").arg(commandName);
         emit error();
     } else if (failureCode == Vehicle::MavCmdResultFailureDuplicateCommand) {
-        qCWarning(QGCStateMachineLog) << QStringLiteral("%1 Command - Duplicate command pending").arg(commandName);
+        qCWarning(beeCopterStateMachineLog) << QStringLiteral("%1 Command - Duplicate command pending").arg(commandName);
         emit error();
     } else if (ackResult != MAV_RESULT_ACCEPTED) {
-        qCWarning(QGCStateMachineLog) << QStringLiteral("%1 Command failed = ack.result: %2").arg(commandName).arg(ackResult);
+        qCWarning(beeCopterStateMachineLog) << QStringLiteral("%1 Command failed = ack.result: %2").arg(commandName).arg(ackResult);
         emit error();
     } else {
         // MAV_RESULT_ACCEPTED
-        qCDebug(QGCStateMachineLog) << QStringLiteral("%1 Command succeeded").arg(commandName);
+        qCDebug(beeCopterStateMachineLog) << QStringLiteral("%1 Command succeeded").arg(commandName);
         emit advance();
     }
 }

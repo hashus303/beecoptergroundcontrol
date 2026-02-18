@@ -3,14 +3,14 @@ import QtQuick.Controls
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 /// Rally Point map visuals
 Item {
     id: _root
-    z: QGroundControl.zOrderMapItems
+    z: beeCopter.zOrderMapItems
 
     property var    map
     property var    myRallyPointController
@@ -51,7 +51,7 @@ Item {
             id:             itemIndicator
             anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             opacity:        _root.opacity
 
             property var rallyPointObject

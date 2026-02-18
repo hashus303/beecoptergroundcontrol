@@ -3,12 +3,12 @@
 #include "QmlObjectListModel.h"
 #include "FlightPathSegment.h"
 #include "ComplexMissionItem.h"
-#include "QGCLoggingCategory.h"
-#include "QGCApplication.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterApplication.h"
 
 #include <QtQuick/QSGFlatColorMaterial>
 
-QGC_LOGGING_CATEGORY(TerrainProfileLog, "Terrain.TerrainProfile")
+beeCopter_LOGGING_CATEGORY(TerrainProfileLog, "Terrain.TerrainProfile")
 
 TerrainProfile::TerrainProfile(QQuickItem* parent)
     : QQuickItem(parent)
@@ -20,7 +20,7 @@ TerrainProfile::TerrainProfile(QQuickItem* parent)
 
     // This collapse multiple _updateSignals in a row to a single update
     connect(this, &TerrainProfile::_updateSignal, this, &QQuickItem::update, Qt::QueuedConnection);
-    qgcApp()->addCompressedSignal(QMetaMethod::fromSignal(&TerrainProfile::_updateSignal));
+    beeCopterApp()->addCompressedSignal(QMetaMethod::fromSignal(&TerrainProfile::_updateSignal));
 }
 
 void TerrainProfile::componentComplete(void)

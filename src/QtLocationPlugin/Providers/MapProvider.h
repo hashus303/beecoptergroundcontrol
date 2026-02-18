@@ -5,7 +5,7 @@
 #include <QtCore/QString>
 #include <QtCore/QLoggingCategory>
 
-#include "QGCTileSet.h"
+#include "beeCopterTileSet.h"
 
 Q_DECLARE_LOGGING_CATEGORY(MapProviderLog)
 
@@ -25,14 +25,14 @@ Q_DECLARE_LOGGING_CATEGORY(MapProviderLog)
     CustomMap = 100
 };*/
 
-#define QGC_MAX_MAP_ZOOM 23
-static constexpr const quint32 QGC_AVERAGE_TILE_SIZE = 13652;
+#define beeCopter_MAX_MAP_ZOOM 23
+static constexpr const quint32 beeCopter_AVERAGE_TILE_SIZE = 13652;
 
 // TODO: Inherit from QGeoMapType
 class MapProvider
 {
 public:
-    MapProvider(const QString &mapName, const QString &referrer, const QString &imageFormat, quint32 averageSize = QGC_AVERAGE_TILE_SIZE,
+    MapProvider(const QString &mapName, const QString &referrer, const QString &imageFormat, quint32 averageSize = beeCopter_AVERAGE_TILE_SIZE,
                 QGeoMapType::MapStyle mapStyle = QGeoMapType::CustomMap);
     virtual ~MapProvider();
 
@@ -57,7 +57,7 @@ public:
     virtual bool isElevationProvider() const { return false; }
     virtual bool isBingProvider() const { return false; }
 
-    virtual QGCTileSet getTileCount(int zoom, double topleftLon,
+    virtual beeCopterTileSet getTileCount(int zoom, double topleftLon,
                                     double topleftLat, double bottomRightLon,
                                     double bottomRightLat) const;
 

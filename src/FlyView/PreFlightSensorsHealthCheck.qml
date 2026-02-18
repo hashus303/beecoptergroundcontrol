@@ -1,7 +1,7 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 PreFlightCheckButton {
     name:               qsTr("Sensors")

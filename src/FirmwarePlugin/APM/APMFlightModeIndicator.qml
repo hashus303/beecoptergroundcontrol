@@ -2,16 +2,16 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 SettingsGroupLayout {
     Layout.fillWidth:       true
     heading:                qsTr("Return to Launch")
     visible:                activeVehicle.multiRotor
 
-    property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    property var activeVehicle: beeCopter.multiVehicleManager.activeVehicle
     property Fact rtlAltFact: controller.getParameterFact(-1, "RTL_ALT")
 
     FactPanelController { id: controller }
@@ -20,13 +20,13 @@ SettingsGroupLayout {
         Layout.fillWidth:   true
         spacing:            ScreenTools.defaultFontPixelWidth * 2
 
-        QGCLabel {
+        beeCopterLabel {
             id:                 label
             Layout.fillWidth:   true
             text:               qsTr("Return At")
         }
 
-        QGCComboBox {
+        beeCopterComboBox {
             id:             returnAtCombo
             sizeToContents: true
             model:          [ qsTr("Current altitude"), qsTr("Specified altitude") ]

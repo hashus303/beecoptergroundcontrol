@@ -11,7 +11,7 @@ Q_DECLARE_LOGGING_CATEGORY(MAVLinkInspectorControllerLog)
 
 class LinkInterface;
 class MAVLinkChartController;
-class QGCMAVLinkSystem;
+class beeCopterMAVLinkSystem;
 class QmlObjectListModel;
 class QTimer;
 class Vehicle;
@@ -27,7 +27,7 @@ class MAVLinkInspectorController : public QObject
     Q_MOC_INCLUDE("MAVLinkChartController.h")
     Q_MOC_INCLUDE("QmlObjectListModel.h")
     Q_PROPERTY(QmlObjectListModel   *systems        READ systems        NOTIFY systemsChanged)
-    Q_PROPERTY(QGCMAVLinkSystem     *activeSystem   READ activeSystem   NOTIFY activeSystemChanged)
+    Q_PROPERTY(beeCopterMAVLinkSystem     *activeSystem   READ activeSystem   NOTIFY activeSystemChanged)
     Q_PROPERTY(QStringList          timeScales      READ timeScales     NOTIFY timeScalesChanged)
     Q_PROPERTY(QStringList          rangeList       READ rangeList      NOTIFY rangeListChanged)
     Q_PROPERTY(QStringList          systemNames     READ systemNames    NOTIFY systemsChanged)
@@ -56,7 +56,7 @@ public:
     Q_INVOKABLE void setMessageInterval(int32_t rate) const;
 
     QmlObjectListModel *systems() const { return _systems; }
-    QGCMAVLinkSystem *activeSystem() const { return _activeSystem; }
+    beeCopterMAVLinkSystem *activeSystem() const { return _activeSystem; }
     QStringList systemNames() const { return _systemNames; }
     QStringList timeScales();
     QStringList rangeList();
@@ -78,7 +78,7 @@ private slots:
     void _vehicleRemoved(const Vehicle *vehicle);
 
 private:
-    QGCMAVLinkSystem *_findVehicle(uint8_t id);
+    beeCopterMAVLinkSystem *_findVehicle(uint8_t id);
     uint8_t _selectedSystemID() const;
     uint8_t _selectedComponentID() const;
 
@@ -87,7 +87,7 @@ private:
     QStringList _systemNames;
     QList<TimeScale_st*>_timeScaleSt;
     QList<Range_st*> _rangeSt;
-    QGCMAVLinkSystem *_activeSystem = nullptr;
+    beeCopterMAVLinkSystem *_activeSystem = nullptr;
     QTimer *_updateFrequencyTimer = nullptr;
-    QmlObjectListModel *_systems = nullptr;     ///< List of QGCMAVLinkSystem
+    QmlObjectListModel *_systems = nullptr;     ///< List of beeCopterMAVLinkSystem
 };

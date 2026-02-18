@@ -1,20 +1,20 @@
-#include "QGCApplication.h"
-#include "QGCCommandLineParser.h"
-#include "QGCLogging.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterCommandLineParser.h"
+#include "beeCopterLogging.h"
+#include "beeCopterLoggingCategory.h"
 #include "Platform.h"
 
-#ifdef QGC_UNITTEST_BUILD
+#ifdef beeCopter_UNITTEST_BUILD
     #include "UnitTestList.h"
 #endif
 
-QGC_LOGGING_CATEGORY(MainLog, "Main")
+beeCopter_LOGGING_CATEGORY(MainLog, "Main")
 
 int main(int argc, char *argv[])
 {
     // --- Parse command line arguments ---
-    const auto args = QGCCommandLineParser::parse(argc, argv);
-    if (const auto exitCode = QGCCommandLineParser::handleParseResult(args)) {
+    const auto args = beeCopterCommandLineParser::parse(argc, argv);
+    if (const auto exitCode = beeCopterCommandLineParser::handleParseResult(args)) {
         return *exitCode;
     }
 
@@ -23,9 +23,9 @@ int main(int argc, char *argv[])
         return *exitCode;
     }
 
-    QGCApplication app(argc, argv, args);
+    beeCopterApplication app(argc, argv, args);
 
-    QGCLogging::installHandler();
+    beeCopterLogging::installHandler();
 
     Platform::setupPostApp();
 
@@ -33,12 +33,12 @@ int main(int argc, char *argv[])
 
     // --- Run application or tests ---
     const auto run = [&]() -> int {
-        using QGCCommandLineParser::AppMode;
-        switch (QGCCommandLineParser::determineAppMode(args)) {
-#ifdef QGC_UNITTEST_BUILD
+        using beeCopterCommandLineParser::AppMode;
+        switch (beeCopterCommandLineParser::determineAppMode(args)) {
+#ifdef beeCopter_UNITTEST_BUILD
         case AppMode::ListTests:
         case AppMode::Test:
-            return QGCUnitTest::handleTestOptions(args);
+            return beeCopterUnitTest::handleTestOptions(args);
 #endif
         case AppMode::BootTest:
             qCInfo(MainLog) << "Simple boot test completed";

@@ -16,13 +16,13 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_
 # ----------------------------------------------------------------------------
 # Qt Multimedia Video Streaming
 # ----------------------------------------------------------------------------
-if(QGC_ENABLE_QT_VIDEOSTREAMING)
-    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE QGC_QT_STREAMING)
+if(beeCopter_ENABLE_QT_VIDEOSTREAMING)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE beeCopter_QT_STREAMING)
 endif()
 
 # ----------------------------------------------------------------------------
 # UVC Camera Support
 # ----------------------------------------------------------------------------
-if(NOT QGC_ENABLE_UVC)
-    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE QGC_DISABLE_UVC)
+if(NOT beeCopter_ENABLE_UVC)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE beeCopter_DISABLE_UVC)
 endif()

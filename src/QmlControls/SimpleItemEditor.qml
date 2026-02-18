@@ -2,16 +2,16 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 // Editor for Simple mission items
 Rectangle {
     id: root
     width: availableWidth
     height: editorColumn.height + (_margin * 2)
-    color: qgcPal.windowShadeDark
+    color: beeCopterPal.windowShadeDark
     radius: _radius
 
     property bool _specifiesAltitude: missionItem.specifiesAltitude
@@ -19,11 +19,11 @@ Rectangle {
     property real _altRectMargin: ScreenTools.defaultFontPixelWidth / 2
     property var _controllerVehicle: missionItem.masterController.controllerVehicle
     property int _globalAltMode: missionItem.masterController.missionController.globalAltitudeMode
-    property bool _globalAltModeIsMixed: _globalAltMode == QGroundControl.AltitudeModeMixed
+    property bool _globalAltModeIsMixed: _globalAltMode == beeCopter.AltitudeModeMixed
     property real _radius: ScreenTools.defaultFontPixelWidth / 2
     property real _fieldSpacing: ScreenTools.defaultFontPixelHeight / 2
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: root.enabled }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: root.enabled }
 
     Column {
         id: editorColumn
@@ -41,7 +41,7 @@ Rectangle {
             spacing: _margin
             visible: missionItem.isTakeoffItem && missionItem.wizardMode // Hack special case for takeoff item
 
-            QGCLabel {
+            beeCopterLabel {
                 text: qsTr("Move '%1' %2 to the %3 location. %4")
                     .arg(_controllerVehicle.vtol ? qsTr("T") : qsTr("T"))
                     .arg(_controllerVehicle.vtol ? qsTr("Transition Direction") : qsTr("Takeoff"))
@@ -52,14 +52,14 @@ Rectangle {
                 visible: !initialClickLabel.visible
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 text: qsTr("Ensure clear of obstacles and into the wind.")
                 Layout.fillWidth: true
                 wrapMode: Text.WordWrap
                 visible: !initialClickLabel.visible
             }
 
-            QGCButton {
+            beeCopterButton {
                 text: qsTr("Done")
                 Layout.fillWidth: true
                 visible: !initialClickLabel.visible
@@ -68,7 +68,7 @@ Rectangle {
                 }
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 id: initialClickLabel
                 text: missionItem.launchTakeoffAtSameLocation ?
                                         qsTr("Click in map to set planned Takeoff location.") :
@@ -84,7 +84,7 @@ Rectangle {
             spacing: _fieldSpacing
             visible: !missionItem.wizardMode
 
-            QGCTabBar {
+            beeCopterTabBar {
                 id: tabBar
                 Layout.fillWidth: true
                 visible: _multipleTabsVisible()
@@ -113,19 +113,19 @@ Rectangle {
                     }
                 }
 
-                QGCTabButton {
+                beeCopterTabButton {
                     id: basicItemsTab
                     icon.source: "/res/PlanSimpleItemBasic.svg"
                     visible: tabBar._basicItemsAvailable
                 }
 
-                QGCTabButton {
+                beeCopterTabButton {
                     id: cameraTab
                     icon.source: "/res/PlanSimpleItemCamera.svg"
                     visible: tabBar._cameraAvailable
                 }
 
-                QGCTabButton {
+                beeCopterTabButton {
                     id: advancedItemsTab
                     icon.source: "/res/PlanSimpleItemAdvanced.svg"
                     visible: tabBar._advancedItemsAvailable
@@ -146,7 +146,7 @@ Rectangle {
                         Layout.fillWidth: true
                         visible: _globalAltModeIsMixed
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.fillWidth: true
                             text: qsTr("Altitude Mode")
                         }
@@ -165,18 +165,18 @@ Rectangle {
                         fact: missionItem.altitude
 
                         function _extraLabelText() {
-                            if (!_globalAltModeIsMixed && missionItem.altitudeMode !== QGroundControl.AltitudeModeRelative) {
-                                return qsTr(" (%1)").arg(QGroundControl.altitudeModeShortDescription(missionItem.altitudeMode))
+                            if (!_globalAltModeIsMixed && missionItem.altitudeMode !== beeCopter.AltitudeModeRelative) {
+                                return qsTr(" (%1)").arg(beeCopter.altitudeModeShortDescription(missionItem.altitudeMode))
                             } else {
                                 return ""
                             }
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         font.pointSize: ScreenTools.smallFontPointSize
                         text: qsTr("Actual AMSL alt sent: %1 %2").arg(missionItem.amslAltAboveTerrain.valueString).arg(missionItem.amslAltAboveTerrain.units)
-                        visible: missionItem.altitudeMode === QGroundControl.AltitudeModeCalcAboveTerrain
+                        visible: missionItem.altitudeMode === beeCopter.AltitudeModeCalcAboveTerrain
                     }
                 }
 
@@ -191,7 +191,7 @@ Rectangle {
                             Layout.fillWidth: true
                             spacing: 0
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 font.pointSize: ScreenTools.smallFontPointSize
                                 text: object.name
                                 visible: object.name !== ""
@@ -268,7 +268,7 @@ Rectangle {
                             Layout.fillWidth: true
                             spacing: 0
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 font.pointSize: ScreenTools.smallFontPointSize
                                 text: object.name
                                 visible: object.name !== ""

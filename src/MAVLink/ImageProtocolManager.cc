@@ -1,7 +1,7 @@
 #include "ImageProtocolManager.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(ImageProtocolManagerLog, "MAVLink.ImageProtocolManager")
+beeCopter_LOGGING_CATEGORY(ImageProtocolManagerLog, "MAVLink.ImageProtocolManager")
 
 ImageProtocolManager::ImageProtocolManager(QObject *parent)
     : QObject(parent)

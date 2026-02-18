@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 ColumnLayout {
     spacing: ScreenTools.defaultFontPixelHeight
@@ -13,7 +13,7 @@ ColumnLayout {
     property var  _autotuneManager: _activeVehicle.autotune
     property real _margins:         ScreenTools.defaultFontPixelHeight
 
-    QGCButton {
+    beeCopterButton {
         id:        autotuneButton
         primary:   true
         text:      qsTr("Start AutoTune")
@@ -31,7 +31,7 @@ ColumnLayout {
                                                 function() { _autotuneManager.autotuneRequest() })
     }
 
-    QGCLabel { text: _autotuneManager.autotuneStatus }
+    beeCopterLabel { text: _autotuneManager.autotuneStatus }
 
     ProgressBar {
         value: _autotuneManager.autotuneProgress

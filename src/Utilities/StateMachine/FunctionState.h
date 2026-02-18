@@ -1,10 +1,10 @@
 #pragma once
 
-#include "QGCState.h"
+#include "beeCopterState.h"
 
 #include <functional>
 
-class FunctionState : public QGCState
+class FunctionState : public beeCopterState
 {
     Q_OBJECT
 

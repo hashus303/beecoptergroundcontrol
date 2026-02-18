@@ -1,7 +1,7 @@
 #include "StateMachine.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(StateMachineLog, "Utilities.StateMachine");
+beeCopter_LOGGING_CATEGORY(StateMachineLog, "Utilities.StateMachine");
 
 StateMachine::StateMachine(QObject *parent)
     : QObject(parent)

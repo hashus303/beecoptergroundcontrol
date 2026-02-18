@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// The SliderSwitch control implements a sliding switch control similar to the power off
 /// control on an iPhone. It supports holding the space bar to slide the switch.
@@ -11,7 +11,7 @@ Rectangle {
     implicitWidth:  label.contentWidth + (_diameter * 2.5) + (_border * 4)
     implicitHeight: label.height * 2.5
     radius:         height /2
-    color:          qgcPal.windowShade
+    color:          beeCopterPal.windowShade
 
     signal accept   ///< Action confirmed
 
@@ -41,16 +41,16 @@ Rectangle {
         slider.reset()
     }
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
-    QGCLabel {
+    beeCopterLabel {
         id:                         label
         x:                          _diameter + _border
         width:                      parent.width - x
         anchors.verticalCenter:     parent.verticalCenter
         horizontalAlignment:        Text.AlignHCenter
         text:                       confirmText
-        color:                      qgcPal.buttonText
+        color:                      beeCopterPal.buttonText
     }
 
     Rectangle {
@@ -60,9 +60,9 @@ Rectangle {
         height:     _diameter
         width:      _diameter
         radius:     _diameter / 2
-        color:      qgcPal.primaryButton
+        color:      beeCopterPal.primaryButton
 
-        QGCColoredImage {
+        beeCopterColoredImage {
             anchors.centerIn:       parent
             width:                  parent.width  * 0.8
             height:                 parent.height * 0.8
@@ -70,7 +70,7 @@ Rectangle {
             fillMode:               Image.PreserveAspectFit
             smooth:                 false
             mipmap:                 false
-            color:                  qgcPal.buttonText
+            color:                  beeCopterPal.buttonText
             cache:                  false
             source:                 "/res/ArrowRight.svg"
         }
@@ -94,7 +94,7 @@ Rectangle {
         }
     }
 
-    QGCMouseArea {
+    beeCopterMouseArea {
         id:                 sliderDragArea
         anchors.leftMargin: -ScreenTools.defaultFontPixelWidth * 15
         fillItem:           slider

@@ -34,7 +34,7 @@ public:
     int long2tileX(double lon, int z) const final;
     int lat2tileY(double lat, int z) const final;
 
-    QGCTileSet getTileCount(int zoom, double topleftLon,
+    beeCopterTileSet getTileCount(int zoom, double topleftLon,
                             double topleftLat, double bottomRightLon,
                             double bottomRightLat) const final;
 

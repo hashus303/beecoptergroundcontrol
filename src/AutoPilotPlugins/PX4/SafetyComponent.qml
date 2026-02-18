@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             safetyPage
@@ -47,14 +47,14 @@ SetupPage {
                 spacing:    _margins
                 anchors.horizontalCenter:   parent.horizontalCenter
 
-                QGCLabel {
+                beeCopterLabel {
                     text:                   qsTr("Low Battery Failsafe Trigger")
                 }
 
                 Rectangle {
                     width:                  mainRow.width  + (_margins * 2)
                     height:                 mainRow.height + (_margins * 2)
-                    color:                  qgcPal.windowShade
+                    color:                  beeCopterPal.windowShade
                     Row {
                         id:                 mainRow
                         spacing:            _margins
@@ -66,7 +66,7 @@ SetupPage {
                             Image {
                                 mipmap:             true
                                 fillMode:           Image.PreserveAspectFit
-                                source:             qgcPal.globalTheme === QGCPalette.Light ? "/qmlimages/LowBatteryLight.svg" : "/qmlimages/LowBattery.svg"
+                                source:             beeCopterPal.globalTheme === beeCopterPalette.Light ? "/qmlimages/LowBatteryLight.svg" : "/qmlimages/LowBattery.svg"
                                 height:             _imageHeight
                                 anchors.centerIn:   parent
                             }
@@ -75,7 +75,7 @@ SetupPage {
                             columns:                2
                             anchors.verticalCenter: parent.verticalCenter
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Failsafe Action:")
                                 Layout.minimumWidth:_labelWidth
                                 Layout.fillWidth:   true
@@ -87,7 +87,7 @@ SetupPage {
                                 Layout.fillWidth:   true
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Battery Warn Level:")
                                 Layout.fillWidth:   true
                             }
@@ -96,7 +96,7 @@ SetupPage {
                                 Layout.fillWidth:   true
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Battery Failsafe Level:")
                                 Layout.fillWidth:   true
                             }
@@ -105,7 +105,7 @@ SetupPage {
                                 Layout.fillWidth:   true
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Battery Emergency Level:")
                                 Layout.fillWidth:   true
                             }
@@ -117,14 +117,14 @@ SetupPage {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:                   qsTr("Object Detection")
                 }
 
                 Rectangle {
                     width:                  mainRow.width + (_margins * 2)
                     height:                 odRow.height  + (_margins * 2)
-                    color:                  qgcPal.windowShade
+                    color:                  beeCopterPal.windowShade
                     Row {
                         id:                 odRow
                         spacing:            _margins
@@ -133,8 +133,8 @@ SetupPage {
                             width:                  _imageWidth
                             height:                 _imageHeight
                             anchors.verticalCenter: parent.verticalCenter
-                            QGCColoredImage {
-                                color:              qgcPal.text
+                            beeCopterColoredImage {
+                                color:              beeCopterPal.text
                                 source:             "/qmlimages/ObjectAvoidance.svg"
                                 height:             _imageHeight
                                 width:              _imageHeight * 2
@@ -145,12 +145,12 @@ SetupPage {
                             columns:                2
                             anchors.verticalCenter: parent.verticalCenter
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Collision Prevention:")
                                 Layout.minimumWidth:_labelWidth
                                 Layout.fillWidth:   true
                             }
-                            QGCComboBox {
+                            beeCopterComboBox {
                                 model:              [qsTr("Disabled"), qsTr("Enabled")]
                                 enabled:            _collisionPrevention
                                 Layout.minimumWidth:_editFieldWidth
@@ -165,27 +165,27 @@ SetupPage {
                                 }
                             }
 
-                            QGCLabel {
-                                text:               qsTr("Minimum Distance: (") + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString + ")"
+                            beeCopterLabel {
+                                text:               qsTr("Minimum Distance: (") + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString + ")"
                                 Layout.fillWidth:   true
                                 Layout.alignment:   Qt.AlignVCenter
                             }
-                            QGCSlider {
+                            beeCopterSlider {
                                 width:              _editFieldWidth
                                 enabled:            _collisionPrevention && _collisionPrevention.rawValue > 0
                                 Layout.minimumWidth:_editFieldWidth
                                 Layout.minimumHeight:   ScreenTools.defaultFontPixelHeight * 2
                                 Layout.fillWidth:   true
                                 Layout.fillHeight:  true
-                                to:       QGroundControl.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(15)
-                                from:       QGroundControl.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(1)
+                                to:       beeCopter.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(15)
+                                from:       beeCopter.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(1)
                                 stepSize:           1
                                 displayValue:       true
                                 live:   false
                                 Layout.alignment:   Qt.AlignVCenter
                                 value: {
                                     if (_collisionPrevention && _collisionPrevention.rawValue > 0) {
-                                        return QGroundControl.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(_collisionPrevention.rawValue)
+                                        return beeCopter.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(_collisionPrevention.rawValue)
                                     } else {
                                         return 1;
                                     }
@@ -194,7 +194,7 @@ SetupPage {
                                     if(_collisionPrevention) {
                                         //-- Negative means disabled
                                         if(_collisionPrevention.rawValue >= 0) {
-                                            _collisionPrevention.rawValue = QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsToMeters(value)
+                                            _collisionPrevention.rawValue = beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsToMeters(value)
                                         }
                                     }
                                 }
@@ -206,20 +206,20 @@ SetupPage {
                                 visible:    _showObstacleDistanceOverlay.visible
                                 fact:       _showObstacleDistanceOverlay
 
-                                property Fact _showObstacleDistanceOverlay: QGroundControl.settingsManager.flyViewSettings.showObstacleDistanceOverlay
+                                property Fact _showObstacleDistanceOverlay: beeCopter.settingsManager.flyViewSettings.showObstacleDistanceOverlay
                             }
                         }
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:                   qsTr("RC Loss Failsafe Trigger")
                 }
 
                 Rectangle {
                     width:                  mainRow.width     + (_margins * 2)
                     height:                 rcLossGrid.height + (_margins * 2)
-                    color:                  qgcPal.windowShade
+                    color:                  beeCopterPal.windowShade
                     Row {
                         id:                 rcLossGrid
                         spacing:            _margins
@@ -231,7 +231,7 @@ SetupPage {
                             Image {
                                 mipmap:             true
                                 fillMode:           Image.PreserveAspectFit
-                                source:             qgcPal.globalTheme === QGCPalette.Light ? "/qmlimages/RCLossLight.svg" : "/qmlimages/RCLoss.svg"
+                                source:             beeCopterPal.globalTheme === beeCopterPalette.Light ? "/qmlimages/RCLossLight.svg" : "/qmlimages/RCLoss.svg"
                                 height:             _imageHeight
                                 anchors.centerIn:   parent
                             }
@@ -240,7 +240,7 @@ SetupPage {
                             columns:                2
                             anchors.verticalCenter: parent.verticalCenter
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Failsafe Action:")
                                 Layout.minimumWidth:_labelWidth
                                 Layout.fillWidth:   true
@@ -252,7 +252,7 @@ SetupPage {
                                 Layout.fillWidth:   true
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("RC Loss Timeout:")
                                 Layout.fillWidth:   true
                             }
@@ -264,14 +264,14 @@ SetupPage {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:                   qsTr("Data Link Loss Failsafe Trigger")
                 }
 
                 Rectangle {
                     width:                  mainRow.width           + (_margins * 2)
                     height:                 dataLinkLossGrid.height + (_margins * 2)
-                    color:                  qgcPal.windowShade
+                    color:                  beeCopterPal.windowShade
                     Row {
                         id:                 dataLinkLossGrid
                         spacing:            _margins
@@ -283,7 +283,7 @@ SetupPage {
                             Image {
                                 mipmap:             true
                                 fillMode:           Image.PreserveAspectFit
-                                source:             qgcPal.globalTheme === QGCPalette.Light ? "/qmlimages/DatalinkLossLight.svg" : "/qmlimages/DatalinkLoss.svg"
+                                source:             beeCopterPal.globalTheme === beeCopterPalette.Light ? "/qmlimages/DatalinkLossLight.svg" : "/qmlimages/DatalinkLoss.svg"
                                 height:             _imageHeight
                                 anchors.centerIn:   parent
                             }
@@ -292,7 +292,7 @@ SetupPage {
                             columns:                2
                             anchors.verticalCenter: parent.verticalCenter
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Failsafe Action:")
                                 Layout.minimumWidth:_labelWidth
                                 Layout.fillWidth:   true
@@ -304,7 +304,7 @@ SetupPage {
                                 Layout.fillWidth:   true
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Data Link Loss Timeout:")
                                 Layout.fillWidth:   true
                             }
@@ -316,14 +316,14 @@ SetupPage {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:                   qsTr("Geofence Failsafe Trigger")
                 }
 
                 Rectangle {
                     width:                  mainRow.width       + (_margins * 2)
                     height:                 geoFenceGrid.height + (_margins * 2)
-                    color:                  qgcPal.windowShade
+                    color:                  beeCopterPal.windowShade
                     Row {
                         id:                 geoFenceGrid
                         spacing:            _margins
@@ -335,7 +335,7 @@ SetupPage {
                             Image {
                                 mipmap:             true
                                 fillMode:           Image.PreserveAspectFit
-                                source:             qgcPal.globalTheme === QGCPalette.Light ? "/qmlimages/GeoFenceLight.svg" : "/qmlimages/GeoFence.svg"
+                                source:             beeCopterPal.globalTheme === beeCopterPalette.Light ? "/qmlimages/GeoFenceLight.svg" : "/qmlimages/GeoFence.svg"
                                 height:             _imageHeight
                                 anchors.centerIn:   parent
                             }
@@ -345,7 +345,7 @@ SetupPage {
                             columns:                2
                             anchors.verticalCenter: parent.verticalCenter
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Action on breach:")
                                 Layout.minimumWidth:_labelWidth
                                 Layout.fillWidth:   true
@@ -357,7 +357,7 @@ SetupPage {
                                 Layout.fillWidth:   true
                             }
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 id:                 fenceRadiusCheckBox
                                 text:               qsTr("Max Radius:")
                                 checked:            _fenceRadius.value > 0
@@ -370,7 +370,7 @@ SetupPage {
                                 Layout.fillWidth:   true
                             }
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 id:                 fenceAltMaxCheckBox
                                 text:               qsTr("Max Altitude:")
                                 checked:            _fenceAlt ? _fenceAlt.value > 0 : false
@@ -386,14 +386,14 @@ SetupPage {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:               qsTr("Return To Launch Settings")
                 }
 
                 Rectangle {
                     width:              mainRow.width         + (_margins * 2)
                     height:             returnHomeGrid.height + (_margins * 2)
-                    color:              qgcPal.windowShade
+                    color:              beeCopterPal.windowShade
                     Row {
                         id:                 returnHomeGrid
                         spacing:            _margins
@@ -402,8 +402,8 @@ SetupPage {
                             width:                  _imageWidth
                             height:                 _imageHeight
                             anchors.verticalCenter: parent.verticalCenter
-                            QGCColoredImage {
-                                color:              qgcPal.text
+                            beeCopterColoredImage {
+                                color:              beeCopterPal.text
                                 source:             controller.vehicle.fixedWing ? "/qmlimages/ReturnToHomeAltitude.svg" : "/qmlimages/ReturnToHomeAltitudeCopter.svg"
                                 height:             _imageHeight
                                 width:              _imageHeight * 2
@@ -414,7 +414,7 @@ SetupPage {
                             columns:                    2
                             anchors.verticalCenter:     parent.verticalCenter
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:                   qsTr("Climb to altitude of:")
                                 Layout.minimumWidth:    _labelWidth
                                 Layout.fillWidth:       true
@@ -425,14 +425,14 @@ SetupPage {
                                 Layout.fillWidth:       true
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:                   qsTr("Return to launch, then:")
                                 Layout.columnSpan:      2
                             }
                             Row {
                                 Layout.columnSpan:      2
                                 Item { width: ScreenTools.defaultFontPixelWidth; height: 1 }
-                                QGCRadioButton {
+                                beeCopterRadioButton {
                                     id:                 homeLandRadio
                                     checked:            _rtlLandDelay ? _rtlLandDelay.value === 0 : false
                                     text:               qsTr("Land immediately")
@@ -442,7 +442,7 @@ SetupPage {
                             Row {
                                 Layout.columnSpan:      2
                                 Item { width: ScreenTools.defaultFontPixelWidth; height: 1 }
-                                QGCRadioButton {
+                                beeCopterRadioButton {
                                     id:                 homeLoiterNoLandRadio
                                     checked:            _rtlLandDelay ? _rtlLandDelay.value < 0 : false
                                     text:               qsTr("Loiter and do not land")
@@ -452,7 +452,7 @@ SetupPage {
                             Row {
                                 Layout.columnSpan:      2
                                 Item { width: ScreenTools.defaultFontPixelWidth; height: 1 }
-                                QGCRadioButton {
+                                beeCopterRadioButton {
                                     id:                 homeLoiterLandRadio
                                     checked:            _rtlLandDelay ? _rtlLandDelay.value > 0 : false
                                     text:               qsTr("Loiter and land after specified time")
@@ -460,7 +460,7 @@ SetupPage {
                                 }
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:                   qsTr("Loiter Time")
                                 Layout.fillWidth:       true
                             }
@@ -470,7 +470,7 @@ SetupPage {
                                 Layout.fillWidth:       true
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:                   qsTr("Loiter Altitude")
                                 Layout.fillWidth:       true
                             }
@@ -483,14 +483,14 @@ SetupPage {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:               qsTr("Land Mode Settings")
                 }
 
                 Rectangle {
                     width:              mainRow.width       + (_margins * 2)
                     height:             landModeGrid.height + (_margins * 2)
-                    color:              qgcPal.windowShade
+                    color:              beeCopterPal.windowShade
                     Row {
                         id:                 landModeGrid
                         spacing:            _margins
@@ -499,8 +499,8 @@ SetupPage {
                             width:                  _imageWidth
                             height:                 _imageHeight
                             anchors.verticalCenter: parent.verticalCenter
-                            QGCColoredImage {
-                                color:              qgcPal.text
+                            beeCopterColoredImage {
+                                color:              beeCopterPal.text
                                 source:             controller.vehicle.fixedWing ? "/qmlimages/LandMode.svg" : "/qmlimages/LandModeCopter.svg"
                                 height:             _imageHeight
                                 width:              _imageHeight
@@ -511,7 +511,7 @@ SetupPage {
                             columns:                2
                             anchors.verticalCenter: parent.verticalCenter
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 id:                 landVelocityLabel
                                 text:               qsTr("Landing Descent Rate:")
                                 visible:            controller.vehicle && !controller.vehicle.fixedWing
@@ -525,7 +525,7 @@ SetupPage {
                                 Layout.fillWidth:   true
                             }
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 id:                 disarmDelayCheckBox
                                 text:               qsTr("Disarm After:")
                                 checked:            _disarmLandDelay.value > 0
@@ -541,14 +541,14 @@ SetupPage {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:               qsTr("Vehicle Telemetry Logging")
                 }
 
                 Rectangle {
                     width:              mainRow.width      + (_margins * 2)
                     height:             loggingGrid.height + (_margins * 2)
-                    color:              qgcPal.windowShade
+                    color:              beeCopterPal.windowShade
                     Row {
                         id:                 loggingGrid
                         spacing:            _margins
@@ -560,7 +560,7 @@ SetupPage {
                             Image {
                                 mipmap:             true
                                 fillMode:           Image.PreserveAspectFit
-                                source:             qgcPal.globalTheme === QGCPalette.Light ? "/qmlimages/no-logging-light.svg" : "/qmlimages/no-logging.svg"
+                                source:             beeCopterPal.globalTheme === beeCopterPalette.Light ? "/qmlimages/no-logging-light.svg" : "/qmlimages/no-logging.svg"
                                 height:             _imageHeight
                                 anchors.centerIn:   parent
                             }
@@ -568,12 +568,12 @@ SetupPage {
                         GridLayout {
                             columns:                2
                             anchors.verticalCenter: parent.verticalCenter
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Telemetry logging to vehicle storage:")
                                 Layout.minimumWidth:_labelWidth
                                 Layout.fillWidth:   true
                             }
-                            QGCComboBox {
+                            beeCopterComboBox {
                                 model:              [qsTr("Disabled"), qsTr("Enabled")]
                                 enabled:            _enableLogging
                                 Layout.minimumWidth:_editFieldWidth
@@ -591,7 +591,7 @@ SetupPage {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:               qsTr("Hardware in the Loop Simulation")
                     visible:            _hitlAvailable
                 }
@@ -599,7 +599,7 @@ SetupPage {
                 Rectangle {
                     width:              mainRow.width   + (_margins * 2)
                     height:             hitlGrid.height + (_margins * 2)
-                    color:              qgcPal.windowShade
+                    color:              beeCopterPal.windowShade
                     visible:            _hitlAvailable
                     Row {
                         id:                 hitlGrid
@@ -609,8 +609,8 @@ SetupPage {
                             width:                  _imageWidth
                             height:                 _imageHeight
                             anchors.verticalCenter: parent.verticalCenter
-                            QGCColoredImage {
-                                color:              qgcPal.text
+                            beeCopterColoredImage {
+                                color:              beeCopterPal.text
                                 source:             "/qmlimages/HITL.svg"
                                 height:             _imageHeight
                                 width:              _imageHeight
@@ -620,7 +620,7 @@ SetupPage {
                         GridLayout {
                             columns:                2
                             anchors.verticalCenter: parent.verticalCenter
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("HITL Enabled:")
                                 Layout.minimumWidth:_labelWidth
                                 Layout.fillWidth:   true

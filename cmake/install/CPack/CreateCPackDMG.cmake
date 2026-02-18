@@ -11,7 +11,7 @@ include(CreateCPackCommon)
 list(APPEND CPACK_GENERATOR "DragNDrop")
 set(CPACK_BINARY_DRAGNDROP ON)
 
-set(QGC_INSTALLER_SOURCE "${CMAKE_SOURCE_DIR}/deploy/macos")
+set(beeCopter_INSTALLER_SOURCE "${CMAKE_SOURCE_DIR}/deploy/macos")
 
 # ----------------------------------------------------------------------------
 # DMG Options

@@ -1,18 +1,18 @@
 #include "MAVLinkConsoleController.h"
 #include "MAVLinkProtocol.h"
 #include "MultiVehicleManager.h"
-#include "QGCLoggingCategory.h"
-#include "QGCPalette.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterPalette.h"
 #include "Vehicle.h"
 
 #include <QtGui/QGuiApplication>
 #include <QtGui/QClipboard>
 
-QGC_LOGGING_CATEGORY(MAVLinkConsoleControllerLog, "AnalyzeView.MAVLinkConsoleController")
+beeCopter_LOGGING_CATEGORY(MAVLinkConsoleControllerLog, "AnalyzeView.MAVLinkConsoleController")
 
 MAVLinkConsoleController::MAVLinkConsoleController(QObject *parent)
     : QStringListModel(parent)
-    , _palette(new QGCPalette(this))
+    , _palette(new beeCopterPalette(this))
 {
     qCDebug(MAVLinkConsoleControllerLog) << this;
 

@@ -1,7 +1,7 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     id:     signalRoot
@@ -11,7 +11,7 @@ Item {
     property real size:     50
     property real percent:  0
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     function getIcon() {
         if (percent < 20)
@@ -27,11 +27,11 @@ Item {
         return "/qmlimages/Signal100.svg"
     }
 
-    QGCColoredImage {
+    beeCopterColoredImage {
         source:             getIcon()
         fillMode:           Image.PreserveAspectFit
         anchors.fill:       parent
-        color:              qgcPal.buttonText
+        color:              beeCopterPal.buttonText
         sourceSize.height:  size
     }
 }

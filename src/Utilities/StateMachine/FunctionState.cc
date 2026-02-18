@@ -4,7 +4,7 @@
 
 /// Executes a function when the state is entered
 FunctionState::FunctionState(const QString& stateName, QState* parentState, std::function<void()> function)
-    : QGCState   (stateName, parentState)
+    : beeCopterState   (stateName, parentState)
     , _function     (function)
 {
     connect(this, &QState::entered, this, [this] () {

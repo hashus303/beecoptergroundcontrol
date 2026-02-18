@@ -1,15 +1,15 @@
 #include "FTPManager.h"
 #include "MAVLinkProtocol.h"
 #include "Vehicle.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
 #include <limits>
 
-QGC_LOGGING_CATEGORY(FTPManagerLog, "Vehicle.FTPManager")
+beeCopter_LOGGING_CATEGORY(FTPManagerLog, "Vehicle.FTPManager")
 
 FTPManager::FTPManager(Vehicle* vehicle)
     : QObject   (vehicle)
@@ -17,7 +17,7 @@ FTPManager::FTPManager(Vehicle* vehicle)
 {
     _ackOrNakTimeoutTimer.setSingleShot(true);
     // Mock link responds immediately if at all, speed up unit tests with faster timeout
-    _ackOrNakTimeoutTimer.setInterval(qgcApp()->runningUnitTests() ? kTestAckTimeoutMs : _ackOrNakTimeoutMsecs);
+    _ackOrNakTimeoutTimer.setInterval(beeCopterApp()->runningUnitTests() ? kTestAckTimeoutMs : _ackOrNakTimeoutMsecs);
     connect(&_ackOrNakTimeoutTimer, &QTimer::timeout, this, &FTPManager::_ackOrNakTimeout);
 
     // Make sure we don't have bad structure packing
@@ -656,8 +656,8 @@ void FTPManager::_mavlinkMessageReceived(const mavlink_message_t& message)
     mavlink_msg_file_transfer_protocol_decode(&message, &data);
 
     // Make sure we are the target system
-    int qgcId = MAVLinkProtocol::instance()->getSystemId();
-    if (data.target_system != qgcId) {
+    int beeCopterId = MAVLinkProtocol::instance()->getSystemId();
+    if (data.target_system != beeCopterId) {
         return;
     }
 

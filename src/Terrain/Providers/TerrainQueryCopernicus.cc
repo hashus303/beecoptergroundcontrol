@@ -1,8 +1,8 @@
 #include "TerrainQueryCopernicus.h"
 #include "TerrainTileCopernicus.h"
 #include "ElevationMapProvider.h"
-#include "QGCLoggingCategory.h"
-#include "QGCNetworkHelper.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterNetworkHelper.h"
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
@@ -15,7 +15,7 @@
 #include <QtNetwork/QSslConfiguration>
 #include <QtPositioning/QGeoCoordinate>
 
-QGC_LOGGING_CATEGORY(TerrainQueryCopernicusLog, "Terrain.TerrainQueryCopernicus")
+beeCopter_LOGGING_CATEGORY(TerrainQueryCopernicusLog, "Terrain.TerrainQueryCopernicus")
 
 TerrainQueryCopernicus::TerrainQueryCopernicus(QObject *parent)
     : TerrainOnlineQuery(parent)
@@ -100,7 +100,7 @@ void TerrainQueryCopernicus::_sendQuery(const QString &path, const QUrlQuery &ur
         return;
     }
 
-    QGCNetworkHelper::ignoreSslErrorsIfNeeded(networkReply);
+    beeCopterNetworkHelper::ignoreSslErrorsIfNeeded(networkReply);
 
     (void) connect(networkReply, &QNetworkReply::finished, this, &TerrainQueryCopernicus::_requestFinished);
     (void) connect(networkReply, &QNetworkReply::sslErrors, this, &TerrainQueryCopernicus::_sslErrors);

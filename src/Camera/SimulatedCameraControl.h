@@ -5,7 +5,7 @@
 
 #include "MavlinkCameraControl.h"
 
-class QGCVideoStreamInfo;
+class beeCopterVideoStreamInfo;
 class Vehicle;
 
 /// Creates a simulated Camera Control which supports:
@@ -41,7 +41,7 @@ public:
 
     int version() const override { return 0; }
     QString modelName() const override { return QStringLiteral("Simulated Camera"); }
-    QString vendor() const override { return QStringLiteral("QGroundControl"); }
+    QString vendor() const override { return QStringLiteral("beeCopter"); }
     QString firmwareVersion() const override { return QStringLiteral("1.0"); }
     qreal focalLength() const override { return qQNaN(); }
     QSizeF sensorSize() const override { return QSizeF(qQNaN(), qQNaN()); }
@@ -70,8 +70,8 @@ public:
     qreal focusLevel() const override { return 1.0; }
 
     QmlObjectListModel *streams() override { return nullptr; }
-    QGCVideoStreamInfo *currentStreamInstance() override { return nullptr; }
-    QGCVideoStreamInfo *thermalStreamInstance() override { return nullptr; }
+    beeCopterVideoStreamInfo *currentStreamInstance() override { return nullptr; }
+    beeCopterVideoStreamInfo *thermalStreamInstance() override { return nullptr; }
     int currentStream() const override { return 0; }
     void setCurrentStream(int /*stream*/) override {}
     bool autoStream() const override { return false; }

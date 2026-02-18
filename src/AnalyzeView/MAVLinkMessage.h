@@ -11,7 +11,7 @@ class QmlObjectListModel;
 
 Q_DECLARE_LOGGING_CATEGORY(MAVLinkMessageLog)
 
-class QGCMAVLinkMessage : public QObject
+class beeCopterMAVLinkMessage : public QObject
 {
     Q_OBJECT
     // QML_ELEMENT
@@ -28,8 +28,8 @@ class QGCMAVLinkMessage : public QObject
     Q_PROPERTY(bool                 selected        READ selected       NOTIFY selectedChanged)
 
 public:
-    explicit QGCMAVLinkMessage(const mavlink_message_t &message, QObject *parent = nullptr);
-    ~QGCMAVLinkMessage();
+    explicit beeCopterMAVLinkMessage(const mavlink_message_t &message, QObject *parent = nullptr);
+    ~beeCopterMAVLinkMessage();
 
     quint32 id() const { return _message.msgid;  }
     quint8 sysId() const { return _message.sysid; }

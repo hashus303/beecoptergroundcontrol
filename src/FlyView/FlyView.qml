@@ -8,16 +8,16 @@ import QtPositioning
 import QtQuick.Window
 import QtQml.Models
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
-import QGroundControl.FlightMap
-import QGroundControl.Viewer3D
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
+import beeCopter.FlightMap
+import beeCopter.Viewer3D
 
 Item {
     id: _root
 
-    readonly property bool _is3DMode: QGCViewer3DManager.displayMode === QGCViewer3DManager.View3D
+    readonly property bool _is3DMode: beeCopterViewer3DManager.displayMode === beeCopterViewer3DManager.View3D
 
     // These should only be used by MainRootWindow
     property var planController:    _planController
@@ -31,7 +31,7 @@ Item {
 
     property bool   _mainWindowIsMap:       mapControl.pipState.state === mapControl.pipState.fullState
     property bool   _isFullWindowItemDark:  _mainWindowIsMap ? mapControl.isSatelliteMap : true
-    property var    _activeVehicle:         QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle:         beeCopter.multiVehicleManager.activeVehicle
     property var    _missionController:     _planController.missionController
     property var    _geoFenceController:    _planController.geoFenceController
     property var    _rallyPointController:  _planController.rallyPointController
@@ -46,7 +46,7 @@ Item {
     property real   _widgetMargin:          ScreenTools.defaultFontPixelWidth * 0.75
 
     property real   _fullItemZorder:    0
-    property real   _pipItemZorder:     QGroundControl.zOrderWidgets
+    property real   _pipItemZorder:     beeCopter.zOrderWidgets
 
     function _calcCenterViewPort() {
         var newToolInset = Qt.rect(0, 0, width, height)
@@ -57,7 +57,7 @@ Item {
         toolbar.dropMainStatusIndicatorTool();
     }
 
-    QGCToolInsets {
+    beeCopterToolInsets {
         id:                     _toolInsets
         topEdgeLeftInset:       toolbar.height
         topEdgeCenterInset:     topEdgeLeftInset
@@ -94,10 +94,10 @@ Item {
             anchors.margins:        _toolsMargin
             item1IsFullSettingsKey: "MainFlyWindowIsMap"
             item1:                  mapControl
-            item2:                  QGroundControl.videoManager.hasVideo ? videoControl : null
-            show:                   QGroundControl.videoManager.hasVideo && !QGroundControl.videoManager.fullScreen &&
+            item2:                  beeCopter.videoManager.hasVideo ? videoControl : null
+            show:                   beeCopter.videoManager.hasVideo && !beeCopter.videoManager.fullScreen &&
                                         (videoControl.pipState.state === videoControl.pipState.pipState || mapControl.pipState.state === mapControl.pipState.pipState)
-            z:                      QGroundControl.zOrderWidgets
+            z:                      beeCopter.zOrderWidgets
 
             property real leftEdgeBottomInset: visible ? width + anchors.margins : 0
             property real bottomEdgeLeftInset: visible ? height + anchors.margins : 0
@@ -114,7 +114,7 @@ Item {
             z:                      _fullItemZorder + 2
             parentToolInsets:       _toolInsets
             mapControl:             _mapControl
-            visible:                !QGroundControl.videoManager.fullScreen
+            visible:                !beeCopter.videoManager.fullScreen
         }
 
         FlyViewCustomLayer {
@@ -123,7 +123,7 @@ Item {
             z:                  _fullItemZorder + 2
             parentToolInsets:   widgetLayer.totalToolInsets
             mapControl:         _mapControl
-            visible:            !QGroundControl.videoManager.fullScreen
+            visible:            !beeCopter.videoManager.fullScreen
         }
 
         // Development tool for visualizing the insets for a paticular layer, show if needed
@@ -151,7 +151,7 @@ Item {
             anchors.top:        parent.top
             anchors.bottom:     parent.bottom
             anchors.topMargin:  toolbar.height
-            z:                  QGroundControl.zOrderTopMost
+            z:                  beeCopter.zOrderTopMost
             visible:            false
         }
 
@@ -163,7 +163,7 @@ Item {
 
             onActiveChanged: {
                 if (active) {
-                    setSource("qrc:/qml/QGroundControl/Viewer3D/Models3D/Viewer3DModel.qml",
+                    setSource("qrc:/qml/beeCopter/Viewer3D/Models3D/Viewer3DModel.qml",
 )
                 }
             }
@@ -173,6 +173,6 @@ Item {
     FlyViewToolBar {
         id:                 toolbar
         guidedValueSlider:  _guidedValueSlider
-        visible:            !QGroundControl.videoManager.fullScreen
+        visible:            !beeCopter.videoManager.fullScreen
     }
 }

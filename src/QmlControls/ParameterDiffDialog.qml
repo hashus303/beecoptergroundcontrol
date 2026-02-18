@@ -3,11 +3,11 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
-QGCPopupDialog {
+beeCopterPopupDialog {
     title:      qsTr("Load Parameters")
     buttons:    Dialog.Cancel | (paramController.diffList.count ? Dialog.Ok : 0)
 
@@ -20,7 +20,7 @@ QGCPopupDialog {
     ColumnLayout {
         spacing: ScreenTools.defaultDialogControlSpacing
 
-        QGCLabel {
+        beeCopterLabel {
             Layout.preferredWidth:  mainGrid.visible ? mainGrid.width : ScreenTools.defaultFontPixelWidth * 40
             wrapMode:               Text.WordWrap
             text:                   paramController.diffList.count ?
@@ -35,7 +35,7 @@ QGCPopupDialog {
             flow:       GridLayout.TopToBottom
             visible:    paramController.diffList.count
 
-            QGCCheckBox {
+            beeCopterCheckBox {
                 checked: true
                 onClicked: {
                     for (var i=0; i<paramController.diffList.count; i++) {
@@ -45,7 +45,7 @@ QGCPopupDialog {
             }
             Repeater {
                 model: paramController.diffList
-                QGCCheckBox {
+                beeCopterCheckBox {
                     checked:    object.load
                     onClicked:  object.load = checked
                 }
@@ -53,29 +53,29 @@ QGCPopupDialog {
 
             Repeater {
                 model: paramController.diffMultipleComponents ? 1 : 0
-                QGCLabel { text: qsTr("Comp ID") }
+                beeCopterLabel { text: qsTr("Comp ID") }
             }
             Repeater {
                 model: paramController.diffMultipleComponents ? paramController.diffList : 0
-                QGCLabel { text: object.componentId }
+                beeCopterLabel { text: object.componentId }
             }
 
-            QGCLabel { text: qsTr("Name") }
+            beeCopterLabel { text: qsTr("Name") }
             Repeater {
                 model: paramController.diffList
-                QGCLabel { text: object.name }
+                beeCopterLabel { text: object.name }
             }
 
-            QGCLabel { text: qsTr("File") }
+            beeCopterLabel { text: qsTr("File") }
             Repeater {
                 model: paramController.diffList
-                QGCLabel { text: object.fileValue + " " + object.units }
+                beeCopterLabel { text: object.fileValue + " " + object.units }
             }
 
-            QGCLabel { text: qsTr("Vehicle") }
+            beeCopterLabel { text: qsTr("Vehicle") }
             Repeater {
                 model: paramController.diffList
-                QGCLabel { text: object.noVehicleValue ? qsTr("N/A") : object.vehicleValue + " " + object.units }
+                beeCopterLabel { text: object.noVehicleValue ? qsTr("N/A") : object.vehicleValue + " " + object.units }
             }
         }
     }

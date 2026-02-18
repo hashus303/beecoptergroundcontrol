@@ -49,7 +49,7 @@ public:
     void suspendLogForReplay(bool suspend) { _logSuspendReplay = suspend; }
 
     /// Checks the temp directory for log files which may have been left there.
-    /// This could happen if QGC crashes without the temp log file being saved.
+    /// This could happen if beeCopter crashes without the temp log file being saved.
     /// Give the user an option to save these orphaned files.
     void checkForLostLogFiles();
 

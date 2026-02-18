@@ -3,10 +3,10 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
+import beeCopter.FlightMap
 
 TransectStyleComplexItemEditor {
     transectAreaDefinitionComplete: missionItem.surveyAreaPolygon.isValid
@@ -31,14 +31,14 @@ TransectStyleComplexItemEditor {
             rowSpacing:         _margin
             columns:            2
 
-            QGCLabel { text: qsTr("Angle") }
+            beeCopterLabel { text: qsTr("Angle") }
             FactTextField {
                 fact:                   missionItem.gridAngle
                 Layout.fillWidth:       true
                 onUpdated:              angleSlider.value = missionItem.gridAngle.value
             }
 
-            QGCSlider {
+            beeCopterSlider {
                 id:                     angleSlider
                 from:           0
                 to:           359
@@ -51,7 +51,7 @@ TransectStyleComplexItemEditor {
                 live: true
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 text:       qsTr("Turnaround dist")
                 visible:    !forPresets
             }
@@ -61,7 +61,7 @@ TransectStyleComplexItemEditor {
                 visible:            !forPresets
             }
 
-            QGCOptionsComboBox {
+            beeCopterOptionsComboBox {
                 Layout.columnSpan:  2
                 Layout.fillWidth:   true
                 visible:            !forPresets
@@ -70,13 +70,13 @@ TransectStyleComplexItemEditor {
                     {
                         text:       qsTr("Hover and capture image"),
                         fact:       missionItem.hoverAndCapture,
-                        enabled:    missionItem.cameraCalc.distanceMode === QGroundControl.AltitudeModeRelative || missionItem.cameraCalc.distanceMode === QGroundControl.AltitudeModeAbsolute,
+                        enabled:    missionItem.cameraCalc.distanceMode === beeCopter.AltitudeModeRelative || missionItem.cameraCalc.distanceMode === beeCopter.AltitudeModeAbsolute,
                         visible:    missionItem.hoverAndCaptureAllowed
                     },
                     {
                         text:       qsTr("Refly at 90 deg offset"),
                         fact:       missionItem.refly90Degrees,
-                        enabled:    missionItem.cameraCalc.distanceMode !== QGroundControl.AltitudeModeCalcAboveTerrain,
+                        enabled:    missionItem.cameraCalc.distanceMode !== beeCopter.AltitudeModeCalcAboveTerrain,
                         visible:    true
                     },
                     {

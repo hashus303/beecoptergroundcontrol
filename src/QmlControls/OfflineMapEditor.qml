@@ -6,10 +6,10 @@ import QtQuick.Controls
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
+import beeCopter.FactControls
 
 FlightMap {
     id:                         _map
@@ -21,7 +21,7 @@ FlightMap {
 
     property string mapKey:             "lastMapType"
 
-    property var    _settingsManager:   QGroundControl.settingsManager
+    property var    _settingsManager:   beeCopter.settingsManager
     property var    _settings:          _settingsManager ? _settingsManager.offlineMapsSettings : null
     property var    _fmSettings:        _settingsManager ? _settingsManager.flightMapSettings : null
     property var    _appSettings:       _settingsManager.appSettings
@@ -48,7 +48,7 @@ FlightMap {
     property real   _adjustableFontPointSize: _saveRealEstate ? ScreenTools.smallFontPointSize : ScreenTools.defaultFontPointSize
 
     property var    _mapAdjustedColor:  _map.isSatelliteMap ? "white" : "black"
-    property bool   _tooManyTiles:      QGroundControl.mapEngineManager.tileCount > _maxTilesForDownload
+    property bool   _tooManyTiles:      beeCopter.mapEngineManager.tileCount > _maxTilesForDownload
     property var    _addNewSetViewObject: null
 
     readonly property real minZoomLevel:    1
@@ -57,10 +57,10 @@ FlightMap {
 
     readonly property int _maxTilesForDownload: _settings ? _settings.maxTilesForDownload.rawValue : 0
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     Component.onCompleted: {
-        QGroundControl.mapEngineManager.loadTileSets()
+        beeCopter.mapEngineManager.loadTileSets()
         resetMapToDefaults()
         updateMap()
         savedCenter = _map.toCoordinate(Qt.point(_map.width / 2, _map.height / 2), false /* clipToViewPort */)
@@ -70,7 +70,7 @@ FlightMap {
     Component.onDestruction: settingsPage.enabled = true
 
     Connections {
-        target:                 QGroundControl.mapEngineManager
+        target:                 beeCopter.mapEngineManager
         onErrorMessageChanged:  errorDialogComponent.createObject(mainWindow).open()
     }
 
@@ -82,7 +82,7 @@ FlightMap {
             var yr = _map.height.toFixed(0) - 1 // Must be within boundaries of visible map
             var c0 = _map.toCoordinate(Qt.point(xl, yl), false /* clipToViewPort */)
             var c1 = _map.toCoordinate(Qt.point(xr, yr), false /* clipToViewPort */)
-            QGroundControl.mapEngineManager.updateForCurrentView(c0.longitude, c0.latitude, c1.longitude, c1.latitude, _addNewSetViewObject.sliderMinZoom.value, _addNewSetViewObject.sliderMaxZoom.value, mapType)
+            beeCopter.mapEngineManager.updateForCurrentView(c0.longitude, c0.latitude, c1.longitude, c1.latitude, _addNewSetViewObject.sliderMinZoom.value, _addNewSetViewObject.sliderMaxZoom.value, mapType)
         }
     }
 
@@ -149,14 +149,14 @@ FlightMap {
     }
 
     function resetMapToDefaults() {
-        _map.center = QGroundControl.flightMapPosition
-        _map.zoomLevel = QGroundControl.flightMapZoom
+        _map.center = beeCopter.flightMapPosition
+        _map.zoomLevel = beeCopter.flightMapZoom
     }
 
     onMapTypeChanged: {
         updateMap()
         if(isMapInteractive) {
-            QGroundControl.mapEngineManager.saveSetting(mapKey, mapType)
+            beeCopter.mapEngineManager.saveSetting(mapKey, mapType)
         }
     }
 
@@ -196,7 +196,7 @@ FlightMap {
             anchors.verticalCenter: parent.verticalCenter
             width:              tileInfoColumn.width  + (ScreenTools.defaultFontPixelWidth  * 2)
             height:             tileInfoColumn.height + (ScreenTools.defaultFontPixelHeight * 2)
-            color:              Qt.rgba(qgcPal.window.r, qgcPal.window.g, qgcPal.window.b, 0.85)
+            color:              Qt.rgba(beeCopterPal.window.r, beeCopterPal.window.g, beeCopterPal.window.b, 0.85)
             radius:             ScreenTools.defaultFontPixelWidth * 0.5
 
             property bool       _extraButton: {
@@ -213,7 +213,7 @@ FlightMap {
                 anchors.margins:    ScreenTools.defaultFontPixelHeight * 0.5
                 spacing:            ScreenTools.defaultFontPixelHeight * 0.5
                 anchors.centerIn:   parent
-                QGCLabel {
+                beeCopterLabel {
                     anchors.left:   parent.left
                     anchors.right:  parent.right
                     wrapMode:       Text.WordWrap
@@ -222,14 +222,14 @@ FlightMap {
                     horizontalAlignment: Text.AlignHCenter
                     visible:        _defaultSet
                 }
-                QGCTextField {
+                beeCopterTextField {
                     id:             editSetName
                     anchors.left:   parent.left
                     anchors.right:  parent.right
                     visible:        !_defaultSet
                     text:           tileSet ? tileSet.name : ""
                 }
-                QGCLabel {
+                beeCopterLabel {
                     anchors.left:   parent.left
                     anchors.right:  parent.right
                     wrapMode:       Text.WordWrap
@@ -248,58 +248,58 @@ FlightMap {
                 Row {
                     spacing:    ScreenTools.defaultFontPixelWidth
                     anchors.horizontalCenter: parent.horizontalCenter
-                    visible:    !_defaultSet && mapType !== QGroundControl.elevationProviderName
-                    QGCLabel {  text: qsTr("Zoom Levels:"); width: infoView._labelWidth; }
-                    QGCLabel {  text: tileSet ? (tileSet.minZoom + " - " + tileSet.maxZoom) : ""; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
+                    visible:    !_defaultSet && mapType !== beeCopter.elevationProviderName
+                    beeCopterLabel {  text: qsTr("Zoom Levels:"); width: infoView._labelWidth; }
+                    beeCopterLabel {  text: tileSet ? (tileSet.minZoom + " - " + tileSet.maxZoom) : ""; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
                 }
                 Row {
                     spacing:    ScreenTools.defaultFontPixelWidth
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible:    !_defaultSet
-                    QGCLabel {  text: qsTr("Total:"); width: infoView._labelWidth; }
-                    QGCLabel {  text: (tileSet ? tileSet.totalTileCountStr : "") + " (" + (tileSet ? tileSet.totalTilesSizeStr : "") + ")"; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
+                    beeCopterLabel {  text: qsTr("Total:"); width: infoView._labelWidth; }
+                    beeCopterLabel {  text: (tileSet ? tileSet.totalTileCountStr : "") + " (" + (tileSet ? tileSet.totalTilesSizeStr : "") + ")"; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
                 }
                 Row {
                     spacing:    ScreenTools.defaultFontPixelWidth
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible:    tileSet && !_defaultSet && tileSet.uniqueTileCount > 0
-                    QGCLabel {  text: qsTr("Unique:"); width: infoView._labelWidth; }
-                    QGCLabel {  text: (tileSet ? tileSet.uniqueTileCountStr : "") + " (" + (tileSet ? tileSet.uniqueTileSizeStr : "") + ")"; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
+                    beeCopterLabel {  text: qsTr("Unique:"); width: infoView._labelWidth; }
+                    beeCopterLabel {  text: (tileSet ? tileSet.uniqueTileCountStr : "") + " (" + (tileSet ? tileSet.uniqueTileSizeStr : "") + ")"; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
                 }
 
                 Row {
                     spacing:    ScreenTools.defaultFontPixelWidth
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible:    tileSet && !_defaultSet && !tileSet.complete
-                    QGCLabel {  text: qsTr("Downloaded:"); width: infoView._labelWidth; }
-                    QGCLabel {  text: (tileSet ? tileSet.savedTileCountStr : "") + " (" + (tileSet ? tileSet.savedTileSizeStr : "") + ")"; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
+                    beeCopterLabel {  text: qsTr("Downloaded:"); width: infoView._labelWidth; }
+                    beeCopterLabel {  text: (tileSet ? tileSet.savedTileCountStr : "") + " (" + (tileSet ? tileSet.savedTileSizeStr : "") + ")"; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
                 }
                 Row {
                     spacing:    ScreenTools.defaultFontPixelWidth
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible:    tileSet && !_defaultSet && !tileSet.complete && tileSet.errorCount > 0
-                    QGCLabel {  text: qsTr("Error Count:"); width: infoView._labelWidth; }
-                    QGCLabel {  text: tileSet ? tileSet.errorCountStr : ""; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
+                    beeCopterLabel {  text: qsTr("Error Count:"); width: infoView._labelWidth; }
+                    beeCopterLabel {  text: tileSet ? tileSet.errorCountStr : ""; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
                 }
                 //-- Default Tile Set
                 Row {
                     spacing:    ScreenTools.defaultFontPixelWidth
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible:    _defaultSet
-                    QGCLabel { text: qsTr("Size:"); width: infoView._labelWidth; }
-                    QGCLabel { text: tileSet ? tileSet.savedTileSizeStr  : ""; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
+                    beeCopterLabel { text: qsTr("Size:"); width: infoView._labelWidth; }
+                    beeCopterLabel { text: tileSet ? tileSet.savedTileSizeStr  : ""; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
                 }
                 Row {
                     spacing:    ScreenTools.defaultFontPixelWidth
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible:    _defaultSet
-                    QGCLabel { text: qsTr("Tile Count:"); width: infoView._labelWidth; }
-                    QGCLabel { text: tileSet ? tileSet.savedTileCountStr : ""; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
+                    beeCopterLabel { text: qsTr("Tile Count:"); width: infoView._labelWidth; }
+                    beeCopterLabel { text: tileSet ? tileSet.savedTileCountStr : ""; horizontalAlignment: Text.AlignRight; width: infoView._valueWidth; }
                 }
                 Row {
                     spacing:    ScreenTools.defaultFontPixelWidth
                     anchors.horizontalCenter: parent.horizontalCenter
-                    QGCButton {
+                    beeCopterButton {
                         text:       qsTr("Resume Download")
                         visible:    tileSet && tileSet && !_defaultSet && (!tileSet.complete && !tileSet.downloading)
                         width:      ScreenTools.defaultFontPixelWidth * 16
@@ -308,7 +308,7 @@ FlightMap {
                                 tileSet.resumeDownloadTask()
                         }
                     }
-                    QGCButton {
+                    beeCopterButton {
                         text:       qsTr("Cancel Download")
                         visible:    tileSet && tileSet && !_defaultSet && (!tileSet.complete && tileSet.downloading)
                         width:      ScreenTools.defaultFontPixelWidth * 16
@@ -317,25 +317,25 @@ FlightMap {
                                 tileSet.cancelDownloadTask()
                         }
                     }
-                    QGCButton {
+                    beeCopterButton {
                         text:       qsTr("Delete")
                         width:      ScreenTools.defaultFontPixelWidth * (infoView._extraButton ? 6 : 10)
                         onClicked:  deleteConfirmationDialogComponent.createObject(mainWindow).open()
                         enabled:    tileSet ? (tileSet.savedTileSize > 0) : false
                     }
-                    QGCButton {
+                    beeCopterButton {
                         text:       qsTr("Ok")
                         width:      ScreenTools.defaultFontPixelWidth * (infoView._extraButton ? 6 : 10)
                         visible:    !_defaultSet
                         enabled:    editSetName.text !== ""
                         onClicked: {
                             if (editSetName.text !== tileSet.name) {
-                                QGroundControl.mapEngineManager.renameTileSet(tileSet, editSetName.text)
+                                beeCopter.mapEngineManager.renameTileSet(tileSet, editSetName.text)
                             }
                             _map.destroy()
                         }
                     }
-                    QGCButton {
+                    beeCopterButton {
                         text:       _defaultSet ? qsTr("Close") : qsTr("Cancel")
                         width:      ScreenTools.defaultFontPixelWidth * (infoView._extraButton ? 6 : 10)
                         onClicked:  _map.destroy()
@@ -361,7 +361,7 @@ FlightMap {
                 anchors.left:           parent.left
                 spacing:                _margins
 
-                QGCButton {
+                beeCopterButton {
                     text:       qsTr("Show zoom previews")
                     visible:    !_showPreview
                     onClicked:  _showPreview = !_showPreview
@@ -378,7 +378,7 @@ FlightMap {
 
                     property bool isSatelliteMap: activeMapType.name.indexOf("Satellite") > -1 || activeMapType.name.indexOf("Hybrid") > -1
 
-                    plugin: Plugin { name: "QGroundControl" }
+                    plugin: Plugin { name: "beeCopter" }
 
                     MapScale {
                         anchors.leftMargin:     ScreenTools.defaultFontPixelWidth / 2
@@ -393,7 +393,7 @@ FlightMap {
                         border.color:   _mapAdjustedColor
                         color:          "transparent"
 
-                        QGCMapLabel {
+                        beeCopterMapLabel {
                             anchors.centerIn:   parent
                             map:                minZoomPreview
                             text:               qsTr("Min Zoom: %1").arg(sliderMinZoom.value)
@@ -416,7 +416,7 @@ FlightMap {
 
                     property bool isSatelliteMap: activeMapType.name.indexOf("Satellite") > -1 || activeMapType.name.indexOf("Hybrid") > -1
 
-                    plugin: Plugin { name: "QGroundControl" }
+                    plugin: Plugin { name: "beeCopter" }
 
                     MapScale {
                         anchors.leftMargin:     ScreenTools.defaultFontPixelWidth / 2
@@ -431,7 +431,7 @@ FlightMap {
                         border.color:   _mapAdjustedColor
                         color:          "transparent"
 
-                        QGCMapLabel {
+                        beeCopterMapLabel {
                             anchors.centerIn:   parent
                             map:                maxZoomPreview
                             text:               qsTr("Max Zoom: %1").arg(sliderMaxZoom.value)
@@ -450,7 +450,7 @@ FlightMap {
                 anchors.right:      parent.right
                 width:              ScreenTools.defaultFontPixelWidth * (ScreenTools.isTinyScreen ? 24 : 28)
                 height:             Math.min(parent.height - (anchors.margins * 2), addNewSetFlickable.y + addNewSetColumn.height + addNewSetLabel.anchors.margins)
-                color:              Qt.rgba(qgcPal.window.r, qgcPal.window.g, qgcPal.window.b, 0.85)
+                color:              Qt.rgba(beeCopterPal.window.r, beeCopterPal.window.g, beeCopterPal.window.b, 0.85)
                 radius:             ScreenTools.defaultFontPixelWidth * 0.5
 
                 //-- Eat mouse events
@@ -458,7 +458,7 @@ FlightMap {
                     anchors.fill: parent
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     id:                 addNewSetLabel
                     anchors.margins:    ScreenTools.defaultFontPixelHeight / 2
                     anchors.top:        parent.top
@@ -470,7 +470,7 @@ FlightMap {
                     horizontalAlignment: Text.AlignHCenter
                 }
 
-                QGCFlickable {
+                beeCopterFlickable {
                     id:                     addNewSetFlickable
                     anchors.leftMargin:     ScreenTools.defaultFontPixelWidth
                     anchors.rightMargin:    anchors.leftMargin
@@ -493,15 +493,15 @@ FlightMap {
                             spacing:            ScreenTools.isTinyScreen ? 0 : ScreenTools.defaultFontPixelHeight * 0.25
                             anchors.left:       parent.left
                             anchors.right:      parent.right
-                            QGCLabel { text: qsTr("Name:") }
-                            QGCTextField {
+                            beeCopterLabel { text: qsTr("Name:") }
+                            beeCopterTextField {
                                 id:                     setName
                                 anchors.left:           parent.left
                                 anchors.right:          parent.right
-                                Component.onCompleted:  text = QGroundControl.mapEngineManager.getUniqueName()
+                                Component.onCompleted:  text = beeCopter.mapEngineManager.getUniqueName()
                                 Connections {
-                                    target:             QGroundControl.mapEngineManager
-                                    onTileSetsChanged:  setName.text = QGroundControl.mapEngineManager.getUniqueName()
+                                    target:             beeCopter.mapEngineManager
+                                    onTileSetsChanged:  setName.text = beeCopter.mapEngineManager.getUniqueName()
                                 }
                             }
                         }
@@ -510,15 +510,15 @@ FlightMap {
                             spacing:            ScreenTools.isTinyScreen ? 0 : ScreenTools.defaultFontPixelHeight * 0.25
                             anchors.left:       parent.left
                             anchors.right:      parent.right
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:       qsTr("Map type:")
                                 visible:    !_saveRealEstate
                             }
-                            QGCComboBox {
+                            beeCopterComboBox {
                                 id:             mapCombo
                                 anchors.left:   parent.left
                                 anchors.right:  parent.right
-                                model:          QGroundControl.mapEngineManager.mapList
+                                model:          beeCopter.mapEngineManager.mapList
                                 onActivated: (index) => {
                                     mapType = textAt(index)
                                 }
@@ -531,13 +531,13 @@ FlightMap {
                                     }
                                 }
                             }
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 anchors.left:   parent.left
                                 anchors.right:  parent.right
                                 text:           qsTr("Fetch elevation data")
-                                checked:        QGroundControl.mapEngineManager.fetchElevation
+                                checked:        beeCopter.mapEngineManager.fetchElevation
                                 onClicked: {
-                                    QGroundControl.mapEngineManager.fetchElevation = checked
+                                    beeCopter.mapEngineManager.fetchElevation = checked
                                     handleChanges()
                                 }
                             }
@@ -547,8 +547,8 @@ FlightMap {
                             anchors.left:   parent.left
                             anchors.right:  parent.right
                             height:         zoomColumn.height + ScreenTools.defaultFontPixelHeight * 0.5
-                            color:          qgcPal.window
-                            border.color:   qgcPal.text
+                            color:          beeCopterPal.window
+                            border.color:   beeCopterPal.text
                             radius:         ScreenTools.defaultFontPixelWidth * 0.5
 
                             Column {
@@ -559,7 +559,7 @@ FlightMap {
                                 anchors.left:       parent.left
                                 anchors.right:      parent.right
 
-                                QGCLabel {
+                                beeCopterLabel {
                                     text:           qsTr("Min/Max Zoom Levels")
                                     font.pointSize: _adjustableFontPointSize
                                     anchors.horizontalCenter: parent.horizontalCenter
@@ -595,15 +595,15 @@ FlightMap {
                                         implicitWidth:  sliderTouchArea
                                         implicitHeight: sliderTouchArea
                                         radius:         sliderTouchArea * 0.5
-                                        color:          qgcPal.button
+                                        color:          beeCopterPal.button
                                         border.width:   1
-                                        border.color:   qgcPal.buttonText
+                                        border.color:   beeCopterPal.buttonText
                                         Label {
                                             text:               sliderMinZoom.value
                                             anchors.centerIn:   parent
                                             font.family:        ScreenTools.normalFontFamily
                                             font.pointSize:     ScreenTools.smallFontPointSize
-                                            color:              qgcPal.buttonText
+                                            color:              beeCopterPal.buttonText
                                         }
                                     }
                                 } // Slider - min zoom
@@ -638,15 +638,15 @@ FlightMap {
                                         implicitWidth:  sliderTouchArea
                                         implicitHeight: sliderTouchArea
                                         radius:         sliderTouchArea * 0.5
-                                        color:          qgcPal.button
+                                        color:          beeCopterPal.button
                                         border.width:   1
-                                        border.color:   qgcPal.buttonText
+                                        border.color:   beeCopterPal.buttonText
                                         Label {
                                             text:               sliderMaxZoom.value
                                             anchors.centerIn:   parent
                                             font.family:        ScreenTools.normalFontFamily
                                             font.pointSize:     ScreenTools.smallFontPointSize
-                                            color:              qgcPal.buttonText
+                                            color:              beeCopterPal.buttonText
                                         }
                                     }
                                 } // Slider - max zoom
@@ -654,31 +654,31 @@ FlightMap {
                                 GridLayout {
                                     columns:    2
                                     rowSpacing: ScreenTools.isTinyScreen ? 0 : ScreenTools.defaultFontPixelHeight * 0.5
-                                    QGCLabel {
+                                    beeCopterLabel {
                                         text:           qsTr("Tile Count:")
                                         font.pointSize: _adjustableFontPointSize
                                     }
-                                    QGCLabel {
-                                        text:            QGroundControl.mapEngineManager.tileCountStr
+                                    beeCopterLabel {
+                                        text:            beeCopter.mapEngineManager.tileCountStr
                                         font.pointSize: _adjustableFontPointSize
                                     }
 
-                                    QGCLabel {
+                                    beeCopterLabel {
                                         text:           qsTr("Est Size:")
                                         font.pointSize: _adjustableFontPointSize
                                     }
-                                    QGCLabel {
-                                        text:           QGroundControl.mapEngineManager.tileSizeStr
+                                    beeCopterLabel {
+                                        text:           beeCopter.mapEngineManager.tileSizeStr
                                         font.pointSize: _adjustableFontPointSize
                                     }
                                 }
                             } // Column - Zoom info
                         } // Rectangle - Zoom info
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       qsTr("Too many tiles")
                             visible:    _tooManyTiles
-                            color:      qgcPal.warningText
+                            color:      beeCopterPal.warningText
                             anchors.horizontalCenter: parent.horizontalCenter
                         }
 
@@ -686,20 +686,20 @@ FlightMap {
                             id: addButtonRow
                             spacing: ScreenTools.defaultFontPixelWidth
                             anchors.horizontalCenter: parent.horizontalCenter
-                            QGCButton {
+                            beeCopterButton {
                                 text:       qsTr("Download")
                                 width:      (addNewSetColumn.width * 0.5) - (addButtonRow.spacing * 0.5)
                                 enabled:    !_tooManyTiles && setName.text.length > 0
                                 onClicked: {
-                                    if (QGroundControl.mapEngineManager.findName(setName.text)) {
+                                    if (beeCopter.mapEngineManager.findName(setName.text)) {
                                         duplicateName.visible = true
                                     } else {
-                                        QGroundControl.mapEngineManager.startDownload(setName.text, mapType);
+                                        beeCopter.mapEngineManager.startDownload(setName.text, mapType);
                                         _map.destroy()
                                     }
                                 }
                             }
-                            QGCButton {
+                            beeCopterButton {
                                 text:       qsTr("Cancel")
                                 width:      (addNewSetColumn.width * 0.5) - (addButtonRow.spacing * 0.5)
                                 onClicked:  _map.destroy()
@@ -726,7 +726,7 @@ FlightMap {
     Component {
         id: errorDialogComponent
 
-        QGCSimpleMessageDialog {
+        beeCopterSimpleMessageDialog {
             title:      qsTr("Error Message")
             text:       _mapEngineManager.errorMessage
             buttons:    Dialog.Close
@@ -736,7 +736,7 @@ FlightMap {
     Component {
         id: deleteConfirmationDialogComponent
 
-        QGCSimpleMessageDialog {
+        beeCopterSimpleMessageDialog {
             title:      qsTr("Confirm Delete")
             text:       tileSet.defaultSet ?
                             qsTr("This will delete all tiles INCLUDING the tile sets you have created yourself.\n\nIs this really what you want?") :
@@ -744,7 +744,7 @@ FlightMap {
             buttons:    Dialog.Yes | Dialog.No
 
             onAccepted: {
-                QGroundControl.mapEngineManager.deleteTileSet(tileSet)
+                beeCopter.mapEngineManager.deleteTileSet(tileSet)
                 _map.destroy()
             }
         }

@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             sensorsPage
@@ -67,8 +67,8 @@ SetupPage {
             property bool   _compassAutoRot:                _compassAutoRotAvailable ? _compassAutoRotFact.rawValue == 2 : false
             property bool   _showSimpleAccelCalOption:      false
             property bool   _doSimpleAccelCal:              false
-            property var    _gcsPosition:                    QGroundControl.qgcPositionManger.gcsPosition
-            property var    _mapPosition:                    QGroundControl.flightMapPosition
+            property var    _gcsPosition:                    beeCopter.beeCopterPositionManger.gcsPosition
+            property var    _mapPosition:                    beeCopter.flightMapPosition
 
             function showOrientationsDialog(calType) {
                 var dialogTitle
@@ -163,12 +163,12 @@ SetupPage {
                 }
             }
 
-            QGCPalette { id: qgcPal; colorGroupEnabled: true }
+            beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
             Component {
                 id: waitForCancelDialogComponent
 
-                QGCSimpleMessageDialog {
+                beeCopterSimpleMessageDialog {
                     title:      qsTr("Calibration Cancel")
                     text:       qsTr("Waiting for Vehicle to response to Cancel. This may take a few seconds.")
                     buttons:    0
@@ -251,7 +251,7 @@ SetupPage {
             Component {
                 id: postOnboardCompassCalibrationComponent
 
-                QGCPopupDialog {
+                beeCopterPopupDialog {
                     id:         postOnboardCompassCalibrationDialog
                     title:      qsTr("Calibration complete")
                     buttons:    Dialog.Ok
@@ -265,7 +265,7 @@ SetupPage {
                             delegate:   singleCompassOnboardResultsComponent
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.left:   parent.left
                             anchors.right:  parent.right
                             wrapMode:       Text.WordWrap
@@ -276,7 +276,7 @@ SetupPage {
                                             qsTr("YOU MUST REBOOT YOUR VEHICLE AFTER EACH CALIBRATION.")
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             text:       qsTr("Reboot Vehicle")
                             onClicked: {
                                 controller.vehicle.rebootVehicle()
@@ -290,7 +290,7 @@ SetupPage {
             Component {
                 id: postCalibrationComponent
 
-                QGCPopupDialog {
+                beeCopterPopupDialog {
                     id:     postCalibrationDialog
                     title:  qsTr("Calibration complete")
 
@@ -298,14 +298,14 @@ SetupPage {
                         width:      40 * ScreenTools.defaultFontPixelWidth
                         spacing:    ScreenTools.defaultFontPixelHeight
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.left:   parent.left
                             anchors.right:  parent.right
                             wrapMode:       Text.WordWrap
                             text:           qsTr("YOU MUST REBOOT YOUR VEHICLE AFTER EACH CALIBRATION.")
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             text:       qsTr("Reboot Vehicle")
                             onClicked: {
                                 controller.vehicle.rebootVehicle()
@@ -324,7 +324,7 @@ SetupPage {
                     spacing: Math.round(ScreenTools.defaultFontPixelHeight / 2)
                     visible: sensorParams.rgCompassAvailable[index]
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text: compassLabel(index)
                     }
                     APMSensorIdDecoder {
@@ -346,7 +346,7 @@ SetupPage {
                                 visible:    sensorParams.rgCompassUseParamAvailable[index] && !sensorParams.rgCompassPrimary[index]
                             }
 
-                            QGCComboBox {
+                            beeCopterComboBox {
                                 model:      [ qsTr("Priority 1"), qsTr("Priority 2"), qsTr("Priority 3"), qsTr("Not Set") ]
                                 visible:    _singleCompassSettingsComponentShowPriority && sensorParams.compassPrioFactsAvailable && useCompassCheckBox.visible && useCompassCheckBox.checked
 
@@ -380,7 +380,7 @@ SetupPage {
                         Column {
                             visible: !_compassAutoRot && sensorParams.rgCompassExternal[index] && sensorParams.rgCompassRotParamAvailable[index]
 
-                            QGCLabel { text: qsTr("Orientation:") }
+                            beeCopterLabel { text: qsTr("Orientation:") }
 
                             FactComboBox {
                                 width:      rotationColumnWidth
@@ -395,7 +395,7 @@ SetupPage {
             Component {
                 id: orientationsDialogComponent
 
-                QGCPopupDialog {
+                beeCopterPopupDialog {
                     function compassMask () {
                         var mask = 0
                         mask |=  (0 + (sensorParams.rgCompassPrio[0].rawValue !== 0)) << 0
@@ -433,14 +433,14 @@ SetupPage {
                         width:      40 * ScreenTools.defaultFontPixelWidth
                         spacing:    ScreenTools.defaultFontPixelHeight
 
-                        QGCLabel {
+                        beeCopterLabel {
                             width:      parent.width
                             wrapMode:   Text.WordWrap
                             text:       _orientationDialogHelp
                         }
 
                         Column {
-                            QGCLabel { text: qsTr("Autopilot Rotation:") }
+                            beeCopterLabel { text: qsTr("Autopilot Rotation:") }
 
                             FactComboBox {
                                 width:      rotationColumnWidth
@@ -454,13 +454,13 @@ SetupPage {
                             visible: _orientationDialogCalType == _calTypeAccel
                             spacing: ScreenTools.defaultFontPixelHeight
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 width:      parent.width
                                 wrapMode:   Text.WordWrap
                                 text: qsTr("Simple accelerometer calibration is less precise but allows calibrating without rotating the vehicle. Check this if you have a large/heavy vehicle.")
                             }
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 text: "Simple Accelerometer Calibration"
                                 onClicked: _doSimpleAccelCal = this.checked
                             }
@@ -471,7 +471,7 @@ SetupPage {
                             delegate:   singleCompassSettingsComponent
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:         magneticDeclinationLabel
                             width:      parent.width
                             visible:    globals.activeVehicle.sub && _orientationsDialogShowCompass
@@ -485,7 +485,7 @@ SetupPage {
                             anchors.right:      parent.right
                             spacing:            ScreenTools.defaultFontPixelHeight
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 id:                           manualMagneticDeclinationCheckBox
                                 text:                         qsTr("Manual Magnetic Declination")
                                 property Fact autoDecFact:    controller.getParameterFact(-1, "COMPASS_AUTODEC")
@@ -504,7 +504,7 @@ SetupPage {
 
                         Item { height: ScreenTools.defaultFontPixelHeight; width: 10 } // spacer
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:         northCalibrationLabel
                             width:      parent.width
                             visible:    _orientationsDialogShowCompass
@@ -523,13 +523,13 @@ SetupPage {
                             anchors.right:      parent.right
                             spacing:            ScreenTools.defaultFontPixelHeight
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 id:             northCalibrationCheckBox
                                 visible:        northCalibrationLabel.visible
                                 text:           qsTr("Fast Calibration")
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 id:         northCalibrationManualPosition
                                 width:      parent.width
                                 visible:    northCalibrationCheckBox.checked && !globals.activeVehicle.coordinate.isValid
@@ -537,19 +537,19 @@ SetupPage {
                                 text:       qsTr("Vehicle has no Valid positon, please provide it")
                             }
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 visible:    northCalibrationManualPosition.visible && _gcsPosition.isValid
                                 id:         useGcsPositionCheckbox
                                 text:       qsTr("Use GCS position instead")
                                 checked:    _gcsPosition.isValid
                             }
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 visible:    northCalibrationManualPosition.visible && !_gcsPosition.isValid
                                 id:         useMapPositionCheckbox
                                 text:       qsTr("Use current map position instead")
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 width:      parent.width
                                 visible:    useMapPositionCheckbox.checked
                                 wrapMode:   Text.WordWrap
@@ -560,14 +560,14 @@ SetupPage {
                                 id:         northCalLat
                                 visible:    !useGcsPositionCheckbox.checked && !useMapPositionCheckbox.checked && northCalibrationCheckBox.checked
                                 text:       "0.00"
-                                textColor:  isNaN(parseFloat(text)) ? qgcPal.warningText: qgcPal.textFieldText
+                                textColor:  isNaN(parseFloat(text)) ? beeCopterPal.warningText: beeCopterPal.textFieldText
                                 enabled:    !useGcsPositionCheckbox.checked
                             }
                             FactTextField {
                                 id:         northCalLon
                                 visible:    !useGcsPositionCheckbox.checked && !useMapPositionCheckbox.checked && northCalibrationCheckBox.checked
                                 text:       "0.00"
-                                textColor:  isNaN(parseFloat(text)) ? qgcPal.warningText: qgcPal.textFieldText
+                                textColor:  isNaN(parseFloat(text)) ? beeCopterPal.warningText: beeCopterPal.textFieldText
                                 enabled:    !useGcsPositionCheckbox.checked
                             }
 
@@ -579,7 +579,7 @@ SetupPage {
             Component {
                 id: compassMotDialogComponent
 
-                QGCPopupDialog {
+                beeCopterPopupDialog {
                     title:      qsTr("Compass Motor Interference Calibration")
                     buttons:    Dialog.Cancel | Dialog.Ok
 
@@ -589,7 +589,7 @@ SetupPage {
                         width:      40 * ScreenTools.defaultFontPixelWidth
                         spacing:    ScreenTools.defaultFontPixelHeight
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.left:   parent.left
                             anchors.right:  parent.right
                             wrapMode:       Text.WordWrap
@@ -598,7 +598,7 @@ SetupPage {
                                             qsTr("It is technically possible to set-up CompassMot using throttle but this is not recommended.")
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.left:   parent.left
                             anchors.right:  parent.right
                             wrapMode:       Text.WordWrap
@@ -606,21 +606,21 @@ SetupPage {
                                             qsTr("In this configuration they should push the copter down into the ground when the throttle is raised.")
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.left:   parent.left
                             anchors.right:  parent.right
                             wrapMode:       Text.WordWrap
                             text:           qsTr("Secure the copter (perhaps with tape) so that it does not move.")
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.left:   parent.left
                             anchors.right:  parent.right
                             wrapMode:       Text.WordWrap
                             text:           qsTr("Turn on your transmitter and keep throttle at zero.")
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.left:   parent.left
                             anchors.right:  parent.right
                             wrapMode:       Text.WordWrap
@@ -630,7 +630,7 @@ SetupPage {
                 }
             }
 
-            QGCFlickable {
+            beeCopterFlickable {
                 id:             buttonFlickable
                 anchors.left:   parent.left
                 anchors.top:    parent.top
@@ -670,7 +670,7 @@ SetupPage {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         width:  _buttonWidth
                         text:   _levelHorizonText
 
@@ -688,7 +688,7 @@ SetupPage {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         width:      _buttonWidth
                         text:       qsTr("Gyro")
                         visible:    globals.activeVehicle && (globals.activeVehicle.multiRotor | globals.activeVehicle.rover | globals.activeVehicle.sub)
@@ -698,7 +698,7 @@ SetupPage {
                                                                  function() { controller.calibrateGyro() })
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         width:      _buttonWidth
                         text:       _calibratePressureText
                         onClicked:  mainWindow.showMessageDialog(_calibratePressureText,
@@ -711,14 +711,14 @@ SetupPage {
                         readonly property string _calibratePressureText:    globals.activeVehicle.fixedWing ? qsTr("Baro/Airspeed") : qsTr("Pressure")
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         width:      _buttonWidth
                         text:       qsTr("CompassMot")
                         visible:    globals.activeVehicle ? globals.activeVehicle.supportsMotorInterference : false
                         onClicked:  compassMotDialogComponent.createObject(mainWindow).open()
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         width:      _buttonWidth
                         text:       qsTr("Sensor Settings")
                         onClicked:  showOrientationsDialog(_calTypeSet)
@@ -732,7 +732,7 @@ SetupPage {
                     anchors.left:       buttonColumn.left
                     spacing:            buttonColumn.spacing
 
-                    QGCButton {
+                    beeCopterButton {
                         id:         nextButton
                         width:      _buttonWidth
                         text:       qsTr("Next")
@@ -740,7 +740,7 @@ SetupPage {
                         onClicked:  controller.nextClicked()
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         id:         cancelButton
                         width:      _buttonWidth
                         text:       qsTr("Cancel")
@@ -748,7 +748,7 @@ SetupPage {
                         onClicked:  controller.cancelCalibration()
                     }
                 }
-            } // QGCFlickable - buttons
+            } // beeCopterFlickable - buttons
 
             /// Right column - cal area
             Column {
@@ -776,17 +776,17 @@ SetupPage {
                         anchors.fill:   parent
                         readOnly:       true
                         text:           statusTextAreaDefaultText
-                        color:          qgcPal.text
-                        background:     Rectangle { color: qgcPal.windowShade }
+                        color:          beeCopterPal.text
+                        background:     Rectangle { color: beeCopterPal.windowShade }
                     }
 
                     Rectangle {
                         id:             orientationCalArea
                         anchors.fill:   parent
                         visible:        controller.showOrientationCalArea
-                        color:          qgcPal.windowShade
+                        color:          beeCopterPal.windowShade
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:                 orientationCalAreaHelpText
                             anchors.margins:    ScreenTools.defaultFontPixelWidth
                             anchors.top:        orientationCalArea.top

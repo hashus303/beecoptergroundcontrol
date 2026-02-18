@@ -1,14 +1,14 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 Rectangle {
     width:  ScreenTools.defaultFontPixelHeight * 10
     height: _outerRadius * 4
     radius: _outerRadius
-    color:  QGroundControl.globalPalette.window
+    color:  beeCopter.globalPalette.window
 
     property real extraInset:           0
     property real extraValuesWidth:     _outerRadius
@@ -22,7 +22,7 @@ Rectangle {
         anchors.fill: parent
     }
 
-    QGCAttitudeWidget {
+    beeCopterAttitudeWidget {
         id:                         attitude
         anchors.horizontalCenter:   parent.horizontalCenter
         anchors.topMargin:          _outerMargin
@@ -31,7 +31,7 @@ Rectangle {
         vehicle:                    globals.activeVehicle
     }
 
-    QGCCompassWidget {
+    beeCopterCompassWidget {
         id:                         compass
         anchors.horizontalCenter:   parent.horizontalCenter
         anchors.topMargin:          _outerMargin * 2

@@ -1,5 +1,5 @@
-# Code coverage configuration for QGroundControl
-# Enabled via: cmake -DQGC_ENABLE_COVERAGE=ON -DCMAKE_BUILD_TYPE=Debug
+# Code coverage configuration for beeCopter
+# Enabled via: cmake -DbeeCopter_ENABLE_COVERAGE=ON -DCMAKE_BUILD_TYPE=Debug
 #
 # Targets:
 #   coverage         - Run tests and generate XML + HTML reports
@@ -11,7 +11,7 @@
 #   - For GCC: gcov (usually installed with gcc)
 #   - For Clang: llvm-cov (usually installed with clang)
 
-if(NOT QGC_ENABLE_COVERAGE)
+if(NOT beeCopter_ENABLE_COVERAGE)
     return()
 endif()
 
@@ -54,7 +54,7 @@ find_program(GCOVR_EXECUTABLE gcovr)
 
 if(GCOVR_EXECUTABLE)
     message(STATUS "Found gcovr: ${GCOVR_EXECUTABLE}")
-    message(STATUS "Coverage thresholds: lines=${QGC_COVERAGE_LINE_THRESHOLD}%, branches=${QGC_COVERAGE_BRANCH_THRESHOLD}%")
+    message(STATUS "Coverage thresholds: lines=${beeCopter_COVERAGE_LINE_THRESHOLD}%, branches=${beeCopter_COVERAGE_BRANCH_THRESHOLD}%")
 
     # Common gcovr arguments
     set(GCOVR_COMMON_ARGS
@@ -74,7 +74,7 @@ if(GCOVR_EXECUTABLE)
         list(APPEND GCOVR_COMMON_ARGS --gcov-executable "${GCOVR_GCOV_EXECUTABLE}")
     endif()
 
-    if(QGC_BUILD_TESTING)
+    if(beeCopter_BUILD_TESTING)
         # coverage: Run tests and generate both XML (for Codecov) and HTML
         add_custom_target(coverage
             # Run tests
@@ -110,13 +110,13 @@ if(GCOVR_EXECUTABLE)
             COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -L Unit
             COMMAND ${GCOVR_EXECUTABLE}
                 ${GCOVR_COMMON_ARGS}
-                --fail-under-line ${QGC_COVERAGE_LINE_THRESHOLD}
-                --fail-under-branch ${QGC_COVERAGE_BRANCH_THRESHOLD}
+                --fail-under-line ${beeCopter_COVERAGE_LINE_THRESHOLD}
+                --fail-under-branch ${beeCopter_COVERAGE_BRANCH_THRESHOLD}
                 --xml coverage.xml
                 --html coverage.html
                 --html-details
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-            COMMENT "Running tests and verifying coverage thresholds (lines>=${QGC_COVERAGE_LINE_THRESHOLD}%, branches>=${QGC_COVERAGE_BRANCH_THRESHOLD}%)"
+            COMMENT "Running tests and verifying coverage thresholds (lines>=${beeCopter_COVERAGE_LINE_THRESHOLD}%, branches>=${beeCopter_COVERAGE_BRANCH_THRESHOLD}%)"
             VERBATIM
         )
         add_dependencies(coverage-check ${CMAKE_PROJECT_NAME})

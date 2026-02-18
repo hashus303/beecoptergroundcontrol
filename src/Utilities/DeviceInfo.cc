@@ -1,53 +1,53 @@
 #include "DeviceInfo.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QApplicationStatic>
 
-QGC_LOGGING_CATEGORY(QGCDeviceInfoLog, "Utilities.QGCDeviceInfo")
+beeCopter_LOGGING_CATEGORY(beeCopterDeviceInfoLog, "Utilities.beeCopterDeviceInfo")
 
-namespace QGCDeviceInfo
+namespace beeCopterDeviceInfo
 {
 
 ////////////////////////////////////////////////////////////////////
 
-Q_APPLICATION_STATIC(QGCAmbientTemperature, s_ambientTemperature);
+Q_APPLICATION_STATIC(beeCopterAmbientTemperature, s_ambientTemperature);
 
-QGCAmbientTemperature* QGCAmbientTemperature::instance()
+beeCopterAmbientTemperature* beeCopterAmbientTemperature::instance()
 {
     return s_ambientTemperature();
 }
 
-QGCAmbientTemperature::QGCAmbientTemperature(QObject* parent)
+beeCopterAmbientTemperature::beeCopterAmbientTemperature(QObject* parent)
     : QObject(parent)
     , _ambientTemperature(new QAmbientTemperatureSensor(this))
-    , _ambientTemperatureFilter(std::make_shared<QGCAmbientTemperatureFilter>())
+    , _ambientTemperatureFilter(std::make_shared<beeCopterAmbientTemperatureFilter>())
 {
     connect(_ambientTemperature, &QAmbientTemperatureSensor::sensorError, this, [](int error) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "QAmbientTemperature error:" << error;
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "QAmbientTemperature error:" << error;
     });
 
     if (!init()) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "Error Initializing Ambient Temperature Sensor";
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Error Initializing Ambient Temperature Sensor";
     }
 
-    qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 }
 
-QGCAmbientTemperature::~QGCAmbientTemperature()
+beeCopterAmbientTemperature::~beeCopterAmbientTemperature()
 {
-    qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 }
 
-bool QGCAmbientTemperature::init()
+bool beeCopterAmbientTemperature::init()
 {
     _ambientTemperature->addFilter(_ambientTemperatureFilter.get());
 
     const bool connected = _ambientTemperature->connectToBackend();
     if(!connected) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "Failed to connect to ambient temperature backend";
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Failed to connect to ambient temperature backend";
         return false;
     } else {
-        qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Connected to ambient temperature backend:" << _ambientTemperature->identifier();
+        qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Connected to ambient temperature backend:" << _ambientTemperature->identifier();
     }
 
     if (_ambientTemperature->isFeatureSupported(QSensor::SkipDuplicates)) {
@@ -56,19 +56,19 @@ bool QGCAmbientTemperature::init()
 
     const qrangelist dataRates = _ambientTemperature->availableDataRates();
     if (!dataRates.isEmpty()) {
-        qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Available Data Rates:" << dataRates;
+        qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Available Data Rates:" << dataRates;
         // _ambientTemperature->setDataRate(dataRates.first().first);
-        qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Selected Data Rate:" << _ambientTemperature->dataRate();
+        qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Selected Data Rate:" << _ambientTemperature->dataRate();
     }
 
     const qoutputrangelist outputRanges = _ambientTemperature->outputRanges();
     if (!outputRanges.isEmpty()) {
-        // qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Output Ranges:" << outputRanges;
+        // qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Output Ranges:" << outputRanges;
         // _ambientTemperature->setOutputRange(outputRanges.first().first);
         const int outputRangeIndex = _ambientTemperature->outputRange();
         if (outputRangeIndex < outputRanges.size()) {
             const qoutputrange outputRange = outputRanges.at(_ambientTemperature->outputRange());
-            qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Selected Output Range:" << outputRange.minimum << outputRange.maximum << outputRange.accuracy;
+            qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Selected Output Range:" << outputRange.minimum << outputRange.maximum << outputRange.accuracy;
         }
     }
 
@@ -86,32 +86,32 @@ bool QGCAmbientTemperature::init()
     // _ambientTemperature->setActive(true);
     const bool started = _ambientTemperature->start();
     if (!started) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "Failed to start ambient temperature";
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Failed to start ambient temperature";
         return false;
     }
 
     return true;
 }
 
-void QGCAmbientTemperature::quit()
+void beeCopterAmbientTemperature::quit()
 {
     // _ambientTemperature->setActive(false);
     _ambientTemperature->stop();
     _ambientTemperature->disconnect(_readingChangedConnection);
 }
 
-QGCAmbientTemperatureFilter::QGCAmbientTemperatureFilter()
+beeCopterAmbientTemperatureFilter::beeCopterAmbientTemperatureFilter()
     : QAmbientTemperatureFilter()
 {
-    qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 }
 
-QGCAmbientTemperatureFilter::~QGCAmbientTemperatureFilter()
+beeCopterAmbientTemperatureFilter::~beeCopterAmbientTemperatureFilter()
 {
-    qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 }
 
-bool QGCAmbientTemperatureFilter::filter(QAmbientTemperatureReading *reading)
+bool beeCopterAmbientTemperatureFilter::filter(QAmbientTemperatureReading *reading)
 {
     if (!reading) {
         return false;
@@ -123,44 +123,44 @@ bool QGCAmbientTemperatureFilter::filter(QAmbientTemperatureReading *reading)
 
 ////////////////////////////////////////////////////////////////////
 
-Q_APPLICATION_STATIC(QGCPressure, s_pressure);
+Q_APPLICATION_STATIC(beeCopterPressure, s_pressure);
 
-QGCPressure* QGCPressure::instance()
+beeCopterPressure* beeCopterPressure::instance()
 {
     return s_pressure();
 }
 
-QGCPressure::QGCPressure(QObject* parent)
+beeCopterPressure::beeCopterPressure(QObject* parent)
     : QObject(parent)
     , _pressure(new QPressureSensor(this))
-    , _pressureFilter(std::make_shared<QGCPressureFilter>())
+    , _pressureFilter(std::make_shared<beeCopterPressureFilter>())
 {
     connect(_pressure, &QPressureSensor::sensorError, this, [](int error) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "QPressure error:" << error;
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "QPressure error:" << error;
     });
 
     if (!init()) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "Error Initializing Pressure Sensor";
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Error Initializing Pressure Sensor";
     }
 
-    qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 }
 
-QGCPressure::~QGCPressure()
+beeCopterPressure::~beeCopterPressure()
 {
-    qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 }
 
-bool QGCPressure::init()
+bool beeCopterPressure::init()
 {
     _pressure->addFilter(_pressureFilter.get());
 
     const bool connected = _pressure->connectToBackend();
     if(!connected) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "Failed to connect to pressure backend";
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Failed to connect to pressure backend";
         return false;
     } else {
-        qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Connected to pressure backend:" << _pressure->identifier();
+        qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Connected to pressure backend:" << _pressure->identifier();
     }
 
     if (_pressure->isFeatureSupported(QSensor::SkipDuplicates)) {
@@ -169,19 +169,19 @@ bool QGCPressure::init()
 
     const qrangelist dataRates = _pressure->availableDataRates();
     if (!dataRates.isEmpty()) {
-        qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Available Data Rates:" << dataRates;
+        qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Available Data Rates:" << dataRates;
         // _pressure->setDataRate(dataRates.first().first);
-        qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Selected Data Rate:" << _pressure->dataRate();
+        qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Selected Data Rate:" << _pressure->dataRate();
     }
 
     const qoutputrangelist outputRanges = _pressure->outputRanges();
     if (!outputRanges.isEmpty()) {
-        // qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Output Ranges:" << outputRanges;
+        // qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Output Ranges:" << outputRanges;
         // _pressure->setOutputRange(outputRanges.first().first);
         const int outputRangeIndex = _pressure->outputRange();
         if (outputRangeIndex < outputRanges.size()) {
             const qoutputrange outputRange = outputRanges.at(_pressure->outputRange());
-            qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Selected Output Range:" << outputRange.minimum << outputRange.maximum << outputRange.accuracy;
+            qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Selected Output Range:" << outputRange.minimum << outputRange.maximum << outputRange.accuracy;
         }
     }
 
@@ -199,32 +199,32 @@ bool QGCPressure::init()
     // _pressure->setActive(true);
     const bool started = _pressure->start();
     if (!started) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "Failed to start pressure";
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Failed to start pressure";
         return false;
     }
 
     return true;
 }
 
-void QGCPressure::quit()
+void beeCopterPressure::quit()
 {
     // _pressure->setActive(false);
     _pressure->stop();
     _pressure->disconnect(_readingChangedConnection);
 }
 
-QGCPressureFilter::QGCPressureFilter()
+beeCopterPressureFilter::beeCopterPressureFilter()
     : QPressureFilter()
 {
-    qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 }
 
-QGCPressureFilter::~QGCPressureFilter()
+beeCopterPressureFilter::~beeCopterPressureFilter()
 {
-    qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 }
 
-bool QGCPressureFilter::filter(QPressureReading *reading)
+bool beeCopterPressureFilter::filter(QPressureReading *reading)
 {
     if (!reading) {
         return false;
@@ -245,44 +245,44 @@ bool QGCPressureFilter::filter(QPressureReading *reading)
 
 ////////////////////////////////////////////////////////////////////
 
-Q_APPLICATION_STATIC(QGCCompass, s_compass);
+Q_APPLICATION_STATIC(beeCopterCompass, s_compass);
 
-QGCCompass* QGCCompass::instance()
+beeCopterCompass* beeCopterCompass::instance()
 {
     return s_compass();
 }
 
-QGCCompass::QGCCompass(QObject* parent)
+beeCopterCompass::beeCopterCompass(QObject* parent)
     : QObject(parent)
     , _compass(new QCompass(this))
-    , _compassFilter(std::make_shared<QGCCompassFilter>())
+    , _compassFilter(std::make_shared<beeCopterCompassFilter>())
 {
-    // qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    // qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 
     (void) connect(_compass, &QCompass::sensorError, this, [](int error) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "Compass error:" << error;
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Compass error:" << error;
     });
 
     if (!init()) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "Error Initializing Compass Sensor";
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Error Initializing Compass Sensor";
     }
 }
 
-QGCCompass::~QGCCompass()
+beeCopterCompass::~beeCopterCompass()
 {
-    // qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    // qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 }
 
-bool QGCCompass::init()
+bool beeCopterCompass::init()
 {
     _compass->addFilter(_compassFilter.get());
 
     const bool connected = _compass->connectToBackend();
     if (!connected) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "Failed to connect to compass backend";
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Failed to connect to compass backend";
         return false;
     } else {
-        qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Connected to compass backend:" << _compass->identifier();
+        qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Connected to compass backend:" << _compass->identifier();
     }
 
     if (_compass->isFeatureSupported(QSensor::SkipDuplicates)) {
@@ -291,19 +291,19 @@ bool QGCCompass::init()
 
     const qrangelist dataRates = _compass->availableDataRates();
     if (!dataRates.isEmpty()) {
-        qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Available Data Rates:" << dataRates;
+        qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Available Data Rates:" << dataRates;
         // _compass->setDataRate(dataRates.first().first);
-        qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Selected Data Rate:" << _compass->dataRate();
+        qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Selected Data Rate:" << _compass->dataRate();
     }
 
     const qoutputrangelist outputRanges = _compass->outputRanges();
     if (!outputRanges.isEmpty()) {
-        // qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Output Ranges:" << outputRanges;
+        // qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Output Ranges:" << outputRanges;
         // _compass->setOutputRange(outputRanges.first().first);
         const int outputRangeIndex = _compass->outputRange();
         if (outputRangeIndex < outputRanges.size()) {
             const qoutputrange outputRange = outputRanges.at(_compass->outputRange());
-            qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << "Selected Output Range:" << outputRange.minimum << outputRange.maximum << outputRange.accuracy;
+            qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Selected Output Range:" << outputRange.minimum << outputRange.maximum << outputRange.accuracy;
         }
     }
 
@@ -328,32 +328,32 @@ bool QGCCompass::init()
     // _compass->setActive(true);
     const bool started = _compass->start();
     if (!started) {
-        qCWarning(QGCDeviceInfoLog) << Q_FUNC_INFO << "Failed to start compass";
+        qCWarning(beeCopterDeviceInfoLog) << Q_FUNC_INFO << "Failed to start compass";
         return false;
     }
 
     return true;
 }
 
-void QGCCompass::quit()
+void beeCopterCompass::quit()
 {
     // _compass->setActive(false);
     _compass->stop();
     _compass->disconnect(_readingChangedConnection);
 }
 
-QGCCompassFilter::QGCCompassFilter()
+beeCopterCompassFilter::beeCopterCompassFilter()
     : QCompassFilter()
 {
-    qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 }
 
-QGCCompassFilter::~QGCCompassFilter()
+beeCopterCompassFilter::~beeCopterCompassFilter()
 {
-    qCDebug(QGCDeviceInfoLog) << Q_FUNC_INFO << this;
+    qCDebug(beeCopterDeviceInfoLog) << Q_FUNC_INFO << this;
 }
 
-bool QGCCompassFilter::filter(QCompassReading *reading)
+bool beeCopterCompassFilter::filter(QCompassReading *reading)
 {
     if (!reading) {
         return false;
@@ -365,4 +365,4 @@ bool QGCCompassFilter::filter(QCompassReading *reading)
 
 ////////////////////////////////////////////////////////////////////
 
-} // namespace QGCDeviceInfo
+} // namespace beeCopterDeviceInfo

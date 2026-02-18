@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 ColumnLayout {
     spacing: ScreenTools.defaultFontPixelHeight / 2
@@ -40,7 +40,7 @@ ColumnLayout {
 
             property Fact fact: controller.getParameterFact(-1, "FS_OPTIONS")
 
-            QGCCheckBoxSlider {
+            beeCopterCheckBoxSlider {
                 Layout.fillWidth: true
                 text:               modelData
                 checked:            fact.value & fact.bitmaskValues[index]

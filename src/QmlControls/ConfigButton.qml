@@ -1,5 +1,5 @@
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 SettingsButton {
     icon.color: setupComplete ? textColor : "red"

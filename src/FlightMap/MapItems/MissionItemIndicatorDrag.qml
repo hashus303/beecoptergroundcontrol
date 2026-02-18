@@ -1,8 +1,8 @@
 import QtQuick
 import QtLocation
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Use to drag a MissionItemIndicator
 Rectangle {
@@ -12,7 +12,7 @@ Rectangle {
     width:          _itemIndicatorWidth + (_touchMarginHorizontal * 2)
     height:         _itemIndicatorHeight + (_touchMarginVertical * 2)
     color:          "transparent"
-    z:              QGroundControl.zOrderMapItems + 1    // Above item icons
+    z:              beeCopter.zOrderMapItems + 1    // Above item icons
 
     // Properties which must be specific by consumer
     property var mapControl     ///< Map control which contains this item
@@ -52,7 +52,7 @@ Rectangle {
 
     Drag.active: itemDrag.drag.active
 
-    QGCMouseArea {
+    beeCopterMouseArea {
         id:                 itemDrag
         anchors.fill:       parent
         drag.target:        parent

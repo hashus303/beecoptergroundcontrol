@@ -1,18 +1,18 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
-    color:          qgcPal.window
+    color:          beeCopterPal.window
     anchors.fill:   parent
 
     readonly property real _margins: ScreenTools.defaultFontPixelHeight
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
-    QGCFlickable {
+    beeCopterFlickable {
         anchors.margins:    _margins
         anchors.fill:       parent
         contentWidth:       grid.width
@@ -23,30 +23,30 @@ Rectangle {
             id:         grid
             columns:    2
 
-            QGCLabel { text: qsTr("QGroundControl User Guide") }
-            QGCLabel {
-                linkColor:          qgcPal.text
-                text:               "<a href=\"https://docs.qgroundcontrol.com\">https://docs.qgroundcontrol.com</a>"
+            beeCopterLabel { text: qsTr("beeCopter User Guide") }
+            beeCopterLabel {
+                linkColor:          beeCopterPal.text
+                text:               "<a href=\"https://docs.beeCopter.com\">https://docs.beeCopter.com</a>"
                 onLinkActivated:    (link) => Qt.openUrlExternally(link)
             }
 
-            QGCLabel { text: qsTr("PX4 Users Discussion Forum") }
-            QGCLabel {
-                linkColor:          qgcPal.text
-                text:               "<a href=\"http://discuss.px4.io/c/qgroundcontrol\">http://discuss.px4.io/c/qgroundcontrol</a>"
+            beeCopterLabel { text: qsTr("PX4 Users Discussion Forum") }
+            beeCopterLabel {
+                linkColor:          beeCopterPal.text
+                text:               "<a href=\"http://discuss.px4.io/c/beeCopter\">http://discuss.px4.io/c/beeCopter</a>"
                 onLinkActivated:    (link) => Qt.openUrlExternally(link)
             }
 
-            QGCLabel { text: qsTr("ArduPilot Users Discussion Forum") }
-            QGCLabel {
-                linkColor:          qgcPal.text
-                text:               "<a href=\"https://discuss.ardupilot.org/c/ground-control-software/qgroundcontrol\">https://discuss.ardupilot.org/c/ground-control-software/qgroundcontrol</a>"
+            beeCopterLabel { text: qsTr("ArduPilot Users Discussion Forum") }
+            beeCopterLabel {
+                linkColor:          beeCopterPal.text
+                text:               "<a href=\"https://discuss.ardupilot.org/c/ground-control-software/beeCopter\">https://discuss.ardupilot.org/c/ground-control-software/beeCopter</a>"
                 onLinkActivated:    (link) => Qt.openUrlExternally(link)
             }
 
-            QGCLabel { text: qsTr("QGroundControl Discord Channel") }
-            QGCLabel {
-                linkColor:          qgcPal.text
+            beeCopterLabel { text: qsTr("beeCopter Discord Channel") }
+            beeCopterLabel {
+                linkColor:          beeCopterPal.text
                 text:               "<a href=\"https://discord.com/channels/1022170275984457759/1022185820683255908\">https://discord.com/channels/1022170275984457759/1022185820683255908</a>"
                 onLinkActivated:    (link) => Qt.openUrlExternally(link)
             }

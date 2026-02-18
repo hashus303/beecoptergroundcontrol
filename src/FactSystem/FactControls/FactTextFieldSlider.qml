@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Rectangle {
     property string label
@@ -28,7 +28,7 @@ Rectangle {
 
     property bool _loadComplete:            false
     property bool _showSlider:              fact.userMin !== undefined && fact.userMax !== undefined
-    property color _ftfsBackgroundColor:    Qt.rgba(qgcPal.windowShadeLight.r, qgcPal.windowShadeLight.g, qgcPal.windowShadeLight.b, 0.2)
+    property color _ftfsBackgroundColor:    Qt.rgba(beeCopterPal.windowShadeLight.r, beeCopterPal.windowShadeLight.g, beeCopterPal.windowShadeLight.b, 0.2)
 
     function updateSliderToClampedValue() {
         if (_showSlider && sliderLoader.item) {
@@ -54,7 +54,7 @@ Rectangle {
         }
     }
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     ColumnLayout {
         id:         mainLayout
@@ -64,7 +64,7 @@ Rectangle {
         RowLayout {
             spacing: ScreenTools.defaultFontPixelWidth
 
-            QGCCheckBox {
+            beeCopterCheckBox {
                 id:                 enableCheckbox
                 Layout.fillWidth:   visible
                 text:               control.label
@@ -94,7 +94,7 @@ Rectangle {
         Component {
             id: sliderComponent
 
-            QGCSlider {
+            beeCopterSlider {
                 id:                 slider
                 Layout.fillWidth:   true
                 from:               control.fact.userMin

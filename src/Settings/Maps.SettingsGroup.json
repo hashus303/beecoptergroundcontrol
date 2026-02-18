@@ -1,7 +1,7 @@
 {
     "version":  1,
     "fileType": "FactMetaData",
-    "QGC.MetaData.Facts":
+    "beeCopter.MetaData.Facts":
 [
 {
     "name":         "maxCacheDiskSize",
@@ -21,7 +21,7 @@
     "max":                  1024,
     "default":              128,
     "mobileDefault":        16,
-    "qgcRebootRequired":    true
+    "beeCopterRebootRequired":    true
 }
 ]
 }

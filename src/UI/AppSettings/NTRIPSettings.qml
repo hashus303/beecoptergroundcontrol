@@ -1,13 +1,13 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
-import QGroundControl.NTRIP 1.0
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
+import beeCopter.NTRIP 1.0
 
 SettingsPage {
-    property var _settingsManager:   QGroundControl.settingsManager
+    property var _settingsManager:   beeCopter.settingsManager
     property var _ntrip:             _settingsManager.ntripSettings
     property Fact _enabled:          _ntrip.ntripServerConnectEnabled
 
@@ -33,7 +33,7 @@ SettingsPage {
         enabled:            _enabled.rawValue
 
         // Status line
-        QGCLabel {
+        beeCopterLabel {
             Layout.fillWidth:   true
             Layout.minimumHeight: 30
             visible: true
@@ -47,14 +47,14 @@ SettingsPage {
             wrapMode: Text.WordWrap
             color: {
                 try {
-                    if (!NTRIPManager) return qgcPal.text
+                    if (!NTRIPManager) return beeCopterPal.text
                     var status = NTRIPManager.ntripStatus || ""
-                    if (status.toLowerCase().includes("connected")) return qgcPal.colorGreen
-                    if (status.toLowerCase().includes("connecting")) return qgcPal.colorOrange
-                    if (status.toLowerCase().includes("error") || status.toLowerCase().includes("failed")) return qgcPal.colorRed
-                    return qgcPal.text
+                    if (status.toLowerCase().includes("connected")) return beeCopterPal.colorGreen
+                    if (status.toLowerCase().includes("connecting")) return beeCopterPal.colorOrange
+                    if (status.toLowerCase().includes("error") || status.toLowerCase().includes("failed")) return beeCopterPal.colorRed
+                    return beeCopterPal.text
                 } catch (e) {
-                    return qgcPal.text
+                    return beeCopterPal.text
                 }
             }
         }

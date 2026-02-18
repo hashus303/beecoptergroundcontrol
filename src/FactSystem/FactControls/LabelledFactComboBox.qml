@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 RowLayout {
     property alias label:                   label.text
@@ -16,7 +16,7 @@ RowLayout {
 
     signal activated(int index)
 
-    QGCLabel {
+    beeCopterLabel {
         id:                 label
         Layout.fillWidth:   true
     }

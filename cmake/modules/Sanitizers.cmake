@@ -1,14 +1,14 @@
 # ============================================================================
-# Sanitizers and Runtime Analysis for QGroundControl
+# Sanitizers and Runtime Analysis for beeCopter
 # ============================================================================
 #
 # Unified module for runtime error detection, memory checking, and profiling.
 #
 # Compile-time Sanitizers (require rebuild):
-#   cmake -DQGC_ENABLE_ASAN=ON ...     # AddressSanitizer (memory errors)
-#   cmake -DQGC_ENABLE_UBSAN=ON ...    # UndefinedBehaviorSanitizer
-#   cmake -DQGC_ENABLE_TSAN=ON ...     # ThreadSanitizer (data races)
-#   cmake -DQGC_ENABLE_MSAN=ON ...     # MemorySanitizer (uninitialized reads)
+#   cmake -DbeeCopter_ENABLE_ASAN=ON ...     # AddressSanitizer (memory errors)
+#   cmake -DbeeCopter_ENABLE_UBSAN=ON ...    # UndefinedBehaviorSanitizer
+#   cmake -DbeeCopter_ENABLE_TSAN=ON ...     # ThreadSanitizer (data races)
+#   cmake -DbeeCopter_ENABLE_MSAN=ON ...     # MemorySanitizer (uninitialized reads)
 #
 # Runtime Analysis (no rebuild required):
 #   cmake --build build --target check-memcheck      # Valgrind memcheck
@@ -31,45 +31,45 @@ include(CMakeDependentOption)
 # ############################################################################
 
 # Sanitizer options (only available in Debug/RelWithDebInfo)
-cmake_dependent_option(QGC_ENABLE_ASAN
+cmake_dependent_option(beeCopter_ENABLE_ASAN
     "Enable AddressSanitizer (memory error detection)"
     OFF
     "CMAKE_BUILD_TYPE MATCHES Debug|RelWithDebInfo"
     OFF)
 
-cmake_dependent_option(QGC_ENABLE_UBSAN
+cmake_dependent_option(beeCopter_ENABLE_UBSAN
     "Enable UndefinedBehaviorSanitizer"
     OFF
     "CMAKE_BUILD_TYPE MATCHES Debug|RelWithDebInfo"
     OFF)
 
-cmake_dependent_option(QGC_ENABLE_TSAN
+cmake_dependent_option(beeCopter_ENABLE_TSAN
     "Enable ThreadSanitizer (data race detection)"
     OFF
     "CMAKE_BUILD_TYPE MATCHES Debug|RelWithDebInfo"
     OFF)
 
-cmake_dependent_option(QGC_ENABLE_MSAN
+cmake_dependent_option(beeCopter_ENABLE_MSAN
     "Enable MemorySanitizer (uninitialized memory detection)"
     OFF
     "CMAKE_BUILD_TYPE MATCHES Debug|RelWithDebInfo"
     OFF)
 
 # Validate incompatible combinations
-if(QGC_ENABLE_ASAN AND QGC_ENABLE_TSAN)
+if(beeCopter_ENABLE_ASAN AND beeCopter_ENABLE_TSAN)
     message(FATAL_ERROR "ASan and TSan cannot be used together. Choose one.")
 endif()
 
-if(QGC_ENABLE_ASAN AND QGC_ENABLE_MSAN)
+if(beeCopter_ENABLE_ASAN AND beeCopter_ENABLE_MSAN)
     message(FATAL_ERROR "ASan and MSan cannot be used together. Choose one.")
 endif()
 
-if(QGC_ENABLE_TSAN AND QGC_ENABLE_MSAN)
+if(beeCopter_ENABLE_TSAN AND beeCopter_ENABLE_MSAN)
     message(FATAL_ERROR "TSan and MSan cannot be used together. Choose one.")
 endif()
 
 # Check compiler support
-if(QGC_ENABLE_ASAN OR QGC_ENABLE_UBSAN OR QGC_ENABLE_TSAN OR QGC_ENABLE_MSAN)
+if(beeCopter_ENABLE_ASAN OR beeCopter_ENABLE_UBSAN OR beeCopter_ENABLE_TSAN OR beeCopter_ENABLE_MSAN)
     if(NOT (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang"))
         message(FATAL_ERROR "Sanitizers are only supported with GCC and Clang")
     endif()
@@ -80,7 +80,7 @@ endif()
 # ============================================================================
 # Detects: buffer overflows, use-after-free, memory leaks, double-free
 
-if(QGC_ENABLE_ASAN)
+if(beeCopter_ENABLE_ASAN)
     message(STATUS "AddressSanitizer (ASan) enabled")
 
     set(ASAN_FLAGS -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls)
@@ -102,7 +102,7 @@ exec \"$@\"
 ")
     file(CHMOD ${CMAKE_BINARY_DIR}/run-with-asan.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-    message(STATUS "  Run with: ASAN_OPTIONS=\"${ASAN_DEFAULT_OPTIONS}\" ./QGroundControl")
+    message(STATUS "  Run with: ASAN_OPTIONS=\"${ASAN_DEFAULT_OPTIONS}\" ./beeCopter")
 endif()
 
 # ============================================================================
@@ -110,7 +110,7 @@ endif()
 # ============================================================================
 # Detects: integer overflow, null dereference, division by zero, invalid shifts
 
-if(QGC_ENABLE_UBSAN)
+if(beeCopter_ENABLE_UBSAN)
     message(STATUS "UndefinedBehaviorSanitizer (UBSan) enabled")
 
     set(UBSAN_CHECKS "undefined" "integer" "nullability")
@@ -123,7 +123,7 @@ if(QGC_ENABLE_UBSAN)
     target_link_options(${CMAKE_PROJECT_NAME} PRIVATE ${UBSAN_FLAGS})
 
     set(UBSAN_DEFAULT_OPTIONS "print_stacktrace=1:halt_on_error=0")
-    message(STATUS "  Run with: UBSAN_OPTIONS=\"${UBSAN_DEFAULT_OPTIONS}\" ./QGroundControl")
+    message(STATUS "  Run with: UBSAN_OPTIONS=\"${UBSAN_DEFAULT_OPTIONS}\" ./beeCopter")
 endif()
 
 # ============================================================================
@@ -131,7 +131,7 @@ endif()
 # ============================================================================
 # Detects: data races, deadlocks, lock order inversions
 
-if(QGC_ENABLE_TSAN)
+if(beeCopter_ENABLE_TSAN)
     message(STATUS "ThreadSanitizer (TSan) enabled")
 
     set(TSAN_FLAGS -fsanitize=thread -fno-omit-frame-pointer)
@@ -140,7 +140,7 @@ if(QGC_ENABLE_TSAN)
     target_link_options(${CMAKE_PROJECT_NAME} PRIVATE ${TSAN_FLAGS})
 
     set(TSAN_DEFAULT_OPTIONS "second_deadlock_stack=1:halt_on_error=0")
-    message(STATUS "  Run with: TSAN_OPTIONS=\"${TSAN_DEFAULT_OPTIONS}\" ./QGroundControl")
+    message(STATUS "  Run with: TSAN_OPTIONS=\"${TSAN_DEFAULT_OPTIONS}\" ./beeCopter")
     message(STATUS "  Note: You may need to increase stack size: ulimit -s unlimited")
 endif()
 
@@ -150,7 +150,7 @@ endif()
 # Detects: uninitialized memory reads
 # Note: Requires ALL libraries (including Qt) to be MSan-instrumented
 
-if(QGC_ENABLE_MSAN)
+if(beeCopter_ENABLE_MSAN)
     if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         message(FATAL_ERROR "MemorySanitizer is only supported with Clang")
     endif()
@@ -164,16 +164,16 @@ if(QGC_ENABLE_MSAN)
     target_link_options(${CMAKE_PROJECT_NAME} PRIVATE ${MSAN_FLAGS})
 
     set(MSAN_DEFAULT_OPTIONS "halt_on_error=0")
-    message(STATUS "  Run with: MSAN_OPTIONS=\"${MSAN_DEFAULT_OPTIONS}\" ./QGroundControl")
+    message(STATUS "  Run with: MSAN_OPTIONS=\"${MSAN_DEFAULT_OPTIONS}\" ./beeCopter")
 endif()
 
 # ============================================================================
 # Sanitizer Suppression Files
 # ============================================================================
 
-if(QGC_ENABLE_ASAN OR QGC_ENABLE_UBSAN OR QGC_ENABLE_TSAN)
+if(beeCopter_ENABLE_ASAN OR beeCopter_ENABLE_UBSAN OR beeCopter_ENABLE_TSAN)
     file(WRITE ${CMAKE_BINARY_DIR}/asan_suppressions.txt
-"# QGC ASan Suppressions
+"# beeCopter ASan Suppressions
 leak:libQt
 leak:qt_
 leak:libfontconfig
@@ -181,14 +181,14 @@ leak:libpulse
 ")
 
     file(WRITE ${CMAKE_BINARY_DIR}/tsan_suppressions.txt
-"# QGC TSan Suppressions
+"# beeCopter TSan Suppressions
 race:QObject::
 race:QMetaObject::
 race:std::__1::
 ")
 
     file(WRITE ${CMAKE_BINARY_DIR}/ubsan_suppressions.txt
-"# QGC UBSan Suppressions
+"# beeCopter UBSan Suppressions
 vptr:libQt
 ")
 
@@ -196,11 +196,11 @@ vptr:libQt
 endif()
 
 # ============================================================================
-# Sanitizer Test Targets (require QGC_BUILD_TESTING for CTest)
+# Sanitizer Test Targets (require beeCopter_BUILD_TESTING for CTest)
 # ============================================================================
 
-if(QGC_BUILD_TESTING)
-    if(QGC_ENABLE_ASAN)
+if(beeCopter_BUILD_TESTING)
+    if(beeCopter_ENABLE_ASAN)
         add_custom_target(check-asan
             COMMAND ${CMAKE_COMMAND} -E env
                 "ASAN_OPTIONS=${ASAN_DEFAULT_OPTIONS}"
@@ -213,7 +213,7 @@ if(QGC_BUILD_TESTING)
         add_dependencies(check-asan ${CMAKE_PROJECT_NAME})
     endif()
 
-    if(QGC_ENABLE_TSAN)
+    if(beeCopter_ENABLE_TSAN)
         add_custom_target(check-tsan
             COMMAND ${CMAKE_COMMAND} -E env
                 "TSAN_OPTIONS=${TSAN_DEFAULT_OPTIONS}:suppressions=${CMAKE_BINARY_DIR}/tsan_suppressions.txt"
@@ -249,16 +249,16 @@ if(VALGRIND_EXECUTABLE)
     message(STATUS "Found Valgrind: ${VALGRIND_EXECUTABLE} (${VALGRIND_VERSION})")
 
     # Suppression file
-    set(QGC_VALGRIND_SUPP "${CMAKE_SOURCE_DIR}/tools/debuggers/valgrind.supp")
-    if(EXISTS ${QGC_VALGRIND_SUPP})
-        message(STATUS "Using Valgrind suppressions: ${QGC_VALGRIND_SUPP}")
+    set(beeCopter_VALGRIND_SUPP "${CMAKE_SOURCE_DIR}/tools/debuggers/valgrind.supp")
+    if(EXISTS ${beeCopter_VALGRIND_SUPP})
+        message(STATUS "Using Valgrind suppressions: ${beeCopter_VALGRIND_SUPP}")
     endif()
 
-    # CTest memcheck configuration and targets (require QGC_BUILD_TESTING)
-    if(QGC_BUILD_TESTING)
+    # CTest memcheck configuration and targets (require beeCopter_BUILD_TESTING)
+    if(beeCopter_BUILD_TESTING)
         set(MEMORYCHECK_COMMAND ${VALGRIND_EXECUTABLE})
         set(MEMORYCHECK_TYPE Valgrind)
-        set(MEMORYCHECK_SUPPRESSIONS_FILE ${QGC_VALGRIND_SUPP})
+        set(MEMORYCHECK_SUPPRESSIONS_FILE ${beeCopter_VALGRIND_SUPP})
         set(MEMORYCHECK_COMMAND_OPTIONS
             "--tool=memcheck"
             "--leak-check=full"
@@ -279,7 +279,7 @@ if(VALGRIND_EXECUTABLE)
             )
         endif()
 
-        math(EXPR QGC_VALGRIND_TIMEOUT "${QGC_VALGRIND_TIMEOUT_MULTIPLIER} * 100")
+        math(EXPR beeCopter_VALGRIND_TIMEOUT "${beeCopter_VALGRIND_TIMEOUT_MULTIPLIER} * 100")
 
         # ====================================================================
         # Valgrind Memcheck Targets
@@ -289,7 +289,7 @@ if(VALGRIND_EXECUTABLE)
             COMMAND ${CMAKE_CTEST_COMMAND}
                 -T memcheck
                 --output-on-failure
-                --timeout ${QGC_VALGRIND_TIMEOUT}
+                --timeout ${beeCopter_VALGRIND_TIMEOUT}
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
             USES_TERMINAL
             COMMENT "Running tests under Valgrind memcheck"
@@ -302,7 +302,7 @@ if(VALGRIND_EXECUTABLE)
                 -T memcheck
                 -L Unit
                 --output-on-failure
-                --timeout ${QGC_VALGRIND_TIMEOUT}
+                --timeout ${beeCopter_VALGRIND_TIMEOUT}
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
             USES_TERMINAL
             COMMENT "Running unit tests under Valgrind memcheck"
@@ -315,7 +315,7 @@ if(VALGRIND_EXECUTABLE)
                 -T memcheck
                 -LE "Slow|Integration"
                 --output-on-failure
-                --timeout ${QGC_VALGRIND_TIMEOUT}
+                --timeout ${beeCopter_VALGRIND_TIMEOUT}
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
             USES_TERMINAL
             COMMENT "Running quick tests under Valgrind memcheck"
@@ -334,7 +334,7 @@ if(VALGRIND_EXECUTABLE)
             --leak-check=full
             --show-leak-kinds=definite,possible
             --track-origins=yes
-            --suppressions=${QGC_VALGRIND_SUPP}
+            --suppressions=${beeCopter_VALGRIND_SUPP}
             --log-file=valgrind-app.log
             $<TARGET_FILE:${CMAKE_PROJECT_NAME}>
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -345,7 +345,7 @@ if(VALGRIND_EXECUTABLE)
     add_dependencies(valgrind-app ${CMAKE_PROJECT_NAME})
 
     # Test-dependent Valgrind targets (require --unittest support)
-    if(QGC_BUILD_TESTING)
+    if(beeCopter_BUILD_TESTING)
         add_custom_target(valgrind-test
             COMMAND ${VALGRIND_EXECUTABLE}
                 --tool=memcheck
@@ -353,7 +353,7 @@ if(VALGRIND_EXECUTABLE)
                 --show-leak-kinds=definite,possible
                 --track-origins=yes
                 --error-exitcode=1
-                --suppressions=${QGC_VALGRIND_SUPP}
+                --suppressions=${beeCopter_VALGRIND_SUPP}
                 --log-file=valgrind-test.log
                 $<TARGET_FILE:${CMAKE_PROJECT_NAME}> --unittest
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -371,7 +371,7 @@ if(VALGRIND_EXECUTABLE)
             COMMAND ${VALGRIND_EXECUTABLE}
                 --tool=helgrind
                 --history-level=full
-                --suppressions=${QGC_VALGRIND_SUPP}
+                --suppressions=${beeCopter_VALGRIND_SUPP}
                 --log-file=helgrind.log
                 $<TARGET_FILE:${CMAKE_PROJECT_NAME}> --unittest
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}

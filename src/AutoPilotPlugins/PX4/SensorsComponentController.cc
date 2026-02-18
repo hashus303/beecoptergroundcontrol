@@ -1,10 +1,10 @@
 #include "SensorsComponentController.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "ParameterManager.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(SensorsComponentControllerLog, "AutoPilotPlugins.SensorsComponentController")
+beeCopter_LOGGING_CATEGORY(SensorsComponentControllerLog, "AutoPilotPlugins.SensorsComponentController")
 
 SensorsComponentController::SensorsComponentController(void)
     : _statusLog                                (nullptr)
@@ -172,7 +172,7 @@ void SensorsComponentController::_stopCalibration(SensorsComponentController::St
         default:
             // Assume failed
             _hideAllCalAreas();
-            qgcApp()->showAppMessage(tr("Calibration failed. Calibration log will be displayed."));
+            beeCopterApp()->showAppMessage(tr("Calibration failed. Calibration log will be displayed."));
             break;
     }
 
@@ -185,31 +185,31 @@ void SensorsComponentController::_stopCalibration(SensorsComponentController::St
 void SensorsComponentController::calibrateGyro(void)
 {
     _startLogCalibration();
-    _vehicle->startCalibration(QGCMAVLink::CalibrationGyro);
+    _vehicle->startCalibration(beeCopterMAVLink::CalibrationGyro);
 }
 
 void SensorsComponentController::calibrateCompass(void)
 {
     _startLogCalibration();
-    _vehicle->startCalibration(QGCMAVLink::CalibrationMag);
+    _vehicle->startCalibration(beeCopterMAVLink::CalibrationMag);
 }
 
 void SensorsComponentController::calibrateAccel(void)
 {
     _startLogCalibration();
-    _vehicle->startCalibration(QGCMAVLink::CalibrationAccel);
+    _vehicle->startCalibration(beeCopterMAVLink::CalibrationAccel);
 }
 
 void SensorsComponentController::calibrateLevel(void)
 {
     _startLogCalibration();
-    _vehicle->startCalibration(QGCMAVLink::CalibrationLevel);
+    _vehicle->startCalibration(beeCopterMAVLink::CalibrationLevel);
 }
 
 void SensorsComponentController::calibrateAirspeed(void)
 {
     _startLogCalibration();
-    _vehicle->startCalibration(QGCMAVLink::CalibrationPX4Airspeed);
+    _vehicle->startCalibration(beeCopterMAVLink::CalibrationPX4Airspeed);
 }
 
 void SensorsComponentController::_handleUASTextMessage(int uasId, int compId, int severity, QString text, const QString &description)
@@ -489,14 +489,14 @@ void SensorsComponentController::cancelCalibration(void)
 void SensorsComponentController::_handleParametersReset(bool success)
 {
     if (success) {
-        qgcApp()->showAppMessage(tr("Reset successful"));
+        beeCopterApp()->showAppMessage(tr("Reset successful"));
 
         QTimer::singleShot(1000, this, [this]() {
             _refreshParams();
         });
     }
     else {
-        qgcApp()->showAppMessage(tr("Reset failed"));
+        beeCopterApp()->showAppMessage(tr("Reset failed"));
     }
 }
 

@@ -1,21 +1,21 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     id:     outerEditorRect
     height: innerEditorRect.y + innerEditorRect.height + (_margin * 2)
     radius: _radius
-    color:  qgcPal.missionItemEditor
+    color:  beeCopterPal.missionItemEditor
 
     property var controller ///< RallyPointController
 
     readonly property real  _margin: ScreenTools.defaultFontPixelWidth / 2
     readonly property real  _radius: ScreenTools.defaultFontPixelWidth / 2
 
-    QGCLabel {
+    beeCopterLabel {
         id:                 editorLabel
         anchors.margins:    _margin
         anchors.left:       parent.left
@@ -30,10 +30,10 @@ Rectangle {
         anchors.right:      parent.right
         anchors.top:        editorLabel.bottom
         height:             infoLabel.height + (_margin * 2)
-        color:              qgcPal.windowShadeDark
+        color:              beeCopterPal.windowShadeDark
         radius:             _radius
 
-        QGCLabel {
+        beeCopterLabel {
             id:                 infoLabel
             anchors.margins:    _margin
             anchors.top:        parent.top

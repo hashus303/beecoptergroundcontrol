@@ -11,11 +11,11 @@ RowLayout {
 
     width: parent.width
 
-    QGCLabel {
+    beeCopterLabel {
         id:     label
         text:   root.labelText
     }
-    QGCLabel {
+    beeCopterLabel {
         text:                   root.valueText
         color:                  root.valueColor !== "" ? root.valueColor : palette.text
         elide:                  Text.ElideRight

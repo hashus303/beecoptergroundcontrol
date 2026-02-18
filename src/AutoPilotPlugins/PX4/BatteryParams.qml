@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 // Exposes the set of battery parameters taking into account the availability of the parameters.
 // Only the _SOURCE parameter can be assumed to be always available. The remainder of the parameters

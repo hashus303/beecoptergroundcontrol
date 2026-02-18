@@ -1,13 +1,13 @@
 #include "ShowAppMessageState.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 
 ShowAppMessageState::ShowAppMessageState(QState* parentState, const QString& appMessage)
-    : QGCState("ShowAppMessageState", parentState)
+    : beeCopterState("ShowAppMessageState", parentState)
     , _appMessage(appMessage)
 {
     connect(this, &QState::entered, this, [this] () {
-        qCDebug(QGCStateMachineLog) << _appMessage << stateName();
-        qgcApp()->showAppMessage(_appMessage);
+        qCDebug(beeCopterStateMachineLog) << _appMessage << stateName();
+        beeCopterApp()->showAppMessage(_appMessage);
         emit advance();
     });
 }

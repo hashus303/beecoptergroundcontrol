@@ -2,10 +2,10 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
-QGCTextField {
+beeCopterTextField {
     id:                 control
     text:               fact ? fact.valueString : ""
     unitsLabel:         fact ? fact.units : ""

@@ -1,19 +1,19 @@
 #include "AndroidInterface.h"
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     #include "AndroidSerial.h"
 #endif
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QJniEnvironment>
 #include <QtCore/QJniObject>
 #include <QtCore/QLoggingCategory>
 
-QGC_LOGGING_CATEGORY(AndroidInitLog, "qgc.android.androidinit");
+beeCopter_LOGGING_CATEGORY(AndroidInitLog, "beeCopter.android.androidinit");
 
 static jobject _context = nullptr;
 static jobject _class_loader = nullptr;
 
-#ifdef QGC_GST_STREAMING
+#ifdef beeCopter_GST_STREAMING
 extern "C"
 {
     extern void gst_amc_jni_set_java_vm(JavaVM *java_vm);
@@ -61,9 +61,9 @@ static jint jniSetNativeMethods()
     QJniEnvironment jniEnv;
     (void) jniEnv.checkAndClearExceptions();
 
-    jclass objectClass = jniEnv->FindClass(AndroidInterface::kJniQGCActivityClassName);
+    jclass objectClass = jniEnv->FindClass(AndroidInterface::kJnibeeCopterActivityClassName);
     if (!objectClass) {
-        qCWarning(AndroidInitLog) << "Couldn't find class:" << AndroidInterface::kJniQGCActivityClassName;
+        qCWarning(AndroidInitLog) << "Couldn't find class:" << AndroidInterface::kJnibeeCopterActivityClassName;
         (void) jniEnv.checkAndClearExceptions();
         return JNI_ERR;
     }
@@ -97,13 +97,13 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
         return JNI_ERR;
     }
 
-    #ifdef QGC_GST_STREAMING
+    #ifdef beeCopter_GST_STREAMING
         gst_amc_jni_set_java_vm(vm);
     #endif
 
     AndroidInterface::setNativeMethods();
 
-    #ifndef QGC_NO_SERIAL_LINK
+    #ifndef beeCopter_NO_SERIAL_LINK
         AndroidSerial::setNativeMethods();
     #endif
 

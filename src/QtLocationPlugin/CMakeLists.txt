@@ -3,10 +3,10 @@
 # Custom map tile providers and caching engine
 # ============================================================================
 
-qt_add_plugin(QGCLocation
+qt_add_plugin(beeCopterLocation
     STATIC
-    CLASS_NAME QGeoServiceProviderFactoryQGC
-    OUTPUT_TARGETS QGCLocation_targets
+    CLASS_NAME QGeoServiceProviderFactorybeeCopter
+    OUTPUT_TARGETS beeCopterLocation_targets
     Providers/BingMapProvider.cpp
     Providers/BingMapProvider.h
     Providers/ElevationMapProvider.cpp
@@ -23,35 +23,35 @@ qt_add_plugin(QGCLocation
     Providers/MapProvider.h
     Providers/TianDiTuProvider.cpp
     Providers/TianDiTuProvider.h
-    QGCCachedTileSet.cpp
-    QGCCachedTileSet.h
-    QGCCacheTile.h
-    QGCMapEngine.cpp
-    QGCMapEngine.h
-    QGCMapEngineManager.cc
-    QGCMapEngineManager.h
-    QGCMapTasks.h
-    QGCMapUrlEngine.cpp
-    QGCMapUrlEngine.h
-    QGCTile.h
-    QGCTileCacheDatabase.cpp
-    QGCTileCacheDatabase.h
-    QGCTileCacheTypes.h
-    QGCTileCacheWorker.cpp
-    QGCTileCacheWorker.h
-    QGCTileSet.h
-    QGeoFileTileCacheQGC.cpp
-    QGeoFileTileCacheQGC.h
-    QGeoMapReplyQGC.cpp
-    QGeoMapReplyQGC.h
-    QGeoServiceProviderPluginQGC.cpp
-    QGeoServiceProviderPluginQGC.h
-    QGeoTiledMappingManagerEngineQGC.cpp
-    QGeoTiledMappingManagerEngineQGC.h
-    QGeoTiledMapQGC.cpp
-    QGeoTiledMapQGC.h
-    QGeoTileFetcherQGC.cpp
-    QGeoTileFetcherQGC.h
+    beeCopterCachedTileSet.cpp
+    beeCopterCachedTileSet.h
+    beeCopterCacheTile.h
+    beeCopterMapEngine.cpp
+    beeCopterMapEngine.h
+    beeCopterMapEngineManager.cc
+    beeCopterMapEngineManager.h
+    beeCopterMapTasks.h
+    beeCopterMapUrlEngine.cpp
+    beeCopterMapUrlEngine.h
+    beeCopterTile.h
+    beeCopterTileCacheDatabase.cpp
+    beeCopterTileCacheDatabase.h
+    beeCopterTileCacheTypes.h
+    beeCopterTileCacheWorker.cpp
+    beeCopterTileCacheWorker.h
+    beeCopterTileSet.h
+    QGeoFileTileCachebeeCopter.cpp
+    QGeoFileTileCachebeeCopter.h
+    QGeoMapReplybeeCopter.cpp
+    QGeoMapReplybeeCopter.h
+    QGeoServiceProviderPluginbeeCopter.cpp
+    QGeoServiceProviderPluginbeeCopter.h
+    QGeoTiledMappingManagerEnginebeeCopter.cpp
+    QGeoTiledMappingManagerEnginebeeCopter.h
+    QGeoTiledMapbeeCopter.cpp
+    QGeoTiledMapbeeCopter.h
+    QGeoTileFetcherbeeCopter.cpp
+    QGeoTileFetcherbeeCopter.h
 )
 
 # ----------------------------------------------------------------------------
@@ -59,13 +59,13 @@ qt_add_plugin(QGCLocation
 # ----------------------------------------------------------------------------
 # Google Maps not available on iOS
 if(IOS)
-    target_compile_definitions(QGCLocation PRIVATE QGC_NO_GOOGLE_MAPS)
+    target_compile_definitions(beeCopterLocation PRIVATE beeCopter_NO_GOOGLE_MAPS)
 endif()
 
 # ----------------------------------------------------------------------------
 # Dependencies
 # ----------------------------------------------------------------------------
-target_link_libraries(QGCLocation
+target_link_libraries(beeCopterLocation
     PRIVATE
         Qt6::Positioning
         Qt6::Sql
@@ -76,7 +76,7 @@ target_link_libraries(QGCLocation
         Qt6::Network
 )
 
-target_include_directories(QGCLocation
+target_include_directories(beeCopterLocation
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/..
@@ -94,4 +94,4 @@ target_include_directories(QGCLocation
 
 set_source_files_properties(QMLControl/OfflineMapEditor.qml PROPERTIES QT_RESOURCE_ALIAS OfflineMapEditor.qml)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE QGCLocation)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE beeCopterLocation)

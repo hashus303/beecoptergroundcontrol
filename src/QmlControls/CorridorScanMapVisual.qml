@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 /// Corridor Scan Complex Mission Item visuals
 TransectStyleMapVisuals {
@@ -13,7 +13,7 @@ TransectStyleMapVisuals {
 
     property bool _currentItem: object.isCurrentItem
 
-    QGCMapPolylineVisuals {
+    beeCopterMapPolylineVisuals {
         id:             mapPolylineVisuals
         mapControl:     map
         mapPolyline:    object.corridorPolyline

@@ -9,12 +9,12 @@ target_sources(${CMAKE_PROJECT_NAME}
         CameraMetaData.h
         MavlinkCameraControl.cc
         MavlinkCameraControl.h
-        QGCCameraIO.cc
-        QGCCameraIO.h
-        QGCCameraManager.cc
-        QGCCameraManager.h
-        QGCVideoStreamInfo.cc
-        QGCVideoStreamInfo.h
+        beeCopterCameraIO.cc
+        beeCopterCameraIO.h
+        beeCopterCameraManager.cc
+        beeCopterCameraManager.h
+        beeCopterVideoStreamInfo.cc
+        beeCopterVideoStreamInfo.h
         SimulatedCameraControl.cc
         SimulatedCameraControl.h
         VehicleCameraControl.cc

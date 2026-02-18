@@ -3,12 +3,12 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SettingsPage {
-    property var    _settingsManager:           QGroundControl.settingsManager
+    property var    _settingsManager:           beeCopter.settingsManager
     property var    _appSettings:               _settingsManager.appSettings
     property var    _brandImageSettings:        _settingsManager.brandImageSettings
     property Fact   _appFontPointSize:          _appSettings.appFontPointSize
@@ -56,15 +56,15 @@ SettingsPage {
             visible:    fact.visible
         }
 
-        QGCCheckBoxSlider {
+        beeCopterCheckBoxSlider {
             Layout.fillWidth: true
             text:       qsTr("Clear all settings on next start")
             checked:    false
             onClicked: {
                 if (checked) {
-                    QGroundControl.deleteAllSettingsNextBoot()
+                    beeCopter.deleteAllSettingsNextBoot()
                 } else {
-                    QGroundControl.clearDeleteAllSettingsNextBoot()
+                    beeCopter.clearDeleteAllSettingsNextBoot()
                 }
             }
         }
@@ -74,7 +74,7 @@ SettingsPage {
             spacing:            ScreenTools.defaultFontPixelWidth * 2
             visible:            _appFontPointSize.visible
 
-            QGCLabel {
+            beeCopterLabel {
                 Layout.fillWidth:   true
                 text:               qsTr("UI Scaling")
             }
@@ -82,7 +82,7 @@ SettingsPage {
             RowLayout {
                 spacing: ScreenTools.defaultFontPixelWidth * 2
 
-                QGCButton {
+                beeCopterButton {
                     Layout.preferredWidth:  height
                     height:                 baseFontEdit.height * 1.5
                     text:                   "-"
@@ -93,13 +93,13 @@ SettingsPage {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     id:                     baseFontEdit
                     width:                  ScreenTools.defaultFontPixelWidth * 6
-                    text:                   (QGroundControl.settingsManager.appSettings.appFontPointSize.value / ScreenTools.platformFontPointSize * 100).toFixed(0) + "%"
+                    text:                   (beeCopter.settingsManager.appSettings.appFontPointSize.value / ScreenTools.platformFontPointSize * 100).toFixed(0) + "%"
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.preferredWidth:  height
                     height:                 baseFontEdit.height * 1.5
                     text:                   "+"
@@ -121,8 +121,8 @@ SettingsPage {
                 Layout.fillWidth:   true
                 spacing:            0
 
-                QGCLabel { text: qsTr("Application Load/Save Path") }
-                QGCLabel {
+                beeCopterLabel { text: qsTr("Application Load/Save Path") }
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     font.pointSize:     ScreenTools.smallFontPointSize
                     text:               _appSavePath.rawValue === "" ? qsTr("<default location>") : _appSavePath.value
@@ -130,10 +130,10 @@ SettingsPage {
                 }
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:       qsTr("Browse")
                 onClicked:  savePathBrowseDialog.openForLoad()
-                QGCFileDialog {
+                beeCopterFileDialog {
                     id:                 savePathBrowseDialog
                     title:              qsTr("Choose the location to save/load files")
                     folder:             _appSavePath.rawValue
@@ -147,10 +147,10 @@ SettingsPage {
     SettingsGroupLayout {
         Layout.fillWidth:   true
         heading:            qsTr("Units")
-        visible:            QGroundControl.settingsManager.unitsSettings.visible
+        visible:            beeCopter.settingsManager.unitsSettings.visible
 
         Repeater {
-            model: [ QGroundControl.settingsManager.unitsSettings.horizontalDistanceUnits, QGroundControl.settingsManager.unitsSettings.verticalDistanceUnits, QGroundControl.settingsManager.unitsSettings.areaUnits, QGroundControl.settingsManager.unitsSettings.speedUnits, QGroundControl.settingsManager.unitsSettings.temperatureUnits ]
+            model: [ beeCopter.settingsManager.unitsSettings.horizontalDistanceUnits, beeCopter.settingsManager.unitsSettings.verticalDistanceUnits, beeCopter.settingsManager.unitsSettings.areaUnits, beeCopter.settingsManager.unitsSettings.speedUnits, beeCopter.settingsManager.unitsSettings.temperatureUnits ]
 
             LabelledFactComboBox {
                 label:                  modelData.shortDescription
@@ -174,11 +174,11 @@ SettingsPage {
                 Layout.fillWidth:   true
                 spacing:            0
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     text:               qsTr("Indoor Image")
                 }
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     font.pointSize:     ScreenTools.smallFontPointSize
                     text:               _userBrandImageIndoor.valueString.replace("file:///", "")
@@ -187,11 +187,11 @@ SettingsPage {
                 }
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:       qsTr("Browse")
                 onClicked:  userBrandImageIndoorBrowseDialog.openForLoad()
 
-                QGCFileDialog {
+                beeCopterFileDialog {
                     id:                 userBrandImageIndoorBrowseDialog
                     title:              qsTr("Choose custom brand image file")
                     folder:             _userBrandImageIndoor.rawValue.replace("file:///", "")
@@ -210,11 +210,11 @@ SettingsPage {
                 Layout.fillWidth:   true
                 spacing:            0
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     text:               qsTr("Outdoor Image")
                 }
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     font.pointSize:     ScreenTools.smallFontPointSize
                     text:               _userBrandImageOutdoor.valueString.replace("file:///", "")
@@ -223,11 +223,11 @@ SettingsPage {
                 }
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:       qsTr("Browse")
                 onClicked:  userBrandImageOutdoorBrowseDialog.openForLoad()
 
-                QGCFileDialog {
+                beeCopterFileDialog {
                     id:                 userBrandImageOutdoorBrowseDialog
                     title:              qsTr("Choose custom brand image file")
                     folder:             _userBrandImageOutdoor.rawValue.replace("file:///", "")

@@ -1,7 +1,7 @@
 #include "VehicleGPSFactGroup.h"
 #include "Vehicle.h"
-#include "QGCGeo.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterGeo.h"
+#include "beeCopterLoggingCategory.h"
 #include "development/mavlink_msg_gnss_integrity.h"
 
 #include <QtPositioning/QGeoCoordinate>
@@ -72,7 +72,7 @@ void VehicleGPSFactGroup::_handleGpsRawInt(const mavlink_message_t &message)
 
     lat()->setRawValue(gpsRawInt.lat * 1e-7);
     lon()->setRawValue(gpsRawInt.lon * 1e-7);
-    mgrs()->setRawValue(QGCGeo::convertGeoToMGRS(QGeoCoordinate(gpsRawInt.lat * 1e-7, gpsRawInt.lon * 1e-7)));
+    mgrs()->setRawValue(beeCopterGeo::convertGeoToMGRS(QGeoCoordinate(gpsRawInt.lat * 1e-7, gpsRawInt.lon * 1e-7)));
     count()->setRawValue((gpsRawInt.satellites_visible == 255) ? 0 : gpsRawInt.satellites_visible);
     hdop()->setRawValue((gpsRawInt.eph == UINT16_MAX) ? qQNaN() : (gpsRawInt.eph / 100.0));
     vdop()->setRawValue((gpsRawInt.epv == UINT16_MAX) ? qQNaN() : (gpsRawInt.epv / 100.0));
@@ -90,7 +90,7 @@ void VehicleGPSFactGroup::_handleHighLatency(const mavlink_message_t &message)
 
     lat()->setRawValue(highLatency.latitude * 1e-7);
     lon()->setRawValue(highLatency.longitude * 1e-7);
-    mgrs()->setRawValue(QGCGeo::convertGeoToMGRS(QGeoCoordinate(highLatency.latitude * 1e-7, highLatency.longitude * 1e-7, highLatency.altitude_amsl)));
+    mgrs()->setRawValue(beeCopterGeo::convertGeoToMGRS(QGeoCoordinate(highLatency.latitude * 1e-7, highLatency.longitude * 1e-7, highLatency.altitude_amsl)));
     count()->setRawValue(0);
 
     _setTelemetryAvailable(true);
@@ -103,7 +103,7 @@ void VehicleGPSFactGroup::_handleHighLatency2(const mavlink_message_t &message)
 
     lat()->setRawValue(highLatency2.latitude * 1e-7);
     lon()->setRawValue(highLatency2.longitude * 1e-7);
-    mgrs()->setRawValue(QGCGeo::convertGeoToMGRS(QGeoCoordinate(highLatency2.latitude * 1e-7, highLatency2.longitude * 1e-7, highLatency2.altitude)));
+    mgrs()->setRawValue(beeCopterGeo::convertGeoToMGRS(QGeoCoordinate(highLatency2.latitude * 1e-7, highLatency2.longitude * 1e-7, highLatency2.altitude)));
     count()->setRawValue(0);
     hdop()->setRawValue((highLatency2.eph == UINT8_MAX) ? qQNaN() : (highLatency2.eph / 10.0));
     vdop()->setRawValue((highLatency2.epv == UINT8_MAX) ? qQNaN() : (highLatency2.epv / 10.0));

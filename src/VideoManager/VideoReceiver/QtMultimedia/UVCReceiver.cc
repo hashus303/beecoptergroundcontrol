@@ -1,6 +1,6 @@
 #include "UVCReceiver.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "SettingsManager.h"
 #include "VideoSettings.h"
 
@@ -14,7 +14,7 @@
 #include <QtMultimediaQuick/private/qquickvideooutput_p.h>
 #include <QtQuick/QQuickItem>
 
-QGC_LOGGING_CATEGORY(UVCReceiverLog, "Video.UVCReceiver")
+beeCopter_LOGGING_CATEGORY(UVCReceiverLog, "Video.UVCReceiver")
 
 UVCReceiver::UVCReceiver(QObject *parent)
     : QtMultimediaReceiver(parent)
@@ -42,7 +42,7 @@ UVCReceiver::~UVCReceiver()
 
 bool UVCReceiver::enabled()
 {
-#ifdef QGC_DISABLE_UVC
+#ifdef beeCopter_DISABLE_UVC
     return false;
 #else
     return !QMediaDevices::videoInputs().isEmpty();
@@ -86,9 +86,9 @@ void UVCReceiver::checkPermission()
 {
     const QCameraPermission cameraPermission;
     if (qApp->checkPermission(cameraPermission) == Qt::PermissionStatus::Undetermined) {
-        qApp->requestPermission(cameraPermission, qgcApp(), [](const QPermission &permission) {
+        qApp->requestPermission(cameraPermission, beeCopterApp(), [](const QPermission &permission) {
             if (permission.status() != Qt::PermissionStatus::Granted) {
-                qgcApp()->showAppMessage(QStringLiteral("Failed to get camera permission"));
+                beeCopterApp()->showAppMessage(QStringLiteral("Failed to get camera permission"));
             }
         });
     }

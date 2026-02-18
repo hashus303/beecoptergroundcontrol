@@ -1,8 +1,8 @@
 import QtQml.Models
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
 
 ToolStrip {
     id: _root

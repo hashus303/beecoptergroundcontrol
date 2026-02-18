@@ -3,12 +3,12 @@
 #include "SettingsManager.h"
 #include "AppSettings.h"
 #include "PlanMasterController.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QJsonArray>
 
-QGC_LOGGING_CATEGORY(CorridorScanComplexItemLog, "Plan.CorridorScanComplexItemL")
+beeCopter_LOGGING_CATEGORY(CorridorScanComplexItemLog, "Plan.CorridorScanComplexItemL")
 
 const QString CorridorScanComplexItem::name(CorridorScanComplexItem::tr("Corridor Scan"));
 
@@ -18,7 +18,7 @@ CorridorScanComplexItem::CorridorScanComplexItem(PlanMasterController* masterCon
     , _metaDataMap              (FactMetaData::createMapFromJsonFile(QStringLiteral(":/json/CorridorScan.SettingsGroup.json"), this))
     , _corridorWidthFact        (settingsGroup, _metaDataMap[corridorWidthName])
 {
-    _editorQml = "qrc:/qml/QGroundControl/Controls/CorridorScanEditor.qml";
+    _editorQml = "qrc:/qml/beeCopter/Controls/CorridorScanEditor.qml";
 
     // We override the altitude to the mission default
     if (_cameraCalc.isManualCamera() || !_cameraCalc.valueSetIsDistance()->rawValue().toBool()) {
@@ -26,15 +26,15 @@ CorridorScanComplexItem::CorridorScanComplexItem(PlanMasterController* masterCon
     }
 
     connect(&_corridorWidthFact,    &Fact::valueChanged,                            this, &CorridorScanComplexItem::_setDirty);
-    connect(&_corridorPolyline,     &QGCMapPolyline::pathChanged,                   this, &CorridorScanComplexItem::_setDirty);
+    connect(&_corridorPolyline,     &beeCopterMapPolyline::pathChanged,                   this, &CorridorScanComplexItem::_setDirty);
 
-    connect(&_corridorPolyline,     &QGCMapPolyline::dirtyChanged,                  this, &CorridorScanComplexItem::_polylineDirtyChanged);
+    connect(&_corridorPolyline,     &beeCopterMapPolyline::dirtyChanged,                  this, &CorridorScanComplexItem::_polylineDirtyChanged);
 
-    connect(&_corridorPolyline,     &QGCMapPolyline::pathChanged,                   this, &CorridorScanComplexItem::_rebuildCorridorPolygon);
+    connect(&_corridorPolyline,     &beeCopterMapPolyline::pathChanged,                   this, &CorridorScanComplexItem::_rebuildCorridorPolygon);
     connect(&_corridorWidthFact,    &Fact::valueChanged,                            this, &CorridorScanComplexItem::_rebuildCorridorPolygon);
 
-    connect(&_corridorPolyline,     &QGCMapPolyline::isValidChanged,                this, &CorridorScanComplexItem::_updateWizardMode);
-    connect(&_corridorPolyline,     &QGCMapPolyline::traceModeChanged,              this, &CorridorScanComplexItem::_updateWizardMode);
+    connect(&_corridorPolyline,     &beeCopterMapPolyline::isValidChanged,                this, &CorridorScanComplexItem::_updateWizardMode);
+    connect(&_corridorPolyline,     &beeCopterMapPolyline::traceModeChanged,              this, &CorridorScanComplexItem::_updateWizardMode);
 
     if (!kmlOrShpFile.isEmpty()) {
         _corridorPolyline.loadKMLOrSHPFile(kmlOrShpFile);
@@ -78,7 +78,7 @@ void CorridorScanComplexItem::loadPreset(const QString& presetName)
 
     QJsonObject presetObject = _loadPresetJson(presetName);
     if (!_loadWorker(presetObject, 0, errorString, true /* forPresets */)) {
-        qgcApp()->showAppMessage(QStringLiteral("Internal Error: Preset load failed. Name: %1 Error: %2").arg(presetName).arg(errorString));
+        beeCopterApp()->showAppMessage(QStringLiteral("Internal Error: Preset load failed. Name: %1 Error: %2").arg(presetName).arg(errorString));
     }
     _rebuildTransects();
 }
@@ -93,7 +93,7 @@ bool CorridorScanComplexItem::_loadWorker(const QJsonObject& complexObject, int 
         { ComplexMissionItem::jsonComplexItemTypeKey,   QJsonValue::String, true },
         { corridorWidthName,                            QJsonValue::Double, true },
         { _jsonEntryPointKey,                           QJsonValue::Double, true },
-        { QGCMapPolyline::jsonPolylineKey,              QJsonValue::Array,  true },
+        { beeCopterMapPolyline::jsonPolylineKey,              QJsonValue::Array,  true },
     };
     if (!JsonHelper::validateKeys(complexObject, keyInfoList, errorString)) {
         _ignoreRecalc = false;
@@ -103,7 +103,7 @@ bool CorridorScanComplexItem::_loadWorker(const QJsonObject& complexObject, int 
     QString itemType = complexObject[VisualMissionItem::jsonTypeKey].toString();
     QString complexType = complexObject[ComplexMissionItem::jsonComplexItemTypeKey].toString();
     if (itemType != VisualMissionItem::jsonTypeComplexItemValue || complexType != jsonComplexItemTypeValue) {
-        errorString = tr("%1 does not support loading this complex mission item type: %2:%3").arg(qgcApp()->applicationName()).arg(itemType).arg(complexType);
+        errorString = tr("%1 does not support loading this complex mission item type: %2:%3").arg(beeCopterApp()->applicationName()).arg(itemType).arg(complexType);
         _ignoreRecalc = false;
         return false;
     }

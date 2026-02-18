@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             flightModePage
@@ -23,7 +23,7 @@ SetupPage {
     property int    _rcOptionStop:              _ch7OptAvailable ? 12 : 16
     property bool   _customSimpleMode:          controller.simpleMode === APMFlightModesComponentController.SimpleModeCustom
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     APMFlightModesComponentController {
         id:         controller
@@ -40,7 +40,7 @@ SetupPage {
             Column {
                 spacing: _margins
 
-                QGCLabel {
+                beeCopterLabel {
                     id:             flightModeLabel
                     text:           qsTr("Flight Mode Settings") + (_fltmodeChExists ? "" : qsTr(" (Channel 5)"))
                     font.bold:      true
@@ -50,7 +50,7 @@ SetupPage {
                     id:     flightModeSettings
                     width:  flightModeColumn.width + (_margins * 2)
                     height: flightModeColumn.height + ScreenTools.defaultFontPixelHeight
-                    color:  qgcPal.windowShade
+                    color:  beeCopterPal.windowShade
 
                     Column {
                         id:                 flightModeColumn
@@ -63,13 +63,13 @@ SetupPage {
                             spacing:    _margins
                             visible:    _fltmodeChExists
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 id:                 modeChannelLabel
                                 anchors.baseline:   modeChannelCombo.baseline
                                 text:               qsTr("Flight mode channel:")
                             }
 
-                            QGCComboBox {
+                            beeCopterComboBox {
                                 id:             modeChannelCombo
                                 width:          ScreenTools.defaultFontPixelWidth * 15
                                 model:          [ qsTr("Not assigned"), qsTr("Channel 1"), qsTr("Channel 2"),
@@ -85,19 +85,19 @@ SetupPage {
                             rows:   _customSimpleMode ? 7 : 6
                             flow:   GridLayout.TopToBottom
 
-                            QGCLabel { text: ""; visible: _customSimpleMode }
+                            beeCopterLabel { text: ""; visible: _customSimpleMode }
                             Repeater {
                                 model:  6
 
-                                QGCLabel {
+                                beeCopterLabel {
                                     text:   qsTr("Flight Mode ") + index
-                                    color:  controller.activeFlightMode == index ? "yellow" : qgcPal.text
+                                    color:  controller.activeFlightMode == index ? "yellow" : beeCopterPal.text
 
                                     property int index: modelData + 1
                                 }
                             }
 
-                            QGCLabel { text: ""; visible: _customSimpleMode }
+                            beeCopterLabel { text: ""; visible: _customSimpleMode }
                             Repeater {
                                 model:  6
 
@@ -110,14 +110,14 @@ SetupPage {
                                 }
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:           qsTr("Simple")
                                 font.pointSize: ScreenTools.smallFontPointSize
                                 visible:        _customSimpleMode
                             }
                             Repeater {
                                 model:  controller.simpleModeEnabled
-                                QGCCheckBox {
+                                beeCopterCheckBox {
                                     Layout.alignment:   Qt.AlignHCenter
                                     visible:            _customSimpleMode
                                     checked:            modelData
@@ -125,14 +125,14 @@ SetupPage {
                                 }
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:           qsTr("Super-Simple")
                                 font.pointSize: ScreenTools.smallFontPointSize
                                 visible:        _customSimpleMode
                             }
                             Repeater {
                                 model:  controller.superSimpleModeEnabled
-                                QGCCheckBox {
+                                beeCopterCheckBox {
                                     Layout.alignment:   Qt.AlignHCenter
                                     visible:            _customSimpleMode
                                     checked:            modelData
@@ -140,11 +140,11 @@ SetupPage {
                                 }
                             }
 
-                            QGCLabel { text: ""; visible: _customSimpleMode }
+                            beeCopterLabel { text: ""; visible: _customSimpleMode }
                             Repeater {
                                 model:  6
 
-                                QGCLabel { text: _pwmStrings[modelData] }
+                                beeCopterLabel { text: _pwmStrings[modelData] }
                             }
                         }
 
@@ -152,9 +152,9 @@ SetupPage {
                             spacing: _margins
                             visible: controller.simpleModesSupported
 
-                            QGCLabel { text: qsTr("Simple Mode") }
+                            beeCopterLabel { text: qsTr("Simple Mode") }
 
-                            QGCComboBox {
+                            beeCopterComboBox {
                                 model:          controller.simpleModeNames
                                 currentIndex:   controller.simpleMode
                                 onActivated: (index) => { controller.simpleMode = index }
@@ -167,7 +167,7 @@ SetupPage {
             Column {
                 spacing: _margins
 
-                QGCLabel {
+                beeCopterLabel {
                     id:                 channelOptionsLabel
                     text:               qsTr("Switch Options")
                     font.bold:          true
@@ -177,7 +177,7 @@ SetupPage {
                     id:     channelOptionsSettings
                     width:  channelOptColumn.width + (_margins * 2)
                     height: channelOptColumn.height + ScreenTools.defaultFontPixelHeight
-                    color:  qgcPal.windowShade
+                    color:  beeCopterPal.windowShade
 
                     Column {
                         id:                 channelOptColumn
@@ -195,10 +195,10 @@ SetupPage {
                                 property int index: modelData + _rcOptionStart
                                 property Fact nullFact: Fact { }
 
-                                QGCLabel {
+                                beeCopterLabel {
                                     anchors.baseline:   optCombo.baseline
                                     text:               qsTr("Channel option %1 :").arg(index)
-                                    color:              controller.channelOptionEnabled[modelData + (_ch7OptAvailable ? 1 : 0)] ? "yellow" : qgcPal.text
+                                    color:              controller.channelOptionEnabled[modelData + (_ch7OptAvailable ? 1 : 0)] ? "yellow" : beeCopterPal.text
                                 }
 
                                 FactComboBox {

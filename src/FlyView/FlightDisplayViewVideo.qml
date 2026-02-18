@@ -1,10 +1,10 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.FlyView
-import QGroundControl.FlightMap
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FlyView
+import beeCopter.FlightMap
+import beeCopter.Controls
 
 Item {
     id:     root
@@ -12,17 +12,17 @@ Item {
 
     property bool useSmallFont: true
 
-    property double _ar:                QGroundControl.videoManager.gstreamerEnabled
-                                            ? QGroundControl.videoManager.videoSize.width / QGroundControl.videoManager.videoSize.height
-                                            : QGroundControl.videoManager.aspectRatio
-    property bool   _showGrid:          QGroundControl.settingsManager.videoSettings.gridLines.rawValue
+    property double _ar:                beeCopter.videoManager.gstreamerEnabled
+                                            ? beeCopter.videoManager.videoSize.width / beeCopter.videoManager.videoSize.height
+                                            : beeCopter.videoManager.aspectRatio
+    property bool   _showGrid:          beeCopter.settingsManager.videoSettings.gridLines.rawValue
     property var    _dynamicCameras:    globals.activeVehicle ? globals.activeVehicle.cameraManager : null
     property bool   _connected:         globals.activeVehicle ? !globals.activeVehicle.communicationLost : false
     property int    _curCameraIndex:    _dynamicCameras ? _dynamicCameras.currentCamera : 0
     property bool   _isCamera:          _dynamicCameras ? _dynamicCameras.cameras.count > 0 : false
     property var    _camera:            _isCamera ? _dynamicCameras.cameras.get(_curCameraIndex) : null
     property bool   _hasZoom:           _camera && _camera.hasZoom
-    property int    _fitMode:           QGroundControl.settingsManager.videoSettings.videoFit.rawValue
+    property int    _fitMode:           beeCopter.settingsManager.videoSettings.videoFit.rawValue
 
     property bool   _isMode_FIT_WIDTH:  _fitMode === 0
     property bool   _isMode_FIT_HEIGHT: _fitMode === 1
@@ -43,7 +43,7 @@ Item {
             anchors.fill:   parent
             source:         "/res/NoVideoBackground.jpg"
             fillMode:       Image.PreserveAspectCrop
-            visible:        !(QGroundControl.videoManager.decoding)
+            visible:        !(beeCopter.videoManager.decoding)
 
             Rectangle {
                 anchors.centerIn:   parent
@@ -54,9 +54,9 @@ Item {
                 opacity:            0.5
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                 noVideoLabel
-                text:               QGroundControl.settingsManager.videoSettings.streamEnabled.rawValue ? qsTr("WAITING FOR VIDEO") : qsTr("VIDEO DISABLED")
+                text:               beeCopter.settingsManager.videoSettings.streamEnabled.rawValue ? qsTr("WAITING FOR VIDEO") : qsTr("VIDEO DISABLED")
                 font.bold:          true
                 color:              "white"
                 font.pointSize:     useSmallFont ? ScreenTools.smallFontPointSize : ScreenTools.largeFontPointSize
@@ -68,7 +68,7 @@ Item {
         id:             videoBackground
         anchors.fill:   parent
         color:          "black"
-        visible:        QGroundControl.videoManager.decoding
+        visible:        beeCopter.videoManager.decoding
         function getWidth() {
             if(_ar != 0.0){
                 if(_isMode_FIT_HEIGHT
@@ -101,12 +101,12 @@ Item {
         }
         Component {
             id: videoBackgroundComponent
-            QGCVideoBackground {
+            beeCopterVideoBackground {
                 id:             videoContent
                 objectName:     "videoContent"
 
                 Connections {
-                    target: QGroundControl.videoManager
+                    target: beeCopter.videoManager
                     function onImageFileChanged(filename) {
                         videoContent.grabToImage(function(result) {
                             if (!result.saveToFile(filename)) {
@@ -121,51 +121,51 @@ Item {
                     height: parent.height
                     width:  1
                     x:      parent.width * 0.33
-                    visible: _showGrid && !QGroundControl.videoManager.fullScreen
+                    visible: _showGrid && !beeCopter.videoManager.fullScreen
                 }
                 Rectangle {
                     color:  Qt.rgba(1,1,1,0.5)
                     height: parent.height
                     width:  1
                     x:      parent.width * 0.66
-                    visible: _showGrid && !QGroundControl.videoManager.fullScreen
+                    visible: _showGrid && !beeCopter.videoManager.fullScreen
                 }
                 Rectangle {
                     color:  Qt.rgba(1,1,1,0.5)
                     width:  parent.width
                     height: 1
                     y:      parent.height * 0.33
-                    visible: _showGrid && !QGroundControl.videoManager.fullScreen
+                    visible: _showGrid && !beeCopter.videoManager.fullScreen
                 }
                 Rectangle {
                     color:  Qt.rgba(1,1,1,0.5)
                     width:  parent.width
                     height: 1
                     y:      parent.height * 0.66
-                    visible: _showGrid && !QGroundControl.videoManager.fullScreen
+                    visible: _showGrid && !beeCopter.videoManager.fullScreen
                 }
             }
         }
         Loader {
             // GStreamer is causing crashes on Lenovo laptop OpenGL Intel drivers. In order to workaround this
-            // we don't load a QGCVideoBackground object when video is disabled. This prevents any video rendering
+            // we don't load a beeCopterVideoBackground object when video is disabled. This prevents any video rendering
             // code from running. Hence the Loader to completely remove it.
             height:             parent.getHeight()
             width:              parent.getWidth()
             anchors.centerIn:   parent
-            visible:            QGroundControl.videoManager.decoding
+            visible:            beeCopter.videoManager.decoding
             sourceComponent:    videoBackgroundComponent
 
-            property bool videoDisabled: QGroundControl.settingsManager.videoSettings.videoSource.rawValue === QGroundControl.settingsManager.videoSettings.disabledVideoSource
+            property bool videoDisabled: beeCopter.settingsManager.videoSettings.videoSource.rawValue === beeCopter.settingsManager.videoSettings.disabledVideoSource
         }
 
         //-- Thermal Image
         Item {
             id:                 thermalItem
-            width:              height * QGroundControl.videoManager.thermalAspectRatio
+            width:              height * beeCopter.videoManager.thermalAspectRatio
             height:             _camera ? (_camera.thermalMode === MavlinkCameraControl.THERMAL_FULL ? parent.height : (_camera.thermalMode === MavlinkCameraControl.THERMAL_PIP ? ScreenTools.defaultFontPixelHeight * 12 : parent.height * _thermalHeightFactor)) : 0
             anchors.centerIn:   parent
-            visible:            QGroundControl.videoManager.hasThermal && _camera.thermalMode !== MavlinkCameraControl.THERMAL_OFF
+            visible:            beeCopter.videoManager.hasThermal && _camera.thermalMode !== MavlinkCameraControl.THERMAL_OFF
             function pipOrNot() {
                 if(_camera) {
                     if(_camera.thermalMode === MavlinkCameraControl.THERMAL_PIP) {
@@ -190,7 +190,7 @@ Item {
             onVisibleChanged: {
                 thermalItem.pipOrNot()
             }
-            QGCVideoBackground {
+            beeCopterVideoBackground {
                 id:             thermalVideo
                 objectName:     "thermalVideo"
                 anchors.fill:   parent

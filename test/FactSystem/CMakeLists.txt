@@ -30,7 +30,7 @@ qt_add_resources(${CMAKE_PROJECT_NAME} "FactSystemTest_res"
 # qt_add_library(FactSystemTestModule STATIC)
 #
 # qt_add_qml_module(FactSystemTestModule
-#     URI QGroundControl.Test.FactSystem
+#     URI beeCopter.Test.FactSystem
 #     VERSION 1.0
 #     RESOURCE_PREFIX /unittest
 #     QML_FILES

@@ -10,7 +10,7 @@ public:
             QStringLiteral("CustomURL Custom"),
             QStringLiteral(""),
             QStringLiteral(""),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::CustomMap) {}
 
 private:
@@ -25,7 +25,7 @@ protected:
             mapName,
             QStringLiteral("https://cyberjapandata.gsi.go.jp/xyz/std"),
             imageFormat,
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::StreetMap)
         , _mapTypeId(mapName) {}
 
@@ -94,7 +94,7 @@ public:
             QStringLiteral("LINZ Basemap"),
             QStringLiteral("https://basemaps.linz.govt.nz/v1/tiles/aerial"),
             QStringLiteral("png"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::SatelliteMapDay) {}
 
 private:
@@ -111,7 +111,7 @@ public:
             QStringLiteral("OpenAIP"),
             QStringLiteral("https://www.openaip.net"),
             QStringLiteral("png"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::CustomMap) {}
 
 private:
@@ -128,7 +128,7 @@ public:
             QStringLiteral("Street Map"),
             QStringLiteral("https://www.openstreetmap.org"),
             QStringLiteral("png"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::StreetMap) {}
 
 private:
@@ -145,7 +145,7 @@ protected:
             mapName,
             QStringLiteral("https://norgeskart.no/"),
             QStringLiteral("png"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::StreetMap)
         , _mapTypeId(mapName) {}
 
@@ -182,7 +182,7 @@ public:
             QStringLiteral("Svalbard Topo"),
             QStringLiteral("https://www.npolar.no/"),
             QStringLiteral("png"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::StreetMap) {}
 
 private:
@@ -200,7 +200,7 @@ public:
             QStringLiteral("Eniro Topo"),
             QStringLiteral("https://www.eniro.se/"),
             QStringLiteral("png"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::StreetMap) {}
 
 private:
@@ -217,7 +217,7 @@ protected:
             mapName,
             QStringLiteral("https://mapquest.com"),
             QStringLiteral("jpg"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             mapType)
         , _mapTypeId(mapName) {}
 
@@ -275,7 +275,7 @@ public:
             QStringLiteral("VWorld Street Map"),
             QStringLiteral("Base"),
             QStringLiteral("png"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::StreetMap) {}
 };
 
@@ -287,6 +287,6 @@ public:
             QStringLiteral("VWorld Satellite Map"),
             QStringLiteral("Satellite"),
             QStringLiteral("jpeg"),
-            QGC_AVERAGE_TILE_SIZE,
+            beeCopter_AVERAGE_TILE_SIZE,
             QGeoMapType::SatelliteMapDay) {}
 };

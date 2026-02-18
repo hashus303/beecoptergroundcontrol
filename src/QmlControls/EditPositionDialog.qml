@@ -3,11 +3,11 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
-QGCPopupDialog {
+beeCopterPopupDialog {
     id:         root
     title:      qsTr("Edit Position")
     buttons:    Dialog.Close

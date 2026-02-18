@@ -1,17 +1,17 @@
 #include "ADSBVehicleManager.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "SettingsManager.h"
 #include "ADSBVehicleManagerSettings.h"
 #include "ADSBTCPLink.h"
 #include "ADSBVehicle.h"
 #include "QmlObjectListModel.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QApplicationStatic>
 #include <QtCore/QTimer>
 #include <qassert.h>
 
-QGC_LOGGING_CATEGORY(ADSBVehicleManagerLog, "ADSB.ADSBVehicleManager")
+beeCopter_LOGGING_CATEGORY(ADSBVehicleManagerLog, "ADSB.ADSBVehicleManager")
 
 Q_APPLICATION_STATIC(ADSBVehicleManager, _adsbVehicleManager, SettingsManager::instance()->adsbVehicleManagerSettings());
 
@@ -206,5 +206,5 @@ void ADSBVehicleManager::_linkError(const QString &errorMsg, bool stopped)
         _adsbSettings->adsbServerConnectEnabled()->setRawValue(false);
     }
 
-    qgcApp()->showAppMessage(msg);
+    beeCopterApp()->showAppMessage(msg);
 }

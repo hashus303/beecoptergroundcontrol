@@ -1,8 +1,9 @@
 #include "ElevationMapProvider.h"
-#include "TerrainTileCopernicus.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QTemporaryFile>
+
+#include "TerrainTileCopernicus.h"
 
 int CopernicusElevationProvider::long2tileX(double lon, int z) const
 {
@@ -27,27 +28,24 @@ QString CopernicusElevationProvider::_getURL(int x, int y, int zoom) const
     return url;
 }
 
-QGCTileSet CopernicusElevationProvider::getTileCount(int zoom, double topleftLon,
-                                                     double topleftLat, double bottomRightLon,
-                                                     double bottomRightLat) const
+beeCopterTileSet CopernicusElevationProvider::getTileCount(int zoom, double topleftLon, double topleftLat,
+                                                     double bottomRightLon, double bottomRightLat) const
 {
-    QGCTileSet set;
+    beeCopterTileSet set;
     set.tileX0 = long2tileX(topleftLon, zoom);
     set.tileY0 = lat2tileY(bottomRightLat, zoom);
     set.tileX1 = long2tileX(bottomRightLon, zoom);
     set.tileY1 = lat2tileY(topleftLat, zoom);
 
-    set.tileCount = (static_cast<quint64>(set.tileX1) -
-                     static_cast<quint64>(set.tileX0) + 1) *
-                    (static_cast<quint64>(set.tileY1) -
-                     static_cast<quint64>(set.tileY0) + 1);
+    set.tileCount = (static_cast<quint64>(set.tileX1) - static_cast<quint64>(set.tileX0) + 1) *
+                    (static_cast<quint64>(set.tileY1) - static_cast<quint64>(set.tileY0) + 1);
 
     set.tileSize = getAverageSize() * set.tileCount;
 
     return set;
 }
 
-QByteArray CopernicusElevationProvider::serialize(const QByteArray &image) const
+QByteArray CopernicusElevationProvider::serialize(const QByteArray& image) const
 {
     return TerrainTileCopernicus::serializeFromData(image);
 }

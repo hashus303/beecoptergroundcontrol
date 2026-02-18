@@ -4,7 +4,7 @@
 
 #include "CameraSpec.h"
 #include "SettingsFact.h"
-#include "QGroundControlQmlGlobal.h"
+#include "beeCopterQmlGlobal.h"
 
 class PlanMasterController;
 
@@ -38,7 +38,7 @@ public:
     //  grid altitude mode -    distanceMode
     //  trigger distance -      adjustedFootprintFrontal
     //  transect spacing -      adjustedFootprintSide
-    Q_PROPERTY(QGroundControlQmlGlobal::AltMode distanceMode READ distanceMode WRITE setDistanceMode NOTIFY distanceModeChanged)
+    Q_PROPERTY(beeCopterQmlGlobal::AltMode distanceMode READ distanceMode WRITE setDistanceMode NOTIFY distanceModeChanged)
 
     // The following values are calculated from the camera properties
     Q_PROPERTY(double imageFootprintSide    READ imageFootprintSide     NOTIFY imageFootprintSideChanged)       ///< Size of image size side in meters
@@ -69,9 +69,9 @@ public:
     bool    isCustomCamera              (void) const { return _cameraNameFact.rawValue().toString() == canonicalCustomCameraName(); }
     double  imageFootprintSide          (void) const { return _imageFootprintSide; }
     double  imageFootprintFrontal       (void) const { return _imageFootprintFrontal; }
-    QGroundControlQmlGlobal::AltMode distanceMode(void) const { return _distanceMode; }
+    beeCopterQmlGlobal::AltMode distanceMode(void) const { return _distanceMode; }
 
-    void setDistanceMode                (QGroundControlQmlGlobal::AltMode altMode);
+    void setDistanceMode                (beeCopterQmlGlobal::AltMode altMode);
     void setCameraBrand                 (const QString& cameraBrand);
     void setCameraModel                 (const QString& cameraModel);
 
@@ -116,7 +116,7 @@ private:
     QString                             _cameraModel;
     QStringList                         _cameraBrandList;
     QStringList                         _cameraModelList;
-    QGroundControlQmlGlobal::AltMode    _distanceMode               = QGroundControlQmlGlobal::AltitudeModeRelative;
+    beeCopterQmlGlobal::AltMode    _distanceMode               = beeCopterQmlGlobal::AltitudeModeRelative;
     double                              _imageFootprintSide         = 0;
     double                              _imageFootprintFrontal      = 0;
     QVariantList                        _knownCameraList;

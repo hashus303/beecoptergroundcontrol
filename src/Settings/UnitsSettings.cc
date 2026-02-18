@@ -29,7 +29,7 @@ DECLARE_SETTINGSFACT_NO_FUNC(UnitsSettings, horizontalDistanceUnits)
                 break;
         }
         metaData->setRawDefaultValue(defaultHorizontalDistanceUnit);
-        metaData->setQGCRebootRequired(true);
+        metaData->setbeeCopterRebootRequired(true);
         _horizontalDistanceUnitsFact = new SettingsFact(_settingsGroup, metaData, this);
     }
     return _horizontalDistanceUnitsFact;
@@ -59,7 +59,7 @@ DECLARE_SETTINGSFACT_NO_FUNC(UnitsSettings, verticalDistanceUnits)
                 break;
         }
         metaData->setRawDefaultValue(defaultVerticalAltitudeUnit);
-        metaData->setQGCRebootRequired(true);
+        metaData->setbeeCopterRebootRequired(true);
         _verticalDistanceUnitsFact = new SettingsFact(_settingsGroup, metaData, this);
     }
     return _verticalDistanceUnitsFact;
@@ -95,7 +95,7 @@ DECLARE_SETTINGSFACT_NO_FUNC(UnitsSettings, areaUnits)
                 break;
         }
         metaData->setRawDefaultValue(defaultAreaUnit);
-        metaData->setQGCRebootRequired(true);
+        metaData->setbeeCopterRebootRequired(true);
         _areaUnitsFact = new SettingsFact(_settingsGroup, metaData, this);
     }
     return _areaUnitsFact;
@@ -130,7 +130,7 @@ DECLARE_SETTINGSFACT_NO_FUNC(UnitsSettings, speedUnits)
                 break;
         }
         metaData->setRawDefaultValue(defaultSpeedUnit);
-        metaData->setQGCRebootRequired(true);
+        metaData->setbeeCopterRebootRequired(true);
         _speedUnitsFact = new SettingsFact(_settingsGroup, metaData, this);
     }
     return _speedUnitsFact;
@@ -160,7 +160,7 @@ DECLARE_SETTINGSFACT_NO_FUNC(UnitsSettings, temperatureUnits)
                 break;
         }
         metaData->setRawDefaultValue(defaultTemperatureUnit);
-        metaData->setQGCRebootRequired(true);
+        metaData->setbeeCopterRebootRequired(true);
         _temperatureUnitsFact = new SettingsFact(_settingsGroup, metaData, this);
     }
     return _temperatureUnitsFact;
@@ -193,7 +193,7 @@ DECLARE_SETTINGSFACT_NO_FUNC(UnitsSettings, weightUnits)
                 break;
         }
         metaData->setRawDefaultValue(defaultWeightUnit);
-        metaData->setQGCRebootRequired(true);
+        metaData->setbeeCopterRebootRequired(true);
         _weightUnitsFact = new SettingsFact(_settingsGroup, metaData, this);
     }
     return _weightUnitsFact;

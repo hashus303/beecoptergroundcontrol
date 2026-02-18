@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 // Statistics section for TransectStyleComplexItems
 Grid {
@@ -12,15 +12,15 @@ Grid {
     columns:        2
     columnSpacing:  ScreenTools.defaultFontPixelWidth
 
-    QGCLabel { text: qsTr("Survey Area") }
-    QGCLabel { text: QGroundControl.unitsConversion.squareMetersToAppSettingsAreaUnits(missionItem.coveredArea).toFixed(2) + " " + QGroundControl.unitsConversion.appSettingsAreaUnitsString }
+    beeCopterLabel { text: qsTr("Survey Area") }
+    beeCopterLabel { text: beeCopter.unitsConversion.squareMetersToAppSettingsAreaUnits(missionItem.coveredArea).toFixed(2) + " " + beeCopter.unitsConversion.appSettingsAreaUnitsString }
 
-    QGCLabel { text: qsTr("Photo Count") }
-    QGCLabel { text: missionItem.cameraShots }
+    beeCopterLabel { text: qsTr("Photo Count") }
+    beeCopterLabel { text: missionItem.cameraShots }
 
-    QGCLabel { text: qsTr("Photo Interval") }
-    QGCLabel { text: missionItem.timeBetweenShots.toFixed(1) + " " + qsTr("secs") }
+    beeCopterLabel { text: qsTr("Photo Interval") }
+    beeCopterLabel { text: missionItem.timeBetweenShots.toFixed(1) + " " + qsTr("secs") }
 
-    QGCLabel { text: qsTr("Trigger Distance") }
-    QGCLabel { text: missionItem.cameraCalc.adjustedFootprintFrontal.valueString + " " + missionItem.cameraCalc.adjustedFootprintFrontal.units }
+    beeCopterLabel { text: qsTr("Trigger Distance") }
+    beeCopterLabel { text: missionItem.cameraCalc.adjustedFootprintFrontal.valueString + " " + missionItem.cameraCalc.adjustedFootprintFrontal.units }
 }

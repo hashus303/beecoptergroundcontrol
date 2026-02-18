@@ -2,9 +2,9 @@ import QtQuick
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 // Adds visual items associated with the Flight Plan to the map.
 // Currently only used by Fly View even though it's called PlanMapItems!
@@ -67,7 +67,7 @@ Item {
                     fromCoord:      object ? object.coordinate1 : undefined
                     toCoord:        object ? object.coordinate2 : undefined
                     arrowPosition:  3
-                    z:              QGroundControl.zOrderWaypointLines + 1
+                    z:              beeCopter.zOrderWaypointLines + 1
                 }
             }
         }

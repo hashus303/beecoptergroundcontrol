@@ -3,16 +3,16 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
+import beeCopter.FlightMap
 
 Rectangle {
     id:         _root
     height:     childrenRect.y + childrenRect.height + _margin
     width:      availableWidth
-    color:      qgcPal.windowShadeDark
+    color:      beeCopterPal.windowShadeDark
     radius:     _radius
 
     property bool   transectAreaDefinitionComplete: true
@@ -26,7 +26,7 @@ Rectangle {
     property var    _missionItem:               missionItem
     property real   _margin:                    ScreenTools.defaultFontPixelWidth / 2
     property real   _fieldWidth:                ScreenTools.defaultFontPixelWidth * 10.5
-    property var    _vehicle:                   QGroundControl.multiVehicleManager.activeVehicle ? QGroundControl.multiVehicleManager.activeVehicle : QGroundControl.multiVehicleManager.offlineEditingVehicle
+    property var    _vehicle:                   beeCopter.multiVehicleManager.activeVehicle ? beeCopter.multiVehicleManager.activeVehicle : beeCopter.multiVehicleManager.offlineEditingVehicle
     property real   _cameraMinTriggerInterval:  _missionItem.cameraCalc.minTriggerInterval.rawValue
     property string _doneAdjusting:             qsTr("Done")
     property bool   _presetsAvailable:          _missionItem.presetNames.length !== 0
@@ -48,7 +48,7 @@ Rectangle {
     function polygonAdjustStarted() { }
     function polygonAdjustFinished() { }
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: true }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
     ColumnLayout {
         id:                 editorColumn
@@ -57,7 +57,7 @@ Rectangle {
         anchors.left:       parent.left
         anchors.right:      parent.right
 
-        QGCLabel {
+        beeCopterLabel {
             id:                     transectAreaDefinitionCompleteLabel
             Layout.fillWidth:       true
             wrapMode:               Text.WordWrap
@@ -82,11 +82,11 @@ Rectangle {
                 spacing:            _margin
                 visible:            tabBar.currentIndex === 0
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     text:               qsTr("WARNING: Photo interval is below minimum interval (%1 secs) supported by camera.").arg(_cameraMinTriggerInterval.toFixed(1))
                     wrapMode:           Text.WordWrap
-                    color:              qgcPal.warningText
+                    color:              beeCopterPal.warningText
                     visible:            _missionItem.cameraShots > 0 && _cameraMinTriggerInterval !== 0 && _cameraMinTriggerInterval > _missionItem.timeBetweenShots
                 }
 
@@ -113,7 +113,7 @@ Rectangle {
                     property bool forPresets: false
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.alignment:   Qt.AlignHCenter
                     text:               qsTr("Rotate Entry Point")
                     onClicked:          _missionItem.rotateEntryPoint()
@@ -153,13 +153,13 @@ Rectangle {
                 spacing:            _margin
                 visible:            tabBar.currentIndex === 3
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     text:               qsTr("Presets")
                     wrapMode:           Text.WordWrap
                 }
 
-                QGCComboBox {
+                beeCopterComboBox {
                     id:                 presetCombo
                     Layout.fillWidth:   true
                     model:              _missionItem.presetNames
@@ -168,14 +168,14 @@ Rectangle {
                 RowLayout {
                     Layout.fillWidth:   true
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Apply Preset")
                         enabled:            _missionItem.presetNames.length != 0
                         onClicked:          _missionItem.loadPreset(presetCombo.textAt(presetCombo.currentIndex))
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth:   true
                         text:               qsTr("Delete Preset")
                         enabled:            _missionItem.presetNames.length != 0
@@ -184,7 +184,7 @@ Rectangle {
                         Component {
                             id: deletePresetDialog
 
-                            QGCSimpleMessageDialog {
+                            beeCopterSimpleMessageDialog {
                                 title:      qsTr("Delete Preset")
                                 text:       qsTr("Are you sure you want to delete '%1' preset?").arg(presetName)
                                 buttons:    Dialog.Yes | Dialog.No
@@ -199,7 +199,7 @@ Rectangle {
 
                 Item { height: ScreenTools.defaultFontPixelHeight; width: 1 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.alignment:   Qt.AlignCenter
                     Layout.fillWidth:   true
                     text:               qsTr("Save Settings As New Preset")
@@ -237,7 +237,7 @@ Rectangle {
         Component {
             id: savePresetDialog
 
-            QGCPopupDialog {
+            beeCopterPopupDialog {
                 id:         popupDialog
                 title:      qsTr("Save Preset")
                 buttons:    Dialog.Save | Dialog.Cancel
@@ -254,17 +254,17 @@ Rectangle {
                     width:      ScreenTools.defaultFontPixelWidth * 30
                     spacing:    ScreenTools.defaultFontPixelHeight
 
-                    QGCLabel {
+                    beeCopterLabel {
                         Layout.fillWidth:   true
                         text:               qsTr("Save the current settings as a named preset.")
                         wrapMode:           Text.WordWrap
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text: qsTr("Preset Name")
                     }
 
-                    QGCTextField {
+                    beeCopterTextField {
                         id:                 presetNameField
                         Layout.fillWidth:   true
                         placeholderText:    qsTr("Enter preset name")
@@ -286,11 +286,11 @@ Rectangle {
                         }
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:                 nameError
                         Layout.fillWidth:   true
                         wrapMode:           Text.WordWrap
-                        color:              QGroundControl.globalPalette.warningText
+                        color:              beeCopter.globalPalette.warningText
                         visible:            text !== ""
                     }
                 }

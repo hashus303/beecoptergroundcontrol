@@ -5,9 +5,9 @@
 #include <QtCore/QJsonObject>
 
 #include "JsonHelper.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(CameraMetaDataLog, "Camera.CameraMetaData")
+beeCopter_LOGGING_CATEGORY(CameraMetaDataLog, "Camera.CameraMetaData")
 
 CameraMetaData::CameraMetaData(const QString &canonicalName_,
                                const QString &brand_,
@@ -48,7 +48,7 @@ QList<CameraMetaData*> CameraMetaData::parseCameraMetaData()
 
     QString errorString;
     int version = 0;
-    const QJsonObject jsonObject = JsonHelper::openInternalQGCJsonFile(QStringLiteral(":/json/CameraMetaData.json"), "CameraMetaData", 1, 1, version, errorString);
+    const QJsonObject jsonObject = JsonHelper::openInternalbeeCopterJsonFile(QStringLiteral(":/json/CameraMetaData.json"), "CameraMetaData", 1, 1, version, errorString);
     if (!errorString.isEmpty()) {
         qCWarning(CameraMetaDataLog) << "Internal Error:" << errorString;
         return cameraList;

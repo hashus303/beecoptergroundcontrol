@@ -1,12 +1,12 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 SelectableControl {
-    z:                      QGroundControl.zOrderWidgets
+    z:                      beeCopter.zOrderWidgets
     selectionUIRightAnchor: true
-    selectedControl:        QGroundControl.settingsManager.flyViewSettings.instrumentQmlFile2
+    selectedControl:        beeCopter.settingsManager.flyViewSettings.instrumentQmlFile2
 
     property var  missionController:    _missionController
     property real extraInset:           innerControl.extraInset

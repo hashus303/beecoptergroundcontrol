@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     // Indicates whether calibration is valid for this control
@@ -17,7 +17,7 @@ Rectangle {
     // Image source
     property var imageSource: ""
 
-    property var __qgcPal: QGCPalette { colorGroupEnabled: enabled }
+    property var __beeCopterPal: beeCopterPalette { colorGroupEnabled: enabled }
 
     color:  calInProgress ? "yellow" : (calValid ? "green" : "red")
 
@@ -28,7 +28,7 @@ Rectangle {
         y:      inset
         width:  parent.width - (inset * 2)
         height: parent.height - (inset * 2)
-        color: qgcPal.windowShade
+        color: beeCopterPal.windowShade
 
         Image {
             width:      parent.width
@@ -38,7 +38,7 @@ Rectangle {
             smooth: true
         }
 
-        QGCLabel {
+        beeCopterLabel {
             width:                  parent.width
             height:                 parent.height
             horizontalAlignment:    Text.AlignHCenter

@@ -1,5 +1,5 @@
 # ============================================================================
-# QGroundControl CMake Build Configuration
+# beeCopter CMake Build Configuration
 # ============================================================================
 
 cmake_minimum_required(VERSION 3.25)
@@ -41,14 +41,14 @@ set(CMAKE_POLICY_VERSION_MINIMUM ${CMAKE_MINIMUM_REQUIRED_VERSION})
 include(CustomOptions)
 
 if(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/custom")
-    message(STATUS "QGC: Custom build directory detected")
-    set(QGC_CUSTOM_BUILD ON)
+    message(STATUS "beeCopter: Custom build directory detected")
+    set(beeCopter_CUSTOM_BUILD ON)
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/custom/cmake")
     include(CustomOverrides)
 endif()
 
 # Disable testing if not explicitly enabled
-if(NOT QGC_BUILD_TESTING)
+if(NOT beeCopter_BUILD_TESTING)
     set(BUILD_TESTING OFF CACHE INTERNAL "Disable testing by default" FORCE)
 endif()
 
@@ -60,9 +60,9 @@ endif()
 # Apple-Specific Pre-Project Settings
 # ----------------------------------------------------------------------------
 if(APPLE)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "${QGC_CONFIG_MACOS_DEPLOYMENT_TARGET}" CACHE STRING "macOS minimum deployment target")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "${beeCopter_CONFIG_MACOS_DEPLOYMENT_TARGET}" CACHE STRING "macOS minimum deployment target")
     # iOS builds: set(CMAKE_OSX_SYSROOT "iphoneos")
-    if(QGC_MACOS_UNIVERSAL_BUILD)
+    if(beeCopter_MACOS_UNIVERSAL_BUILD)
         # Universal binary for both Intel and Apple Silicon
         set(CMAKE_OSX_ARCHITECTURES "x86_64h;arm64")
     endif()
@@ -76,17 +76,17 @@ include(Git)
 # ----------------------------------------------------------------------------
 # Compiler Caching Configuration
 # ----------------------------------------------------------------------------
-if(QGC_USE_CACHE)
-    qgc_config_caching()
+if(beeCopter_USE_CACHE)
+    beeCopter_config_caching()
 endif()
 
 # ----------------------------------------------------------------------------
 # Project Declaration
 # ----------------------------------------------------------------------------
-project(${QGC_APP_NAME}
-    VERSION ${QGC_APP_VERSION}
-    DESCRIPTION ${QGC_APP_DESCRIPTION}
-    HOMEPAGE_URL "https://${QGC_ORG_DOMAIN}"
+project(${beeCopter_APP_NAME}
+    VERSION ${beeCopter_APP_VERSION}
+    DESCRIPTION ${beeCopter_APP_DESCRIPTION}
+    HOMEPAGE_URL "https://${beeCopter_ORG_DOMAIN}"
     LANGUAGES C CXX
 )
 
@@ -98,7 +98,7 @@ project(${QGC_APP_NAME}
 include(GNUInstallDirs)
 include(FetchContent)
 include(CMakePrintHelpers)
-if(QGC_BUILD_TESTING)
+if(beeCopter_BUILD_TESTING)
     include(CTest)
 endif()
 
@@ -149,10 +149,10 @@ set(CMAKE_POLICY_DEFAULT_CMP0075 NEW)
 
 set(QT_NO_PRIVATE_MODULE_WARNING ON)
 
-find_package(Qt6 ${QGC_QT_MINIMUM_VERSION} QUIET COMPONENTS Core)
+find_package(Qt6 ${beeCopter_QT_MINIMUM_VERSION} QUIET COMPONENTS Core)
 if(NOT Qt6_FOUND)
     message(FATAL_ERROR
-        "Qt6 ${QGC_QT_MINIMUM_VERSION}+ not found.\n"
+        "Qt6 ${beeCopter_QT_MINIMUM_VERSION}+ not found.\n"
         "Set CMAKE_PREFIX_PATH to your Qt installation, e.g.:\n"
         "  cmake -DCMAKE_PREFIX_PATH=~/Qt/6.8.3/gcc_64 ..\n"
         "  (or use qt-cmake which sets this automatically)\n"
@@ -161,7 +161,7 @@ if(NOT Qt6_FOUND)
 endif()
 
 find_package(Qt6
-    ${QGC_QT_MINIMUM_VERSION}...${QGC_QT_MAXIMUM_VERSION}
+    ${beeCopter_QT_MINIMUM_VERSION}...${beeCopter_QT_MAXIMUM_VERSION}
     REQUIRED
     COMPONENTS
         Charts
@@ -199,19 +199,19 @@ find_package(Qt6
 )
 
 if(LINUX)
-    find_package(Qt6 ${QGC_QT_MINIMUM_VERSION}...${QGC_QT_MAXIMUM_VERSION} COMPONENTS WaylandClient)
+    find_package(Qt6 ${beeCopter_QT_MINIMUM_VERSION}...${beeCopter_QT_MAXIMUM_VERSION} COMPONENTS WaylandClient)
 endif()
 
 qt_standard_project_setup(
-    REQUIRES ${QGC_QT_MINIMUM_VERSION}
-    SUPPORTS_UP_TO ${QGC_QT_MAXIMUM_VERSION}
+    REQUIRES ${beeCopter_QT_MINIMUM_VERSION}
+    SUPPORTS_UP_TO ${beeCopter_QT_MAXIMUM_VERSION}
     I18N_SOURCE_LANGUAGE en
 )
 
 # ----------------------------------------------------------------------------
 # QML Linting Configuration
 # ----------------------------------------------------------------------------
-if(QGC_ENABLE_QMLLINT)
+if(beeCopter_ENABLE_QMLLINT)
     set(QT_QML_GENERATE_QMLLINT ON CACHE BOOL "Enable automatic QML linting" FORCE)
 else()
     set(QT_QML_GENERATE_QMLLINT OFF CACHE BOOL "Disable automatic QML linting" FORCE)
@@ -232,35 +232,35 @@ qt_policy(
 # Custom Build Subdirectory
 # ============================================================================
 
-if(QGC_CUSTOM_BUILD)
+if(beeCopter_CUSTOM_BUILD)
     add_subdirectory(custom)
 endif()
 
 # ============================================================================
-# QGroundControl Resources
+# beeCopter Resources
 # ============================================================================
 
 # Note: Resources added to executable (not library) to avoid needing Q_INIT_RESOURCE()
 
-list(APPEND QGC_RESOURCES
-    "${CMAKE_SOURCE_DIR}/qgcimages.qrc"
-    "${CMAKE_SOURCE_DIR}/qgcresources.qrc"
+list(APPEND beeCopter_RESOURCES
+    "${CMAKE_SOURCE_DIR}/beeCopterImages.qrc"
+    "${CMAKE_SOURCE_DIR}/beeCopterResources.qrc"
     "${CMAKE_SOURCE_DIR}/resources/InstrumentValueIcons/InstrumentValueIcons.qrc"
 )
 
 # ============================================================================
-# QGroundControl Executable Target
+# beeCopter Executable Target
 # ============================================================================
 
 # Create the main executable
 qt_add_executable(${CMAKE_PROJECT_NAME}
     WIN32          # Windows GUI application
     MACOSX_BUNDLE  # macOS application bundle
-    ${QGC_RESOURCES}
+    ${beeCopter_RESOURCES}
 )
 
-# Apply compiler warning configuration to QGC target
-qgc_apply_warning_flags()
+# Apply compiler warning configuration to beeCopter target
+beeCopter_apply_warning_flags()
 
 # ----------------------------------------------------------------------------
 # Platform-Specific Configuration
@@ -279,7 +279,7 @@ endif()
 # QML Module Configuration
 # ----------------------------------------------------------------------------
 qt_add_qml_module(${CMAKE_PROJECT_NAME}
-    URI QGC
+    URI beeCopter
     VERSION 1.0
     RESOURCE_PREFIX /qml
     IMPORTS
@@ -294,7 +294,7 @@ qt_add_qml_module(${CMAKE_PROJECT_NAME}
 # ----------------------------------------------------------------------------
 add_subdirectory(src)
 
-if(QGC_BUILD_TESTING)
+if(beeCopter_BUILD_TESTING)
     add_subdirectory(test)
     # Exclude test directory from translation scanning
     set_property(DIRECTORY test PROPERTY QT_EXCLUDE_FROM_TRANSLATION ON)
@@ -303,7 +303,7 @@ endif()
 # ----------------------------------------------------------------------------
 # Translation/Localization Configuration
 # ----------------------------------------------------------------------------
-file(GLOB TS_SOURCES "${CMAKE_SOURCE_DIR}/translations/qgc_*.ts")
+file(GLOB TS_SOURCES "${CMAKE_SOURCE_DIR}/translations/beeCopter_*.ts")
 set_source_files_properties(${TS_SOURCES} PROPERTIES OUTPUT_LOCATION "${CMAKE_BINARY_DIR}/i18n")
 
 qt_add_translations(${CMAKE_PROJECT_NAME}
@@ -321,9 +321,9 @@ qt_add_translations(${CMAKE_PROJECT_NAME}
 # ----------------------------------------------------------------------------
 # Qt Quick Controls Configuration
 # ----------------------------------------------------------------------------
-qgc_set_qt_resource_alias("${CMAKE_SOURCE_DIR}/resources/qtquickcontrols2.conf")
+beeCopter_set_qt_resource_alias("${CMAKE_SOURCE_DIR}/resources/qtquickcontrols2.conf")
 
-qt_add_resources(${CMAKE_PROJECT_NAME} "qgcresources_cmake"
+qt_add_resources(${CMAKE_PROJECT_NAME} "beeCopterresources_cmake"
     PREFIX "/"
     FILES "${CMAKE_SOURCE_DIR}/resources/qtquickcontrols2.conf"
 )

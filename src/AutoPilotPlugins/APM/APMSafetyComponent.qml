@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             safetyPage
@@ -20,7 +20,7 @@ SetupPage {
 
             FactPanelController { id: controller; }
 
-            QGCPalette { id: qgcPal; colorGroupEnabled: true }
+            beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
             property Fact _batt1Monitor:                    controller.getParameterFact(-1, "BATT_MONITOR")
             property Fact _batt2Monitor:                    controller.getParameterFact(-1, "BATT2_MONITOR", false /* reportMissing */)
@@ -66,21 +66,21 @@ SetupPage {
                         columnSpacing:  _margins
                         rowSpacing:     _margins
                         columns:        2
-                        QGCLabel { text: qsTr("Low action:") }
+                        beeCopterLabel { text: qsTr("Low action:") }
                         FactComboBox {
                             fact:               failsafeBattLowAct
                             indexModel:         false
                             Layout.fillWidth:   true
                         }
 
-                        QGCLabel { text: qsTr("Critical action:") }
+                        beeCopterLabel { text: qsTr("Critical action:") }
                         FactComboBox {
                             fact:               failsafeBattCritAct
                             indexModel:         false
                             Layout.fillWidth:   true
                         }
 
-                        QGCLabel { text: qsTr("Low voltage threshold:") }
+                        beeCopterLabel { text: qsTr("Low voltage threshold:") }
                         FactTextField {
                             fact:               failsafeBattLowVoltage
                             showUnits:          true
@@ -88,21 +88,21 @@ SetupPage {
                         }
 
 
-                        QGCLabel { text: qsTr("Critical voltage threshold:") }
+                        beeCopterLabel { text: qsTr("Critical voltage threshold:") }
                         FactTextField {
                             fact:               failsafeBattCritVoltage
                             showUnits:          true
                             Layout.fillWidth:   true
                         }
 
-                        QGCLabel { text: qsTr("Low mAh threshold:") }
+                        beeCopterLabel { text: qsTr("Low mAh threshold:") }
                         FactTextField {
                             fact:               failsafeBattLowMah
                             showUnits:          true
                             Layout.fillWidth:   true
                         }
 
-                        QGCLabel { text: qsTr("Critical mAh threshold:") }
+                        beeCopterLabel { text: qsTr("Critical mAh threshold:") }
                         FactTextField {
                             fact:               failsafeBattCritMah
                             showUnits:          true
@@ -118,11 +118,11 @@ SetupPage {
                 ColumnLayout {
                     spacing: ScreenTools.defaultFontPixelWidth
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text: _restartRequired
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         text:       qsTr("Reboot vehicle")
                         onClicked:  controller.vehicle.rebootVehicle()
                     }
@@ -133,7 +133,7 @@ SetupPage {
                 spacing: _margins / 2
                 visible: _batt1MonitorEnabled
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("Battery1 Failsafe Triggers")
                     font.bold:   true
                 }
@@ -141,7 +141,7 @@ SetupPage {
                 Rectangle {
                     width:  battery1FailsafeLoader.x + battery1FailsafeLoader.width + _margins
                     height: battery1FailsafeLoader.y + battery1FailsafeLoader.height + _margins
-                    color:  qgcPal.windowShade
+                    color:  beeCopterPal.windowShade
 
                     Loader {
                         id:                 battery1FailsafeLoader
@@ -167,7 +167,7 @@ SetupPage {
                 spacing: _margins / 2
                 visible: _batt2MonitorEnabled
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("Battery2 Failsafe Triggers")
                     font.bold:   true
                 }
@@ -175,7 +175,7 @@ SetupPage {
                 Rectangle {
                     width:  battery2FailsafeLoader.x + battery2FailsafeLoader.width + _margins
                     height: battery2FailsafeLoader.y + battery2FailsafeLoader.height + _margins
-                    color:  qgcPal.windowShade
+                    color:  beeCopterPal.windowShade
 
                     Loader {
                         id:                 battery2FailsafeLoader
@@ -206,7 +206,7 @@ SetupPage {
                     property Fact _failsafeThrValue:    controller.getParameterFact(-1, "THR_FS_VALUE")
                     property Fact _failsafeGCSEnable:   controller.getParameterFact(-1, "FS_GCS_ENABL")
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:       qsTr("Failsafe Triggers")
                         font.bold:   true
                     }
@@ -214,7 +214,7 @@ SetupPage {
                     Rectangle {
                         width:  fsColumn.x + fsColumn.width + _margins
                         height: fsColumn.y + fsColumn.height + _margins
-                        color:  qgcPal.windowShade
+                        color:  beeCopterPal.windowShade
 
                         ColumnLayout {
                             id:                 fsColumn
@@ -223,7 +223,7 @@ SetupPage {
                             anchors.top:        parent.top
 
                             RowLayout {
-                                QGCCheckBox {
+                                beeCopterCheckBox {
                                     id:                 throttleEnableCheckBox
                                     text:               qsTr("Throttle PWM threshold:")
                                     checked:            _failsafeThrEnable.value === 1
@@ -238,7 +238,7 @@ SetupPage {
                                 }
                             }
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 text:       qsTr("GCS failsafe")
                                 checked:    _failsafeGCSEnable.value != 0
                                 onClicked:  _failsafeGCSEnable.value = checked ? 1 : 0
@@ -264,7 +264,7 @@ SetupPage {
                     property Fact _failsafeAction:      controller.getParameterFact(-1, "FS_ACTION")
                     property Fact _failsafeCrashCheck:  controller.getParameterFact(-1, "FS_CRASH_CHECK")
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:         failsafeLabel
                         text:       qsTr("Failsafe Triggers")
                         font.bold:   true
@@ -274,7 +274,7 @@ SetupPage {
                         id:     failsafeSettings
                         width:  fsGrid.x + fsGrid.width + _margins
                         height: fsGrid.y + fsGrid.height + _margins
-                        color:  qgcPal.windowShade
+                        color:  beeCopterPal.windowShade
 
                         GridLayout {
                             id:                 fsGrid
@@ -283,27 +283,27 @@ SetupPage {
                             anchors.top:        parent.top
                             columns:            2
 
-                            QGCLabel { text: qsTr("Ground Station failsafe:") }
+                            beeCopterLabel { text: qsTr("Ground Station failsafe:") }
                             FactComboBox {
                                 Layout.fillWidth:   true
                                 fact:               _failsafeGCSEnable
                                 indexModel:         false
                             }
 
-                            QGCLabel { text: qsTr("Throttle failsafe:") }
+                            beeCopterLabel { text: qsTr("Throttle failsafe:") }
                             FactComboBox {
                                 Layout.fillWidth:   true
                                 fact:               _failsafeThrEnable
                                 indexModel:         false
                             }
 
-                            QGCLabel { text: qsTr("PWM threshold:") }
+                            beeCopterLabel { text: qsTr("PWM threshold:") }
                             FactTextField {
                                 Layout.fillWidth:   true
                                 fact:               _failsafeThrValue
                             }
 
-                            QGCLabel { text: qsTr("Failsafe Crash Check:") }
+                            beeCopterLabel { text: qsTr("Failsafe Crash Check:") }
                             FactComboBox {
                                 Layout.fillWidth:   true
                                 fact:               _failsafeCrashCheck
@@ -331,7 +331,7 @@ SetupPage {
                     property Fact _failsafeThrEnable:               controller.getParameterFact(-1, "FS_THR_ENABLE")
                     property Fact _failsafeThrValue:                controller.getParameterFact(-1, "FS_THR_VALUE")
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:       qsTr("General Failsafe Triggers")
                         font.bold:   true
                     }
@@ -339,7 +339,7 @@ SetupPage {
                     Rectangle {
                         width:  generalFailsafeColumn.x + generalFailsafeColumn.width + _margins
                         height: generalFailsafeColumn.y + generalFailsafeColumn.height + _margins
-                        color:  qgcPal.windowShade
+                        color:  beeCopterPal.windowShade
 
                         Column {
                             id:                 generalFailsafeColumn
@@ -353,15 +353,15 @@ SetupPage {
                                 rowSpacing:     _margins
                                 columns:        2
 
-                                QGCLabel { text: qsTr("Ground Station failsafe:") }
+                                beeCopterLabel { text: qsTr("Ground Station failsafe:") }
                                 FactComboBox {
                                     fact:               _failsafeGCSEnable
                                     indexModel:         false
                                     Layout.fillWidth:   true
                                 }
 
-                                QGCLabel { text: qsTr("Throttle failsafe:") }
-                                QGCComboBox {
+                                beeCopterLabel { text: qsTr("Throttle failsafe:") }
+                                beeCopterComboBox {
                                     model:              [qsTr("Disabled"), qsTr("Always RTL"),
                                         qsTr("Continue with Mission in Auto Mode"), qsTr("Always Land")]
                                     currentIndex:       _failsafeThrEnable.value
@@ -370,7 +370,7 @@ SetupPage {
                                     onActivated: (index) => { _failsafeThrEnable.value = index }
                                 }
 
-                                QGCLabel { text: qsTr("PWM threshold:") }
+                                beeCopterLabel { text: qsTr("PWM threshold:") }
                                 FactTextField {
                                     fact:               _failsafeThrValue
                                     showUnits:          true
@@ -403,7 +403,7 @@ SetupPage {
                     readonly property int _circleFenceBitMask:      2
                     readonly property int _polygonFenceBitMask:     4
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:           qsTr("GeoFence")
                         font.bold:      true
                     }
@@ -411,7 +411,7 @@ SetupPage {
                     Rectangle {
                         width:  mainLayout.width + (_margins * 2)
                         height: mainLayout.height + (_margins * 2)
-                        color:  qgcPal.windowShade
+                        color:  beeCopterPal.windowShade
 
                         ColumnLayout {
                             id:         mainLayout
@@ -429,7 +429,7 @@ SetupPage {
                                 columns:    2
                                 enabled:    enabledCheckBox.checked
 
-                                QGCCheckBox {
+                                beeCopterCheckBox {
                                     text:       qsTr("Maximum Altitude")
                                     checked:    _fenceType.rawValue & _maxAltitudeFenceBitMask
 
@@ -446,7 +446,7 @@ SetupPage {
                                     fact: _fenceAltMax
                                 }
 
-                                QGCCheckBox {
+                                beeCopterCheckBox {
                                     text:       qsTr("Circle centered on Home")
                                     checked:    _fenceType.rawValue & _circleFenceBitMask
 
@@ -464,7 +464,7 @@ SetupPage {
                                     showUnits:  true
                                 }
 
-                                QGCCheckBox {
+                                beeCopterCheckBox {
                                     text:       qsTr("Inclusion/Exclusion Circles+Polygons")
                                     checked:    _fenceType.rawValue & _polygonFenceBitMask
 
@@ -492,7 +492,7 @@ SetupPage {
                                 columns: 2
                                 enabled: enabledCheckBox.checked
 
-                                QGCLabel {
+                                beeCopterLabel {
                                     text: qsTr("Breach action")
                                 }
 
@@ -501,7 +501,7 @@ SetupPage {
                                     fact:           _fenceAction
                                 }
 
-                                QGCLabel {
+                                beeCopterLabel {
                                     text: qsTr("Fence margin")
                                 }
 
@@ -529,7 +529,7 @@ SetupPage {
                     property Fact _rtlLoitTimeFact: controller.getParameterFact(-1, "RTL_LOIT_TIME")
                     property Fact _rtlAltFinalFact: controller.getParameterFact(-1, "RTL_ALT_FINAL")
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:             rtlLabel
                         text:           qsTr("Return to Launch")
                         font.bold:      true
@@ -539,9 +539,9 @@ SetupPage {
                         id:     rtlSettings
                         width:  landSpeedField.x + landSpeedField.width + _margins
                         height: landSpeedField.y + landSpeedField.height + _margins
-                        color:  qgcPal.windowShade
+                        color:  beeCopterPal.windowShade
 
-                        QGCColoredImage {
+                        beeCopterColoredImage {
                             id:                 icon
                             visible:            _showIcon
                             anchors.margins:    _margins
@@ -549,14 +549,14 @@ SetupPage {
                             anchors.top:        parent.top
                             height:             ScreenTools.defaultFontPixelWidth * 20
                             width:              ScreenTools.defaultFontPixelWidth * 20
-                            color:              qgcPal.text
+                            color:              beeCopterPal.text
                             sourceSize.width:   width
                             mipmap:             true
                             fillMode:           Image.PreserveAspectFit
                             source:             "/qmlimages/ReturnToHomeAltitude.svg"
                         }
 
-                        QGCRadioButton {
+                        beeCopterRadioButton {
                             id:                 returnAtCurrentRadio
                             anchors.margins:    _innerMargin
                             anchors.left:       _showIcon ? icon.right : parent.left
@@ -567,7 +567,7 @@ SetupPage {
                             onClicked: _rtlAltFact.value = 0
                         }
 
-                        QGCRadioButton {
+                        beeCopterRadioButton {
                             id:                 returnAltRadio
                             anchors.topMargin:  _innerMargin
                             anchors.top:        returnAtCurrentRadio.bottom
@@ -588,7 +588,7 @@ SetupPage {
                             enabled:            returnAltRadio.checked
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id:                 homeLoiterCheckbox
                             anchors.left:       returnAtCurrentRadio.left
                             anchors.baseline:   landDelayField.baseline
@@ -608,7 +608,7 @@ SetupPage {
                             enabled:            homeLoiterCheckbox.checked === true
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.left:       returnAtCurrentRadio.left
                             anchors.baseline:   rltAltFinalField.baseline
                             text:               qsTr("Final land stage altitude:")
@@ -623,7 +623,7 @@ SetupPage {
                             showUnits:          true
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             anchors.left:       returnAtCurrentRadio.left
                             anchors.baseline:   landSpeedField.baseline
                             text:               qsTr("Final land stage descent speed:")
@@ -653,7 +653,7 @@ SetupPage {
 
                     property Fact _rtlAltFact: controller.getParameterFact(-1, "r.RTL_ALTITUDE")
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:           qsTr("Return to Launch")
                         font.bold:      true
                     }
@@ -661,9 +661,9 @@ SetupPage {
                     Rectangle {
                         width:  rltAltField.x + rltAltField.width + _margins
                         height: rltAltField.y + rltAltField.height + _margins
-                        color:  qgcPal.windowShade
+                        color:  beeCopterPal.windowShade
 
-                        QGCRadioButton {
+                        beeCopterRadioButton {
                             id:                 returnAtCurrentRadio
                             anchors.margins:    _margins
                             anchors.left:       parent.left
@@ -674,7 +674,7 @@ SetupPage {
                             onClicked: _rtlAltFact.value = -1
                         }
 
-                        QGCRadioButton {
+                        beeCopterRadioButton {
                             id:                 returnAltRadio
                             anchors.topMargin:  _margins / 2
                             anchors.left:       returnAtCurrentRadio.left
@@ -705,7 +705,7 @@ SetupPage {
             Column {
                 spacing: _margins / 2
 
-                QGCLabel {
+                beeCopterLabel {
                     text:           _armingCheck ? qsTr("Arming Checks") : qsTr("Skip Arming Checks")
                     font.bold:      true
                 }
@@ -713,7 +713,7 @@ SetupPage {
                 Rectangle {
                     width:  flowLayout.width
                     height: armingCheckInnerColumn.height + (_margins * 2)
-                    color:  qgcPal.windowShade
+                    color:  beeCopterPal.windowShade
 
                     Column {
                         id:                 armingCheckInnerColumn
@@ -731,12 +731,12 @@ SetupPage {
                             fact:               _armingCheck ? _armingCheck : _armingSkipCheck
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:             armingCheckWarning
                             anchors.left:   parent.left
                             anchors.right:  parent.right
                             wrapMode:       Text.WordWrap
-                            color:          qgcPal.warningText
+                            color:          beeCopterPal.warningText
                             text:            qsTr("Warning: Turning off arming checks can lead to loss of Vehicle control.")
                             visible:        _armingCheck ? _armingCheck.value != 1 : _armingSkipCheck.value != 0
                         }

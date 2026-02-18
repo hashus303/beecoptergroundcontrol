@@ -16,7 +16,7 @@ class ComponentInformationCache;
 class CompInfo;
 class CompInfoParam;
 class CompInfoGeneral;
-class QGCCachedFileDownload;
+class beeCopterCachedFileDownload;
 
 class RequestMetaDataTypeStateMachine : public StateMachine
 {
@@ -130,7 +130,7 @@ private:
     RequestMetaDataTypeStateMachine _requestTypeStateMachine;
     RequestAllCompleteFn            _requestAllCompleteFn       = nullptr;
     void*                           _requestAllCompleteFnData   = nullptr;
-    QGCCachedFileDownload*          _cachedFileDownload         = nullptr;
+    beeCopterCachedFileDownload*          _cachedFileDownload         = nullptr;
     ComponentInformationCache&      _fileCache;
     ComponentInformationTranslation* _translation               = nullptr;
 

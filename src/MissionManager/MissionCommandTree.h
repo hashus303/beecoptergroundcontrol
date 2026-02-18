@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QMap>
@@ -70,25 +70,25 @@ public:
 
     const QList<MAV_CMD> &allCommandIds() const;
 
-    const MissionCommandUIInfo *getUIInfo(Vehicle *vehicle, QGCMAVLink::VehicleClass_t vtolMode, MAV_CMD command);
+    const MissionCommandUIInfo *getUIInfo(Vehicle *vehicle, beeCopterMAVLink::VehicleClass_t vtolMode, MAV_CMD command);
 
 private:
     /// Add the next level of the hierarchy to a collapsed tree.
     ///     @param cmdList          List of mission commands to collapse into ui info
     ///     @param collapsedTree    Tree we are collapsing into
     void _collapseHierarchy(const MissionCommandList *cmdList, QMap<MAV_CMD, MissionCommandUIInfo*> &collapsedTree) const;
-    void _buildAllCommands(Vehicle *vehicle, QGCMAVLink::VehicleClass_t vtolMode);
+    void _buildAllCommands(Vehicle *vehicle, beeCopterMAVLink::VehicleClass_t vtolMode);
     QStringList _availableCategoriesForVehicle(Vehicle *vehicle);
-    void _firmwareAndVehicleClassInfo(Vehicle *vehicle, QGCMAVLink::VehicleClass_t vtolMode, QGCMAVLink::FirmwareClass_t &firmwareClass, QGCMAVLink::VehicleClass_t &vehicleClass) const;
+    void _firmwareAndVehicleClassInfo(Vehicle *vehicle, beeCopterMAVLink::VehicleClass_t vtolMode, beeCopterMAVLink::FirmwareClass_t &firmwareClass, beeCopterMAVLink::VehicleClass_t &vehicleClass) const;
 
     const QString _allCommandsCategory = tr("All commands");    ///< Category which contains all available commands
 
     /// Full hierarchy
-    QMap<QGCMAVLink::FirmwareClass_t, QMap<QGCMAVLink::VehicleClass_t, MissionCommandList*>> _staticCommandTree;
+    QMap<beeCopterMAVLink::FirmwareClass_t, QMap<beeCopterMAVLink::VehicleClass_t, MissionCommandList*>> _staticCommandTree;
 
     /// Collapsed hierarchy for specific vehicle type
-    QMap<QGCMAVLink::FirmwareClass_t, QMap<QGCMAVLink::VehicleClass_t, QMap<MAV_CMD, MissionCommandUIInfo*>>> _allCommands;
+    QMap<beeCopterMAVLink::FirmwareClass_t, QMap<beeCopterMAVLink::VehicleClass_t, QMap<MAV_CMD, MissionCommandUIInfo*>>> _allCommands;
 
     /// Collapsed hierarchy for specific vehicle type
-    QMap<QGCMAVLink::FirmwareClass_t, QMap<QGCMAVLink::VehicleClass_t, QStringList /* category */>> _supportedCategories;
+    QMap<beeCopterMAVLink::FirmwareClass_t, QMap<beeCopterMAVLink::VehicleClass_t, QStringList /* category */>> _supportedCategories;
 };

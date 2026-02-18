@@ -16,9 +16,9 @@ QUrl APMTuningComponent::setupSource() const
     case MAV_TYPE_HEXAROTOR:
     case MAV_TYPE_OCTOROTOR:
     case MAV_TYPE_TRICOPTER:
-        return QUrl::fromUserInput("qrc:/qml/QGroundControl/AutoPilotPlugins/APM/APMTuningComponentCopter.qml");
+        return QUrl::fromUserInput("qrc:/qml/beeCopter/AutoPilotPlugins/APM/APMTuningComponentCopter.qml");
     case MAV_TYPE_SUBMARINE:
-        return QUrl::fromUserInput("qrc:/qml/QGroundControl/AutoPilotPlugins/APM/APMTuningComponentSub.qml");
+        return QUrl::fromUserInput("qrc:/qml/beeCopter/AutoPilotPlugins/APM/APMTuningComponentSub.qml");
     default:
         return QUrl::fromUserInput(QString());
     }

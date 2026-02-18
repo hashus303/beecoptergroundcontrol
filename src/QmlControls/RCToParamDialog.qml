@@ -3,17 +3,17 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
-QGCPopupDialog {
+beeCopterPopupDialog {
     title:      qsTr("RC To Param")
     buttons:    Dialog.Cancel | Dialog.Ok
 
     property alias tuningFact: controller.tuningFact
 
-    onAccepted: QGroundControl.multiVehicleManager.activeVehicle.sendParamMapRC(tuningFact.name, scale.text, centerValue.text, tuningID.currentIndex, minValue.text, maxValue.text)
+    onAccepted: beeCopter.multiVehicleManager.activeVehicle.sendParamMapRC(tuningFact.name, scale.text, centerValue.text, tuningID.currentIndex, minValue.text, maxValue.text)
 
     RCToParamDialogController {
         id: controller
@@ -22,14 +22,14 @@ QGCPopupDialog {
     ColumnLayout {
         spacing: ScreenTools.defaultDialogControlSpacing
 
-        QGCLabel {
+        beeCopterLabel {
             Layout.preferredWidth:  mainGrid.width
             Layout.fillWidth:       true
             wrapMode:               Text.WordWrap
             text:                   qsTr("Bind an RC Channel to a parameter value. Tuning IDs can be mapped to an RC Channel from Radio Setup page.")
         }
 
-        QGCLabel {
+        beeCopterLabel {
             Layout.preferredWidth:  mainGrid.width
             Layout.fillWidth:       true
             text:                   qsTr("Waiting on parameter update from Vehicle.")
@@ -43,43 +43,43 @@ QGCPopupDialog {
             columnSpacing:  ScreenTools.defaultDialogControlSpacing
             enabled:        controller.ready
 
-            QGCLabel { text: qsTr("Parameter") }
-            QGCLabel { text: tuningFact.name }
+            beeCopterLabel { text: qsTr("Parameter") }
+            beeCopterLabel { text: tuningFact.name }
 
-            QGCLabel { text: qsTr("Tuning ID") }
-            QGCComboBox {
+            beeCopterLabel { text: qsTr("Tuning ID") }
+            beeCopterComboBox {
                 id:                 tuningID
                 Layout.fillWidth:   true
                 currentIndex:       0
                 model:              [ 1, 2, 3 ]
             }
 
-            QGCLabel { text: qsTr("Scale") }
-            QGCTextField {
+            beeCopterLabel { text: qsTr("Scale") }
+            beeCopterTextField {
                 id:     scale
                 text:   controller.scale.valueString
             }
 
-            QGCLabel { text: qsTr("Center Value") }
-            QGCTextField {
+            beeCopterLabel { text: qsTr("Center Value") }
+            beeCopterTextField {
                 id:     centerValue
                 text:   controller.center.valueString
             }
 
-            QGCLabel { text: qsTr("Min Value") }
-            QGCTextField {
+            beeCopterLabel { text: qsTr("Min Value") }
+            beeCopterTextField {
                 id:     minValue
                 text:   controller.min.valueString
             }
 
-            QGCLabel { text: qsTr("Max Value") }
-            QGCTextField {
+            beeCopterLabel { text: qsTr("Max Value") }
+            beeCopterTextField {
                 id:     maxValue
                 text:   controller.max.valueString
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             Layout.preferredWidth:  mainGrid.width
             Layout.fillWidth:       true
             wrapMode:               Text.WordWrap

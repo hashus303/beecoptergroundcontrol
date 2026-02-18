@@ -3,13 +3,13 @@ import QtQuick.Window
 import QtQuick.Controls
 import QtCore
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     property Window window
 
-    property bool _enabled: !ScreenTools.isMobile && !ScreenTools.fakeMobile && QGroundControl.corePlugin.options.enableSaveMainWindowPosition
+    property bool _enabled: !ScreenTools.isMobile && !ScreenTools.fakeMobile && beeCopter.corePlugin.options.enableSaveMainWindowPosition
 
     Settings {
         id:         s
@@ -33,7 +33,7 @@ Item {
             window.height = ScreenTools.screenHeight
         } else if (ScreenTools.isMobile) {
             window.showFullScreen();
-        } else if (QGroundControl.corePlugin.options.enableSaveMainWindowPosition) {
+        } else if (beeCopter.corePlugin.options.enableSaveMainWindowPosition) {
             window.minimumWidth = Math.min(ScreenTools.defaultFontPixelWidth * 100, Screen.width)
             window.minimumHeight = Math.min(ScreenTools.defaultFontPixelWidth * 50, Screen.height)
             if (s.width && s.height) {

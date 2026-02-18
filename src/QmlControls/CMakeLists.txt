@@ -23,30 +23,30 @@ target_sources(${CMAKE_PROJECT_NAME}
         ObjectListModelBase.h
         ParameterEditorController.cc
         ParameterEditorController.h
-        QGCFenceCircle.cc
-        QGCFenceCircle.h
-        QGCFencePolygon.cc
-        QGCFencePolygon.h
-        QGCFileDialogController.cc
-        QGCFileDialogController.h
-        QGCGeoBoundingCube.cc
-        QGCGeoBoundingCube.h
-        QGCImageProvider.cc
-        QGCImageProvider.h
-        QGCMapCircle.cc
-        QGCMapCircle.h
-        QGCMapPalette.cc
-        QGCMapPalette.h
-        QGCMapPolygon.cc
-        QGCMapPolygon.h
-        QGCMapPolyline.cc
-        QGCMapPolyline.h
-        QGCPalette.cc
-        QGCPalette.h
-        QGCQGeoCoordinate.cc
-        QGCQGeoCoordinate.h
-        QGroundControlQmlGlobal.cc
-        QGroundControlQmlGlobal.h
+        beeCopterFenceCircle.cc
+        beeCopterFenceCircle.h
+        beeCopterFencePolygon.cc
+        beeCopterFencePolygon.h
+        beeCopterFileDialogController.cc
+        beeCopterFileDialogController.h
+        beeCopterGeoBoundingCube.cc
+        beeCopterGeoBoundingCube.h
+        beeCopterImageProvider.cc
+        beeCopterImageProvider.h
+        beeCopterMapCircle.cc
+        beeCopterMapCircle.h
+        beeCopterMapPalette.cc
+        beeCopterMapPalette.h
+        beeCopterMapPolygon.cc
+        beeCopterMapPolygon.h
+        beeCopterMapPolyline.cc
+        beeCopterMapPolyline.h
+        beeCopterPalette.cc
+        beeCopterPalette.h
+        beeCopterQGeoCoordinate.cc
+        beeCopterQGeoCoordinate.h
+        beeCopterQmlGlobal.cc
+        beeCopterQmlGlobal.h
         QmlObjectListModel.cc
         QmlObjectListModel.h
         QmlUnitsConversion.h
@@ -69,14 +69,14 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_
 # ----------------------------------------------------------------------------
 # QML Controls Module
 # ----------------------------------------------------------------------------
-qt_add_library(QGroundControlControlsModule STATIC)
+qt_add_library(beeCopterControlsModule STATIC)
 
 set_source_files_properties(ScreenTools.qml PROPERTIES
     QT_QML_SINGLETON_TYPE TRUE
 )
 
-qt_add_qml_module(QGroundControlControlsModule
-    URI QGroundControl.Controls
+qt_add_qml_module(beeCopterControlsModule
+    URI beeCopter.Controls
     VERSION 1.0
     RESOURCE_PREFIX /qml
     QML_FILES
@@ -125,40 +125,40 @@ qt_add_qml_module(QGroundControlControlsModule
         PreFlightCheckButton.qml
         PreFlightCheckGroup.qml
         PreFlightCheckModel.qml
-        QGCButton.qml
-        QGCCheckBox.qml
-        QGCCheckBoxSlider.qml
-        QGCColoredImage.qml
-        QGCColumnButton.qml
-        QGCComboBox.qml
-        QGCDelayButton.qml
-        QGCDynamicObjectManager.qml
-        QGCFileDialog.qml
-        QGCFlickable.qml
-        QGCFlickableScrollIndicator.qml
-        QGCGroupBox.qml
-        QGCLabel.qml
-        QGCListView.qml
-        QGCMapLabel.qml
-        QGCMarqueeLabel.qml
-        QGCMenu.qml
-        QGCMenuItem.qml
-        QGCMenuSeparator.qml
-        QGCMouseArea.qml
-        QGCMovableItem.qml
-        QGCOptionsComboBox.qml
-        QGCPageIndicator.qml
-        QGCPopupDialog.qml
-        QGCRadioButton.qml
-        QGCRoundButton.qml
-        QGCSimpleMessageDialog.qml
-        QGCSlider.qml
-        QGCSwipeView.qml
-        QGCTabBar.qml
-        QGCTabButton.qml
-        QGCTextField.qml
-        QGCToolBarButton.qml
-        QGCToolInsets.qml
+        beeCopterButton.qml
+        beeCopterCheckBox.qml
+        beeCopterCheckBoxSlider.qml
+        beeCopterColoredImage.qml
+        beeCopterColumnButton.qml
+        beeCopterComboBox.qml
+        beeCopterDelayButton.qml
+        beeCopterDynamicObjectManager.qml
+        beeCopterFileDialog.qml
+        beeCopterFlickable.qml
+        beeCopterFlickableScrollIndicator.qml
+        beeCopterGroupBox.qml
+        beeCopterLabel.qml
+        beeCopterListView.qml
+        beeCopterMapLabel.qml
+        beeCopterMarqueeLabel.qml
+        beeCopterMenu.qml
+        beeCopterMenuItem.qml
+        beeCopterMenuSeparator.qml
+        beeCopterMouseArea.qml
+        beeCopterMovableItem.qml
+        beeCopterOptionsComboBox.qml
+        beeCopterPageIndicator.qml
+        beeCopterPopupDialog.qml
+        beeCopterRadioButton.qml
+        beeCopterRoundButton.qml
+        beeCopterSimpleMessageDialog.qml
+        beeCopterSlider.qml
+        beeCopterSwipeView.qml
+        beeCopterTabBar.qml
+        beeCopterTabButton.qml
+        beeCopterTextField.qml
+        beeCopterToolBarButton.qml
+        beeCopterToolInsets.qml
         RCChannelMonitor.qml
         RCToParamDialog.qml
         SectionHeader.qml

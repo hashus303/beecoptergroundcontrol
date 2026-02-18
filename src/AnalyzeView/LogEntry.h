@@ -10,13 +10,13 @@
 
 #include "MAVLinkLib.h"
 
-class QGCLogEntry;
+class beeCopterLogEntry;
 
 Q_DECLARE_LOGGING_CATEGORY(LogEntryLog)
 
 struct LogDownloadData
 {
-    explicit LogDownloadData(QGCLogEntry * const logEntry);
+    explicit LogDownloadData(beeCopterLogEntry * const logEntry);
     ~LogDownloadData();
 
     void advanceChunk();
@@ -31,7 +31,7 @@ struct LogDownloadData
     bool chunkEquals(const bool val) const;
 
     uint ID = 0;
-    QGCLogEntry *const entry = nullptr;
+    beeCopterLogEntry *const entry = nullptr;
 
     QBitArray chunk_table;
     uint32_t current_chunk = 0;
@@ -48,7 +48,7 @@ struct LogDownloadData
 
 /*===========================================================================*/
 
-class QGCLogEntry : public QObject
+class beeCopterLogEntry : public QObject
 {
     Q_OBJECT
     // QML_ELEMENT
@@ -62,8 +62,8 @@ class QGCLogEntry : public QObject
     Q_PROPERTY(QString      status      READ status                         NOTIFY statusChanged)
 
 public:
-    explicit QGCLogEntry(uint logId, const QDateTime &dateTime = QDateTime(), uint logSize = 0, bool received = false, QObject *parent = nullptr);
-    ~QGCLogEntry();
+    explicit beeCopterLogEntry(uint logId, const QDateTime &dateTime = QDateTime(), uint logSize = 0, bool received = false, QObject *parent = nullptr);
+    ~beeCopterLogEntry();
 
     uint id() const { return _logID; }
     uint size() const { return _logSize; }

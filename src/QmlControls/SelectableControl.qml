@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 /// Controt that allows the user to select from a list of controls to display.
 /// Selection is is shown on right-click for desktop and long press for mobile.
@@ -32,7 +32,7 @@ Control {
             spacing:        ScreenTools.defaultFontPixelWidth
             visible:        _showSelectionUI
 
-            QGCButton {
+            beeCopterButton {
                 onClicked:  _showSelectionUI = false
                 iconSource: "qrc:/InstrumentValueIcons/lock-open.svg"
             }
@@ -54,7 +54,7 @@ Control {
             source: selectedControl ? selectedControl.rawValue : ""
         }
 
-        QGCMouseArea {
+        beeCopterMouseArea {
             anchors.fill:       parent
             acceptedButtons:    Qt.LeftButton | Qt.RightButton
 

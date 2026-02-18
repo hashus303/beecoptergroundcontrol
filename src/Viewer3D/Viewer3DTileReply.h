@@ -7,7 +7,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(Viewer3DTileReplyLog)
 
-struct QGCCacheTile;
+struct beeCopterCacheTile;
 class QNetworkAccessManager;
 class QNetworkReply;
 class QTimer;
@@ -38,7 +38,7 @@ private:
     void _onRequestFinished();
     void _onRequestError();
     void _onTimeout();
-    void _onCacheHit(QGCCacheTile *tile);
+    void _onCacheHit(beeCopterCacheTile *tile);
     void _onCacheMiss();
     void _disconnectReply();
     bool _isBingEmptyTile() const;

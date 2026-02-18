@@ -1,11 +1,11 @@
 #include "ADSBTCPLink.h"
 // #include "DeviceInfo.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QTimer>
 #include <QtNetwork/QTcpSocket>
 
-QGC_LOGGING_CATEGORY(ADSBTCPLinkLog, "ADSB.ADSBTCPLink")
+beeCopter_LOGGING_CATEGORY(ADSBTCPLinkLog, "ADSB.ADSBTCPLink")
 
 ADSBTCPLink::ADSBTCPLink(const QHostAddress &hostAddress, quint16 port, QObject *parent)
     : QObject(parent)
@@ -56,7 +56,7 @@ ADSBTCPLink::~ADSBTCPLink()
 
 bool ADSBTCPLink::init()
 {
-    /* if (!QGCDeviceInfo::isInternetAvailable()) {
+    /* if (!beeCopterDeviceInfo::isInternetAvailable()) {
         return false;
     } */
 

@@ -3,7 +3,7 @@
 #include <QtCore/QLoggingCategory>
 
 #include "FactGroup.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 Q_DECLARE_LOGGING_CATEGORY(GimbalLog)
 

@@ -1,11 +1,11 @@
 #include "MissionCommandUIInfo.h"
 #include "JsonParsing.h"
 #include "FactMetaData.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <limits>
 
-QGC_LOGGING_CATEGORY(MissionCommandsLog, "Plan.MissionCommands")
+beeCopter_LOGGING_CATEGORY(MissionCommandsLog, "Plan.MissionCommands")
 
 MissionCmdParamInfo::MissionCmdParamInfo(QObject* parent)
     : QObject(parent)

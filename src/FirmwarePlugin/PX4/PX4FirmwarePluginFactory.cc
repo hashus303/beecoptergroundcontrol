@@ -9,10 +9,10 @@ PX4FirmwarePluginFactory::PX4FirmwarePluginFactory(void)
 
 }
 
-QList<QGCMAVLink::FirmwareClass_t> PX4FirmwarePluginFactory::supportedFirmwareClasses(void) const
+QList<beeCopterMAVLink::FirmwareClass_t> PX4FirmwarePluginFactory::supportedFirmwareClasses(void) const
 {
-    QList<QGCMAVLink::FirmwareClass_t> list;
-    list.append(QGCMAVLink::FirmwareClassPX4);
+    QList<beeCopterMAVLink::FirmwareClass_t> list;
+    list.append(beeCopterMAVLink::FirmwareClassPX4);
     return list;
 }
 

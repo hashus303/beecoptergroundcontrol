@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 ColumnLayout {
     spacing: _margin
@@ -19,12 +19,12 @@ ColumnLayout {
         onClicked: {
             var removeModes = []
             var updateFunction = function(altMode){ missionItem.cameraCalc.distanceMode = altMode }
-            removeModes.push(QGroundControl.AltitudeModeMixed)
+            removeModes.push(beeCopter.AltitudeModeMixed)
             if (!missionItem.masterController.controllerVehicle.supportsTerrainFrame) {
-                removeModes.push(QGroundControl.AltitudeModeTerrainFrame)
+                removeModes.push(beeCopter.AltitudeModeTerrainFrame)
             }
-            if (!QGroundControl.corePlugin.options.showMissionAbsoluteAltitude || !_missionItem.cameraCalc.isManualCamera) {
-                removeModes.push(QGroundControl.AltitudeModeAbsolute)
+            if (!beeCopter.corePlugin.options.showMissionAbsoluteAltitude || !_missionItem.cameraCalc.isManualCamera) {
+                removeModes.push(beeCopter.AltitudeModeAbsolute)
             }
             altModeDialogComponent.createObject(mainWindow, { rgRemoveModes: removeModes, updateAltModeFn: updateFunction }).open()
         }
@@ -34,12 +34,12 @@ ColumnLayout {
         RowLayout {
             spacing: ScreenTools.defaultFontPixelWidth / 2
 
-            QGCLabel { text: QGroundControl.altitudeModeShortDescription(missionItem.cameraCalc.distanceMode) }
-            QGCColoredImage {
+            beeCopterLabel { text: beeCopter.altitudeModeShortDescription(missionItem.cameraCalc.distanceMode) }
+            beeCopterColoredImage {
                 height:     ScreenTools.defaultFontPixelHeight / 2
                 width:      height
                 source:     "/res/DropArrow.svg"
-                color:      qgcPal.text
+                color:      beeCopterPal.text
             }
         }
     }
@@ -49,21 +49,21 @@ ColumnLayout {
         columnSpacing:      _margin
         rowSpacing:         _margin
         columns:            2
-        enabled:            missionItem.cameraCalc.distanceMode === QGroundControl.AltitudeModeCalcAboveTerrain
+        enabled:            missionItem.cameraCalc.distanceMode === beeCopter.AltitudeModeCalcAboveTerrain
 
-        QGCLabel { text: qsTr("Tolerance") }
+        beeCopterLabel { text: qsTr("Tolerance") }
         FactTextField {
             fact:               missionItem.terrainAdjustTolerance
             Layout.fillWidth:   true
         }
 
-        QGCLabel { text: qsTr("Max Climb Rate") }
+        beeCopterLabel { text: qsTr("Max Climb Rate") }
         FactTextField {
             fact:               missionItem.terrainAdjustMaxClimbRate
             Layout.fillWidth:   true
         }
 
-        QGCLabel { text: qsTr("Max Descent Rate") }
+        beeCopterLabel { text: qsTr("Max Descent Rate") }
         FactTextField {
             fact:               missionItem.terrainAdjustMaxDescentRate
             Layout.fillWidth:   true

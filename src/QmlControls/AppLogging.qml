@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Item {
     id: root
@@ -20,16 +20,16 @@ Item {
             id:              logwindow
             anchors.fill:    parent
             anchors.margins: ScreenTools.defaultFontPixelWidth
-            color:           qgcPal.window
+            color:           beeCopterPal.window
 
             Component {
                 id: delegateItem
                 Rectangle {
-                    color:  index % 2 == 0 ? qgcPal.window : qgcPal.windowShade
+                    color:  index % 2 == 0 ? beeCopterPal.window : beeCopterPal.windowShade
                     height: Math.round(ScreenTools.defaultFontPixelHeight * 0.5 + field.height)
                     width:  listView.width
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:         field
                         text:       display
                         width:      parent.width
@@ -39,7 +39,7 @@ Item {
                 }
             }
 
-            QGCListView {
+            beeCopterListView {
                 id:                     listView
                 anchors.top:            parent.top
                 anchors.left:           parent.left
@@ -69,9 +69,9 @@ Item {
                 }
             }
 
-            QGCFileDialog {
+            beeCopterFileDialog {
                 id:             writeDialog
-                folder:         QGroundControl.settingsManager.appSettings.logSavePath
+                folder:         beeCopter.settingsManager.appSettings.logSavePath
                 nameFilters:    [qsTr("Log files (*.txt)"), qsTr("All Files (*)")]
                 title:          qsTr("Select log save file")
                 onAcceptedForSave: (file) => {
@@ -86,7 +86,7 @@ Item {
                 function onWriteFinished(success) { writeButton.enabled = true }
             }
 
-            QGCButton {
+            beeCopterButton {
                 id:              writeButton
                 anchors.bottom:  parent.bottom
                 anchors.left:    parent.left
@@ -94,13 +94,13 @@ Item {
                 text:            qsTr("Save App Log")
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                     gstLabel
                 anchors.left:           writeButton.right
                 anchors.leftMargin:     ScreenTools.defaultFontPixelWidth
                 anchors.verticalCenter: gstCombo.verticalCenter
                 text:                   qsTr("GStreamer Debug Level")
-                visible:                QGroundControl.settingsManager.appSettings.gstDebugLevel.visible
+                visible:                beeCopter.settingsManager.appSettings.gstDebugLevel.visible
             }
 
             FactComboBox {
@@ -108,12 +108,12 @@ Item {
                 anchors.left:       gstLabel.right
                 anchors.leftMargin: ScreenTools.defaultFontPixelWidth / 2
                 anchors.bottom:     parent.bottom
-                fact:               QGroundControl.settingsManager.appSettings.gstDebugLevel
-                visible:            QGroundControl.settingsManager.appSettings.gstDebugLevel.visible
+                fact:               beeCopter.settingsManager.appSettings.gstDebugLevel
+                visible:            beeCopter.settingsManager.appSettings.gstDebugLevel.visible
                 sizeToContents:     true
             }
 
-            QGCButton {
+            beeCopterButton {
                 id:                     followTail
                 anchors.right:          filterButton.left
                 anchors.rightMargin:    ScreenTools.defaultFontPixelWidth
@@ -129,7 +129,7 @@ Item {
                 }
             }
 
-            QGCButton {
+            beeCopterButton {
                 id:             filterButton
                 anchors.bottom: parent.bottom
                 anchors.right:  parent.right
@@ -142,7 +142,7 @@ Item {
     Component {
         id: filtersDialogComponent
 
-        QGCPopupDialog {
+        beeCopterPopupDialog {
             title:      qsTr("Logging")
             buttons:    Dialog.Close
 
@@ -157,14 +157,14 @@ Item {
                         Layout.fillWidth:   true
                         spacing:            ScreenTools.defaultFontPixelHeight / 2
 
-                        QGCTextField {
+                        beeCopterTextField {
                             Layout.fillWidth:   true
                             id:                 searchText
                             text:               ""
                             enabled:            true
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             text:       qsTr("Clear")
                             onClicked:  searchText.text = ""
                         }
@@ -180,9 +180,9 @@ Item {
                         spacing:            ScreenTools.defaultFontPixelHeight / 2
 
                         Repeater {
-                            model: QGroundControl.flatLoggingCategoriesModel()
+                            model: beeCopter.flatLoggingCategoriesModel()
 
-                            QGCCheckBoxSlider {
+                            beeCopterCheckBoxSlider {
                                 Layout.fillWidth:       true
                                 Layout.maximumHeight:   visible ? implicitHeight : 0
                                 text:                   object.fullCategory
@@ -192,9 +192,9 @@ Item {
                             }
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             text:       qsTr("Disable All")
-                            onClicked:  QGroundControl.disableAllLoggingCategories()
+                            onClicked:  beeCopter.disableAllLoggingCategories()
                         }
                     }
                 }
@@ -206,7 +206,7 @@ Item {
                     visible:            searchText.text === ""
 
                     Repeater {
-                        model: QGroundControl.treeLoggingCategoriesModel()
+                        model: beeCopter.treeLoggingCategoriesModel()
 
                         ColumnLayout {
                             spacing: ScreenTools.defaultFontPixelHeight / 2
@@ -214,19 +214,19 @@ Item {
                             RowLayout {
                                 spacing:                ScreenTools.defaultFontPixelWidth
 
-                                QGCLabel {
+                                beeCopterLabel {
                                     Layout.preferredWidth:  ScreenTools.defaultFontPixelWidth
                                     text:                   object.expanded ? qsTr("-") : qsTr("+")
                                     horizontalAlignment:    Text.AlignLeft
                                     visible:                object.children
 
-                                    QGCMouseArea {
+                                    beeCopterMouseArea {
                                         anchors.fill:   parent
                                         onClicked:      object.expanded = !object.expanded
                                     }
                                 }
 
-                                QGCCheckBoxSlider {
+                                beeCopterCheckBoxSlider {
                                     Layout.fillWidth:   true
                                     text:               object.shortCategory
                                     checked:            object.enabled
@@ -237,7 +237,7 @@ Item {
                             Repeater {
                                 model: object.expanded ? object.children : undefined
 
-                                QGCCheckBoxSlider {
+                                beeCopterCheckBoxSlider {
                                     Layout.fillWidth:   true
                                     text:               "   " + object.shortCategory
                                     checked:            object.enabled
@@ -255,9 +255,9 @@ Item {
                     visible:            searchText.text !== ""
 
                     Repeater {
-                        model: QGroundControl.flatLoggingCategoriesModel()
+                        model: beeCopter.flatLoggingCategoriesModel()
 
-                        QGCCheckBoxSlider {
+                        beeCopterCheckBoxSlider {
                             Layout.fillWidth:       true
                             Layout.maximumHeight:   visible ? implicitHeight : 0
                             text:                   object.fullCategory

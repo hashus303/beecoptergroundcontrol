@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 SetupPage {
     id:             motorPage
@@ -35,9 +35,9 @@ SetupPage {
         Column {
             spacing: ScreenTools.defaultFontPixelHeight
 
-            QGCLabel {
+            beeCopterLabel {
                 text:       qsTr("Warning: Unable to determine motor count")
-                color:      qgcPal.warningText
+                color:      beeCopterPal.warningText
                 visible:    controller.vehicle.motorCount == -1
             }
 
@@ -58,7 +58,7 @@ SetupPage {
                 }
             } // Row
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.left:   parent.left
                 anchors.right:  parent.right
                 wrapMode:       Text.WordWrap
@@ -74,7 +74,7 @@ SetupPage {
                     id:         buttonRepeater
                     model:      controller.vehicle.motorCount === -1 ? 8 : controller.vehicle.motorCount
 
-                    QGCButton {
+                    beeCopterButton {
                         id:         button
                         anchors.verticalCenter:     parent.verticalCenter
                         text:       motorIndexToString(index)
@@ -84,7 +84,7 @@ SetupPage {
                     }
                 } // Repeater
 
-                QGCButton {
+                beeCopterButton {
                     id:         allButton
                     text:       qsTr("All")
                     onClicked:  {
@@ -94,7 +94,7 @@ SetupPage {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     id:         allStopButton
                     text:       qsTr("Stop")
                     onClicked:  {
@@ -117,9 +117,9 @@ SetupPage {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     anchors.verticalCenter:     parent.verticalCenter
-                    color:  qgcPal.warningText
+                    color:  beeCopterPal.warningText
                     text:   safetySwitch.checked ? qsTr("Careful : Motors are enabled") : qsTr("Propellers are removed - Enable slider and motors")
                 }
             } // Row

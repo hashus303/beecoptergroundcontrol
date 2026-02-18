@@ -60,7 +60,7 @@ target_sources(${CMAKE_PROJECT_NAME}
 # ----------------------------------------------------------------------------
 # APM-Specific Settings
 # ----------------------------------------------------------------------------
-if(NOT QGC_DISABLE_APM_MAVLINK)
+if(NOT beeCopter_DISABLE_APM_MAVLINK)
     target_sources(${CMAKE_PROJECT_NAME}
         PRIVATE
             APMMavlinkStreamRateSettings.cc

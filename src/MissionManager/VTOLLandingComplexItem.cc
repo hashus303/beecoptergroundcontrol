@@ -6,12 +6,12 @@
 #include "MissionItem.h"
 #include "SettingsManager.h"
 #include "PlanViewSettings.h"
-#include "QGC.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopter.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QJsonArray>
 
-QGC_LOGGING_CATEGORY(VTOLLandingComplexItemLog, "Plan.VTOLLandingComplexItem")
+beeCopter_LOGGING_CATEGORY(VTOLLandingComplexItemLog, "Plan.VTOLLandingComplexItem")
 
 const QString VTOLLandingComplexItem::name(VTOLLandingComplexItem::tr("VTOL Landing"));
 
@@ -30,13 +30,13 @@ VTOLLandingComplexItem::VTOLLandingComplexItem(PlanMasterController* masterContr
     , _stopTakingPhotosFact     (settingsGroup, _metaDataMap[stopTakingPhotosName])
     , _stopTakingVideoFact      (settingsGroup, _metaDataMap[stopTakingVideoName])
 {
-    _editorQml      = "qrc:/qml/QGroundControl/Controls/VTOLLandingPatternEditor.qml";
+    _editorQml      = "qrc:/qml/beeCopter/Controls/VTOLLandingPatternEditor.qml";
     _isIncomplete   = false;
 
     _init();
 
     // We adjust landing distance meta data to Plan View settings unless there was a custom build override
-    if (QGC::fuzzyCompare(_landingDistanceFact.rawValue().toDouble(), _landingDistanceFact.rawDefaultValue().toDouble())) {
+    if (beeCopter::fuzzyCompare(_landingDistanceFact.rawValue().toDouble(), _landingDistanceFact.rawDefaultValue().toDouble())) {
         Fact* vtolTransitionDistanceFact = SettingsManager::instance()->planViewSettings()->vtolTransitionDistance();
         double vtolTransitionDistance = vtolTransitionDistanceFact->rawValue().toDouble();
         _landingDistanceFact.metaData()->setRawDefaultValue(vtolTransitionDistance);

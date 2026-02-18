@@ -8,14 +8,14 @@
 
 Q_DECLARE_LOGGING_CATEGORY(ComponentInformationTranslationLog)
 
-class QGCCachedFileDownload;
+class beeCopterCachedFileDownload;
 
 class ComponentInformationTranslation : public QObject
 {
     Q_OBJECT
 
 public:
-    ComponentInformationTranslation(QObject* parent, QGCCachedFileDownload* cachedFileDownload);
+    ComponentInformationTranslation(QObject* parent, beeCopterCachedFileDownload* cachedFileDownload);
 
     /// Download translation file according to the currently set locale and translate the json file.
     /// emits downloadComplete() when done (with a temporary file that should be deleted)
@@ -43,6 +43,6 @@ private:
                                                 const QHash<QString, QString>& translations, QJsonValue jsonData);
     static QString getRefName(const QString& ref);
 
-    QGCCachedFileDownload* _cachedFileDownload = nullptr;
+    beeCopterCachedFileDownload* _cachedFileDownload = nullptr;
     QString _toTranslateJsonFile;
 };

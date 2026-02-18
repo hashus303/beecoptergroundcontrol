@@ -8,15 +8,15 @@ import QtPositioning
 import QtQuick.Window
 import QtQml.Models
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
+import beeCopter.FlightMap
 
 // This is the ui overlay layer for the widgets/tools for Fly View
 Item {
     id: _root
-    property var insetsToView: QGCToolInsets {}
+    property var insetsToView: beeCopterToolInsets {}
     property int _linethickness: 3
 
     Rectangle {
@@ -29,63 +29,63 @@ Item {
 
         ColumnLayout {
             id: checkboxcolumn
-            QGCCheckBox{
+            beeCopterCheckBox{
                 checked: true
                 text: "leftEdgeTopInset"
                 onClicked: leftEdgeTopInset.visible = checked
                 textColor: leftEdgeTopInset.color
                 textBold: true
             }
-            QGCCheckBox{
+            beeCopterCheckBox{
                 checked: true
                 text: "leftEdgeBottomInset"
                 onClicked: leftEdgeBottomInset.visible = checked
                 textColor: leftEdgeBottomInset.color
                 textBold: true
             }
-            QGCCheckBox{
+            beeCopterCheckBox{
                 checked: true
                 text: "rightEdgeTopInset"
                 onClicked: rightEdgeTopInset.visible = checked
                 textColor: rightEdgeTopInset.color
                 textBold: true
             }
-            QGCCheckBox{
+            beeCopterCheckBox{
                 checked: true
                 text: "rightEdgeBottomInset"
                 onClicked: rightEdgeBottomInset.visible = checked
                 textColor: rightEdgeBottomInset.color
                 textBold: true
             }
-            QGCCheckBox{
+            beeCopterCheckBox{
                 checked: true
                 text: "topEdgeLeftInset"
                 onClicked: topEdgeLeftInset.visible = checked
                 textColor: topEdgeLeftInset.color
                 textBold: true
             }
-            QGCCheckBox{
+            beeCopterCheckBox{
                 checked: true
                 text: "topEdgeRightInset"
                 onClicked: topEdgeRightInset.visible = checked
                 textColor: topEdgeRightInset.color
                 textBold: true
             }
-            QGCCheckBox{
+            beeCopterCheckBox{
                 checked: true
                 text: "bottomEdgeLeftInset"
                 onClicked: bottomEdgeLeftInset.visible = checked
                 textColor: bottomEdgeLeftInset.color
                 textBold: true
             }
-            QGCCheckBox{
+            beeCopterCheckBox{
                 checked: true
                 text: "bottomEdgeRightInset"
                 onClicked: bottomEdgeRightInset.visible = checked
                 textColor: bottomEdgeRightInset.color
                 textBold: true
             }
-            QGCCheckBox{
+            beeCopterCheckBox{
                 checked: true
                 text: "centerInsetRect"
                 onClicked: centerInsetRect.visible = checked

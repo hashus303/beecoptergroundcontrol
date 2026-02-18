@@ -2,13 +2,13 @@
 #include "AutoPilotPlugin.h"
 #include "MultiVehicleManager.h"
 #include "ParameterManager.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "Vehicle.h"
 
 #include <QtQml/QQmlEngine>
 
-QGC_LOGGING_CATEGORY(FactPanelControllerLog, "FactSystem.FactPanelController")
+beeCopter_LOGGING_CATEGORY(FactPanelControllerLog, "FactSystem.FactPanelController")
 
 FactPanelController::FactPanelController(QObject *parent)
     : QObject(parent)
@@ -36,7 +36,7 @@ void FactPanelController::_reportMissingParameter(int componentId, const QString
         componentId = _vehicle->defaultComponentId();
     }
 
-    qgcApp()->reportMissingParameter(componentId, name);
+    beeCopterApp()->reportMissingParameter(componentId, name);
     qCWarning(FactPanelControllerLog) << "Missing parameter:" << componentId << name;
 }
 

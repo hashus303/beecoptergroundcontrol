@@ -1,7 +1,7 @@
-import QGroundControl
-import QGroundControl.AppSettings
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.AppSettings
+import beeCopter.Controls
+import beeCopter.FactControls
 import QtQuick
 import QtQuick.Layouts
 
@@ -11,7 +11,7 @@ SettingsPage {
     property Fact _viewer3DEnabled: _viewer3DSettings.enabled
     property Fact _viewer3DMapProvider: _viewer3DSettings.mapProvider
     property Fact _viewer3DOsmFilePath: _viewer3DSettings.osmFilePath
-    property var _viewer3DSettings: QGroundControl.settingsManager.viewer3DSettings
+    property var _viewer3DSettings: beeCopter.settingsManager.viewer3DSettings
 
     SettingsGroupLayout {
         Layout.fillWidth: true
@@ -42,12 +42,12 @@ SettingsPage {
                 Layout.fillWidth: true
                 spacing: ScreenTools.defaultFontPixelWidth
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("3D Map File:")
                     wrapMode: Text.WordWrap
                 }
 
-                QGCTextField {
+                beeCopterTextField {
                     id: osmFileTextField
 
                     Layout.fillWidth: true
@@ -63,7 +63,7 @@ SettingsPage {
                 Layout.alignment: Qt.AlignRight
                 spacing: ScreenTools.defaultFontPixelWidth
 
-                QGCButton {
+                beeCopterButton {
                     text: qsTr("Clear")
 
                     onClicked: {
@@ -71,7 +71,7 @@ SettingsPage {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text: qsTr("Select File")
 
                     onClicked: {
@@ -84,7 +84,7 @@ SettingsPage {
                         fileDialog.openForLoad();
                     }
 
-                    QGCFileDialog {
+                    beeCopterFileDialog {
                         id: fileDialog
 
                         nameFilters: [qsTr("OpenStreetMap files (*.osm)")]

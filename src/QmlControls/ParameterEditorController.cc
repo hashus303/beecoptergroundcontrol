@@ -1,11 +1,11 @@
 #include "ParameterEditorController.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 #include "ParameterManager.h"
 #include "AppSettings.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(ParameterEditorControllerLog, "QMLControls.ParameterEditorController")
+beeCopter_LOGGING_CATEGORY(ParameterEditorControllerLog, "QMLControls.ParameterEditorController")
 
 ParameterTableModel::ParameterTableModel(QObject* parent)
     : QAbstractTableModel(parent)
@@ -309,7 +309,7 @@ void ParameterEditorController::saveToFile(const QString& filename)
         QFile file(parameterFilename);
 
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            qgcApp()->showAppMessage(tr("Unable to create file: %1").arg(parameterFilename));
+            beeCopterApp()->showAppMessage(tr("Unable to create file: %1").arg(parameterFilename));
             return;
         }
 
@@ -350,7 +350,7 @@ bool ParameterEditorController::buildDiffFromFile(const QString& filename)
     QFile file(filename);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qgcApp()->showAppMessage(tr("Unable to open file: %1").arg(filename));
+        beeCopterApp()->showAppMessage(tr("Unable to open file: %1").arg(filename));
         return false;
     }
 

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "QGCState.h"
+#include "beeCopterState.h"
 
 #include <QTimer>
 
 /// Delays that state machine for the specified time in milliseconds
-class DelayState : public QGCState
+class DelayState : public beeCopterState
 {
     Q_OBJECT
 

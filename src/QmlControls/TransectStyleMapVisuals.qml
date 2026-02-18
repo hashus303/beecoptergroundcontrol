@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtLocation
 import QtPositioning
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlightMap
 
 /// Base control for both Survey and Corridor Scan map visuals
 Item {
@@ -52,20 +52,20 @@ Item {
         _destroyVisualElements()
     }
 
-    QGCDynamicObjectManager {
+    beeCopterDynamicObjectManager {
         id: objMgr
     }
 
     // Area polygon
-    QGCMapPolygonVisuals {
+    beeCopterMapPolygonVisuals {
         id:                 mapPolygonVisuals
         mapControl:         map
         mapPolygon:         _mapPolygon
         interactive:        polygonInteractive && _missionItem.isCurrentItem && _root.interactive
         borderWidth:        1
         borderColor:        "black"
-        interiorColor:      QGroundControl.globalPalette.surveyPolygonInterior
-        altColor:           QGroundControl.globalPalette.surveyPolygonTerrainCollision
+        interiorColor:      beeCopter.globalPalette.surveyPolygonInterior
+        altColor:           beeCopter.globalPalette.surveyPolygonTerrainCollision
         interiorOpacity:    0.5 * _root.opacity
     }
 
@@ -113,7 +113,7 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             coordinate:     _missionItem.coordinate
             visible:        _missionItem.exitCoordinate.isValid
             opacity:        _root.opacity
@@ -185,7 +185,7 @@ Item {
         MapQuickItem {
             anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              beeCopter.zOrderMapItems
             coordinate:     _missionItem.exitCoordinate
             visible:        _missionItem.exitCoordinate.isValid
             opacity:        _root.opacity

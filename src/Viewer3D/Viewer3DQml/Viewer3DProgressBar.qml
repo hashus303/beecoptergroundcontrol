@@ -1,5 +1,5 @@
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     id: progressBody
@@ -7,7 +7,7 @@ Rectangle {
     property string progressText: qsTr("Progress")
     property real progressValue: 100.0
 
-    color: qgcPal.windowShadeDark
+    color: beeCopterPal.windowShadeDark
     height: _progressCol.height + 2 * ScreenTools.defaultFontPixelWidth
     opacity: (progressValue < 100) ? (1.0) : (0.0)
     radius: ScreenTools.defaultFontPixelWidth * 2
@@ -20,8 +20,8 @@ Rectangle {
         }
     }
 
-    QGCPalette {
-        id: qgcPal
+    beeCopterPalette {
+        id: beeCopterPal
 
         colorGroupEnabled: true
     }
@@ -49,9 +49,9 @@ Rectangle {
             }
         }
 
-        QGCLabel {
+        beeCopterLabel {
             anchors.horizontalCenter: parent.horizontalCenter
-            color: qgcPal.text
+            color: beeCopterPal.text
             font.bold: true
             font.pointSize: ScreenTools.mediumFontPointSize
             horizontalAlignment: Text.AlignHCenter

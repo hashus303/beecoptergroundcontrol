@@ -1,9 +1,9 @@
 #include "ShapeFileHelper.h"
 #include "KMLHelper.h"
 #include "SHPFileHelper.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(ShapeFileHelperLog, "Utilities.ShapeFileHelper")
+beeCopter_LOGGING_CATEGORY(ShapeFileHelperLog, "Utilities.ShapeFileHelper")
 
 namespace {
     constexpr const char *_errorPrefix = QT_TR_NOOP("Shape file load failed. %1");

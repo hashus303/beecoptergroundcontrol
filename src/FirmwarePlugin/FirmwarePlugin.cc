@@ -3,17 +3,17 @@
 #include "Autotune.h"
 #include "GenericAutoPilotPlugin.h"
 #include "MAVLinkProtocol.h"
-#include "QGCApplication.h"
-#include "QGCCameraManager.h"
-#include "QGCFileDownload.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterCameraManager.h"
+#include "beeCopterFileDownload.h"
+#include "beeCopterLoggingCategory.h"
 #include "VehicleCameraControl.h"
 #include "VehicleComponent.h"
 
 #include <QtCore/QRegularExpression>
 #include <QtCore/QThread>
 
-QGC_LOGGING_CATEGORY(FirmwarePluginLog, "FirmwarePlugin.FirmwarePlugin")
+beeCopter_LOGGING_CATEGORY(FirmwarePluginLog, "FirmwarePlugin.FirmwarePlugin")
 
 static const QString guided_mode_not_supported_by_vehicle = QObject::tr("Guided mode not supported by Vehicle.");
 
@@ -80,20 +80,20 @@ bool FirmwarePlugin::setFlightMode(const QString &flightMode, uint8_t *base_mode
     return false;
 }
 
-QString FirmwarePlugin::missionCommandOverrides(QGCMAVLink::VehicleClass_t vehicleClass) const
+QString FirmwarePlugin::missionCommandOverrides(beeCopterMAVLink::VehicleClass_t vehicleClass) const
 {
     switch (vehicleClass) {
-    case QGCMAVLink::VehicleClassGeneric:
+    case beeCopterMAVLink::VehicleClassGeneric:
         return QStringLiteral(":/json/MavCmdInfoCommon.json");
-    case QGCMAVLink::VehicleClassFixedWing:
+    case beeCopterMAVLink::VehicleClassFixedWing:
         return QStringLiteral(":/json/MavCmdInfoFixedWing.json");
-    case QGCMAVLink::VehicleClassMultiRotor:
+    case beeCopterMAVLink::VehicleClassMultiRotor:
         return QStringLiteral(":/json/MavCmdInfoMultiRotor.json");
-    case QGCMAVLink::VehicleClassVTOL:
+    case beeCopterMAVLink::VehicleClassVTOL:
         return QStringLiteral(":/json/MavCmdInfoVTOL.json");
-    case QGCMAVLink::VehicleClassSub:
+    case beeCopterMAVLink::VehicleClassSub:
         return QStringLiteral(":/json/MavCmdInfoSub.json");
-    case QGCMAVLink::VehicleClassRoverBoat:
+    case beeCopterMAVLink::VehicleClassRoverBoat:
         return QStringLiteral(":/json/MavCmdInfoRover.json");
     default:
         qCWarning(FirmwarePluginLog) << "FirmwarePlugin::missionCommandOverrides called with bad VehicleClass_t:" << vehicleClass;
@@ -112,33 +112,33 @@ void FirmwarePlugin::setGuidedMode(Vehicle *vehicle, bool guidedMode) const
 {
     Q_UNUSED(vehicle);
     Q_UNUSED(guidedMode);
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 void FirmwarePlugin::pauseVehicle(Vehicle *vehicle) const
 {
     Q_UNUSED(vehicle);
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 void FirmwarePlugin::guidedModeRTL(Vehicle *vehicle, bool smartRTL) const
 {
     Q_UNUSED(vehicle);
     Q_UNUSED(smartRTL);
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 void FirmwarePlugin::guidedModeLand(Vehicle *vehicle) const
 {
     Q_UNUSED(vehicle);
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 void FirmwarePlugin::guidedModeTakeoff(Vehicle *vehicle, double takeoffAltRel) const
 {
     Q_UNUSED(vehicle);
     Q_UNUSED(takeoffAltRel);
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 void FirmwarePlugin::guidedModeGotoLocation(Vehicle *vehicle, const QGeoCoordinate &gotoCoord, double forwardFlightLoiterRadius) const
@@ -146,40 +146,40 @@ void FirmwarePlugin::guidedModeGotoLocation(Vehicle *vehicle, const QGeoCoordina
     Q_UNUSED(vehicle);
     Q_UNUSED(gotoCoord);
     Q_UNUSED(forwardFlightLoiterRadius);
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 void FirmwarePlugin::guidedModeChangeAltitude(Vehicle*, double, bool pauseVehicle)
 {
     Q_UNUSED(pauseVehicle);
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 void FirmwarePlugin::guidedModeChangeGroundSpeedMetersSecond(Vehicle*, double) const
 {
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 void FirmwarePlugin::guidedModeChangeEquivalentAirspeedMetersSecond(Vehicle*, double) const
 {
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 void FirmwarePlugin::guidedModeChangeHeading(Vehicle *vehicle, const QGeoCoordinate &/*headingCoord*/) const
 {
     Q_UNUSED(vehicle);
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 void FirmwarePlugin::startTakeoff(Vehicle*) const
 {
     // Not supported by generic vehicle
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 void FirmwarePlugin::startMission(Vehicle*) const
 {
-    qgcApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
+    beeCopterApp()->showAppMessage(guided_mode_not_supported_by_vehicle);
 }
 
 const FirmwarePlugin::remapParamNameMajorVersionMap_t &FirmwarePlugin::paramNameRemapMajorVersionMap(void) const
@@ -194,19 +194,19 @@ const QVariantList &FirmwarePlugin::toolIndicators(const Vehicle*)
     //-- Default list of indicators for all vehicles.
     if (_toolIndicatorList.isEmpty()) {
         _toolIndicatorList = QVariantList({
-            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/Toolbar/VehicleGPSIndicator.qml")),
-            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/Toolbar/GPSResilienceIndicator.qml")),
-            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/Toolbar/TelemetryRSSIIndicator.qml")),
-            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/Toolbar/RCRSSIIndicator.qml")),
-            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/Controls/BatteryIndicator.qml")),
-            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/Toolbar/RemoteIDIndicator.qml")),
-            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/Toolbar/GimbalIndicator.qml")),
-            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/Toolbar/EscIndicator.qml")),
-            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/Toolbar/JoystickIndicator.qml")),
-            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/Toolbar/MultiVehicleSelector.qml")),
+            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/Toolbar/VehicleGPSIndicator.qml")),
+            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/Toolbar/GPSResilienceIndicator.qml")),
+            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/Toolbar/TelemetryRSSIIndicator.qml")),
+            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/Toolbar/RCRSSIIndicator.qml")),
+            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/Controls/BatteryIndicator.qml")),
+            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/Toolbar/RemoteIDIndicator.qml")),
+            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/Toolbar/GimbalIndicator.qml")),
+            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/Toolbar/EscIndicator.qml")),
+            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/Toolbar/JoystickIndicator.qml")),
+            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/Toolbar/MultiVehicleSelector.qml")),
 #ifdef QT_DEBUG
             // ControlIndicator is only available in debug builds for the moment
-            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/QGroundControl/Toolbar/GCSControlIndicator.qml")),
+            QVariant::fromValue(QUrl::fromUserInput("qrc:/qml/beeCopter/Toolbar/GCSControlIndicator.qml")),
 #endif
         });
     }
@@ -286,9 +286,9 @@ bool FirmwarePlugin::hasGimbal(Vehicle *vehicle, bool &rollSupported, bool &pitc
     return false;
 }
 
-QGCCameraManager *FirmwarePlugin::createCameraManager(Vehicle *vehicle) const
+beeCopterCameraManager *FirmwarePlugin::createCameraManager(Vehicle *vehicle) const
 {
-    return new QGCCameraManager(vehicle);
+    return new beeCopterCameraManager(vehicle);
 }
 
 MavlinkCameraControl *FirmwarePlugin::createCameraControl(const mavlink_camera_information_t *info, Vehicle *vehicle, int compID, QObject *parent) const
@@ -299,15 +299,15 @@ MavlinkCameraControl *FirmwarePlugin::createCameraControl(const mavlink_camera_i
 void FirmwarePlugin::checkIfIsLatestStable(Vehicle *vehicle) const
 {
     // This is required as mocklink uses a hardcoded firmware version
-    if (qgcApp()->runningUnitTests()) {
+    if (beeCopterApp()->runningUnitTests()) {
         qCDebug(FirmwarePluginLog) << "Skipping version check";
         return;
     }
 
     const QString versionFile = _getLatestVersionFileUrl(vehicle);
     qCDebug(FirmwarePluginLog) << "Downloading" << versionFile;
-    QGCFileDownload *const downloader = new QGCFileDownload(vehicle);
-    (void) connect(downloader, &QGCFileDownload::finished, this, [vehicle, this, versionFile](bool success, const QString &localFile, const QString &errorMsg) {
+    beeCopterFileDownload *const downloader = new beeCopterFileDownload(vehicle);
+    (void) connect(downloader, &beeCopterFileDownload::finished, this, [vehicle, this, versionFile](bool success, const QString &localFile, const QString &errorMsg) {
         if (success) {
             _versionFileDownloadFinished(versionFile, localFile, vehicle);
         } else if (!errorMsg.isEmpty()) {
@@ -354,7 +354,7 @@ void FirmwarePlugin::_versionFileDownloadFinished(const QString &remoteFile, con
         const QString currentVersionNumber = QStringLiteral("%1.%2.%3").arg(vehicle->firmwareMajorVersion())
                                                                        .arg(vehicle->firmwareMinorVersion())
                                                                        .arg(vehicle->firmwarePatchVersion());
-        qgcApp()->showAppMessage(tr("Vehicle is not running latest stable firmware! Running %1, latest stable is %2.").arg(currentVersionNumber, version));
+        beeCopterApp()->showAppMessage(tr("Vehicle is not running latest stable firmware! Running %1, latest stable is %2.").arg(currentVersionNumber, version));
     }
 }
 
@@ -402,7 +402,7 @@ void FirmwarePlugin::sendGCSMotionReport(Vehicle *vehicle, const FollowMe::GCSMo
 
     mavlink_follow_target_t follow_target{};
 
-    follow_target.timestamp = qgcApp()->msecsSinceBoot();
+    follow_target.timestamp = beeCopterApp()->msecsSinceBoot();
     follow_target.est_capabilities = estimationCapabilities;
     follow_target.position_cov[0] = static_cast<float>(motionReport.pos_std_dev[0]);
     follow_target.position_cov[2] = static_cast<float>(motionReport.pos_std_dev[2]);

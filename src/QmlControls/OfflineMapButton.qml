@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Button {
     id:                 mapButton
@@ -11,9 +11,9 @@ Button {
 
     background: Rectangle {
         anchors.fill:   parent
-        color:          _showHighlight ? qgcPal.buttonHighlight : qgcPal.button
+        color:          _showHighlight ? beeCopterPal.buttonHighlight : beeCopterPal.button
         border.width:   _showBorder ? 1: 0
-        border.color:   qgcPal.buttonText
+        border.color:   beeCopterPal.buttonText
     }
 
     property var    tileSet:    null
@@ -23,7 +23,7 @@ Button {
     property string size:       ""
 
     property bool   _showHighlight: (_pressed | _hovered | checked) && !_forceHoverOff
-    property bool   _showBorder:    qgcPal.globalTheme === QGCPalette.Light
+    property bool   _showBorder:    beeCopterPal.globalTheme === beeCopterPalette.Light
 
     property bool   _forceHoverOff:    false
     property int    _lastGlobalMouseX: 0
@@ -34,20 +34,20 @@ Button {
     contentItem: Row {
         anchors.centerIn:   parent
         anchors.margins:    ScreenTools.defaultFontPixelWidth
-        QGCLabel {
+        beeCopterLabel {
             text:   mapButton.text
             width:  mapButton.width * 0.4
-            color:  _showHighlight ? qgcPal.buttonHighlightText : qgcPal.buttonText
+            color:  _showHighlight ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
             wrapMode: Text.Wrap
             maximumLineCount: 2
             anchors.verticalCenter: parent.verticalCenter
         }
-        QGCLabel {
+        beeCopterLabel {
             id:     sizeLabel
             width:  mapButton.width * 0.4
             horizontalAlignment: Text.AlignRight
             anchors.verticalCenter: parent.verticalCenter
-            color:  _showHighlight ? qgcPal.buttonHighlightText : qgcPal.buttonText
+            color:  _showHighlight ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
             text:   mapButton.size + (tiles > 0 ? " (" + tiles + " tiles)" : "")
         }
         Item {
@@ -66,14 +66,14 @@ Button {
             width:  ScreenTools.defaultFontPixelWidth * 2
             height: 1
         }
-        QGCColoredImage {
+        beeCopterColoredImage {
             width:      sizeLabel.height * 0.8
             height:     sizeLabel.height * 0.8
             sourceSize.height:  height
             source:     "/res/buttonRight.svg"
             mipmap:     true
             fillMode:   Image.PreserveAspectFit
-            color:      _showHighlight ? qgcPal.buttonHighlightText : qgcPal.buttonText
+            color:      _showHighlight ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
             anchors.verticalCenter: parent.verticalCenter
         }
     }

@@ -3,16 +3,16 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 // Editor for Fixed Wing Landing Pattern complex mission item
 Rectangle {
     id:         _root
     height:     visible ? ((editorColumn.visible ? editorColumn.height : editorColumnNeedLandingPoint.height) + (_margin * 2)) : 0
     width:      availableWidth
-    color:      qgcPal.windowShadeDark
+    color:      beeCopterPal.windowShadeDark
     radius:     _radius
 
     // The following properties must be available up the hierarchy chain
@@ -26,7 +26,7 @@ Rectangle {
     property real   _spacer:                    ScreenTools.defaultFontPixelWidth / 2
     property string _setToVehicleHeadingStr:    qsTr("Set to vehicle heading")
     property string _setToVehicleLocationStr:   qsTr("Set to vehicle location")
-    property int    _altitudeMode:              missionItem.altitudesAreRelative ? QGroundControl.AltitudeModeRelative : QGroundControl.AltitudeModeAbsolute
+    property int    _altitudeMode:              missionItem.altitudesAreRelative ? beeCopter.AltitudeModeRelative : beeCopter.AltitudeModeAbsolute
 
 
     Column {
@@ -62,7 +62,7 @@ Rectangle {
                 anchors.right:   parent.right
                 columns:         2
 
-                QGCLabel { text: qsTr("Altitude") }
+                beeCopterLabel { text: qsTr("Altitude") }
 
                 AltitudeFactTextField {
                     Layout.fillWidth:   true
@@ -70,7 +70,7 @@ Rectangle {
                     altitudeMode:       _altitudeMode
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("Radius")
                     visible:    missionItem.useLoiterToAlt.rawValue
                 }
@@ -90,7 +90,7 @@ Rectangle {
                 visible:    missionItem.useLoiterToAlt.rawValue
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:       _setToVehicleHeadingStr
                 visible:    globals.activeVehicle
                 onClicked:  missionItem.landingHeading.rawValue = globals.activeVehicle.heading.rawValue
@@ -117,14 +117,14 @@ Rectangle {
                 anchors.right:   parent.right
                 columns:         2
 
-                QGCLabel { text: qsTr("Heading") }
+                beeCopterLabel { text: qsTr("Heading") }
 
                 FactTextField {
                     Layout.fillWidth:   true
                     fact:               missionItem.landingHeading
                 }
 
-                QGCLabel { text: qsTr("Altitude") }
+                beeCopterLabel { text: qsTr("Altitude") }
 
                 AltitudeFactTextField {
                     Layout.fillWidth:   true
@@ -132,14 +132,14 @@ Rectangle {
                     altitudeMode:       _altitudeMode
                 }
 
-                QGCLabel { text: qsTr("Landing Dist") }
+                beeCopterLabel { text: qsTr("Landing Dist") }
 
                 FactTextField {
                     fact:               missionItem.landingDistance
                     Layout.fillWidth:   true
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:               _setToVehicleLocationStr
                     visible:            globals.activeVehicle
                     Layout.columnSpan:  2
@@ -150,11 +150,11 @@ Rectangle {
 
         Item { width: 1; height: _spacer }
 
-        QGCCheckBox {
+        beeCopterCheckBox {
             anchors.right:  parent.right
             text:           qsTr("Altitudes relative to launch")
             checked:        missionItem.altitudesAreRelative
-            visible:        QGroundControl.corePlugin.options.showMissionAbsoluteAltitude || !missionItem.altitudesAreRelative
+            visible:        beeCopter.corePlugin.options.showMissionAbsoluteAltitude || !missionItem.altitudesAreRelative
             onClicked:      missionItem.altitudesAreRelative = checked
         }
 
@@ -193,29 +193,29 @@ Rectangle {
             anchors.right:      parent.right
             spacing:            0
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.left:           parent.left
                 anchors.right:          parent.right
                 wrapMode:               Text.WordWrap
-                color:                  qgcPal.warningText
+                color:                  beeCopterPal.warningText
                 font.pointSize:         ScreenTools.smallFontPointSize
                 text:                   qsTr("* Actual flight path will vary.")
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.left:           parent.left
                 anchors.right:          parent.right
                 wrapMode:               Text.WordWrap
-                color:                  qgcPal.warningText
+                color:                  beeCopterPal.warningText
                 font.pointSize:         ScreenTools.smallFontPointSize
                 text:                   qsTr("* Avoid tailwind on approach to land.")
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.left:           parent.left
                 anchors.right:          parent.right
                 wrapMode:               Text.WordWrap
-                color:                  qgcPal.warningText
+                color:                  beeCopterPal.warningText
                 font.pointSize:         ScreenTools.smallFontPointSize
                 text:                   qsTr("* Ensure landing distance is enough to complete transition.")
             }
@@ -238,7 +238,7 @@ Rectangle {
             spacing:        ScreenTools.defaultFontPixelHeight
             visible:        !missionItem.landingCoordSet
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.left:           parent.left
                 anchors.right:          parent.right
                 wrapMode:               Text.WordWrap
@@ -246,7 +246,7 @@ Rectangle {
                 text:                   qsTr("Click in map to set landing point.")
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 anchors.left:           parent.left
                 anchors.right:          parent.right
                 horizontalAlignment:    Text.AlignHCenter
@@ -254,7 +254,7 @@ Rectangle {
                 visible:                globals.activeVehicle
             }
 
-            QGCButton {
+            beeCopterButton {
                 anchors.horizontalCenter:   parent.horizontalCenter
                 text:                       _setToVehicleLocationStr
                 visible:                    globals.activeVehicle
@@ -279,13 +279,13 @@ Rectangle {
                 }
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 Layout.fillWidth:   true
                 wrapMode:           Text.WordWrap
                 text:               qsTr("Drag the loiter point to adjust landing direction for wind and obstacles as well as distance to land point.")
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:               qsTr("Done")
                 Layout.fillWidth:   true
                 onClicked: {

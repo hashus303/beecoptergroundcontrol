@@ -1,11 +1,11 @@
 #include "FTPController.h"
 
-#include "QGCArchiveModel.h"
-#include "QGCCompression.h"
-#include "QGCCompressionJob.h"
+#include "beeCopterArchiveModel.h"
+#include "beeCopterCompression.h"
+#include "beeCopterCompressionJob.h"
 #include "FTPManager.h"
 #include "MultiVehicleManager.h"
-#include "QGCFileHelper.h"
+#include "beeCopterFileHelper.h"
 #include "Vehicle.h"
 
 #include <QtCore/QDir>
@@ -14,13 +14,13 @@
 #include <cmath>
 #include <limits>
 
-QGC_LOGGING_CATEGORY(FTPControllerLog, "Vehicle.FTPController")
+beeCopter_LOGGING_CATEGORY(FTPControllerLog, "Vehicle.FTPController")
 
 FTPController::FTPController(QObject *parent)
     : QObject(parent)
     , _vehicle(MultiVehicleManager::instance()->activeVehicle())
     , _ftpManager(_vehicle->ftpManager())
-    , _archiveModel(new QGCArchiveModel(this))
+    , _archiveModel(new beeCopterArchiveModel(this))
 {
     connect(_ftpManager, &FTPManager::downloadComplete, this, &FTPController::_handleDownloadComplete);
     connect(_ftpManager, &FTPManager::downloadComplete, this, &FTPController::downloadComplete);
@@ -74,7 +74,7 @@ bool FTPController::downloadFile(const QString &uri, const QString &localDir, co
         return false;
     }
 
-    if (!QGCFileHelper::ensureDirectoryExists(localDir)) {
+    if (!beeCopterFileHelper::ensureDirectoryExists(localDir)) {
         const QString error = tr("Could not create directory %1").arg(localDir);
         _setErrorString(error);
         emit downloadComplete(QString(), error);
@@ -204,7 +204,7 @@ void FTPController::_handleDownloadComplete(const QString &filePath, const QStri
     if (error.isEmpty()) {
         if (!filePath.isEmpty()) {
             _lastDownloadFile = filePath;
-            _lastDownloadIsArchive = QGCCompression::isArchiveFile(filePath);
+            _lastDownloadIsArchive = beeCopterCompression::isArchiveFile(filePath);
             emit lastDownloadFileChanged();
         }
         _setErrorString(QString());
@@ -358,7 +358,7 @@ bool FTPController::browseArchive(const QString &archivePath)
         return false;
     }
 
-    if (!QGCCompression::isArchiveFile(archivePath)) {
+    if (!beeCopterCompression::isArchiveFile(archivePath)) {
         _setErrorString(tr("Not a supported archive format: %1").arg(archivePath));
         return false;
     }
@@ -390,7 +390,7 @@ bool FTPController::extractArchive(const QString &archivePath, const QString &ou
         targetDir = QFileInfo(archivePath).absolutePath();
     }
 
-    if (!QGCFileHelper::ensureDirectoryExists(targetDir)) {
+    if (!beeCopterFileHelper::ensureDirectoryExists(targetDir)) {
         _setErrorString(tr("Could not create output directory: %1").arg(targetDir));
         return false;
     }
@@ -398,10 +398,10 @@ bool FTPController::extractArchive(const QString &archivePath, const QString &ou
     _extractionOutputDir = targetDir;
 
     if (_extractionJob == nullptr) {
-        _extractionJob = new QGCCompressionJob(this);
-        connect(_extractionJob, &QGCCompressionJob::progressChanged,
+        _extractionJob = new beeCopterCompressionJob(this);
+        connect(_extractionJob, &beeCopterCompressionJob::progressChanged,
                 this, &FTPController::_handleExtractionProgress);
-        connect(_extractionJob, &QGCCompressionJob::finished,
+        connect(_extractionJob, &beeCopterCompressionJob::finished,
                 this, &FTPController::_handleExtractionFinished);
     }
 

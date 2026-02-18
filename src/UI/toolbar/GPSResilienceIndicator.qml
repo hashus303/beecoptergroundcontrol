@@ -1,8 +1,8 @@
 /****************************************************************************
  *
- * (c) 2009-2024 QGROUNDCONTROL PROJECT <http://www.qgroundcontrol.org>
+ * (c) 2009-2024 beeCopter PROJECT <http://www.beeCopter.org>
  *
- * QGroundControl is licensed according to the terms in the file
+ * beeCopter is licensed according to the terms in the file
  * COPYING.md in the root of the source code directory.
  *
  ****************************************************************************/
@@ -10,8 +10,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 //-------------------------------------------------------------------------
 //-- GPS Resilience Indicator
@@ -22,10 +22,10 @@ Item {
     anchors.bottom: parent.bottom
     visible:        showIndicator
 
-    property var    _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle: beeCopter.multiVehicleManager.activeVehicle
     property var    _gpsAggregate:  _activeVehicle ? _activeVehicle.gpsAggregate : null
 
-    property var    qgcPal:         QGroundControl.globalPalette
+    property var    beeCopterPal:         beeCopter.globalPalette
 
     property bool   showIndicator: _activeVehicle && _gpsAggregate && (
                                     (_gpsAggregate.authenticationState.value > 0 && _gpsAggregate.authenticationState.value < 255) ||
@@ -34,7 +34,7 @@ Item {
                                    )
 
     // Authentication Icon (Outer/Bottom Layer)
-    QGCColoredImage {
+    beeCopterColoredImage {
         id:                 authIcon
         width:              parent.height * 0.95
         height:             parent.height * 0.95
@@ -47,7 +47,7 @@ Item {
     }
 
     // Interference Icon (Inner/Top Layer)
-    QGCColoredImage {
+    beeCopterColoredImage {
         id:                 interfIcon
         width:              parent.height * 0.55
         height:             parent.height * 0.55
@@ -60,23 +60,23 @@ Item {
     }
 
     function _authColor() {
-        if (!_gpsAggregate) return qgcPal.colorGrey;
+        if (!_gpsAggregate) return beeCopterPal.colorGrey;
         switch (_gpsAggregate.authenticationState.value) {
-            case 1: return qgcPal.colorYellow; // Initializing
-            case 2: return qgcPal.colorRed;    // Error
-            case 3: return qgcPal.colorGreen;  // OK
-            default: return qgcPal.colorGrey;  // Unknown or Disabled
+            case 1: return beeCopterPal.colorYellow; // Initializing
+            case 2: return beeCopterPal.colorRed;    // Error
+            case 3: return beeCopterPal.colorGreen;  // OK
+            default: return beeCopterPal.colorGrey;  // Unknown or Disabled
         }
     }
 
     function _interfColor() {
-        if (!_gpsAggregate) return qgcPal.colorGrey;
+        if (!_gpsAggregate) return beeCopterPal.colorGrey;
         let maxState = Math.max(_gpsAggregate.spoofingState.value, _gpsAggregate.jammingState.value);
         switch (maxState) {
-            case 1: return qgcPal.colorGreen;  // Not spoofed/jammed
-            case 2: return qgcPal.colorOrange; // Mitigated
-            case 3: return qgcPal.colorRed;    // Detected
-            default: return qgcPal.colorGrey;  // Unknown
+            case 1: return beeCopterPal.colorGreen;  // Not spoofed/jammed
+            case 2: return beeCopterPal.colorOrange; // Mitigated
+            case 3: return beeCopterPal.colorRed;    // Detected
+            default: return beeCopterPal.colorGrey;  // Unknown
         }
     }
 

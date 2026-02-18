@@ -1,6 +1,6 @@
 #include "MAVLinkLogManager.h"
-#include "QGCFileHelper.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterFileHelper.h"
+#include "beeCopterLoggingCategory.h"
 #include "QmlObjectListModel.h"
 #include "SettingsManager.h"
 #include "AppSettings.h"
@@ -12,9 +12,9 @@
 #include <QtCore/QSettings>
 #include <QtNetwork/QNetworkReply>
 
-#include "QGCNetworkHelper.h"
+#include "beeCopterNetworkHelper.h"
 
-QGC_LOGGING_CATEGORY(MAVLinkLogManagerLog, "Vehicle.MAVLinkLogManager")
+beeCopter_LOGGING_CATEGORY(MAVLinkLogManagerLog, "Vehicle.MAVLinkLogManager")
 
 static constexpr const char *kSidecarExtension = ".uploaded";
 
@@ -287,7 +287,7 @@ MAVLinkLogManager::MAVLinkLogManager(Vehicle *vehicle, QObject *parent)
 {
     qCDebug(MAVLinkLogManagerLog) << this;
 
-    QGCNetworkHelper::configureProxy(_networkManager);
+    beeCopterNetworkHelper::configureProxy(_networkManager);
 
     QSettings settings;
     settings.beginGroup(kMAVLinkLogGroup);
@@ -305,7 +305,7 @@ MAVLinkLogManager::MAVLinkLogManager(Vehicle *vehicle, QObject *parent)
 
     settings.endGroup();
 
-    if (!QGCFileHelper::ensureDirectoryExists(_logPath)) {
+    if (!beeCopterFileHelper::ensureDirectoryExists(_logPath)) {
         qCWarning(MAVLinkLogManagerLog) << "Could not create MAVLink log download path:" << _logPath;
         _loggingDisabled = true;
     }
@@ -667,7 +667,7 @@ bool MAVLinkLogManager::_sendLog(const QString &logFile)
     QHttpMultiPart *const multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
     const QHttpPart emailPart = _createFormPart(u"email", _emailAddress);
     const QHttpPart descriptionPart = _createFormPart(u"description", _description);
-    const QHttpPart sourcePart = _createFormPart(u"source", u"QGroundControl");
+    const QHttpPart sourcePart = _createFormPart(u"source", u"beeCopter");
     const QHttpPart versionPart = _createFormPart(u"version", QCoreApplication::applicationVersion());
     const QHttpPart typePart = _createFormPart(u"type", u"flightreport");
     const QHttpPart windPart = _createFormPart(u"windSpeed", QString::number(_windSpeed));

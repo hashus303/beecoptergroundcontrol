@@ -1,13 +1,13 @@
 #include "TCPLink.h"
-#include "QGCLoggingCategory.h"
-#include "QGCNetworkHelper.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterNetworkHelper.h"
 
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 #include <QtNetwork/QHostInfo>
 #include <QtNetwork/QTcpSocket>
 
-QGC_LOGGING_CATEGORY(TCPLinkLog, "Comms.TCPLink")
+beeCopter_LOGGING_CATEGORY(TCPLinkLog, "Comms.TCPLink")
 
 namespace {
     constexpr int CONNECT_TIMEOUT_MS = 3000;
@@ -337,5 +337,5 @@ void TCPLink::_writeBytes(const QByteArray& bytes)
 
 bool TCPLink::isSecureConnection() const
 {
-    return QGCNetworkHelper::isNetworkEthernet();
+    return beeCopterNetworkHelper::isNetworkEthernet();
 }

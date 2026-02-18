@@ -47,7 +47,7 @@ class Fact : public QObject
     Q_PROPERTY(QString      userMaxString           READ cookedUserMaxString                                    CONSTANT)
     Q_PROPERTY(QString      name                    READ name                                                   CONSTANT)
     Q_PROPERTY(bool         vehicleRebootRequired   READ vehicleRebootRequired                                  CONSTANT)
-    Q_PROPERTY(bool         qgcRebootRequired       READ qgcRebootRequired                                      CONSTANT)
+    Q_PROPERTY(bool         beeCopterRebootRequired       READ beeCopterRebootRequired                                      CONSTANT)
     Q_PROPERTY(QString      shortDescription        READ shortDescription                                       CONSTANT)
     Q_PROPERTY(QString      units                   READ cookedUnits                                            CONSTANT)
     Q_PROPERTY(QVariant     value                   READ cookedValue                WRITE setCookedValue        NOTIFY valueChanged)
@@ -130,7 +130,7 @@ public:
     QString cookedValueString() const;
     bool valueEqualsDefault() const;
     bool vehicleRebootRequired() const;
-    bool qgcRebootRequired() const;
+    bool beeCopterRebootRequired() const;
     QString enumOrValueString();         // This is not const, since an unknown value can modify the enum lists
     double rawIncrement() const;
     double cookedIncrement() const;

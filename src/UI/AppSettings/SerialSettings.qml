@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ColumnLayout {
     spacing: _rowSpacing
@@ -17,19 +17,19 @@ ColumnLayout {
         rowSpacing:     _rowSpacing
         columnSpacing:  _colSpacing
 
-        QGCLabel { text: qsTr("Serial Port") }
-        QGCComboBox {
+        beeCopterLabel { text: qsTr("Serial Port") }
+        beeCopterComboBox {
             id:                     commPortCombo
             Layout.preferredWidth:  _secondColumnWidth
-            enabled:                QGroundControl.linkManager.serialPorts.length > 0
+            enabled:                beeCopter.linkManager.serialPorts.length > 0
 
             onActivated: (index) => {
                 if (index != -1) {
-                    if (index >= QGroundControl.linkManager.serialPortStrings.length) {
+                    if (index >= beeCopter.linkManager.serialPortStrings.length) {
                         // This item was adding at the end, must use added text as name
                         subEditConfig.portName = commPortCombo.textAt(index)
                     } else {
-                        subEditConfig.portName = QGroundControl.linkManager.serialPorts[index]
+                        subEditConfig.portName = beeCopter.linkManager.serialPorts[index]
                     }
                 }
             }
@@ -37,12 +37,12 @@ ColumnLayout {
             Component.onCompleted: {
                 var index = -1
                 var serialPorts = [ ]
-                if (QGroundControl.linkManager.serialPortStrings.length !== 0) {
-                    for (var i=0; i<QGroundControl.linkManager.serialPortStrings.length; i++) {
-                        serialPorts.push(QGroundControl.linkManager.serialPortStrings[i])
+                if (beeCopter.linkManager.serialPortStrings.length !== 0) {
+                    for (var i=0; i<beeCopter.linkManager.serialPortStrings.length; i++) {
+                        serialPorts.push(beeCopter.linkManager.serialPortStrings[i])
                     }
-                    if (subEditConfig.portDisplayName === "" && QGroundControl.linkManager.serialPorts.length > 0) {
-                        subEditConfig.portName = QGroundControl.linkManager.serialPorts[0]
+                    if (subEditConfig.portDisplayName === "" && beeCopter.linkManager.serialPorts.length > 0) {
+                        subEditConfig.portName = beeCopter.linkManager.serialPorts[0]
                     }
                     index = serialPorts.indexOf(subEditConfig.portDisplayName)
                     if (index === -1) {
@@ -59,15 +59,15 @@ ColumnLayout {
             }
         }
 
-        QGCLabel { text: qsTr("Baud Rate") }
-        QGCComboBox {
+        beeCopterLabel { text: qsTr("Baud Rate") }
+        beeCopterComboBox {
             id:                     baudCombo
             Layout.preferredWidth:  _secondColumnWidth
-            model:                  QGroundControl.linkManager.serialBaudRates
+            model:                  beeCopter.linkManager.serialBaudRates
 
             onActivated: (index) => {
                 if (index != -1) {
-                    subEditConfig.baud = parseInt(QGroundControl.linkManager.serialBaudRates[index])
+                    subEditConfig.baud = parseInt(beeCopter.linkManager.serialBaudRates[index])
                 }
             }
 
@@ -86,7 +86,7 @@ ColumnLayout {
         }
     }
 
-    QGCCheckBox {
+    beeCopterCheckBox {
         id:         advancedSettings
         text:       qsTr("Advanced Settings")
         checked:    false
@@ -98,22 +98,22 @@ ColumnLayout {
         columnSpacing:  _colSpacing
         visible:        advancedSettings.checked
 
-        QGCCheckBox {
+        beeCopterCheckBox {
             Layout.columnSpan:  2
             text:               qsTr("Enable Flow Control")
             checked:            subEditConfig.flowControl !== 0
             onCheckedChanged:   subEditConfig.flowControl = checked ? 1 : 0
         }
 
-        QGCCheckBox {
+        beeCopterCheckBox {
             Layout.columnSpan:  2
             text:               qsTr("Force DTR Low")
             checked:            subEditConfig ? subEditConfig.dtrForceLow : false
             onCheckedChanged:   { if (subEditConfig) subEditConfig.dtrForceLow = checked }
         }
 
-        QGCLabel { text: qsTr("Parity") }
-        QGCComboBox {
+        beeCopterLabel { text: qsTr("Parity") }
+        beeCopterComboBox {
             Layout.preferredWidth:  _secondColumnWidth
             model:                  [qsTr("None"), qsTr("Even"), qsTr("Odd")]
 
@@ -150,16 +150,16 @@ ColumnLayout {
             }
         }
 
-        QGCLabel { text: qsTr("Data Bits") }
-        QGCComboBox {
+        beeCopterLabel { text: qsTr("Data Bits") }
+        beeCopterComboBox {
             Layout.preferredWidth:  _secondColumnWidth
             model:                  [ "5", "6", "7", "8" ]
             currentIndex:           Math.max(Math.min(subEditConfig.dataBits - 5, 3), 0)
             onActivated: (index) => { subEditConfig.dataBits = index + 5 }
         }
 
-        QGCLabel { text: qsTr("Stop Bits") }
-        QGCComboBox {
+        beeCopterLabel { text: qsTr("Stop Bits") }
+        beeCopterComboBox {
             Layout.preferredWidth:  _secondColumnWidth
             model:                  [ "1", "2" ]
             currentIndex:           Math.max(Math.min(subEditConfig.stopBits - 1, 1), 0)

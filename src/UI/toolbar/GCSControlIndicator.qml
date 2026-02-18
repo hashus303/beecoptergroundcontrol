@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Item {
     id:             control
@@ -11,14 +11,14 @@ Item {
     anchors.top:    parent.top
     anchors.bottom: parent.bottom
 
-    property var    activeVehicle:                          QGroundControl.multiVehicleManager.activeVehicle
+    property var    activeVehicle:                          beeCopter.multiVehicleManager.activeVehicle
     property bool   showIndicator:                          activeVehicle && activeVehicle.firstControlStatusReceived
     property var    sysidInControl:                         activeVehicle ?  activeVehicle.sysidInControl : 0
     property bool   gcsControlStatusFlags_SystemManager:    activeVehicle ? activeVehicle.gcsControlStatusFlags_SystemManager : false
     property bool   gcsControlStatusFlags_TakeoverAllowed:  activeVehicle ? activeVehicle.gcsControlStatusFlags_TakeoverAllowed : false
-    property Fact   requestControlAllowTakeoverFact:        QGroundControl.settingsManager.flyViewSettings.requestControlAllowTakeover
+    property Fact   requestControlAllowTakeoverFact:        beeCopter.settingsManager.flyViewSettings.requestControlAllowTakeover
     property bool   requestControlAllowTakeover:            requestControlAllowTakeoverFact.rawValue
-    property bool   isThisGCSinControl:                     sysidInControl == QGroundControl.settingsManager.mavlinkSettings.gcsMavlinkSystemID.rawValue
+    property bool   isThisGCSinControl:                     sysidInControl == beeCopter.settingsManager.mavlinkSettings.gcsMavlinkSystemID.rawValue
     property bool   sendControlRequestAllowed:              activeVehicle ? activeVehicle.sendControlRequestAllowed : false
 
     property var    margins:                                ScreenTools.defaultFontPixelWidth
@@ -27,10 +27,10 @@ Item {
     property var    squareButtonPadding:                    ScreenTools.defaultFontPixelWidth
     property var    separatorHeight:                        buttonHeight * 0.9
     property var    settingsPanelVisible:                   false
-    property bool   outdoorPalette:                         qgcPal.globalTheme === QGCPalette.Light
+    property bool   outdoorPalette:                         beeCopterPal.globalTheme === beeCopterPalette.Light
 
     // Used by control request popup, when other GCS ask us for control
-    property var    receivedRequestTimeoutMs:               QGroundControl.settingsManager.flyViewSettings.requestControlTimeout.defaultValue // Use this as default in case something goes wrong. Usually it will be overriden on onRequestOperatorControlReceived
+    property var    receivedRequestTimeoutMs:               beeCopter.settingsManager.flyViewSettings.requestControlTimeout.defaultValue // Use this as default in case something goes wrong. Usually it will be overriden on onRequestOperatorControlReceived
     property var    requestSysIdRequestingControl:          0
     property var    requestAllowTakeover:                   false
 
@@ -47,7 +47,7 @@ Item {
             requestSysIdRequestingControl = sysIdRequestingControl
             requestAllowTakeover = allowTakeover
             // If request came without request timeout, use our default one
-            receivedRequestTimeoutMs = requestTimeoutSecs !== 0 ? requestTimeoutSecs * 1000 : QGroundControl.settingsManager.flyViewSettings.requestControlTimeout.defaultValue
+            receivedRequestTimeoutMs = requestTimeoutSecs !== 0 ? requestTimeoutSecs * 1000 : beeCopter.settingsManager.flyViewSettings.requestControlTimeout.defaultValue
             // First hide current popup, in case the normal control panel is visible
             mainWindow.closeIndicatorDrawer()
             // When showing the popup, the component will automatically start the count down in controlRequestPopup
@@ -66,7 +66,7 @@ Item {
         anchors.centerIn:   parent
         width:              height
         height:             parent.height * 1.4
-        color:              isThisGCSinControl ? qgcPal.colorGreen : qgcPal.text
+        color:              isThisGCSinControl ? beeCopterPal.colorGreen : beeCopterPal.text
         radius:             margins
         opacity:            0.0
 
@@ -101,13 +101,13 @@ Item {
                 columns:            3
 
                 // Action label
-                QGCLabel {
+                beeCopterLabel {
                     font.pointSize:     ScreenTools.defaultFontPointSize * 1.1
                     text:               qsTr("GCS ") + requestSysIdRequestingControl + qsTr(" is requesting control")
                     font.bold:          true
                     Layout.columnSpan:  2
                 }
-                QGCButton {
+                beeCopterButton {
                     text:                   qsTr("Allow <br> takeover")
                     Layout.rowSpan:         2
                     Layout.leftMargin:      margins * 2
@@ -123,11 +123,11 @@ Item {
                     }
                 }
                 // Action label
-                QGCLabel {
+                beeCopterLabel {
                     font.pointSize:         ScreenTools.defaultFontPointSize * 1.1
                     text:                   qsTr("Ignoring automatically in ") + requestProgressTracker.progressLabel + qsTr(" seconds")
                 }
-                QGCButton {
+                beeCopterButton {
                     id:                     ignoreButton
                     text:                   qsTr("Ignore")
                     onClicked:              mainWindow.closeIndicatorDrawer()
@@ -138,7 +138,7 @@ Item {
                     id:                     overlayRectangle
                     height:                 ScreenTools.defaultFontPixelWidth
                     width:                  parent.width * requestProgressTracker.progress
-                    color:                  qgcPal.buttonHighlight
+                    color:                  beeCopterPal.buttonHighlight
                     Layout.columnSpan:      2
                 }
             }
@@ -178,13 +178,13 @@ Item {
                 columns:            3
 
                 // Action label
-                QGCLabel {
+                beeCopterLabel {
                     font.pointSize:         ScreenTools.defaultFontPointSize * 1.1
                     text:                   qsTr("Reverting back to takeover not allowed if GCS ") + requestSysIdRequestingControl +
                                             qsTr(" doesn't take control in ") + revertTakeoverProgressTracker.progressLabel +
                                             qsTr(" seconds ...")
                 }
-                QGCButton {
+                beeCopterButton {
                     id:                     ignoreButton
                     text:                   qsTr("Ignore")
                     onClicked:              mainWindow.closeIndicatorDrawer()
@@ -202,7 +202,7 @@ Item {
 
             TimedProgressTracker {
                 id:                     sendRequestProgressTracker
-                timeoutSeconds:         QGroundControl.settingsManager.flyViewSettings.requestControlTimeout.rawValue
+                timeoutSeconds:         beeCopter.settingsManager.flyViewSettings.requestControlTimeout.rawValue
             }
             // If a request was sent, and we get feedback that takeover has been allowed, stop the progress tracker as the request has been granted
             property var takeoverAllowedLocal: control.gcsControlStatusFlags_TakeoverAllowed
@@ -230,45 +230,45 @@ Item {
                 id:                 mainLayout
                 columns:            2
 
-                QGCLabel {
+                beeCopterLabel {
                     text:                   qsTr("System in control: ")
                     font.bold:              true
                 }
-                QGCLabel {
+                beeCopterLabel {
                     text:                   isThisGCSinControl ? (qsTr("This GCS") + " (" + sysidInControl + ")" ) : sysidInControl
                     font.bold:              isThisGCSinControl
-                    color:                  isThisGCSinControl ? qgcPal.colorGreen : qgcPal.text
+                    color:                  isThisGCSinControl ? beeCopterPal.colorGreen : beeCopterPal.text
                     Layout.alignment:       Qt.AlignRight
                     Layout.fillWidth:       true
                     horizontalAlignment:    Text.AlignRight
                 }
-                QGCLabel {
+                beeCopterLabel {
                     text:                   gcsControlStatusFlags_TakeoverAllowed ? qsTr("Takeover allowed") : qsTr("Takeover NOT allowed")
                     Layout.columnSpan:      2
                     Layout.alignment:       Qt.AlignRight
                     Layout.fillWidth:       true
                     horizontalAlignment:    Text.AlignRight
-                    color:                  gcsControlStatusFlags_TakeoverAllowed ? qgcPal.colorGreen : qgcPal.text
+                    color:                  gcsControlStatusFlags_TakeoverAllowed ? beeCopterPal.colorGreen : beeCopterPal.text
                 }
                 // Separator
                 Rectangle {
                     Layout.columnSpan:      2
                     Layout.preferredWidth:  parent.width
                     Layout.alignment:       Qt.AlignHCenter
-                    color:                  qgcPal.windowShade
+                    color:                  beeCopterPal.windowShade
                     height:                 outdoorPalette ? 1 : 2
                 }
-                QGCLabel {
+                beeCopterLabel {
                     text:                   qsTr("Send Control Request:")
                     Layout.columnSpan:      2
                     visible:                !isThisGCSinControl
                 }
-                QGCLabel {
+                beeCopterLabel {
                     text:                   qsTr("Change takeover condition:")
                     Layout.columnSpan:      2
                     visible:                isThisGCSinControl
                 }
-                QGCLabel {
+                beeCopterLabel {
                     id:                     requestSentTimeoutLabel
                     text:                   qsTr("Request sent: ") + sendRequestProgressTracker.progressLabel
                     Layout.columnSpan:      2
@@ -279,10 +279,10 @@ Item {
                     fact:                   requestControlAllowTakeoverFact
                     enabled:                gcsControlStatusFlags_TakeoverAllowed || isThisGCSinControl
                 }
-                QGCButton {
+                beeCopterButton {
                     text:                   gcsControlStatusFlags_TakeoverAllowed ? qsTr("Adquire Control") : qsTr("Send Request")
                     onClicked: {
-                        var timeout = gcsControlStatusFlags_TakeoverAllowed ? 0 : QGroundControl.settingsManager.flyViewSettings.requestControlTimeout.rawValue
+                        var timeout = gcsControlStatusFlags_TakeoverAllowed ? 0 : beeCopter.settingsManager.flyViewSettings.requestControlTimeout.rawValue
                         control.activeVehicle.requestOperatorControl(requestControlAllowTakeoverFact.rawValue, timeout)
                         if (timeout > 0) {
                             // Start UI timeout animation
@@ -293,17 +293,17 @@ Item {
                     visible:                !isThisGCSinControl
                     enabled:                !sendRequestProgressTracker.running
                 }
-                QGCLabel {
+                beeCopterLabel {
                     text:                   qsTr("Request Timeout (sec):")
                     visible:                !isThisGCSinControl && !gcsControlStatusFlags_TakeoverAllowed
                 }
                 FactTextField {
-                    fact:                   QGroundControl.settingsManager.flyViewSettings.requestControlTimeout
+                    fact:                   beeCopter.settingsManager.flyViewSettings.requestControlTimeout
                     visible:                !isThisGCSinControl && !gcsControlStatusFlags_TakeoverAllowed
                     Layout.alignment:       Qt.AlignRight
                     Layout.preferredWidth:  ScreenTools.defaultFontPixelWidth * 7
                 }
-                QGCButton {
+                beeCopterButton {
                     text:                   qsTr("Change")
                     onClicked:              control.activeVehicle.requestOperatorControl(requestControlAllowTakeoverFact.rawValue)
                     visible:                isThisGCSinControl
@@ -315,21 +315,21 @@ Item {
                     Layout.columnSpan:      2
                     Layout.preferredWidth:  parent.width
                     Layout.alignment:       Qt.AlignHCenter
-                    color:                  qgcPal.windowShade
+                    color:                  beeCopterPal.windowShade
                     height:                 outdoorPalette ? 1 : 2
                 }
                 LabelledFactTextField {
                     Layout.fillWidth:       true
                     Layout.columnSpan:      2
                     label:                  qsTr("This GCS Mavlink System ID: ")
-                    fact:                   QGroundControl.settingsManager.mavlinkSettings.gcsMavlinkSystemID
+                    fact:                   beeCopter.settingsManager.mavlinkSettings.gcsMavlinkSystemID
                 }
             }
         }
     }
 
     // Actual top toolbar indicator
-    QGCColoredImage {
+    beeCopterColoredImage {
         id:                      controlIndicatorIconLine
         width:                   height
         anchors.top:             parent.top
@@ -337,9 +337,9 @@ Item {
         source:                  "/gcscontrolIndicator/gcscontrol_line.svg"
         fillMode:                Image.PreserveAspectFit
         sourceSize.height:       height
-        color:                   isThisGCSinControl ? qgcPal.colorGreen : qgcPal.text
+        color:                   isThisGCSinControl ? beeCopterPal.colorGreen : beeCopterPal.text
     }
-    QGCColoredImage {
+    beeCopterColoredImage {
         id:                      controlIndicatorIconAircraft
         width:                   height
         anchors.top:             parent.top
@@ -347,9 +347,9 @@ Item {
         source:                  "/gcscontrolIndicator/gcscontrol_device.svg"
         fillMode:                Image.PreserveAspectFit
         sourceSize.height:       height
-        color:                   (isThisGCSinControl || gcsControlStatusFlags_TakeoverAllowed) ? qgcPal.colorGreen : qgcPal.text
+        color:                   (isThisGCSinControl || gcsControlStatusFlags_TakeoverAllowed) ? beeCopterPal.colorGreen : beeCopterPal.text
     }
-    QGCColoredImage {
+    beeCopterColoredImage {
         id:                      controlIndicatorIconGCS
         width:                   height
         anchors.top:             parent.top
@@ -357,15 +357,15 @@ Item {
         source:                  "/gcscontrolIndicator/gcscontrol_gcs.svg"
         fillMode:                Image.PreserveAspectFit
         sourceSize.height:       height
-        color:                   qgcPal.text
+        color:                   beeCopterPal.text
 
         // Current GCS in control indicator
-        QGCLabel {
+        beeCopterLabel {
             id:                     gcsInControlIndicator
             text:                   sysidInControl
             font.bold:              true
             font.pointSize:         ScreenTools.smallFontPointSize * 1.1
-            color:                  isThisGCSinControl ? qgcPal.colorGreen : qgcPal.text
+            color:                  isThisGCSinControl ? beeCopterPal.colorGreen : beeCopterPal.text
             anchors.bottom:         parent.bottom
             anchors.bottomMargin:   -margins * 0.7
             anchors.right:          parent.right

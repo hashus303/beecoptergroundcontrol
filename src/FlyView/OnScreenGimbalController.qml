@@ -1,7 +1,7 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     id:             rootItem
@@ -12,11 +12,11 @@ Item {
     property var screenXrateInitCoocked
     property var screenYrateInitCoocked
 
-    property var  activeVehicle:                QGroundControl.multiVehicleManager.activeVehicle
+    property var  activeVehicle:                beeCopter.multiVehicleManager.activeVehicle
     property var  gimbalController:             activeVehicle ? activeVehicle.gimbalController : undefined
     property var  activeGimbal:                 gimbalController ? gimbalController.activeGimbal : undefined
     property bool gimbalAvailable:              activeGimbal != undefined
-    property var  gimbalControllerSettings:     QGroundControl.settingsManager.gimbalControllerSettings
+    property var  gimbalControllerSettings:     beeCopter.settingsManager.gimbalControllerSettings
     property bool cameraTrackingEnabled:        false // Used to ignore clicks when camera tracking operation is active, otherwise it would collide with these gimbal controls
     property bool shouldProcessClicks:          gimbalControllerSettings.EnableOnScreenControl.value && activeGimbal && !cameraTrackingEnabled ? true : false
 

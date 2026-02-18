@@ -3,12 +3,12 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 SettingsPage {
-    property var    _settingsManager:                       QGroundControl.settingsManager
+    property var    _settingsManager:                       beeCopter.settingsManager
     property var    _flyViewSettings:                       _settingsManager.flyViewSettings
     property var    _mavlinkActionsSettings:                _settingsManager.mavlinkActionsSettings
     property Fact   _virtualJoystick:                       _settingsManager.appSettings.virtualJoystick
@@ -24,7 +24,7 @@ SettingsPage {
     property Fact   _goToLocationRequiresConfirmInGuided:   _flyViewSettings.goToLocationRequiresConfirmInGuided
 
     function mavlinkActionList() {
-        var fileModel = QGCFileDialogController.getFiles(_settingsManager.appSettings.mavlinkActionsSavePath, "*.json")
+        var fileModel = beeCopterFileDialogController.getFiles(_settingsManager.appSettings.mavlinkActionsSavePath, "*.json")
         fileModel.unshift(qsTr("<None>"))
         return fileModel
     }
@@ -38,7 +38,7 @@ SettingsPage {
             Layout.fillWidth:   true
             text:               qsTr("Use Preflight Checklist")
             fact:               _useChecklist
-            visible:            _useChecklist.visible && QGroundControl.corePlugin.options.preFlightChecklistUrl.toString().length
+            visible:            _useChecklist.visible && beeCopter.corePlugin.options.preFlightChecklistUrl.toString().length
             property Fact _useChecklist:      _settingsManager.appSettings.useChecklist
         }
 
@@ -140,7 +140,7 @@ SettingsPage {
         Layout.fillWidth:       true
         Layout.preferredWidth:  ScreenTools.defaultFontPixelWidth * 35
         heading:                qsTr("MAVLink Actions")
-        headingDescription:     qsTr("Action JSON files should be created in the '%1' folder.").arg(QGroundControl.settingsManager.appSettings.mavlinkActionsSavePath)
+        headingDescription:     qsTr("Action JSON files should be created in the '%1' folder.").arg(beeCopter.settingsManager.appSettings.mavlinkActionsSavePath)
 
         LabelledComboBox {
             Layout.fillWidth:   true

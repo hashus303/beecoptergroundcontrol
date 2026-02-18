@@ -4,14 +4,14 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Rectangle {
     width:      mainLayout.width + (_smallMargins * 2)
     height:     mainLayout.height + (_smallMargins * 2)
-    color:      Qt.rgba(qgcPal.window.r, qgcPal.window.g, qgcPal.window.b, 0.5)
+    color:      Qt.rgba(beeCopterPal.window.r, beeCopterPal.window.g, beeCopterPal.window.b, 0.5)
     radius:     _margins
     visible:    _camera.capturesVideo || _camera.capturesPhotos || _camera.hasTracking || _camera.hasVideoStream
 
@@ -87,7 +87,7 @@ Rectangle {
     }
 */
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: enabled }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: enabled }
 
     DeadMouseArea { anchors.fill: parent }
 
@@ -103,13 +103,13 @@ Rectangle {
             spacing:            0
             visible:            _camera.hasZoom
 
-            QGCLabel {
+            beeCopterLabel {
                 Layout.alignment:   Qt.AlignHCenter
                 text:               qsTr("Zoom")
                 font.pointSize:     ScreenTools.smallFontPointSize
             }
 
-            QGCSlider {
+            beeCopterSlider {
                 Layout.alignment:   Qt.AlignHCenter
                 Layout.fillHeight:  true
                 orientation:        Qt.Vertical
@@ -125,7 +125,7 @@ Rectangle {
             spacing: _margins
 
             // Camera name
-            QGCLabel {
+            beeCopterLabel {
                 Layout.alignment:   Qt.AlignHCenter
                 text:               _camera.modelName
                 visible:            _cameraManager.cameras.length > 1
@@ -136,7 +136,7 @@ Rectangle {
                 Layout.alignment:   Qt.AlignHCenter
                 width:              ScreenTools.defaultFontPixelWidth * 10
                 height:             width / 2
-                color:              qgcPal.windowShadeLight
+                color:              beeCopterPal.windowShadeLight
                 radius:             height * 0.5
                 visible:            _camera.hasModes
 
@@ -145,20 +145,20 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     width:                  parent.height
                     height:                 parent.height
-                    color:                  _cameraInVideoMode ? qgcPal.window : qgcPal.windowShadeLight
+                    color:                  _cameraInVideoMode ? beeCopterPal.window : beeCopterPal.windowShadeLight
                     radius:                 height * 0.5
                     anchors.left:           parent.left
-                    border.color:           qgcPal.text
+                    border.color:           beeCopterPal.text
                     border.width:           _cameraInPhotoMode ? 0 : 1
 
-                    QGCColoredImage {
+                    beeCopterColoredImage {
                         height:             parent.height * 0.5
                         width:              height
                         anchors.centerIn:   parent
                         source:             "/qmlimages/camera_video.svg"
                         fillMode:           Image.PreserveAspectFit
                         sourceSize.height:  height
-                        color:              _cameraInVideoMode ? qgcPal.colorGreen : qgcPal.text
+                        color:              _cameraInVideoMode ? beeCopterPal.colorGreen : beeCopterPal.text
 
                         MouseArea {
                             anchors.fill:   parent
@@ -173,20 +173,20 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     width:                  parent.height
                     height:                 parent.height
-                    color:                  _cameraInPhotoMode ? qgcPal.window : qgcPal.windowShadeLight
+                    color:                  _cameraInPhotoMode ? beeCopterPal.window : beeCopterPal.windowShadeLight
                     radius:                 height * 0.5
                     anchors.right:          parent.right
-                    border.color:           qgcPal.text
+                    border.color:           beeCopterPal.text
                     border.width:           _cameraInPhotoMode ? 1 : 0
 
-                    QGCColoredImage {
+                    beeCopterColoredImage {
                         height:             parent.height * 0.5
                         width:              height
                         anchors.centerIn:   parent
                         source:             "/qmlimages/camera_photo.svg"
                         fillMode:           Image.PreserveAspectFit
                         sourceSize.height:  height
-                        color:              _cameraInPhotoMode ? qgcPal.colorGreen : qgcPal.text
+                        color:              _cameraInPhotoMode ? beeCopterPal.colorGreen : beeCopterPal.text
 
                         MouseArea {
                             anchors.fill:   parent
@@ -216,7 +216,7 @@ Rectangle {
 
                     property color  captureButtonColor:  _cameraInPhotoMode ? captureButtonPalette.photoCaptureButtonColor : captureButtonPalette.videoCaptureButtonColor
 
-                    QGCPalette { id: captureButtonPalette; colorGroupEnabled: captureButton.enabled }
+                    beeCopterPalette { id: captureButtonPalette; colorGroupEnabled: captureButton.enabled }
 
                     Rectangle {
                         anchors.centerIn:           parent
@@ -273,7 +273,7 @@ Rectangle {
                     radius:                 _smallMargins
 
                     // Video record time
-                    QGCLabel {
+                    beeCopterLabel {
                         id:                 videoRecordTime
                         anchors.leftMargin: _smallMargins
                         anchors.left:       parent.left
@@ -283,7 +283,7 @@ Rectangle {
                     }
 
                     // Photo capture count
-                    QGCLabel {
+                    beeCopterLabel {
                         id:                 photoCaptureCount
                         anchors.leftMargin: _smallMargins
                         anchors.left:       parent.left
@@ -300,7 +300,7 @@ Rectangle {
                 spacing:            0
                 visible:            storageStatus.visible || batteryStatus.visible
 
-                QGCLabel {
+                beeCopterLabel {
                     id:                 storageStatus
                     Layout.alignment:   Qt.AlignHCenter
                     text:               qsTr("Free: ") + _camera.storageFreeStr
@@ -308,7 +308,7 @@ Rectangle {
                     visible:            _camera.storageStatus === MavlinkCameraControl.STORAGE_READY
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     id:                 batteryStatus
                     Layout.alignment:   Qt.AlignHCenter
                     text:               qsTr("Battery: ") + _camera.batteryRemainingStr
@@ -325,20 +325,20 @@ Rectangle {
 
                 Rectangle {
                     Layout.alignment:       Qt.AlignHCenter
-                    color:                  _camera.trackingEnabled ? qgcPal.colorRed : qgcPal.windowShadeLight
+                    color:                  _camera.trackingEnabled ? beeCopterPal.colorRed : beeCopterPal.windowShadeLight
                     Layout.preferredWidth:  ScreenTools.defaultFontPixelWidth * 6
                     Layout.preferredHeight: Layout.preferredWidth
-                    border.color:           qgcPal.buttonText
+                    border.color:           beeCopterPal.buttonText
                     border.width:           3
 
-                    QGCColoredImage {
+                    beeCopterColoredImage {
                         height:             parent.height * 0.5
                         width:              height
                         anchors.centerIn:   parent
                         source:             "/qmlimages/TrackingIcon.svg"
                         fillMode:           Image.PreserveAspectFit
                         sourceSize.height:  height
-                        color:              qgcPal.text
+                        color:              beeCopterPal.text
 
                         MouseArea {
                             anchors.fill: parent
@@ -352,24 +352,24 @@ Rectangle {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.alignment:   Qt.AlignHCenter
                     text:               qsTr("Camera Tracking")
                     font.pointSize:     ScreenTools.smallFontPointSize
                 }
             }
 
-            QGCColoredImage {
+            beeCopterColoredImage {
                 Layout.alignment:       Qt.AlignHCenter
                 source:                 "/res/gear-black.svg"
                 mipmap:                 true
                 Layout.preferredHeight: ScreenTools.defaultFontPixelHeight * 1.5
                 Layout.preferredWidth:  Layout.preferredHeight
                 sourceSize.height:      Layout.preferredHeight
-                color:                  qgcPal.text
+                color:                  beeCopterPal.text
                 fillMode:               Image.PreserveAspectFit
 
-                QGCMouseArea {
+                beeCopterMouseArea {
                     fillItem:   parent
                     onClicked:  settingsDialogComponent.createObject(mainWindow).open()
                 }
@@ -379,14 +379,14 @@ Rectangle {
         Component {
             id: settingsDialogComponent
 
-            QGCPopupDialog {
+            beeCopterPopupDialog {
                 title:      qsTr("Settings")
                 buttons:    Dialog.Close
 
                 property bool _multipleMavlinkCameras:          _cameraManager.cameras.count > 1
                 property bool _multipleMavlinkCameraStreams:    _camera.streamLabels.length > 1
                 property bool _cameraStorageSupported:          _camera.storageStatus !== MavlinkCameraControl.STORAGE_NOT_SUPPORTED
-                property var  _videoSettings:                   QGroundControl.settingsManager.videoSettings
+                property var  _videoSettings:                   beeCopter.settingsManager.videoSettings
 
                 ColumnLayout {
                     spacing: _margins
@@ -399,25 +399,25 @@ Rectangle {
                         property int dynamicRows: 10
 
                         // First column
-                        QGCLabel {
+                        beeCopterLabel {
                             text:               qsTr("Camera")
                             visible:            _multipleMavlinkCameras
                             onVisibleChanged:   gridLayout.dynamicRows += visible ? 1 : -1
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:               qsTr("Video Stream")
                             visible:            _multipleMavlinkCameraStreams
                             onVisibleChanged:   gridLayout.dynamicRows += visible ? 1 : -1
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:               qsTr("Thermal View Mode")
                             visible:            _camera.thermalStreamInstance
                             onVisibleChanged:   gridLayout.dynamicRows += visible ? 1 : -1
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:               qsTr("Blend Opacity")
                             visible:            _camera.thermalStreamInstance && _camera.thermalMode === MavlinkCameraControl.THERMAL_BLEND
                             onVisibleChanged:   gridLayout.dynamicRows += visible ? 1 : -1
@@ -427,48 +427,48 @@ Rectangle {
                         Repeater {
                             model: _camera.activeSettings
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text: _camera.getFact(modelData).shortDescription
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:               qsTr("Photo Mode")
                             visible:            _camera.capturesPhotos
                             onVisibleChanged:   gridLayout.dynamicRows += visible ? 1 : -1
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:               qsTr("Photo Interval (seconds)")
                             visible:            _camera.capturesPhotos && _camera.photoCaptureMode === MavlinkCameraControl.PHOTO_CAPTURE_TIMELAPSE
                             onVisibleChanged:   gridLayout.dynamicRows += visible ? 1 : -1
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:               qsTr("Video Grid Lines")
                             visible:            _camera.hasVideoStream
                             onVisibleChanged:   gridLayout.dynamicRows += visible ? 1 : -1
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:               qsTr("Video Screen Fit")
                             visible:            _camera.hasVideoStream
                             onVisibleChanged:   gridLayout.dynamicRows += visible ? 1 : -1
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:               qsTr("Reset Camera Defaults")
                             onVisibleChanged:   gridLayout.dynamicRows += visible ? 1 : -1
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:               qsTr("Storage")
                             visible:            _cameraStorageSupported
                             onVisibleChanged:   gridLayout.dynamicRows += visible ? 1 : -1
                         }
 
                         // Second column
-                        QGCComboBox {
+                        beeCopterComboBox {
                             Layout.fillWidth:   true
                             sizeToContents:     true
                             model:              _cameraManager.cameraLabels
@@ -477,7 +477,7 @@ Rectangle {
                             onActivated:        (index) => { _cameraManager.currentCamera = index }
                         }
 
-                        QGCComboBox {
+                        beeCopterComboBox {
                             Layout.fillWidth:   true
                             sizeToContents:     true
                             model:              _camera.streamLabels
@@ -486,7 +486,7 @@ Rectangle {
                             onActivated:        (index) => { _camera.currentStream = index }
                         }
 
-                        QGCComboBox {
+                        beeCopterComboBox {
                             Layout.fillWidth:   true
                             sizeToContents:     true
                             model:              [ qsTr("Off"), qsTr("Blend"), qsTr("Full"), qsTr("Picture In Picture") ]
@@ -495,7 +495,7 @@ Rectangle {
                             onActivated:        (index) => { _camera.thermalMode = index }
                         }
 
-                        QGCSlider {
+                        beeCopterSlider {
                             Layout.fillWidth:   true
                             to:                 100
                             from:               0
@@ -531,7 +531,7 @@ Rectangle {
                                     fact:               parent._fact
                                     visible:            parent._isEdit
                                 }
-                                QGCSlider {
+                                beeCopterSlider {
                                     Layout.fillWidth:           true
                                     to:               parent._fact.max
                                     from:               parent._fact.min
@@ -552,7 +552,7 @@ Rectangle {
                                         initialized = true
                                     }
                                 }
-                                QGCCheckBoxSlider {
+                                beeCopterCheckBoxSlider {
                                     checked:    parent._fact ? parent._fact.value : false
                                     visible:    parent._isBool
                                     onClicked:  parent._fact.value = checked ? 1 : 0
@@ -560,7 +560,7 @@ Rectangle {
                             }
                         }
 
-                        QGCComboBox {
+                        beeCopterComboBox {
                             Layout.fillWidth:   true
                             sizeToContents:     true
                             model:              [ qsTr("Single"), qsTr("Time Lapse") ]
@@ -569,7 +569,7 @@ Rectangle {
                             onActivated:        (index) => { _camera.photoCaptureMode = index }
                         }
 
-                        QGCSlider {
+                        beeCopterSlider {
                             Layout.fillWidth:   true
                             to:                 60
                             from:               1
@@ -581,7 +581,7 @@ Rectangle {
                             onValueChanged:     _camera.photoLapse = value
                         }
 
-                        QGCCheckBoxSlider {
+                        beeCopterCheckBoxSlider {
                             checked:    _videoSettings.gridLines.rawValue
                             visible:    _camera.hasVideoStream
                             onClicked:  _videoSettings.gridLines.rawValue = checked ? 1 : 0
@@ -595,7 +595,7 @@ Rectangle {
                             visible:            _camera.hasVideoStream
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             Layout.fillWidth:   true
                             text:               qsTr("Reset")
                             onClicked:          resetPrompt.open()
@@ -619,7 +619,7 @@ Rectangle {
                             }
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             Layout.fillWidth:   true
                             text:               qsTr("Format")
                             visible:            _cameraStorageSupported

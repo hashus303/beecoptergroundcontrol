@@ -1,10 +1,10 @@
 #include "Viewer3DInstancing.h"
 
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <cmath>
 
-QGC_LOGGING_CATEGORY(Viewer3DInstancingLog, "Viewer3d.Viewer3DInstancing")
+beeCopter_LOGGING_CATEGORY(Viewer3DInstancingLog, "Viewer3d.Viewer3DInstancing")
 
 Viewer3DInstancing::Viewer3DInstancing(QQuick3DObject *parent)
     : QQuick3DInstancing(parent)

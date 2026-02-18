@@ -1,8 +1,8 @@
 #include "Common.h"
 #include "ParameterManager.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(ActuatorsConfigLog, "Vehicle.ActuatorsConfig")
+beeCopter_LOGGING_CATEGORY(ActuatorsConfigLog, "Vehicle.ActuatorsConfig")
 
 
 void Parameter::parse(const QJsonValue& jsonValue)

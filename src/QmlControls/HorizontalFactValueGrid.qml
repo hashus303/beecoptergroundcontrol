@@ -3,9 +3,9 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQml
 
-import QGroundControl.Controls
-import QGroundControl.FlightMap
-import QGroundControl
+import beeCopter.Controls
+import beeCopter.FlightMap
+import beeCopter
 
 HorizontalFactValueGridTemplate {
     id:                     _root
@@ -20,7 +20,7 @@ HorizontalFactValueGridTemplate {
     property real   _rowButtonHeight:       ScreenTools.minTouchPixels / 2
     property real   _editButtonSpacing:     2
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: enabled }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: enabled }
 
     ColumnLayout {
         id:         topLayout
@@ -101,7 +101,7 @@ HorizontalFactValueGridTemplate {
                 spacing: 1
                 visible: settingsUnlocked
 
-                QGCButton {
+                beeCopterButton {
                     Layout.preferredWidth:  ScreenTools.minTouchPixels
                     Layout.fillHeight:      true
                     topPadding:             0
@@ -113,7 +113,7 @@ HorizontalFactValueGridTemplate {
                     onClicked:              appendColumn()
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.preferredWidth:  ScreenTools.minTouchPixels
                     Layout.fillHeight:      true
                     topPadding:             0
@@ -132,7 +132,7 @@ HorizontalFactValueGridTemplate {
             spacing:            1
             visible:            settingsUnlocked
 
-            QGCButton {
+            beeCopterButton {
                 Layout.fillWidth:       true
                 Layout.preferredHeight: ScreenTools.minTouchPixels
                 topPadding:             0
@@ -144,7 +144,7 @@ HorizontalFactValueGridTemplate {
                 onClicked:              appendRow()
             }
 
-            QGCButton {
+            beeCopterButton {
                 Layout.fillWidth:       true
                 Layout.preferredHeight: parent.height
                 topPadding:             0
@@ -158,7 +158,7 @@ HorizontalFactValueGridTemplate {
         }
     }
 
-    QGCMouseArea {
+    beeCopterMouseArea {
         x:          labelValueColumnLayout.x
         y:          labelValueColumnLayout.y
         width:      labelValueColumnLayout.width

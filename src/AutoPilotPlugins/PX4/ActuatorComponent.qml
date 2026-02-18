@@ -3,10 +3,10 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
-import QGroundControl.AutoPilotPlugins.PX4
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
+import beeCopter.AutoPilotPlugins.PX4
 
 SetupPage {
     id:             actuatorPage
@@ -33,12 +33,12 @@ SetupPage {
                 RowLayout {
                     width:                      _leftColumnWidth
                     visible:                    actuators.mixer.groups.count > 0
-                    QGCLabel {
+                    beeCopterLabel {
                         text:                   qsTr("Geometry") + (actuators.mixer.title ? ": " + actuators.mixer.title : "")
                         font.pointSize:         ScreenTools.mediumFontPointSize
                         Layout.fillWidth:       true
                     }
-                    QGCLabel {
+                    beeCopterLabel {
                         text:                   "<a href='"+actuators.mixer.helpUrl+"'>?</a>"
                         font.pointSize:         ScreenTools.mediumFontPointSize
                         visible:                actuators.mixer.helpUrl
@@ -52,7 +52,7 @@ SetupPage {
                 Rectangle {
                     implicitWidth:          _leftColumnWidth
                     implicitHeight:         mixerUi.height + (_margins * 2)
-                    color:                  qgcPal.windowShade
+                    color:                  beeCopterPal.windowShade
                     visible:                actuators.mixer.groups.count > 0
 
                     Column {
@@ -70,7 +70,7 @@ SetupPage {
                                 property var mixerGroup: object
 
                                 RowLayout {
-                                    QGCLabel {
+                                    beeCopterLabel {
                                         text:                    mixerGroup.label
                                         font.bold:               true
                                         rightPadding:            ScreenTools.defaultFontPixelWidth * 3
@@ -86,14 +86,14 @@ SetupPage {
                                     rows:       1 + mixerGroup.channels.count
                                     columns:    1 + mixerGroup.channelConfigs.count
 
-                                    QGCLabel {
+                                    beeCopterLabel {
                                         text:   ""
                                     }
 
                                     // param config labels
                                     Repeater {
                                         model:              mixerGroup.channelConfigs
-                                        QGCLabel {
+                                        beeCopterLabel {
                                             text:           object.label
                                             visible:        object.visible && (_showAdvanced || !object.advanced)
                                             Layout.row:     0
@@ -103,7 +103,7 @@ SetupPage {
                                     // param instances
                                     Repeater {
                                         model:              mixerGroup.channels
-                                        QGCLabel {
+                                        beeCopterLabel {
                                             text:           object.label + ":"
                                             Layout.row:     1 + index
                                             Layout.column:  0
@@ -134,7 +134,7 @@ SetupPage {
 
                                     RowLayout {
                                         spacing:     ScreenTools.defaultFontPixelWidth
-                                        QGCLabel {
+                                        beeCopterLabel {
                                             text:    object.label + ":"
                                             visible: _showAdvanced || !object.advanced
                                         }
@@ -175,7 +175,7 @@ SetupPage {
                 }
 
                 // actuator testing
-                QGCLabel {
+                beeCopterLabel {
                     text:               qsTr("Actuator Testing")
                     font.pointSize:     ScreenTools.mediumFontPointSize
                 }
@@ -183,7 +183,7 @@ SetupPage {
                 Rectangle {
                     implicitWidth:            _leftColumnWidth
                     implicitHeight:           actuatorTesting.height + (_margins * 2)
-                    color:                    qgcPal.windowShade
+                    color:                    beeCopterPal.windowShade
 
                     Column {
                         id:                   actuatorTesting
@@ -194,7 +194,7 @@ SetupPage {
                             verticalCenter:   parent.verticalCenter
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text: qsTr("Configure some outputs in order to test them.")
                             visible: actuators.actuatorTest.actuators.count == 0
                         }
@@ -230,8 +230,8 @@ SetupPage {
                                 }
                             }
 
-                            QGCLabel {
-                                color:  qgcPal.warningText
+                            beeCopterLabel {
+                                color:  beeCopterPal.warningText
                                 text: safetySwitch.checked ? qsTr("Careful: Actuator sliders are enabled") : qsTr("Propellers are removed - Enable sliders")
                             }
                         } // Row
@@ -291,16 +291,16 @@ SetupPage {
                                 Repeater {
                                     model: actuators.actuatorActions
 
-                                    QGCButton {
+                                    beeCopterButton {
                                         property var actionGroup: object
                                         text:          actionGroup.label
                                         onClicked:     actionMenu.popup()
-                                        QGCMenu {
+                                        beeCopterMenu {
                                             id:                 actionMenu
 
                                             Instantiator {
                                                 model:              actionGroup.actions
-                                                QGCMenuItem {
+                                                beeCopterMenuItem {
                                                     text:           object.label
                                                     onTriggered:    object.trigger()
                                                 }
@@ -320,24 +320,24 @@ SetupPage {
 
             // Right column
             Column {
-                QGCLabel {
+                beeCopterLabel {
                     text:               qsTr("Actuator Outputs")
                     font.pointSize:     ScreenTools.mediumFontPointSize
                     bottomPadding:      ScreenTools.defaultFontPixelHeight
                 }
-                QGCLabel {
+                beeCopterLabel {
                     text:          qsTr("One or more actuator still needs to be assigned to an output.")
                     visible:       actuators.hasUnsetRequiredFunctions
-                    color:         qgcPal.warningText
+                    color:         beeCopterPal.warningText
                     bottomPadding: ScreenTools.defaultFontPixelHeight
                 }
 
 
                 // actuator output selection tabs
-                QGCTabBar {
+                beeCopterTabBar {
                     Repeater {
                         model: actuators.actuatorOutputs
-                        QGCTabButton {
+                        beeCopterTabButton {
                             text:      '   ' + object.label + '   '
                             width:     implicitWidth
                         }
@@ -352,7 +352,7 @@ SetupPage {
                     id:                             selActuatorOutput
                     implicitWidth:                  actuatorGroupColumn.width + (_margins * 2)
                     implicitHeight:                 actuatorGroupColumn.height + (_margins * 2)
-                    color:                          qgcPal.windowShade
+                    color:                          beeCopterPal.windowShade
 
                     property var actuatorOutput:    actuators.selectedActuatorOutput
 
@@ -367,7 +367,7 @@ SetupPage {
                             enabled:           !safetySwitch.checked
                             anchors.right:     parent.right
                             spacing:           _margins
-                            QGCButton {
+                            beeCopterButton {
                                 text:          qsTr("Identify & Assign Motors")
                                 visible:       !actuators.motorAssignmentActive && selActuatorOutput.actuatorOutput.groupsVisible
                                 enabled:       actuators.motorAssignmentEnabled
@@ -403,14 +403,14 @@ SetupPage {
                                     text:       actuators.motorAssignmentMessage
                                 }
                             }
-                            QGCButton {
+                            beeCopterButton {
                                 text:          qsTr("Spin Motor Again")
                                 visible:       actuators.motorAssignmentActive
                                 onClicked: {
                                     actuators.spinCurrentMotor()
                                 }
                             }
-                            QGCButton {
+                            beeCopterButton {
                                 text:          qsTr("Abort")
                                 visible:       actuators.motorAssignmentActive
                                 onClicked: {
@@ -425,7 +425,7 @@ SetupPage {
 
                             RowLayout {
                                 property var enableParam:     selActuatorOutput.actuatorOutput.enableParam
-                                QGCLabel {
+                                beeCopterLabel {
                                     visible:                  parent.enableParam != null
                                     text:                     parent.enableParam ? parent.enableParam.label + ":" : ""
                                 }
@@ -445,7 +445,7 @@ SetupPage {
 
                                     RowLayout {
                                         visible: subgroup.label != ""
-                                        QGCLabel {
+                                        beeCopterLabel {
                                             text:                    subgroup.label
                                             font.bold:               true
                                             rightPadding:            ScreenTools.defaultFontPixelWidth * 3
@@ -461,14 +461,14 @@ SetupPage {
                                         rows:      1 + subgroup.channels.count
                                         columns:   1 + subgroup.channelConfigs.count
 
-                                        QGCLabel {
+                                        beeCopterLabel {
                                             text: ""
                                         }
 
                                         // param config labels
                                         Repeater {
                                             model: subgroup.channelConfigs
-                                            QGCLabel {
+                                            beeCopterLabel {
                                                 text:           object.label
                                                 visible:        object.visible && (_showAdvanced || !object.advanced)
                                                 Layout.row:     0
@@ -478,7 +478,7 @@ SetupPage {
                                         // param instances
                                         Repeater {
                                             model: subgroup.channels
-                                            QGCLabel {
+                                            beeCopterLabel {
                                                 text:            object.label + ":"
                                                 Layout.row:      1 + index
                                                 Layout.column:   0
@@ -505,7 +505,7 @@ SetupPage {
                                         model: subgroup.configParams
 
                                         RowLayout {
-                                            QGCLabel {
+                                            beeCopterLabel {
                                                 text: object.label + ":"
                                             }
                                             ActuatorFact {
@@ -522,7 +522,7 @@ SetupPage {
                                 model: selActuatorOutput.actuatorOutput.configParams
 
                                 RowLayout {
-                                    QGCLabel {
+                                    beeCopterLabel {
                                         text: object.label + ":"
                                     }
                                     ActuatorFact {
@@ -536,9 +536,9 @@ SetupPage {
                                 model: selActuatorOutput.actuatorOutput.notes
                                 ColumnLayout {
                                     spacing: ScreenTools.defaultFontPixelHeight
-                                    QGCLabel {
+                                    beeCopterLabel {
                                         text:       modelData
-                                        color:      qgcPal.warningText
+                                        color:      beeCopterPal.warningText
                                     }
                                 }
                             }

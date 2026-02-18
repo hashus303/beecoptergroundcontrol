@@ -1,9 +1,9 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FlyView
-import QGroundControl.FlightMap
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FlyView
+import beeCopter.FlightMap
 
 Item {
     id:             control
@@ -19,7 +19,7 @@ Item {
     property real compassRadius:                Math.min(defaultCompassRadius, maxCompassRadius)
     property real compassBorder:                ScreenTools.defaultFontPixelHeight / 2
     property var  vehicle:                      globals.activeVehicle
-    property var  qgcPal:                       QGroundControl.globalPalette
+    property var  beeCopterPal:                       beeCopter.globalPalette
     property bool usedByMultipleVehicleList:    false
 
     property real _totalAttitudeSize: attitudeSize + attitudeSpacing
@@ -46,9 +46,9 @@ Item {
         width:  compassRadius * 2
         height: width
         radius: width / 2
-        color:  qgcPal.window
+        color:  beeCopterPal.window
 
-        QGCCompassWidget {
+        beeCopterCompassWidget {
             size:                       parent.width - compassBorder
             vehicle:                    control.vehicle
             usedByMultipleVehicleList:  control.usedByMultipleVehicleList

@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------
 # Graph Appearance
 # ----------------------------------------------------------------------------
-set(GRAPHVIZ_GRAPH_NAME      "QGC-deps")          # Graph title
+set(GRAPHVIZ_GRAPH_NAME      "beeCopter-deps")          # Graph title
 set(GRAPHVIZ_GRAPH_HEADER    "rankdir=LR;")       # DOT header snippet (left-to-right)
 set(GRAPHVIZ_NODE_PREFIX     "node")              # Node ID prefix
 

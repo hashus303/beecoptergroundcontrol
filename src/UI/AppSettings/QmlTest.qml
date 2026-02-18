@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     id: _root
@@ -11,10 +11,10 @@ Rectangle {
     anchors.margins:    ScreenTools.defaultFontPixelWidth
     color:              "white"
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
-    property var enabledPalette:    QGCPalette { colorGroupEnabled: true }
-    property var disabledPalette:   QGCPalette { colorGroupEnabled: false }
+    property var enabledPalette:    beeCopterPalette { colorGroupEnabled: true }
+    property var disabledPalette:   beeCopterPalette { colorGroupEnabled: false }
 
     function exportPaletteColors(pal) {
         var objToExport = {}
@@ -34,21 +34,21 @@ Rectangle {
 
     function exportTheme() {
         var themeObj = {"light": {}, "dark":{}}
-        var oldTheme = qgcPal.globalTheme;
+        var oldTheme = beeCopterPal.globalTheme;
 
-        qgcPal.globalTheme = QGCPalette.Light
-        qgcPal.colorGroupEnabled = true
-        themeObj.light["enabled"] = exportPaletteColors(qgcPal);
-        qgcPal.colorGroupEnabled = false
-        themeObj.light["disabled"] = exportPaletteColors(qgcPal);
-        qgcPal.globalTheme = QGCPalette.Dark
-        qgcPal.colorGroupEnabled = true
-        themeObj.dark["enabled"] = exportPaletteColors(qgcPal);
-        qgcPal.colorGroupEnabled = false
-        themeObj.dark["disabled"] = exportPaletteColors(qgcPal);
+        beeCopterPal.globalTheme = beeCopterPalette.Light
+        beeCopterPal.colorGroupEnabled = true
+        themeObj.light["enabled"] = exportPaletteColors(beeCopterPal);
+        beeCopterPal.colorGroupEnabled = false
+        themeObj.light["disabled"] = exportPaletteColors(beeCopterPal);
+        beeCopterPal.globalTheme = beeCopterPalette.Dark
+        beeCopterPal.colorGroupEnabled = true
+        themeObj.dark["enabled"] = exportPaletteColors(beeCopterPal);
+        beeCopterPal.colorGroupEnabled = false
+        themeObj.dark["disabled"] = exportPaletteColors(beeCopterPal);
 
-        qgcPal.globalTheme = oldTheme;
-        qgcPal.colorGroupEnabled = true;
+        beeCopterPal.globalTheme = oldTheme;
+        beeCopterPal.colorGroupEnabled = true;
 
         var jsonString = JSON.stringify(themeObj, null, 4);
 
@@ -57,28 +57,28 @@ Rectangle {
 
     function exportThemeCPP() {
         var palToExport = ""
-        for(var i = 0; i < qgcPal.colors.length; i++) {
-            var cs = qgcPal.colors[i]
+        for(var i = 0; i < beeCopterPal.colors.length; i++) {
+            var cs = beeCopterPal.colors[i]
             var csc = cs + 'Colors'
-            palToExport += 'DECLARE_QGC_COLOR(' + cs + ', \"' + qgcPal[csc][1] + '\", \"' + qgcPal[csc][0] + '\", \"' + qgcPal[csc][3] + '\", \"' + qgcPal[csc][2] + '\")\n'
+            palToExport += 'DECLARE_beeCopter_COLOR(' + cs + ', \"' + beeCopterPal[csc][1] + '\", \"' + beeCopterPal[csc][0] + '\", \"' + beeCopterPal[csc][3] + '\", \"' + beeCopterPal[csc][2] + '\")\n'
         }
         themeImportExportEdit.text = palToExport
     }
 
     function exportThemePlugin() {
         var palToExport = ""
-        for(var i = 0; i < qgcPal.colors.length; i++) {
-            var cs = qgcPal.colors[i]
+        for(var i = 0; i < beeCopterPal.colors.length; i++) {
+            var cs = beeCopterPal.colors[i]
             var csc = cs + 'Colors'
             if(i > 0) {
                 palToExport += '\nelse '
             }
             palToExport +=
             'if (colorName == QStringLiteral(\"' + cs + '\")) {\n' +
-            '    colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupEnabled]   = QColor(\"' + qgcPal[csc][2] + '\");\n' +
-            '    colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupDisabled]  = QColor(\"' + qgcPal[csc][3] + '\");\n' +
-            '    colorInfo[QGCPalette::Light][QGCPalette::ColorGroupEnabled]  = QColor(\"' + qgcPal[csc][0] + '\");\n' +
-            '    colorInfo[QGCPalette::Light][QGCPalette::ColorGroupDisabled] = QColor(\"' + qgcPal[csc][1] + '\");\n' +
+            '    colorInfo[beeCopterPalette::Dark][beeCopterPalette::ColorGroupEnabled]   = QColor(\"' + beeCopterPal[csc][2] + '\");\n' +
+            '    colorInfo[beeCopterPalette::Dark][beeCopterPalette::ColorGroupDisabled]  = QColor(\"' + beeCopterPal[csc][3] + '\");\n' +
+            '    colorInfo[beeCopterPalette::Light][beeCopterPalette::ColorGroupEnabled]  = QColor(\"' + beeCopterPal[csc][0] + '\");\n' +
+            '    colorInfo[beeCopterPalette::Light][beeCopterPalette::ColorGroupDisabled] = QColor(\"' + beeCopterPal[csc][1] + '\");\n' +
             '}'
         }
         themeImportExportEdit.text = palToExport
@@ -87,21 +87,21 @@ Rectangle {
     function importTheme(jsonStr) {
         var jsonObj = JSON.parse(jsonStr)
         var themeObj = {"light": {}, "dark":{}}
-        var oldTheme = qgcPal.globalTheme;
+        var oldTheme = beeCopterPal.globalTheme;
 
-        qgcPal.globalTheme = QGCPalette.Light
-        qgcPal.colorGroupEnabled = true
-        fillPalette(qgcPal, jsonObj.light.enabled)
-        qgcPal.colorGroupEnabled = false
-        fillPalette(qgcPal, jsonObj.light.disabled);
-        qgcPal.globalTheme = QGCPalette.Dark
-        qgcPal.colorGroupEnabled = true
-        fillPalette(qgcPal, jsonObj.dark.enabled);
-        qgcPal.colorGroupEnabled = false
-        fillPalette(qgcPal, jsonObj.dark.disabled);
+        beeCopterPal.globalTheme = beeCopterPalette.Light
+        beeCopterPal.colorGroupEnabled = true
+        fillPalette(beeCopterPal, jsonObj.light.enabled)
+        beeCopterPal.colorGroupEnabled = false
+        fillPalette(beeCopterPal, jsonObj.light.disabled);
+        beeCopterPal.globalTheme = beeCopterPalette.Dark
+        beeCopterPal.colorGroupEnabled = true
+        fillPalette(beeCopterPal, jsonObj.dark.enabled);
+        beeCopterPal.colorGroupEnabled = false
+        fillPalette(beeCopterPal, jsonObj.dark.disabled);
 
-        qgcPal.globalTheme = oldTheme;
-        qgcPal.colorGroupEnabled = true;
+        beeCopterPal.globalTheme = oldTheme;
+        beeCopterPal.colorGroupEnabled = true;
 
         paletteImportExportPopup.close()
     }
@@ -126,10 +126,10 @@ Rectangle {
         }
         background: Rectangle {
             anchors.fill:   parent
-            color:          qgcPal.window
+            color:          beeCopterPal.window
             radius:         ScreenTools.defaultFontPixelHeight * 0.5
             border.width:   1
-            border.color:   qgcPal.text
+            border.color:   beeCopterPal.text
         }
         Column {
             id:             impCol
@@ -139,16 +139,16 @@ Rectangle {
                 id:         exportFormats
                 spacing:    ScreenTools.defaultFontPixelWidth  * 2
                 anchors.horizontalCenter: parent.horizontalCenter
-                QGCRadioButton {
+                beeCopterRadioButton {
                     id:     _jsonButton
                     text:   "Json"
                     onClicked: exportTheme()
                 }
-                QGCRadioButton {
-                    text: "QGC"
+                beeCopterRadioButton {
+                    text: "beeCopter"
                     onClicked: exportThemeCPP()
                 }
-                QGCRadioButton {
+                beeCopterRadioButton {
                     text: "Custom Plugin"
                     onClicked: exportThemePlugin()
                 }
@@ -193,7 +193,7 @@ Rectangle {
             Row {
                 spacing:    ScreenTools.defaultFontPixelWidth  * 2
                 anchors.horizontalCenter: parent.horizontalCenter
-                QGCButton {
+                beeCopterButton {
                     id:         importButton
                     text:       "Import (Json Only)"
                     enabled:    themeImportExportEdit.text[0] === "{" && _jsonButton.checked
@@ -201,7 +201,7 @@ Rectangle {
                         importTheme(themeImportExportEdit.text);
                     }
                 }
-                QGCButton {
+                beeCopterButton {
                     text:       "Close"
                     onClicked: {
                         paletteImportExportPopup.close()
@@ -217,17 +217,17 @@ Rectangle {
         id:         _header
         width:      parent.width
         height:     themeChoice.height * 2
-        color:      qgcPal.window
+        color:      beeCopterPal.window
         anchors.top: parent.top
         Row {
             id:         themeChoice
             spacing:    20
             anchors.centerIn: parent
-            QGCLabel {
+            beeCopterLabel {
                 text:   qsTr("Window Color")
                 anchors.verticalCenter: parent.verticalCenter
             }
-            QGCButton {
+            beeCopterButton {
                 text:   qsTr("Import/Export")
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: paletteImportExportPopup.open()
@@ -235,18 +235,18 @@ Rectangle {
             Row {
                 spacing:         20
                 anchors.verticalCenter: parent.verticalCenter
-                QGCRadioButton {
+                beeCopterRadioButton {
                     text:       qsTr("Light")
-                    checked:    qgcPal.globalTheme === QGCPalette.Light
+                    checked:    beeCopterPal.globalTheme === beeCopterPalette.Light
                     onClicked: {
-                        qgcPal.globalTheme = QGCPalette.Light
+                        beeCopterPal.globalTheme = beeCopterPalette.Light
                     }
                 }
-                QGCRadioButton {
+                beeCopterRadioButton {
                     text:       qsTr("Dark")
-                    checked:    qgcPal.globalTheme === QGCPalette.Dark
+                    checked:    beeCopterPal.globalTheme === beeCopterPalette.Dark
                     onClicked: {
-                        qgcPal.globalTheme = QGCPalette.Dark
+                        beeCopterPal.globalTheme = beeCopterPalette.Dark
                     }
                 }
             }
@@ -254,7 +254,7 @@ Rectangle {
     }
     //-------------------------------------------------------------------------
     //-- Main Contents
-    QGCFlickable {
+    beeCopterFlickable {
         anchors.top:            _header.bottom
         anchors.bottom:         parent.bottom
         width:                  parent.width
@@ -362,13 +362,13 @@ Rectangle {
                 } // Column
                 } // GroupBox { title: "Preview and edit theme"
 
-                // QGC controls preview
+                // beeCopter controls preview
                 GroupBox { title: "Controls preview"
                 Column {
                     id: ctlPrevColumn
                     property real _colWidth: ScreenTools.defaultFontPointSize * 18
                     property real _height: _colWidth*0.15
-                    property color _bkColor: qgcPal.window
+                    property color _bkColor: beeCopterPal.window
                     spacing: 10
                     width: previewGrid.width
                     Grid {
@@ -382,7 +382,7 @@ Rectangle {
                             height: ctlPrevColumn._height
                             color: "black"
                             horizontalAlignment: Text.AlignHCenter
-                            text: qsTr("QGC name")
+                            text: qsTr("beeCopter name")
                         }
                         Text {
                             width: ctlPrevColumn._colWidth
@@ -399,16 +399,16 @@ Rectangle {
                             text: qsTr("Disabled")
                         }
 
-                        // QGCLabel
+                        // beeCopterLabel
                         Loader {
                             sourceComponent: ctlRowHeader
-                            property string text: "QGCLabel"
+                            property string text: "beeCopterLabel"
                         }
                         Rectangle {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             color: ctlPrevColumn._bkColor
-                            QGCLabel {
+                            beeCopterLabel {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: qsTr("Label")
@@ -418,7 +418,7 @@ Rectangle {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             color: ctlPrevColumn._bkColor
-                            QGCLabel {
+                            beeCopterLabel {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: qsTr("Label")
@@ -426,35 +426,35 @@ Rectangle {
                             }
                         }
 
-                        // QGCButton
+                        // beeCopterButton
                         Loader {
                             sourceComponent: ctlRowHeader
-                            property string text: "QGCButton"
+                            property string text: "beeCopterButton"
                         }
-                        QGCButton {
+                        beeCopterButton {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             text: qsTr("Button")
                         }
-                        QGCButton {
+                        beeCopterButton {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             text: qsTr("Button")
                             enabled: false
                         }
 
-                        // QGCButton - primary
+                        // beeCopterButton - primary
                         Loader {
                             sourceComponent: ctlRowHeader
-                            property string text: "QGCButton(primary)"
+                            property string text: "beeCopterButton(primary)"
                         }
-                        QGCButton {
+                        beeCopterButton {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             primary: true
                             text: qsTr("Button")
                         }
-                        QGCButton {
+                        beeCopterButton {
                             width:  ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             text:   qsTr("Button")
@@ -483,30 +483,30 @@ Rectangle {
                             enabled: false
                         }
 
-                        // QGCButton - menu
+                        // beeCopterButton - menu
                         Loader {
                             sourceComponent: ctlRowHeader
-                            property string text: "QGCButton(menu)"
+                            property string text: "beeCopterButton(menu)"
                         }
                         Menu {
                             id: buttonMenu
-                            QGCMenuItem {
+                            beeCopterMenuItem {
                                 text: qsTr("Item 1")
                             }
-                            QGCMenuItem {
+                            beeCopterMenuItem {
                                 text: qsTr("Item 2")
                             }
-                            QGCMenuItem {
+                            beeCopterMenuItem {
                                 text: qsTr("Item 3")
                             }
                         }
-                        QGCButton {
+                        beeCopterButton {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             text: qsTr("Button")
                             onClicked: buttonMenu.popup()
                         }
-                        QGCButton {
+                        beeCopterButton {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             text: qsTr("Button")
@@ -514,16 +514,16 @@ Rectangle {
                             onClicked: buttonMenu.popup()
                         }
 
-                        // QGCRadioButton
+                        // beeCopterRadioButton
                         Loader {
                             sourceComponent: ctlRowHeader
-                            property string text: "QGCRadioButton"
+                            property string text: "beeCopterRadioButton"
                         }
                         Rectangle {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             color: ctlPrevColumn._bkColor
-                            QGCRadioButton {
+                            beeCopterRadioButton {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: qsTr("Radio")
@@ -533,7 +533,7 @@ Rectangle {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             color: ctlPrevColumn._bkColor
-                            QGCRadioButton {
+                            beeCopterRadioButton {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: qsTr("Radio")
@@ -541,16 +541,16 @@ Rectangle {
                             }
                         }
 
-                        // QGCCheckBox
+                        // beeCopterCheckBox
                         Loader {
                             sourceComponent: ctlRowHeader
-                            property string text: "QGCCheckBox"
+                            property string text: "beeCopterCheckBox"
                         }
                         Rectangle {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             color: ctlPrevColumn._bkColor
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: qsTr("Check Box")
@@ -560,7 +560,7 @@ Rectangle {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             color: ctlPrevColumn._bkColor
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: qsTr("Check Box")
@@ -568,16 +568,16 @@ Rectangle {
                             }
                         }
 
-                        // QGCCheckBoxSlider
+                        // beeCopterCheckBoxSlider
                         Loader {
                             sourceComponent: ctlRowHeader
-                            property string text: "QGCCheckBoxSlider"
+                            property string text: "beeCopterCheckBoxSlider"
                         }
                         Rectangle {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             color: ctlPrevColumn._bkColor
-                            QGCCheckBoxSlider {
+                            beeCopterCheckBoxSlider {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: qsTr("Check Box Slider")
@@ -587,7 +587,7 @@ Rectangle {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             color: ctlPrevColumn._bkColor
-                            QGCCheckBoxSlider {
+                            beeCopterCheckBoxSlider {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: qsTr("Check Box Slider")
@@ -595,34 +595,34 @@ Rectangle {
                             }
                         }
 
-                        // QGCTextField
+                        // beeCopterTextField
                         Loader {
                             sourceComponent: ctlRowHeader
-                            property string text: "QGCTextField"
+                            property string text: "beeCopterTextField"
                         }
-                        QGCTextField {
+                        beeCopterTextField {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
-                            text: "QGCTextField"
+                            text: "beeCopterTextField"
                         }
-                        QGCTextField {
+                        beeCopterTextField {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
-                            text: "QGCTextField"
+                            text: "beeCopterTextField"
                             enabled: false
                         }
 
-                        // QGCComboBox
+                        // beeCopterComboBox
                         Loader {
                             sourceComponent: ctlRowHeader
-                            property string text: "QGCComboBox"
+                            property string text: "beeCopterComboBox"
                         }
-                        QGCComboBox {
+                        beeCopterComboBox {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             model: [ qsTr("Item 1"), qsTr("Item 2"), qsTr("Item 3") ]
                         }
-                        QGCComboBox {
+                        beeCopterComboBox {
                             width: ctlPrevColumn._colWidth
                             height: ctlPrevColumn._height
                             model: [ qsTr("Item 1"), qsTr("Item 2"), qsTr("Item 3") ]
@@ -650,13 +650,13 @@ Rectangle {
                         width:  previewGrid.width
                         height: 60
                         radius: 3
-                        color:  qgcPal.alertBackground
-                        border.color: qgcPal.alertBorder
+                        color:  beeCopterPal.alertBackground
+                        border.color: beeCopterPal.alertBorder
                         border.width: 1
                         anchors.horizontalCenter: parent.horizontalCenter
                         Label {
                             text: "Alert Message"
-                            color: qgcPal.alertText
+                            color: beeCopterPal.alertText
                             anchors.centerIn: parent
                         }
                     }
@@ -673,15 +673,15 @@ Rectangle {
                 spacing: 10
                 anchors.horizontalCenter: parent.horizontalCenter
                 Loader {
-                    property color backgroundColor: qgcPal.window
+                    property color backgroundColor: beeCopterPal.window
                     sourceComponent: arbBox
                 }
                 Loader {
-                    property color backgroundColor: qgcPal.windowShade
+                    property color backgroundColor: beeCopterPal.windowShade
                     sourceComponent: arbBox
                 }
                 Loader {
-                    property color backgroundColor: qgcPal.windowShadeDark
+                    property color backgroundColor: beeCopterPal.windowShadeDark
                     sourceComponent: arbBox
                 }
             }
@@ -697,8 +697,8 @@ Rectangle {
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 background: Rectangle {
-                    color: qgcPal.window
-                    border.color: qgcPal.text
+                    color: beeCopterPal.window
+                    border.color: beeCopterPal.text
                     border.width: 1
                 }
 
@@ -709,25 +709,25 @@ Rectangle {
                     Row {
                         spacing: ScreenTools.defaultFontPixelWidth * 2
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: showBorderCheck
                             text: "showBorder"
                             checked: true
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: showDividersCheck
                             text: "showDividers"
                             checked: true
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: showHeadingCheck
                             text: "Show Heading"
                             checked: true
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: showDescriptionCheck
                             text: "Show Description"
                             checked: true
@@ -737,27 +737,27 @@ Rectangle {
                     Row {
                         spacing: ScreenTools.defaultFontPixelWidth * 2
 
-                        QGCLabel { text: "Visibility toggles:"; font.bold: true }
+                        beeCopterLabel { text: "Visibility toggles:"; font.bold: true }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: item1Visible
                             text: "Item 1"
                             checked: true
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: item2Visible
                             text: "Item 2"
                             checked: true
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: item3Visible
                             text: "Item 3"
                             checked: true
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: item4Visible
                             text: "Item 4"
                             checked: true
@@ -767,39 +767,39 @@ Rectangle {
                     Row {
                         spacing: ScreenTools.defaultFontPixelWidth * 2
 
-                        QGCLabel { text: "Repeater toggles:"; font.bold: true }
+                        beeCopterLabel { text: "Repeater toggles:"; font.bold: true }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: repeaterShowDividers
                             text: "Dividers"
                             checked: true
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: repeater1Visible
                             text: "Rep 1"
                             checked: true
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: repeater2Visible
                             text: "Rep 2"
                             checked: true
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: repeater3Visible
                             text: "Rep 3"
                             checked: true
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: repeater4Visible
                             text: "Rep 4"
                             checked: true
                         }
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             id: repeater5Visible
                             text: "Rep 5"
                             checked: true
@@ -818,11 +818,11 @@ Rectangle {
                             Layout.fillWidth: true
                             visible: item1Visible.checked
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text: "Setting 1:"
                                 Layout.fillWidth: true
                             }
-                            QGCTextField {
+                            beeCopterTextField {
                                 text: "Value 1"
                                 Layout.preferredWidth: ScreenTools.defaultFontPixelWidth * 15
                             }
@@ -832,11 +832,11 @@ Rectangle {
                             Layout.fillWidth: true
                             visible: item2Visible.checked
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text: "Setting 2:"
                                 Layout.fillWidth: true
                             }
-                            QGCComboBox {
+                            beeCopterComboBox {
                                 model: ["Option 1", "Option 2", "Option 3"]
                                 Layout.preferredWidth: ScreenTools.defaultFontPixelWidth * 15
                             }
@@ -846,7 +846,7 @@ Rectangle {
                             Layout.fillWidth: true
                             visible: item3Visible.checked
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 text: "Enable feature"
                                 Layout.fillWidth: true
                             }
@@ -856,18 +856,18 @@ Rectangle {
                             Layout.fillWidth: true
                             visible: item4Visible.checked
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text: "Setting 4:"
                                 Layout.fillWidth: true
                             }
-                            QGCButton {
+                            beeCopterButton {
                                 text: "Configure"
                             }
                         }
                     }
 
                     // Nested SettingsGroupLayout test
-                    QGCLabel {
+                    beeCopterLabel {
                         text: "Nested SettingsGroupLayout:"
                         font.bold: true
                     }
@@ -880,8 +880,8 @@ Rectangle {
 
                         RowLayout {
                             Layout.fillWidth: true
-                            QGCLabel { text: "Outer setting"; Layout.fillWidth: true }
-                            QGCTextField { text: "Value" }
+                            beeCopterLabel { text: "Outer setting"; Layout.fillWidth: true }
+                            beeCopterTextField { text: "Value" }
                         }
 
                         SettingsGroupLayout {
@@ -891,12 +891,12 @@ Rectangle {
                             showBorder: true
                             showDividers: false
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 text: "Inner checkbox 1"
                                 Layout.fillWidth: true
                             }
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 text: "Inner checkbox 2"
                                 Layout.fillWidth: true
                             }
@@ -904,13 +904,13 @@ Rectangle {
 
                         RowLayout {
                             Layout.fillWidth: true
-                            QGCLabel { text: "Another outer setting"; Layout.fillWidth: true }
-                            QGCComboBox { model: ["A", "B", "C"] }
+                            beeCopterLabel { text: "Another outer setting"; Layout.fillWidth: true }
+                            beeCopterComboBox { model: ["A", "B", "C"] }
                         }
                     }
 
                     // Test with Repeater
-                    QGCLabel {
+                    beeCopterLabel {
                         text: "SettingsGroupLayout with Repeater:"
                         font.bold: true
                     }
@@ -935,11 +935,11 @@ Rectangle {
                                         default: return true
                                     }
                                 }
-                                QGCLabel {
+                                beeCopterLabel {
                                     text: "Repeated Item " + (index + 1) + ":"
                                     Layout.fillWidth: true
                                 }
-                                QGCTextField {
+                                beeCopterTextField {
                                     text: "Value " + (index + 1)
                                     Layout.preferredWidth: ScreenTools.defaultFontPixelWidth * 15
                                 }
@@ -975,7 +975,7 @@ Rectangle {
             width:  arbGrid.width  * 1.5
             height: arbGrid.height * 1.5
             color:  backgroundColor
-            border.color: qgcPal.text
+            border.color: beeCopterPal.text
             border.width: 1
             anchors.horizontalCenter: parent.horizontalCenter
             GridLayout {
@@ -983,8 +983,8 @@ Rectangle {
                 columns: 4
                 rowSpacing: 10
                 anchors.centerIn: parent
-                QGCColoredImage {
-                    color:                      qgcPal.colorGreen
+                beeCopterColoredImage {
+                    color:                      beeCopterPal.colorGreen
                     width:                      ScreenTools.defaultFontPixelWidth * 2
                     height:                     width
                     sourceSize.height:          width
@@ -992,9 +992,9 @@ Rectangle {
                     fillMode:                   Image.PreserveAspectFit
                     source:                     "/qmlimages/Gears.svg"
                 }
-                Label { text: "colorGreen"; color: qgcPal.colorGreen; }
-                QGCColoredImage {
-                    color:                      qgcPal.colorOrange
+                Label { text: "colorGreen"; color: beeCopterPal.colorGreen; }
+                beeCopterColoredImage {
+                    color:                      beeCopterPal.colorOrange
                     width:                      ScreenTools.defaultFontPixelWidth * 2
                     height:                     width
                     sourceSize.height:          width
@@ -1002,9 +1002,9 @@ Rectangle {
                     fillMode:                   Image.PreserveAspectFit
                     source:                     "/qmlimages/Gears.svg"
                 }
-                Label { text: "colorOrange"; color: qgcPal.colorOrange; }
-                QGCColoredImage {
-                    color:                      qgcPal.colorRed
+                Label { text: "colorOrange"; color: beeCopterPal.colorOrange; }
+                beeCopterColoredImage {
+                    color:                      beeCopterPal.colorRed
                     width:                      ScreenTools.defaultFontPixelWidth * 2
                     height:                     width
                     sourceSize.height:          width
@@ -1012,9 +1012,9 @@ Rectangle {
                     fillMode:                   Image.PreserveAspectFit
                     source:                     "/qmlimages/Gears.svg"
                 }
-                Label { text: "colorRed"; color: qgcPal.colorRed; }
-                QGCColoredImage {
-                    color:                      qgcPal.colorGrey
+                Label { text: "colorRed"; color: beeCopterPal.colorRed; }
+                beeCopterColoredImage {
+                    color:                      beeCopterPal.colorGrey
                     width:                      ScreenTools.defaultFontPixelWidth * 2
                     height:                     width
                     sourceSize.height:          width
@@ -1022,9 +1022,9 @@ Rectangle {
                     fillMode:                   Image.PreserveAspectFit
                     source:                     "/qmlimages/Gears.svg"
                 }
-                Label { text: "colorGrey"; color: qgcPal.colorGrey;  }
-                QGCColoredImage {
-                    color:                      qgcPal.colorBlue
+                Label { text: "colorGrey"; color: beeCopterPal.colorGrey;  }
+                beeCopterColoredImage {
+                    color:                      beeCopterPal.colorBlue
                     width:                      ScreenTools.defaultFontPixelWidth * 2
                     height:                     width
                     sourceSize.height:          width
@@ -1032,7 +1032,7 @@ Rectangle {
                     fillMode:                   Image.PreserveAspectFit
                     source:                     "/qmlimages/Gears.svg"
                 }
-                Label { text: "colorBlue"; color: qgcPal.colorBlue; }
+                Label { text: "colorBlue"; color: beeCopterPal.colorBlue; }
             }
         }
     }

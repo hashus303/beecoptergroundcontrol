@@ -4,11 +4,11 @@
 #include "MissionItem.h"
 #include "PlanMasterController.h"
 #include "FlightPathSegment.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QJsonArray>
 
-QGC_LOGGING_CATEGORY(FixedWingLandingComplexItemLog, "Plan.FixedWingLandingComplexItem")
+beeCopter_LOGGING_CATEGORY(FixedWingLandingComplexItemLog, "Plan.FixedWingLandingComplexItem")
 
 const QString FixedWingLandingComplexItem::name(FixedWingLandingComplexItem::tr("Fixed Wing Landing"));
 
@@ -29,7 +29,7 @@ FixedWingLandingComplexItem::FixedWingLandingComplexItem(PlanMasterController* m
     , _stopTakingVideoFact      (settingsGroup, _metaDataMap[stopTakingVideoName])
     , _valueSetIsDistanceFact   (settingsGroup, _metaDataMap[valueSetIsDistanceName])
 {
-    _editorQml      = "qrc:/qml/QGroundControl/Controls/FWLandingPatternEditor.qml";
+    _editorQml      = "qrc:/qml/beeCopter/Controls/FWLandingPatternEditor.qml";
     _isIncomplete   = false;
 
     _init();

@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 RowLayout {
     property alias label:                   _labelLabel.text
@@ -11,12 +11,12 @@ RowLayout {
 
     spacing: ScreenTools.defaultFontPixelWidth * 2
 
-    QGCLabel {
+    beeCopterLabel {
         id:                 _labelLabel
         Layout.fillWidth:   true
     }
 
-    QGCLabel {
+    beeCopterLabel {
         id:                     _label
         Layout.preferredWidth:  labelPreferredWidth
     }

@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 RowLayout {
     spacing: _colSpacing
@@ -13,26 +13,26 @@ RowLayout {
         subEditConfig.filename = logField.text
     }
 
-    QGCLabel { text: qsTr("Log File") }
+    beeCopterLabel { text: qsTr("Log File") }
 
-    QGCTextField {
+    beeCopterTextField {
         id: logField
         Layout.preferredWidth: _secondColumnWidth
         text: subEditConfig.filename
     }
 
-    QGCButton {
+    beeCopterButton {
         text: qsTr("Browse")
         onClicked: filePicker.openForLoad()
     }
 
-    QGCFileDialog {
+    beeCopterFileDialog {
         id: filePicker
         title: qsTr("Select Telemetery Log")
         nameFilters: [ qsTr("Telemetry Logs (*.%1)").arg(_logFileExtension), qsTr("All Files (*)") ]
-        folder: QGroundControl.settingsManager.appSettings.telemetrySavePath
+        folder: beeCopter.settingsManager.appSettings.telemetrySavePath
 
-        property string _logFileExtension: QGroundControl.settingsManager.appSettings.telemetryFileExtension
+        property string _logFileExtension: beeCopter.settingsManager.appSettings.telemetryFileExtension
 
         onAcceptedForLoad: (file) => {
             logField.text = file

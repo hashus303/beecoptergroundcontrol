@@ -3,8 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtCharts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ChartView {
     id:                 chartView
@@ -12,7 +12,7 @@ ChartView {
     antialiasing:       true
     animationOptions:   ChartView.NoAnimation
     legend.visible:     false
-    backgroundColor:    qgcPal.window
+    backgroundColor:    beeCopterPal.window
     backgroundRoundness: 0
     margins.bottom:     ScreenTools.defaultFontPixelHeight * 1.5
     margins.top:        chartHeader.height + (ScreenTools.defaultFontPixelHeight * 2)
@@ -28,7 +28,7 @@ ChartView {
         var serie   = createSeries(ChartView.SeriesTypeLine, field.label)
         serie.axisX = axisX
         serie.axisY = axisY
-        serie.useOpenGL = QGroundControl.videoManager.gstreamerEnabled // Details on why here: https://github.com/mavlink/qgroundcontrol/issues/13068
+        serie.useOpenGL = beeCopter.videoManager.gstreamerEnabled // Details on why here: https://github.com/mavlink/beeCopter/issues/13068
         serie.color = color
         serie.width = 1
         chartController.addSeries(field, serie)
@@ -61,7 +61,7 @@ ChartView {
         gridVisible:                true
         labelsFont.family:          ScreenTools.fixedFontFamily
         labelsFont.pointSize:       ScreenTools.smallFontPointSize
-        labelsColor:                qgcPal.text
+        labelsColor:                beeCopterPal.text
     }
 
     ValueAxis {
@@ -72,7 +72,7 @@ ChartView {
         lineVisible:                false
         labelsFont.family:          ScreenTools.fixedFontFamily
         labelsFont.pointSize:       ScreenTools.smallFontPointSize
-        labelsColor:                qgcPal.text
+        labelsColor:                beeCopterPal.text
     }
 
     Row {
@@ -90,11 +90,11 @@ ChartView {
             columnSpacing:          ScreenTools.defaultFontPixelWidth
             rowSpacing:             ScreenTools.defaultFontPixelHeight * 0.25
             anchors.verticalCenter: parent.verticalCenter
-            QGCLabel {
+            beeCopterLabel {
                 text:               qsTr("Scale:");
                 Layout.alignment:   Qt.AlignVCenter
             }
-            QGCComboBox {
+            beeCopterComboBox {
                 Layout.minimumWidth: ScreenTools.defaultFontPixelWidth * 10
                 Layout.maximumWidth: ScreenTools.defaultFontPixelWidth * 10
                 height:             ScreenTools.defaultFontPixelHeight
@@ -103,11 +103,11 @@ ChartView {
                 onActivated: (index) => { if(chartController) chartController.rangeXIndex = index; }
                 Layout.alignment:   Qt.AlignVCenter
             }
-            QGCLabel {
+            beeCopterLabel {
                 text:               qsTr("Range:");
                 Layout.alignment:   Qt.AlignVCenter
             }
-            QGCComboBox {
+            beeCopterComboBox {
                 Layout.minimumWidth: ScreenTools.defaultFontPixelWidth * 10
                 Layout.maximumWidth: ScreenTools.defaultFontPixelWidth * 10
                 height:             ScreenTools.defaultFontPixelHeight
@@ -121,7 +121,7 @@ ChartView {
             anchors.verticalCenter: parent.verticalCenter
             Repeater {
                 model:              chartController ? chartController.chartFields : []
-                QGCLabel {
+                beeCopterLabel {
                     text:           modelData.label
                     color:          chartView.series(index).color
                     font.pointSize: ScreenTools.smallFontPointSize

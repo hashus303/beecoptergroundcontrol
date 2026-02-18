@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(QGCPlugin
+project(beeCopterPlugin
     VERSION 0.1.0
-    DESCRIPTION "QGroundControl Development Tools for Qt Creator"
+    DESCRIPTION "beeCopter Development Tools for Qt Creator"
     LANGUAGES CXX
 )
 
@@ -29,10 +29,10 @@ endif()
 # Plugin sources
 set(PLUGIN_SOURCES
     # Core plugin
-    src/qgcplugin.h
-    src/qgcplugin.cpp
-    src/qgcconstants.h
-    src/qgcplugin_global.h
+    src/beeCopterplugin.h
+    src/beeCopterplugin.cpp
+    src/beeCopterconstants.h
+    src/beeCopterplugin_global.h
     # FactGroup Wizard
     src/wizard/factgroupwizardfactory.h
     src/wizard/factgroupwizardfactory.cpp
@@ -47,8 +47,8 @@ set(PLUGIN_SOURCES
 )
 
 # Add the Qt Creator plugin
-add_qtc_plugin(QGCPlugin
-    PLUGIN_CLASS QGCPlugin
+add_qtc_plugin(beeCopterPlugin
+    PLUGIN_CLASS beeCopterPlugin
     PLUGIN_DEPENDS
         QtCreator::Core
         QtCreator::ProjectExplorer
@@ -68,6 +68,6 @@ add_custom_target(RunQtCreator
     COMMAND ${CMAKE_COMMAND} -E env
         "QT_PLUGIN_PATH=${CMAKE_BINARY_DIR}/lib/qtcreator/plugins"
         ${IDE_BIN_PATH}/qtcreator
-    DEPENDS QGCPlugin
-    COMMENT "Running Qt Creator with QGCPlugin"
+    DEPENDS beeCopterPlugin
+    COMMENT "Running Qt Creator with beeCopterPlugin"
 )

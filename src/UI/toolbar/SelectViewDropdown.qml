@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ToolIndicatorPage {
     id: root
@@ -47,7 +47,7 @@ ToolIndicatorPage {
                 Layout.fillWidth: true
                 text: qsTr("Analyze")
                 imageResource: "/qmlimages/Analyze.svg"
-                visible: QGroundControl.corePlugin.showAdvancedUI
+                visible: beeCopter.corePlugin.showAdvancedUI
                 onClicked: {
                     if (mainWindow.allowViewSwitch()) {
                         mainWindow.closeIndicatorDrawer()
@@ -75,8 +75,8 @@ ToolIndicatorPage {
                 implicitHeight: root._toolButtonHeight
                 Layout.fillWidth: true
                 text: qsTr("Settings")
-                imageResource: "/res/QGCLogoWhite.svg"
-                visible: !QGroundControl.corePlugin.options.combineSettingsAndSetup
+                imageResource: "/res/beeCopterLogoWhite.svg"
+                visible: !beeCopter.corePlugin.options.combineSettingsAndSetup
                 onClicked: {
                     if (mainWindow.allowViewSwitch()) {
                         mainWindow.closeIndicatorDrawer()
@@ -104,42 +104,42 @@ ToolIndicatorPage {
                 Layout.columnSpan: 2
                 spacing: 0
 
-                QGCLabel {
+                beeCopterLabel {
                     id: versionLabel
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
-                    text: qsTr("%1 Version").arg(QGroundControl.appName)
+                    text: qsTr("%1 Version").arg(beeCopter.appName)
                     font.pointSize: ScreenTools.smallFontPointSize
-                    wrapMode: QGCLabel.WordWrap
+                    wrapMode: beeCopterLabel.WordWrap
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
-                    text: QGroundControl.qgcVersion
+                    text: beeCopter.beeCopterVersion
                     font.pointSize: ScreenTools.smallFontPointSize
-                    wrapMode: QGCLabel.WrapAnywhere
+                    wrapMode: beeCopterLabel.WrapAnywhere
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
-                    text: QGroundControl.qgcAppDate
+                    text: beeCopter.beeCopterAppDate
                     font.pointSize: ScreenTools.smallFontPointSize
-                    wrapMode: QGCLabel.WrapAnywhere
-                    visible: QGroundControl.qgcDailyBuild
+                    wrapMode: beeCopterLabel.WrapAnywhere
+                    visible: beeCopter.beeCopterDailyBuild
 
-                    QGCMouseArea {
+                    beeCopterMouseArea {
                         anchors.topMargin: -(parent.y - versionLabel.y)
                         anchors.fill: parent
 
                         onClicked: (mouse) => {
                             if (mouse.modifiers & Qt.ControlModifier) {
-                                QGroundControl.corePlugin.showTouchAreas = !QGroundControl.corePlugin.showTouchAreas
+                                beeCopter.corePlugin.showTouchAreas = !beeCopter.corePlugin.showTouchAreas
                                 showTouchAreasNotification.open()
                             } else if (ScreenTools.isMobile || mouse.modifiers & Qt.ShiftModifier) {
                                 mainWindow.closeIndicatorDrawer()
-                                if (!QGroundControl.corePlugin.showAdvancedUI) {
+                                if (!beeCopter.corePlugin.showAdvancedUI) {
                                     advancedModeOnConfirmation.open()
                                 } else {
                                     advancedModeOffConfirmation.open()
@@ -149,7 +149,7 @@ ToolIndicatorPage {
 
                         // This allows you to change this on mobile
                         onPressAndHold: {
-                            QGroundControl.corePlugin.showTouchAreas = !QGroundControl.corePlugin.showTouchAreas
+                            beeCopter.corePlugin.showTouchAreas = !beeCopter.corePlugin.showTouchAreas
                             showTouchAreasNotification.open()
                         }
                     }

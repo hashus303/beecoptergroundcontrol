@@ -9,5 +9,5 @@ APMGimbalComponent::APMGimbalComponent(Vehicle *vehicle, AutoPilotPlugin *autopi
 
 QUrl APMGimbalComponent::setupSource() const
 {
-    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/QGroundControl/AutoPilotPlugins/APM/APMGimbalComponent.qml"));
+    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/beeCopter/AutoPilotPlugins/APM/APMGimbalComponent.qml"));
 }

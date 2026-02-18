@@ -2,9 +2,9 @@
 
 #include <QtQml/QQmlEngine>
 
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(QmlObjectListModelLog, "API.QmlObjectListModel")
+beeCopter_LOGGING_CATEGORY(QmlObjectListModelLog, "API.QmlObjectListModel")
 
 QmlObjectListModel::QmlObjectListModel(QObject* parent)
     : ObjectListModelBase(parent)

@@ -83,7 +83,7 @@ public:
     static bool isWindows() { return false; }
 #endif
 
-#if defined(QGC_NO_SERIAL_LINK)
+#if defined(beeCopter_NO_SERIAL_LINK)
     static bool isSerialAvailable() { return false; }
 #else
     static bool isSerialAvailable() { return true; }

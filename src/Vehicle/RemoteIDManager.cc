@@ -4,9 +4,9 @@
 #include "PositionManager.h"
 #include "Vehicle.h"
 #include "MAVLinkProtocol.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(RemoteIDManagerLog, "Vehicle.RemoteIDManager")
+beeCopter_LOGGING_CATEGORY(RemoteIDManagerLog, "Vehicle.RemoteIDManager")
 
 #define AREA_COUNT 1
 #define AREA_RADIUS 0
@@ -46,7 +46,7 @@ RemoteIDManager::RemoteIDManager(Vehicle* vehicle)
     connect(&_sendMessagesTimer, &QTimer::timeout, this, &RemoteIDManager::_sendMessages);
 
     // GCS GPS position updates to track the health of the GPS data
-    connect(QGCPositionManager::instance(), &QGCPositionManager::positionInfoUpdated, this, &RemoteIDManager::_updateLastGCSPositionInfo);
+    connect(beeCopterPositionManager::instance(), &beeCopterPositionManager::positionInfoUpdated, this, &RemoteIDManager::_updateLastGCSPositionInfo);
 
     // Check changes in basic id settings as long as they are modified
     connect(_settings->basicID(), &Fact::rawValueChanged, this, &RemoteIDManager::_checkGCSBasicID);
@@ -282,9 +282,9 @@ void RemoteIDManager::_sendSystem()
             }
         }
     } else {
-        // For Live GNSS we take QGC GPS data
-        gcsPosition = QGCPositionManager::instance()->gcsPosition();
-        geoPositionInfo = QGCPositionManager::instance()->geoPositionInfo();
+        // For Live GNSS we take beeCopter GPS data
+        gcsPosition = beeCopterPositionManager::instance()->gcsPosition();
+        geoPositionInfo = beeCopterPositionManager::instance()->geoPositionInfo();
 
         // GPS position needs to be valid before checking other stuff
         if (geoPositionInfo.isValid()) {

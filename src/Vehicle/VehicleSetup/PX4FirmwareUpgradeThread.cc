@@ -1,7 +1,7 @@
 #include "PX4FirmwareUpgradeThread.h"
 #include "Bootloader.h"
 #include "FirmwareImage.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
@@ -53,8 +53,8 @@ void PX4FirmwareUpgradeThreadWorker::_findBoardOnce(void)
 {
     qCDebug(FirmwareUpgradeVerboseLog) << "_findBoardOnce";
 
-    QGCSerialPortInfo               portInfo;
-    QGCSerialPortInfo::BoardType_t  boardType;
+    beeCopterSerialPortInfo               portInfo;
+    beeCopterSerialPortInfo::BoardType_t  boardType;
     QString                         boardName;
 
     if (_findBoardFromPorts(portInfo, boardType, boardName)) {
@@ -64,7 +64,7 @@ void PX4FirmwareUpgradeThreadWorker::_findBoardOnce(void)
             emit foundBoard(_findBoardFirstAttempt, portInfo, boardType, boardName);
             if (!_findBoardFirstAttempt) {
 
-                _bootloader = new Bootloader(boardType == QGCSerialPortInfo::BoardTypeSiKRadio, this);
+                _bootloader = new Bootloader(boardType == beeCopterSerialPortInfo::BoardTypeSiKRadio, this);
                 connect(_bootloader, &Bootloader::updateProgress, this, &PX4FirmwareUpgradeThreadWorker::_updateProgress);
 
                 if (_bootloader->open(portInfo.portName())) {
@@ -96,9 +96,9 @@ void PX4FirmwareUpgradeThreadWorker::_findBoardOnce(void)
     _findBoardTimer->start();
 }
 
-bool PX4FirmwareUpgradeThreadWorker::_findBoardFromPorts(QGCSerialPortInfo& portInfo, QGCSerialPortInfo::BoardType_t& boardType, QString& boardName)
+bool PX4FirmwareUpgradeThreadWorker::_findBoardFromPorts(beeCopterSerialPortInfo& portInfo, beeCopterSerialPortInfo::BoardType_t& boardType, QString& boardName)
 {
-    for (const QGCSerialPortInfo& info: QGCSerialPortInfo::availablePorts()) {
+    for (const beeCopterSerialPortInfo& info: beeCopterSerialPortInfo::availablePorts()) {
         info.getBoardInfo(boardType, boardName);
 
         qCDebug(FirmwareUpgradeVerboseLog) << "Serial Port --------------";

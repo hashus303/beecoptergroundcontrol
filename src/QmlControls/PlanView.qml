@@ -6,11 +6,11 @@ import QtPositioning
 import QtQuick.Layouts
 import QtQuick.Window
 
-import QGroundControl
-import QGroundControl.FlightMap
-import QGroundControl.Controls
-import QGroundControl.FactControls
-import QGroundControl.FlyView
+import beeCopter
+import beeCopter.FlightMap
+import beeCopter.Controls
+import beeCopter.FactControls
+import beeCopter.FlyView
 
 Item {
     id: _root
@@ -21,7 +21,7 @@ Item {
     readonly property real  _radius: ScreenTools.defaultFontPixelWidth  * 0.5
     readonly property real  _rightPanelWidth: Math.min(width / 3, ScreenTools.defaultFontPixelWidth * 30)
     readonly property var   _defaultVehicleCoordinate: QtPositioning.coordinate(37.803784, -122.462276)
-    readonly property bool  _waypointsOnlyMode: QGroundControl.corePlugin.options.missionWaypointsOnly
+    readonly property bool  _waypointsOnlyMode: beeCopter.corePlugin.options.missionWaypointsOnly
 
     property var    _planMasterController: planMasterController
     property var    _missionController: _planMasterController.missionController
@@ -32,8 +32,8 @@ Item {
     property bool   _singleComplexItem: _missionController.complexMissionItemNames.length === 1
     property int    _editingLayer: _layerMission
     property int    _toolStripBottom: toolStrip.height + toolStrip.y
-    property var    _appSettings: QGroundControl.settingsManager.appSettings
-    property var    _planViewSettings: QGroundControl.settingsManager.planViewSettings
+    property var    _appSettings: beeCopter.settingsManager.appSettings
+    property var    _planViewSettings: beeCopter.settingsManager.planViewSettings
     property bool   _promptForPlanUsageShowing: false
 
     readonly property int _layerMission: 1
@@ -44,8 +44,8 @@ Item {
 
     onVisibleChanged: {
         if(visible) {
-            editorMap.zoomLevel = QGroundControl.flightMapZoom
-            editorMap.center    = QGroundControl.flightMapPosition
+            editorMap.zoomLevel = beeCopter.flightMapZoom
+            editorMap.center    = beeCopter.flightMapPosition
         }
     }
 
@@ -199,7 +199,7 @@ Item {
         _missionController.insertLandItem(mapCenter(), nextIndex, true /* makeCurrentItem */)
     }
 
-    QGCFileDialog {
+    beeCopterFileDialog {
         id: fileDialog
         folder: _appSettings ? _appSettings.missionSavePath : ""
 
@@ -242,8 +242,8 @@ Item {
             allowVehicleLocationCenter: true
             planView: true
 
-            zoomLevel: QGroundControl.flightMapZoom
-            center: QGroundControl.flightMapPosition
+            zoomLevel: beeCopter.flightMapZoom
+            center: beeCopter.flightMapPosition
 
             // This is the center rectangle of the map which is not obscured by tools
             property rect centerViewport: Qt.rect(_leftToolWidth + _margin,  _margin, editorMap.width - _leftToolWidth - _rightToolWidth - (_margin * 2), (missionStatus.visible ? missionStatus.y : height - _margin) - _margin)
@@ -253,15 +253,15 @@ Item {
             property real _nonInteractiveOpacity: 0.5
 
             // Initial map position duplicates Fly view position
-            Component.onCompleted: editorMap.center = QGroundControl.flightMapPosition
+            Component.onCompleted: editorMap.center = beeCopter.flightMapPosition
 
-            QGCMapPalette { id: mapPal; lightColors: editorMap.isSatelliteMap }
+            beeCopterMapPalette { id: mapPal; lightColors: editorMap.isSatelliteMap }
 
             onZoomLevelChanged: {
-                QGroundControl.flightMapZoom = editorMap.zoomLevel
+                beeCopter.flightMapZoom = editorMap.zoomLevel
             }
             onCenterChanged: {
-                QGroundControl.flightMapPosition = editorMap.center
+                beeCopter.flightMapPosition = editorMap.center
             }
 
             onMapClicked: (mouse) => {
@@ -343,7 +343,7 @@ Item {
                     fromCoord: object ? object.coordinate1 : undefined
                     toCoord: object ? object.coordinate2 : undefined
                     arrowPosition: 3
-                    z: QGroundControl.zOrderWaypointLines + 1
+                    z: beeCopter.zOrderWaypointLines + 1
                 }
             }
 
@@ -352,7 +352,7 @@ Item {
                 id: splitSegmentItem
                 anchorPoint.x: sourceItem.width / 2
                 anchorPoint.y: sourceItem.height / 2
-                z: QGroundControl.zOrderWaypointLines + 1
+                z: beeCopter.zOrderWaypointLines + 1
                 visible: _editingLayer == _layerMission
 
                 sourceItem: SplitIndicator {
@@ -385,13 +385,13 @@ Item {
 
             // Add the vehicles to the map
             MapItemView {
-                model: QGroundControl.multiVehicleManager.vehicles
+                model: beeCopter.multiVehicleManager.vehicles
                 delegate: VehicleMapItem {
                     vehicle: object
                     coordinate: object.coordinate
                     map: editorMap
                     size: ScreenTools.defaultFontPixelHeight * 3
-                    z: QGroundControl.zOrderMapItems - 1
+                    z: beeCopter.zOrderMapItems - 1
                 }
             }
 
@@ -421,7 +421,7 @@ Item {
             anchors.margins: _toolsMargin
             anchors.left: parent.left
             anchors.top: parent.top
-            z: QGroundControl.zOrderWidgets
+            z: beeCopter.zOrderWidgets
             maxHeight: parent.height - toolStrip.y
             visible: _editingLayer == _layerMission
 
@@ -476,7 +476,7 @@ Item {
                     ToolStripAction {
                         text: qsTr("Stats")
                         iconSource: "/res/chevron-double-right.svg"
-                        visible: missionStatus.hidden && QGroundControl.corePlugin.options.showMissionStatus
+                        visible: missionStatus.hidden && beeCopter.corePlugin.options.showMissionStatus
                         onTriggered: missionStatus.showMissionStatus()
                     }
                 ]
@@ -510,7 +510,7 @@ Item {
             anchors.right: rightPanel.left
             anchors.bottom: parent.bottom
             spacing: 0
-            visible: !hidden && _editingLayer == _layerMission && QGroundControl.corePlugin.options.showMissionStatus
+            visible: !hidden && _editingLayer == _layerMission && beeCopter.corePlugin.options.showMissionStatus
 
             readonly property bool hidden: _planViewSettings.showMissionItemStatus.rawValue ? false : true
 
@@ -543,18 +543,18 @@ Item {
                     id: terrainButton
                     implicitWidth: missionStatsButtonLayout._buttonImplicitWidth
                     implicitHeight: implicitWidth
-                    color: checked ? QGroundControl.globalPalette.buttonHighlight : QGroundControl.globalPalette.button
+                    color: checked ? beeCopter.globalPalette.buttonHighlight : beeCopter.globalPalette.button
 
                     property bool checked: true
 
-                    QGCColoredImage {
+                    beeCopterColoredImage {
                         anchors.margins: missionStatsButtonLayout._buttonImageMargins
                         anchors.fill: parent
                         source: "/res/terrain.svg"
-                        color: parent.checked ? QGroundControl.globalPalette.buttonHighlightText : QGroundControl.globalPalette.buttonText
+                        color: parent.checked ? beeCopter.globalPalette.buttonHighlightText : beeCopter.globalPalette.buttonText
                     }
 
-                    QGCMouseArea {
+                    beeCopterMouseArea {
                         anchors.fill: parent
                         onClicked: {
                             terrainButton.checked = true
@@ -567,18 +567,18 @@ Item {
                     id: missionStatsButton
                     implicitWidth: missionStatsButtonLayout._buttonImplicitWidth
                     implicitHeight: implicitWidth
-                    color: checked ? QGroundControl.globalPalette.buttonHighlight : QGroundControl.globalPalette.button
+                    color: checked ? beeCopter.globalPalette.buttonHighlight : beeCopter.globalPalette.button
 
                     property bool checked: false
 
-                    QGCColoredImage {
+                    beeCopterColoredImage {
                         anchors.margins: missionStatsButtonLayout._buttonImageMargins
                         anchors.fill: parent
                         source: "/res/sliders.svg"
-                        color: parent.checked ? QGroundControl.globalPalette.buttonHighlightText : QGroundControl.globalPalette.buttonText
+                        color: parent.checked ? beeCopter.globalPalette.buttonHighlightText : beeCopter.globalPalette.buttonText
                     }
 
-                    QGCMouseArea {
+                    beeCopterMouseArea {
                         anchors.fill: parent
                         onClicked: {
                             missionStatsButton.checked = true
@@ -591,16 +591,16 @@ Item {
                     id: bottomStatusOpenCloseButton
                     implicitWidth: missionStatsButtonLayout._buttonImplicitWidth
                     implicitHeight: implicitWidth
-                    color: QGroundControl.globalPalette.button
+                    color: beeCopter.globalPalette.button
 
-                    QGCColoredImage {
+                    beeCopterColoredImage {
                         anchors.margins: missionStatsButtonLayout._buttonImageMargins
                         anchors.fill: parent
                         source: "/res/chevron-double-left.svg"
-                        color: QGroundControl.globalPalette.buttonText
+                        color: beeCopter.globalPalette.buttonText
                     }
 
-                    QGCMouseArea {
+                    beeCopterMouseArea {
                         anchors.fill: parent
                         onClicked: missionStatus._toggleMissionStatusVisibility()
                     }
@@ -635,12 +635,12 @@ Item {
         ColumnLayout {
             spacing: ScreenTools.defaultFontPixelWidth * 0.5
 
-            QGCLabel { text: qsTr("Create complex pattern:") }
+            beeCopterLabel { text: qsTr("Create complex pattern:") }
 
             Repeater {
                 model: _missionController.complexMissionItemNames
 
-                QGCButton {
+                beeCopterButton {
                     text: modelData
                     Layout.fillWidth: true
 
@@ -655,19 +655,19 @@ Item {
 
     Component {
         id: promptForPlanUsageOnVehicleChangePopupComponent
-        QGCPopupDialog {
+        beeCopterPopupDialog {
             title: _planMasterController.managerVehicle.isOfflineEditingVehicle ? qsTr("Plan View - Vehicle Disconnected") : qsTr("Plan View - Vehicle Changed")
             buttons: Dialog.NoButton
 
             ColumnLayout {
-                QGCLabel {
+                beeCopterLabel {
                     Layout.maximumWidth: parent.width
-                    wrapMode: QGCLabel.WordWrap
+                    wrapMode: beeCopterLabel.WordWrap
                     text: _planMasterController.managerVehicle.isOfflineEditingVehicle ?
                                                 qsTr("The vehicle associated with the plan in the Plan View is no longer available. What would you like to do with that plan?") : qsTr("The plan being worked on in the Plan View is not from the current vehicle. What would you like to do with that plan?")
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth: true
                     text: _planMasterController.dirty ?
                                             (_planMasterController.managerVehicle.isOfflineEditingVehicle ?
@@ -679,7 +679,7 @@ Item {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     Layout.fillWidth: true
                     text: _planMasterController.managerVehicle.isOfflineEditingVehicle ?
                                             qsTr("Keep Current Plan") : qsTr("Keep Current Plan, Don't Update From Vehicle")
@@ -707,7 +707,7 @@ Item {
                 ColumnLayout {
                     spacing: ScreenTools.defaultFontPixelWidth / 2
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth: true
                         text: qsTr("Insert ROI")
 
@@ -717,7 +717,7 @@ Item {
                         }
                     }
 
-                    QGCButton {
+                    beeCopterButton {
                         Layout.fillWidth: true
                         text: qsTr("Insert Cancel ROI")
 

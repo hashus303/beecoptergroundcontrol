@@ -1,8 +1,8 @@
 import QtPositioning
 import QtQuick3D
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Node {
     id: body
@@ -49,7 +49,7 @@ Node {
         position.x: -10
         position.z: 30
 
-        QGCLabel {
+        beeCopterLabel {
             color: "red"
             font.pixelSize: 25
             text: vehicle ? Number(vehicle.id) : ""

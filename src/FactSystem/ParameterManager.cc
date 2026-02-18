@@ -6,11 +6,11 @@
 #include "FirmwarePlugin.h"
 #include "FTPManager.h"
 #include "MAVLinkProtocol.h"
-#include "QGC.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopter.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "Vehicle.h"
-#include "QGCStateMachine.h"
+#include "beeCopterStateMachine.h"
 #include "MultiVehicleManager.h"
 
 #include <QtCore/QEasingCurve>
@@ -18,10 +18,10 @@
 #include <QtCore/QStandardPaths>
 #include <QtCore/QVariantAnimation>
 
-QGC_LOGGING_CATEGORY(ParameterManagerLog, "FactSystem.ParameterManager")
-QGC_LOGGING_CATEGORY(ParameterManagerVerbose1Log, "FactSystem.ParameterManager:verbose1")
-QGC_LOGGING_CATEGORY(ParameterManagerVerbose2Log, "FactSystem.ParameterManager:verbose2")
-QGC_LOGGING_CATEGORY(ParameterManagerDebugCacheFailureLog, "FactSystem.ParameterManager:debugCacheFailure") // Turn on to debug parameter cache crc misses
+beeCopter_LOGGING_CATEGORY(ParameterManagerLog, "FactSystem.ParameterManager")
+beeCopter_LOGGING_CATEGORY(ParameterManagerVerbose1Log, "FactSystem.ParameterManager:verbose1")
+beeCopter_LOGGING_CATEGORY(ParameterManagerVerbose2Log, "FactSystem.ParameterManager:verbose2")
+beeCopter_LOGGING_CATEGORY(ParameterManagerDebugCacheFailureLog, "FactSystem.ParameterManager:debugCacheFailure") // Turn on to debug parameter cache crc misses
 
 ParameterManager::ParameterManager(Vehicle *vehicle)
     : QObject(vehicle)
@@ -43,11 +43,11 @@ ParameterManager::ParameterManager(Vehicle *vehicle)
 
     _initialRequestTimeoutTimer.setSingleShot(true);
     // Use much shorter timeouts in unit tests since MockLink responds instantly
-    _initialRequestTimeoutTimer.setInterval(qgcApp()->runningUnitTests() ? 500 : 5000);
+    _initialRequestTimeoutTimer.setInterval(beeCopterApp()->runningUnitTests() ? 500 : 5000);
     (void) connect(&_initialRequestTimeoutTimer, &QTimer::timeout, this, &ParameterManager::_initialRequestTimeout);
 
     _waitingParamTimeoutTimer.setSingleShot(true);
-    _waitingParamTimeoutTimer.setInterval(qgcApp()->runningUnitTests() ? 500 : 3000);
+    _waitingParamTimeoutTimer.setInterval(beeCopterApp()->runningUnitTests() ? 500 : 3000);
     if (!_logReplay) {
         (void) connect(&_waitingParamTimeoutTimer, &QTimer::timeout, this, &ParameterManager::_waitingParamTimeout);
     }
@@ -330,7 +330,7 @@ void ParameterManager::_mavlinkParamSet(int componentId, const QString &paramNam
         }
         if (param_value.param_type == MAV_PARAM_TYPE_REAL32) {
             // Float comparison must be fuzzy
-            return QGC::fuzzyCompare(rawValue.toFloat(), receivedValue.toFloat());
+            return beeCopter::fuzzyCompare(rawValue.toFloat(), receivedValue.toFloat());
         } else {
             return receivedValue == rawValue;
         }
@@ -351,7 +351,7 @@ void ParameterManager::_mavlinkParamSet(int componentId, const QString &paramNam
     //      Notify user of failure
 
     // Create states
-    auto stateMachine = new QGCStateMachine(QStringLiteral("ParameterManager PARAM_SET"), vehicle(), this);
+    auto stateMachine = new beeCopterStateMachine(QStringLiteral("ParameterManager PARAM_SET"), vehicle(), this);
     auto sendParamSetState = new SendMavlinkMessageState(stateMachine, paramSetEncoder, kParamSetRetryCount);
     auto incPendingWriteCountState = new FunctionState(QStringLiteral("ParameterManager increment pending write count"), stateMachine, [this]() {
         _incrementPendingWriteCount();
@@ -375,27 +375,27 @@ void ParameterManager::_mavlinkParamSet(int componentId, const QString &paramNam
         qCDebug(ParameterManagerLog) << "Parameter write failed: param:" << paramName << _vehicleAndComponentString(componentId);
         emit _paramSetFailure(componentId, paramName);
     });
-    auto finalState = new QGCFinalState(stateMachine);
+    auto finalState = new beeCopterFinalState(stateMachine);
 
     // Successful state machine transitions
     stateMachine->setInitialState(sendParamSetState);
-    sendParamSetState->addThisTransition        (&QGCState::advance, incPendingWriteCountState);
-    incPendingWriteCountState->addThisTransition(&QGCState::advance, waitAckState);
-    waitAckState->addThisTransition             (&QGCState::advance, decPendingWriteCountState);
-    decPendingWriteCountState->addThisTransition(&QGCState::advance, logSuccessState);
-    logSuccessState->addThisTransition          (&QGCState::advance, finalState);
+    sendParamSetState->addThisTransition        (&beeCopterState::advance, incPendingWriteCountState);
+    incPendingWriteCountState->addThisTransition(&beeCopterState::advance, waitAckState);
+    waitAckState->addThisTransition             (&beeCopterState::advance, decPendingWriteCountState);
+    decPendingWriteCountState->addThisTransition(&beeCopterState::advance, logSuccessState);
+    logSuccessState->addThisTransition          (&beeCopterState::advance, finalState);
 
     // Retry transitions
     waitAckState->addTransition(waitAckState, &WaitForMavlinkMessageState::timeout, retryDecPendingWriteCountState); // Retry on timeout
-    retryDecPendingWriteCountState->addThisTransition(&QGCState::advance, sendParamSetState);
+    retryDecPendingWriteCountState->addThisTransition(&beeCopterState::advance, sendParamSetState);
 
     // Error transitions
-    sendParamSetState->addThisTransition(&QGCState::error, logFailureState); // Error is signaled after retries exhausted or internal error
+    sendParamSetState->addThisTransition(&beeCopterState::error, logFailureState); // Error is signaled after retries exhausted or internal error
 
     // Error state branching transitions
-    logFailureState->addThisTransition  (&QGCState::advance, userNotifyState);
-    userNotifyState->addThisTransition  (&QGCState::advance, paramRefreshState);
-    paramRefreshState->addThisTransition(&QGCState::advance, finalState);
+    logFailureState->addThisTransition  (&beeCopterState::advance, userNotifyState);
+    userNotifyState->addThisTransition  (&beeCopterState::advance, paramRefreshState);
+    paramRefreshState->addThisTransition(&beeCopterState::advance, finalState);
 
     qCDebug(ParameterManagerLog) << "Starting state machine for PARAM_SET on: " << paramName << _vehicleAndComponentString(componentId);
     stateMachine->start();
@@ -652,7 +652,7 @@ Fact *ParameterManager::getParameter(int componentId, const QString &paramName)
 
     const QString mappedParamName = _remapParamNameToVersion(paramName);
     if (!_mapCompId2FactMap.contains(componentId) || !_mapCompId2FactMap[componentId].contains(mappedParamName)) {
-        qgcApp()->reportMissingParameter(componentId, mappedParamName);
+        beeCopterApp()->reportMissingParameter(componentId, mappedParamName);
         return &_defaultFact;
     }
 
@@ -759,8 +759,8 @@ void ParameterManager::_mavlinkParamRequestRead(int componentId, const QString &
         char paramId[MAVLINK_MSG_PARAM_REQUEST_READ_FIELD_PARAM_ID_LEN + 1] = {};
         (void) strncpy(paramId, paramName.toLocal8Bit().constData(), MAVLINK_MSG_PARAM_REQUEST_READ_FIELD_PARAM_ID_LEN);
 
-        (void) mavlink_msg_param_request_read_pack_chan(MAVLinkProtocol::instance()->getSystemId(),   // QGC system id
-                                                        MAVLinkProtocol::getComponentId(),            // QGC component id
+        (void) mavlink_msg_param_request_read_pack_chan(MAVLinkProtocol::instance()->getSystemId(),   // beeCopter system id
+                                                        MAVLinkProtocol::getComponentId(),            // beeCopter component id
                                                         channel,
                                                         message,
                                                         static_cast<uint8_t>(_vehicle->id()),
@@ -809,7 +809,7 @@ void ParameterManager::_mavlinkParamRequestRead(int componentId, const QString &
     //      Notify user of failure
 
     // Create states
-    auto stateMachine = new QGCStateMachine(QStringLiteral("PARAM_REQUEST_READ"), vehicle(), this);
+    auto stateMachine = new beeCopterStateMachine(QStringLiteral("PARAM_REQUEST_READ"), vehicle(), this);
     auto sendParamRequestReadState = new SendMavlinkMessageState(stateMachine, paramRequestReadEncoder, kParamRequestReadRetryCount);
     auto waitAckState = new WaitForMavlinkMessageState(stateMachine, MAVLINK_MSG_ID_PARAM_VALUE, kWaitForParamValueAckMs, checkForCorrectParamValue);
     auto userNotifyState = new ShowAppMessageState(stateMachine, QStringLiteral("Parameter read failed: param: %1 %2").arg(paramName).arg(_vehicleAndComponentString(componentId)));
@@ -821,27 +821,27 @@ void ParameterManager::_mavlinkParamRequestRead(int componentId, const QString &
         qCDebug(ParameterManagerLog) << "PARAM_REQUEST_READ failed: param:" << paramName << "index" << paramIndex << _vehicleAndComponentString(componentId);
         emit _paramRequestReadFailure(componentId, paramName, paramIndex);
     });
-    auto finalState = new QGCFinalState(stateMachine);
+    auto finalState = new beeCopterFinalState(stateMachine);
 
     // Successful state machine transitions
     stateMachine->setInitialState(sendParamRequestReadState);
-    sendParamRequestReadState->addThisTransition(&QGCState::advance, waitAckState);
-    waitAckState->addThisTransition             (&QGCState::advance, logSuccessState);
-    logSuccessState->addThisTransition          (&QGCState::advance, finalState);
+    sendParamRequestReadState->addThisTransition(&beeCopterState::advance, waitAckState);
+    waitAckState->addThisTransition             (&beeCopterState::advance, logSuccessState);
+    logSuccessState->addThisTransition          (&beeCopterState::advance, finalState);
 
     // Retry transitions
     waitAckState->addTransition(waitAckState, &WaitForMavlinkMessageState::timeout, sendParamRequestReadState); // Retry on timeout
 
     // Error transitions
-    sendParamRequestReadState->addThisTransition(&QGCState::error, logFailureState); // Error is signaled after retries exhausted or internal error
+    sendParamRequestReadState->addThisTransition(&beeCopterState::error, logFailureState); // Error is signaled after retries exhausted or internal error
 
     // Error state branching transitions
     if (notifyFailure) {
-        logFailureState->addThisTransition  (&QGCState::advance, userNotifyState);
+        logFailureState->addThisTransition  (&beeCopterState::advance, userNotifyState);
     } else {
-        logFailureState->addThisTransition  (&QGCState::advance, finalState);
+        logFailureState->addThisTransition  (&beeCopterState::advance, finalState);
     }
-    userNotifyState->addThisTransition  (&QGCState::advance, finalState);
+    userNotifyState->addThisTransition  (&beeCopterState::advance, finalState);
 
     qCDebug(ParameterManagerLog) << "Starting state machine for PARAM_REQUEST_READ on: " << paramName << _vehicleAndComponentString(componentId);
     stateMachine->start();
@@ -908,8 +908,8 @@ void ParameterManager::_tryCacheHashLoad(int vehicleId, int componentId, const Q
         } else {
             const void *const vdat = paramTypeVal.second.constData();
             const FactMetaData::ValueType_t cacheFactType = static_cast<FactMetaData::ValueType_t>(paramTypeVal.first);
-            crc32_value = QGC::crc32(reinterpret_cast<const uint8_t *>(qPrintable(name)), name.length(),  crc32_value);
-            crc32_value = QGC::crc32(static_cast<const uint8_t *>(vdat), FactMetaData::typeToSize(cacheFactType), crc32_value);
+            crc32_value = beeCopter::crc32(reinterpret_cast<const uint8_t *>(qPrintable(name)), name.length(),  crc32_value);
+            crc32_value = beeCopter::crc32(static_cast<const uint8_t *>(vdat), FactMetaData::typeToSize(cacheFactType), crc32_value);
         }
     }
 
@@ -975,7 +975,7 @@ void ParameterManager::_tryCacheHashLoad(int vehicleId, int componentId, const Q
             for (const QString &name: cacheMap.keys()) {
                 _debugCacheParamSeen[componentId][name] = false;
             }
-            qgcApp()->showAppMessage(tr("Parameter cache CRC match failed"));
+            beeCopterApp()->showAppMessage(tr("Parameter cache CRC match failed"));
         }
     }
 }
@@ -1182,8 +1182,8 @@ void ParameterManager::_checkInitialLoadComplete()
                                     "If you are using modified firmware, you may need to resolve any vehicle startup errors to resolve the issue. "
                                     "If you are using standard firmware, you may need to upgrade to a newer version to resolve the issue.").arg(QCoreApplication::applicationName()).arg(_vehicle->id());
         qCDebug(ParameterManagerLog) << errorMsg;
-        qgcApp()->showAppMessage(errorMsg);
-        if (!qgcApp()->runningUnitTests()) {
+        beeCopterApp()->showAppMessage(errorMsg);
+        if (!beeCopterApp()->runningUnitTests()) {
             qCWarning(ParameterManagerLog) << _logVehiclePrefix(-1) << "The following parameter indices could not be loaded after the maximum number of retries:" << indexList;
         }
     }
@@ -1217,7 +1217,7 @@ void ParameterManager::_initialRequestTimeout()
         const QString errorMsg = tr("Vehicle %1 did not respond to request for parameters. "
                                     "This will cause %2 to be unable to display its full user interface.").arg(_vehicle->id()).arg(QCoreApplication::applicationName());
         qCDebug(ParameterManagerLog) << errorMsg;
-        qgcApp()->showAppMessage(errorMsg);
+        beeCopterApp()->showAppMessage(errorMsg);
     }
 }
 

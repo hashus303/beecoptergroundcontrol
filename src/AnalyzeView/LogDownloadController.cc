@@ -4,8 +4,8 @@
 #include "MAVLinkProtocol.h"
 #include "MultiVehicleManager.h"
 #include "ParameterManager.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "QmlObjectListModel.h"
 #include "SettingsManager.h"
 #include "Vehicle.h"
@@ -13,7 +13,7 @@
 #include <QtCore/QApplicationStatic>
 #include <QtCore/QTimer>
 
-QGC_LOGGING_CATEGORY(LogDownloadControllerLog, "AnalyzeView.LogDownloadController")
+beeCopter_LOGGING_CATEGORY(LogDownloadControllerLog, "AnalyzeView.LogDownloadController")
 
 LogDownloadController::LogDownloadController(QObject *parent)
     : QObject(parent)
@@ -56,7 +56,7 @@ void LogDownloadController::_downloadToDirectory(const QString &dir)
         _downloadPath += QDir::separator();
     }
 
-    QGCLogEntry *const log = _getNextSelected();
+    beeCopterLogEntry *const log = _getNextSelected();
     if (log) {
         log->setStatus(tr("Waiting"));
     }
@@ -80,7 +80,7 @@ void LogDownloadController::_findMissingEntries()
     int start = -1;
     int end = -1;
     for (int i = 0; i < num_logs; i++) {
-        const QGCLogEntry *const entry = _logEntriesModel->value<const QGCLogEntry*>(i);
+        const beeCopterLogEntry *const entry = _logEntriesModel->value<const beeCopterLogEntry*>(i);
         if (!entry) {
             continue;
         }
@@ -103,7 +103,7 @@ void LogDownloadController::_findMissingEntries()
 
     if (_retries++ > 2) {
         for (int i = 0; i < num_logs; i++) {
-            QGCLogEntry *const entry = _logEntriesModel->value<QGCLogEntry*>(i);
+            beeCopterLogEntry *const entry = _logEntriesModel->value<beeCopterLogEntry*>(i);
             if (entry && !entry->received()) {
                 entry->setStatus(tr("Error"));
             }
@@ -159,7 +159,7 @@ void LogDownloadController::_logEntry(uint32_t time_utc, uint32_t size, uint16_t
         }
 
         for (int i = 0; i < num_logs; i++) {
-            QGCLogEntry *const entry = new QGCLogEntry(i);
+            beeCopterLogEntry *const entry = new beeCopterLogEntry(i);
             _logEntriesModel->append(entry);
         }
     }
@@ -168,7 +168,7 @@ void LogDownloadController::_logEntry(uint32_t time_utc, uint32_t size, uint16_t
         if ((size > 0) || (_vehicle->firmwareType() != MAV_AUTOPILOT_ARDUPILOTMEGA)) {
             id -= _apmOffset;
             if (id < _logEntriesModel->count()) {
-                QGCLogEntry *const entry = _logEntriesModel->value<QGCLogEntry*>(id);
+                beeCopterLogEntry *const entry = _logEntriesModel->value<beeCopterLogEntry*>(id);
                 entry->setSize(size);
                 entry->setTime(QDateTime::fromSecsSinceEpoch(time_utc));
                 entry->setReceived(true);
@@ -200,7 +200,7 @@ bool LogDownloadController::_entriesComplete() const
 {
     const int num_logs = _logEntriesModel->count();
     for (int i = 0; i < num_logs; i++) {
-        const QGCLogEntry *const entry = _logEntriesModel->value<const QGCLogEntry*>(i);
+        const beeCopterLogEntry *const entry = _logEntriesModel->value<const beeCopterLogEntry*>(i);
         if (!entry) {
             continue;
         }
@@ -330,8 +330,8 @@ void LogDownloadController::_updateDataRate()
     _downloadData->rate_avg = (_downloadData->rate_avg * 0.95) + (rate * 0.05);
     _downloadData->rate_bytes = 0;
 
-    const QString status = QStringLiteral("%1 (%2/s)").arg(qgcApp()->bigSizeToString(_downloadData->written),
-                                                           qgcApp()->bigSizeToString(_downloadData->rate_avg));
+    const QString status = QStringLiteral("%1 (%2/s)").arg(beeCopterApp()->bigSizeToString(_downloadData->written),
+                                                           beeCopterApp()->bigSizeToString(_downloadData->rate_avg));
 
     _downloadData->entry->setStatus(status);
     _downloadData->elapsed.start();
@@ -363,7 +363,7 @@ bool LogDownloadController::_prepareLogDownload()
 {
     _downloadData.reset();
 
-    QGCLogEntry *const entry = _getNextSelected();
+    beeCopterLogEntry *const entry = _getNextSelected();
     if (!entry) {
         return false;
     }
@@ -430,11 +430,11 @@ void LogDownloadController::refresh()
     _requestLogList(0, 0xffff);
 }
 
-QGCLogEntry *LogDownloadController::_getNextSelected() const
+beeCopterLogEntry *LogDownloadController::_getNextSelected() const
 {
     const int numLogs = _logEntriesModel->count();
     for (int i = 0; i < numLogs; i++) {
-        QGCLogEntry *const entry = _logEntriesModel->value<QGCLogEntry*>(i);
+        beeCopterLogEntry *const entry = _logEntriesModel->value<beeCopterLogEntry*>(i);
         if (!entry) {
             continue;
         }
@@ -469,7 +469,7 @@ void LogDownloadController::_resetSelection(bool canceled)
 {
     const int num_logs = _logEntriesModel->count();
     for (int i = 0; i < num_logs; i++) {
-        QGCLogEntry *const entry = _logEntriesModel->value<QGCLogEntry*>(i);
+        beeCopterLogEntry *const entry = _logEntriesModel->value<beeCopterLogEntry*>(i);
         if (!entry) {
             continue;
         }

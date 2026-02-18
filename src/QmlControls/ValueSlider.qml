@@ -3,8 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Qt.labs.animation
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Control {
     id: control
@@ -56,7 +56,7 @@ Control {
 
     property bool    _loadComplete: false
 
-    property var qgcPal: QGroundControl.globalPalette
+    property var beeCopterPal: beeCopter.globalPalette
 
     function setValue(value) {
         value = _clampedSliderValue(value)
@@ -130,8 +130,8 @@ Control {
         return Math.min(Math.max(value, from), to).toFixed(decimalPlaces)
     }
 
-    QGCPalette {
-        id:                 qgcPal
+    beeCopterPalette {
+        id:                 beeCopterPal
         colorGroupEnabled:  control.enabled
     }
 
@@ -195,10 +195,10 @@ Control {
                         id:     majorTickMark
                         width:  1
                         height: _majorTickSize
-                        color:  qgcPal.text
+                        color:  beeCopterPal.text
                     }
 
-                    QGCLabel {
+                    beeCopterLabel {
                         anchors.bottomMargin:       _tickValueEdgeMargin
                         anchors.bottom:             parent.bottom
                         anchors.horizontalCenter:   majorTickMark.horizontalCenter
@@ -215,7 +215,7 @@ Control {
                     x:          _majorTickSpacing / 2 * index +  + _firstTickPixelOffset
                     width:      1
                     height:     _minorTickSize
-                    color:      qgcPal.text
+                    color:      beeCopterPal.text
                     opacity:    tickValue < from || tickValue > to ? 0.5 : 1
                     visible:    index % 2 === 1
 
@@ -228,12 +228,12 @@ Control {
             id:         labelItemBackground
             width:      labelItem.contentWidth
             height:     labelItem.contentHeight
-            color:      qgcPal.window
+            color:      beeCopterPal.window
             opacity:    0.8
             visible:    labelItem.visible
         }
 
-        QGCLabel {
+        beeCopterLabel {
             id:                 labelItem
             anchors.left:       labelItemBackground.left
             anchors.top:        labelItemBackground.top
@@ -258,8 +258,8 @@ Control {
 
             onPaint: {
                 var ctx = getContext("2d")
-                ctx.strokeStyle = qgcPal.text
-                ctx.fillStyle = qgcPal.window
+                ctx.strokeStyle = beeCopterPal.text
+                ctx.fillStyle = beeCopterPal.window
                 ctx.lineWidth = 1
                 ctx.beginPath()
                 ctx.moveTo(width / 2, 0)
@@ -274,7 +274,7 @@ Control {
                 ctx.stroke()
             }
 
-            QGCLabel {
+            beeCopterLabel {
                 id:                         valueLabel
                 anchors.bottomMargin:       parent.indicatorValueMargins
                 anchors.bottom:             parent.bottom
@@ -284,7 +284,7 @@ Control {
                 text:                       _clampedSliderValue(value) + (unitsString !== "" ? " " + unitsString : "")
             }
 
-            QGCMouseArea {
+            beeCopterMouseArea {
                 anchors.fill: parent
                 onClicked: {
                     sliderValueTextField.text = _clampedSliderValue(value)
@@ -293,7 +293,7 @@ Control {
                 }
             }
 
-            QGCTextField {
+            beeCopterTextField {
                 id:                 sliderValueTextField
                 anchors.topMargin:  valueIndicator.pointerSize
                 anchors.fill:       parent

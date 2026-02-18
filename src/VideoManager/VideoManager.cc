@@ -2,16 +2,16 @@
 #include "AppSettings.h"
 #include "MavlinkCameraControl.h"
 #include "MultiVehicleManager.h"
-#include "QGCApplication.h"
-#include "QGCCameraManager.h"
-#include "QGCCorePlugin.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterCameraManager.h"
+#include "beeCopterCorePlugin.h"
+#include "beeCopterLoggingCategory.h"
 #include "SettingsManager.h"
 #include "SubtitleWriter.h"
 #include "Vehicle.h"
 #include "VideoReceiver.h"
 #include "VideoSettings.h"
-#ifdef QGC_GST_STREAMING
+#ifdef beeCopter_GST_STREAMING
 #include "GStreamer.h"
 #else
 #include "VideoItemStub.h"
@@ -26,7 +26,7 @@
 #include <QtQuick/QQuickWindow>
 #include <QtCore/QTimer>
 
-QGC_LOGGING_CATEGORY(VideoManagerLog, "Video.VideoManager")
+beeCopter_LOGGING_CATEGORY(VideoManagerLog, "Video.VideoManager")
 
 static constexpr const char *kFileExtension[VideoReceiver::FILE_FORMAT_MAX + 1] = {
     "mkv",
@@ -45,7 +45,7 @@ VideoManager::VideoManager(QObject *parent)
 
     (void) qRegisterMetaType<VideoReceiver::STATUS>("STATUS");
 
-#ifdef QGC_GST_STREAMING
+#ifdef beeCopter_GST_STREAMING
     if (!GStreamer::initialize()) {
         qCCritical(VideoManagerLog) << "Failed To Initialize GStreamer";
     }
@@ -112,7 +112,7 @@ void VideoManager::_initAfterQmlIsReady()
         "thermalVideo"
     };
     for (const QString &streamName : videoStreamList) {
-        VideoReceiver *receiver = QGCCorePlugin::instance()->createVideoReceiver(this);
+        VideoReceiver *receiver = beeCopterCorePlugin::instance()->createVideoReceiver(this);
         if (!receiver) {
             continue;
         }
@@ -125,7 +125,7 @@ void VideoManager::_initAfterQmlIsReady()
 void VideoManager::cleanup()
 {
     for (VideoReceiver *receiver : std::as_const(_videoReceivers)) {
-        QGCCorePlugin::instance()->releaseVideoSink(receiver->sink());
+        beeCopterCorePlugin::instance()->releaseVideoSink(receiver->sink());
     }
 }
 
@@ -170,7 +170,7 @@ void VideoManager::startRecording(const QString &videoFile)
 {
     const VideoReceiver::FILE_FORMAT fileFormat = static_cast<VideoReceiver::FILE_FORMAT>(_videoSettings->recordingFormat()->rawValue().toInt());
     if (!VideoReceiver::isValidFileFormat(fileFormat)) {
-        qgcApp()->showAppMessage(tr("Invalid video format defined."));
+        beeCopterApp()->showAppMessage(tr("Invalid video format defined."));
         return;
     }
 
@@ -178,7 +178,7 @@ void VideoManager::startRecording(const QString &videoFile)
 
     const QString savePath = SettingsManager::instance()->appSettings()->videoSavePath();
     if (savePath.isEmpty()) {
-        qgcApp()->showAppMessage(tr("Unabled to record video. Video save path must be specified in Settings."));
+        beeCopterApp()->showAppMessage(tr("Unabled to record video. Video save path must be specified in Settings."));
         return;
     }
 
@@ -225,7 +225,7 @@ void VideoManager::grabImage(const QString &imageFile)
 double VideoManager::aspectRatio() const
 {
     for (VideoReceiver *receiver : _videoReceivers) {
-        QGCVideoStreamInfo *pInfo = receiver->videoStreamInfo();
+        beeCopterVideoStreamInfo *pInfo = receiver->videoStreamInfo();
         if (!receiver->isThermal() && pInfo && !pInfo->isThermal()) {
             return pInfo->aspectRatio();
         }
@@ -238,7 +238,7 @@ double VideoManager::aspectRatio() const
 double VideoManager::thermalAspectRatio() const
 {
     for (VideoReceiver *receiver : _videoReceivers) {
-        QGCVideoStreamInfo *pInfo = receiver->videoStreamInfo();
+        beeCopterVideoStreamInfo *pInfo = receiver->videoStreamInfo();
         if (receiver->isThermal() && pInfo && pInfo->isThermal()) {
             return pInfo->aspectRatio();
         }
@@ -250,7 +250,7 @@ double VideoManager::thermalAspectRatio() const
 double VideoManager::hfov() const
 {
     for (VideoReceiver *receiver : _videoReceivers) {
-        QGCVideoStreamInfo *pInfo = receiver->videoStreamInfo();
+        beeCopterVideoStreamInfo *pInfo = receiver->videoStreamInfo();
         if (!receiver->isThermal() && pInfo && !pInfo->isThermal()) {
             return pInfo->hfov();
         }
@@ -262,7 +262,7 @@ double VideoManager::hfov() const
 double VideoManager::thermalHfov() const
 {
     for (VideoReceiver *receiver : _videoReceivers) {
-        QGCVideoStreamInfo *pInfo = receiver->videoStreamInfo();
+        beeCopterVideoStreamInfo *pInfo = receiver->videoStreamInfo();
         if (receiver->isThermal() && pInfo && pInfo->isThermal()) {
             return pInfo->hfov();
         }
@@ -274,7 +274,7 @@ double VideoManager::thermalHfov() const
 bool VideoManager::hasThermal() const
 {
     for (VideoReceiver *receiver : _videoReceivers) {
-        QGCVideoStreamInfo *pInfo = receiver->videoStreamInfo();
+        beeCopterVideoStreamInfo *pInfo = receiver->videoStreamInfo();
         if (receiver->isThermal() && pInfo && pInfo->isThermal()) {
             return true;
         }
@@ -295,7 +295,7 @@ bool VideoManager::isUvc() const
 
 bool VideoManager::gstreamerEnabled()
 {
-#ifdef QGC_GST_STREAMING
+#ifdef beeCopter_GST_STREAMING
     return true;
 #else
     return false;
@@ -348,9 +348,9 @@ void VideoManager::_videoSourceChanged()
 {
     bool changed = false;
     if (_activeVehicle) {
-        QGCCameraManager* camMgr = _activeVehicle->cameraManager();
+        beeCopterCameraManager* camMgr = _activeVehicle->cameraManager();
         for (VideoReceiver *receiver : std::as_const(_videoReceivers)) {
-            QGCVideoStreamInfo* info = nullptr;
+            beeCopterVideoStreamInfo* info = nullptr;
             if (receiver->isThermal()) {
                 info = camMgr ? camMgr->thermalStreamInstance() : nullptr;
             } else {
@@ -410,7 +410,7 @@ bool VideoManager::_updateUVC(VideoReceiver * /*receiver*/)
 bool VideoManager::autoStreamConfigured() const
 {
     for (VideoReceiver *receiver : _videoReceivers) {
-        QGCVideoStreamInfo *pInfo = receiver->videoStreamInfo();
+        beeCopterVideoStreamInfo *pInfo = receiver->videoStreamInfo();
         if (!receiver->isThermal() && pInfo && !pInfo->isThermal()) {
             return !pInfo->uri().isEmpty();
         }
@@ -421,7 +421,7 @@ bool VideoManager::autoStreamConfigured() const
 
 bool VideoManager::_updateAutoStream(VideoReceiver *receiver)
 {
-    const QGCVideoStreamInfo *pInfo = receiver->videoStreamInfo();
+    const beeCopterVideoStreamInfo *pInfo = receiver->videoStreamInfo();
     if (!pInfo) {
         return false;
     }
@@ -558,11 +558,11 @@ void VideoManager::_setActiveVehicle(Vehicle *vehicle)
             if (pCamera) {
                 pCamera->stopStream();
             }
-            (void) disconnect(cameraManager, &QGCCameraManager::streamChanged, this, &VideoManager::_videoSourceChanged);
+            (void) disconnect(cameraManager, &beeCopterCameraManager::streamChanged, this, &VideoManager::_videoSourceChanged);
         }
 
         for (VideoReceiver *receiver : std::as_const(_videoReceivers)) {
-            // disconnect(receiver->videoStreamInfo(), &QGCVideoStreamInfo::infoChanged, ))
+            // disconnect(receiver->videoStreamInfo(), &beeCopterVideoStreamInfo::infoChanged, ))
             receiver->setVideoStreamInfo(nullptr);
         }
     }
@@ -571,7 +571,7 @@ void VideoManager::_setActiveVehicle(Vehicle *vehicle)
     if (_activeVehicle) {
         (void) connect(_activeVehicle->vehicleLinkManager(), &VehicleLinkManager::communicationLostChanged, this, &VideoManager::_communicationLostChanged);
         if (_activeVehicle->cameraManager()) {
-            (void) connect(_activeVehicle->cameraManager(), &QGCCameraManager::streamChanged, this, &VideoManager::_videoSourceChanged);
+            (void) connect(_activeVehicle->cameraManager(), &beeCopterCameraManager::streamChanged, this, &VideoManager::_videoSourceChanged);
             MavlinkCameraControl *pCamera = _activeVehicle->cameraManager()->currentCameraInstance();
             if (pCamera) {
                 pCamera->resumeStream();
@@ -588,7 +588,7 @@ void VideoManager::_setActiveVehicle(Vehicle *vehicle)
             } else {
                 receiver->setVideoStreamInfo(nullptr);
             }
-            // connect(receiver->videoStreamInfo(), &QGCVideoStreamInfo::infoChanged, ))
+            // connect(receiver->videoStreamInfo(), &beeCopterVideoStreamInfo::infoChanged, ))
         }
     } else {
         setfullScreen(false);
@@ -683,7 +683,7 @@ void VideoManager::_initVideoReceiver(VideoReceiver *receiver, QQuickWindow *win
     }
     receiver->setWidget(widget);
 
-    void *sink = QGCCorePlugin::instance()->createVideoSink(receiver->widget(), receiver);
+    void *sink = beeCopterCorePlugin::instance()->createVideoSink(receiver->widget(), receiver);
     if (!sink) {
         qCCritical(VideoManagerLog) << "createVideoSink() failed" << receiver->name();
     }
@@ -775,7 +775,7 @@ void VideoManager::_initVideoReceiver(VideoReceiver *receiver, QQuickWindow *win
     });
 
     (void) connect(receiver, &VideoReceiver::videoStreamInfoChanged, this, [this, receiver]() {
-        const QGCVideoStreamInfo *videoStreamInfo = receiver->videoStreamInfo();
+        const beeCopterVideoStreamInfo *videoStreamInfo = receiver->videoStreamInfo();
         qCDebug(VideoManagerLog) << "Video" << receiver->name() << "stream info:" << (videoStreamInfo ? "received" : "lost");
 
         (void) _updateAutoStream(receiver);

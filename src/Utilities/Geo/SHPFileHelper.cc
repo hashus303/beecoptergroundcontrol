@@ -1,6 +1,6 @@
 #include "SHPFileHelper.h"
-#include "QGCGeo.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterGeo.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QRegularExpression>
@@ -9,7 +9,7 @@
 
 #include "shapefil.h"
 
-QGC_LOGGING_CATEGORY(SHPFileHelperLog, "Utilities.SHPFileHelper")
+beeCopter_LOGGING_CATEGORY(SHPFileHelperLog, "Utilities.SHPFileHelper")
 
 namespace {
     constexpr const char *_errorPrefix = QT_TR_NOOP("SHP file load failed. %1");
@@ -26,7 +26,7 @@ namespace {
             return nullptr;
         }
 
-        // Only support read mode - shapefiles are read-only in QGC
+        // Only support read mode - shapefiles are read-only in beeCopter
         if (access[0] != 'r') {
             qCWarning(SHPFileHelperLog) << "QFile hooks only support read mode, requested:" << access;
             return nullptr;
@@ -62,7 +62,7 @@ namespace {
         Q_UNUSED(size);
         Q_UNUSED(nmemb);
         Q_UNUSED(file);
-        qCWarning(SHPFileHelperLog) << "QFile write not supported - shapefiles are read-only in QGC";
+        qCWarning(SHPFileHelperLog) << "QFile write not supported - shapefiles are read-only in beeCopter";
         return 0;
     }
 
@@ -327,12 +327,12 @@ bool SHPFileHelper::loadPolygonsFromFile(const QString &shpFile, QList<QList<QGe
         }
         auto shpObjectCleanup = qScopeGuard([shpObject]() { SHPDestroyObject(shpObject); });
 
-        // Ensure clockwise winding for outer rings (QGC requirement)
+        // Ensure clockwise winding for outer rings (beeCopter requirement)
         SHPRewindObject(shpHandle, shpObject);
 
         // For multi-part polygons (e.g., polygons with holes), we extract only the outer ring.
         // In shapefiles, the first part is conventionally the outer boundary, and subsequent
-        // parts are holes (inner rings). For QGC's use cases (survey areas, geofences), the
+        // parts are holes (inner rings). For beeCopter's use cases (survey areas, geofences), the
         // outer boundary is what matters for mission planning.
         const int firstPartEnd = (shpObject->nParts > 1) ? shpObject->panPartStart[1] : shpObject->nVertices;
         if (shpObject->nParts > 1) {
@@ -346,7 +346,7 @@ bool SHPFileHelper::loadPolygonsFromFile(const QString &shpFile, QList<QList<QGe
         for (int i = 0; i < firstPartEnd; i++) {
             QGeoCoordinate coord;
             if (utmZone) {
-                if (!QGCGeo::convertUTMToGeo(shpObject->padfX[i], shpObject->padfY[i], utmZone, utmSouthernHemisphere, coord)) {
+                if (!beeCopterGeo::convertUTMToGeo(shpObject->padfX[i], shpObject->padfY[i], utmZone, utmSouthernHemisphere, coord)) {
                     qCWarning(SHPFileHelperLog) << "UTM conversion failed for entity" << entityIdx << "vertex" << i;
                     continue;
                 }
@@ -455,7 +455,7 @@ bool SHPFileHelper::loadPolylinesFromFile(const QString &shpFile, QList<QList<QG
         for (int i = 0; i < firstPartEnd; i++) {
             QGeoCoordinate coord;
             if (utmZone) {
-                if (!QGCGeo::convertUTMToGeo(shpObject->padfX[i], shpObject->padfY[i], utmZone, utmSouthernHemisphere, coord)) {
+                if (!beeCopterGeo::convertUTMToGeo(shpObject->padfX[i], shpObject->padfY[i], utmZone, utmSouthernHemisphere, coord)) {
                     qCWarning(SHPFileHelperLog) << "UTM conversion failed for entity" << entityIdx << "vertex" << i;
                     continue;
                 }
@@ -541,7 +541,7 @@ bool SHPFileHelper::loadPointsFromFile(const QString &shpFile, QList<QGeoCoordin
 
         QGeoCoordinate coord;
         if (utmZone) {
-            if (!QGCGeo::convertUTMToGeo(shpObject->padfX[0], shpObject->padfY[0], utmZone, utmSouthernHemisphere, coord)) {
+            if (!beeCopterGeo::convertUTMToGeo(shpObject->padfX[0], shpObject->padfY[0], utmZone, utmSouthernHemisphere, coord)) {
                 qCWarning(SHPFileHelperLog) << "UTM conversion failed for point entity" << entityIdx;
                 continue;
             }

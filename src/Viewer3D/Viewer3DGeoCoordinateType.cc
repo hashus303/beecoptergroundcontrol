@@ -1,13 +1,13 @@
 #include "Viewer3DGeoCoordinateType.h"
 
-#include "QGCGeo.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterGeo.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(Viewer3DGeoCoordinateTypeLog, "Viewer3d.Viewer3DGeoCoordinateType")
+beeCopter_LOGGING_CATEGORY(Viewer3DGeoCoordinateTypeLog, "Viewer3d.Viewer3DGeoCoordinateType")
 
 void Viewer3DGeoCoordinateType::_gpsToLocal()
 {
-    const QVector3D localPose = QGCGeo::convertGpsToEnu(_coordinate, _gpsRef);
+    const QVector3D localPose = beeCopterGeo::convertGpsToEnu(_coordinate, _gpsRef);
 
     if (_localCoordinate != localPose) {
         _localCoordinate = localPose;

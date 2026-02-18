@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 Rectangle {
     required property var planMasterController
@@ -16,7 +16,7 @@ Rectangle {
     color: Qt.rgba(_windowColor.r, _windowColor.g, _windowColor.b, 0.8)
 
     property var _planMasterController: planMasterController
-    property color _windowColor: QGroundControl.globalPalette.window
+    property color _windowColor: beeCopter.globalPalette.window
     property var _currentMissionItem: _planMasterController.missionController.currentPlanViewItem ///< Mission item to display status for
 
     property var missionItems: _controllerValid ? _planMasterController.missionController.visualItems : undefined
@@ -50,13 +50,13 @@ Rectangle {
                                                          0 : (Math.atan(_currentMissionItem.altDifference / _currentMissionItem.distance) * (180.0/Math.PI)))
                                                   : NaN
 
-    property string _distanceText: isNaN(_distance) ? "-.-" : QGroundControl.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(_distance).toFixed(1) + " " + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString
-    property string _altDifferenceText: isNaN(_altDifference) ? "-.-" : QGroundControl.unitsConversion.metersToAppSettingsVerticalDistanceUnits(_altDifference).toFixed(1) + " " + QGroundControl.unitsConversion.appSettingsVerticalDistanceUnitsString
+    property string _distanceText: isNaN(_distance) ? "-.-" : beeCopter.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(_distance).toFixed(1) + " " + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString
+    property string _altDifferenceText: isNaN(_altDifference) ? "-.-" : beeCopter.unitsConversion.metersToAppSettingsVerticalDistanceUnits(_altDifference).toFixed(1) + " " + beeCopter.unitsConversion.appSettingsVerticalDistanceUnitsString
     property string _gradientText: isNaN(_gradient) ? "-.-" : _gradient.toFixed(0) + qsTr(" deg")
     property string _azimuthText: isNaN(_azimuth) ? "-.-" : Math.round(_azimuth) % 360
     property string _headingText: isNaN(_azimuth) ? "-.-" : Math.round(_heading) % 360
-    property string _missionPlannedDistanceText: isNaN(_missionPlannedDistance) ? "-.-" : QGroundControl.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(_missionPlannedDistance).toFixed(0) + " " + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString
-    property string _missionMaxTelemetryText: isNaN(_missionMaxTelemetry) ? "-.-" : QGroundControl.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(_missionMaxTelemetry).toFixed(0) + " " + QGroundControl.unitsConversion.appSettingsHorizontalDistanceUnitsString
+    property string _missionPlannedDistanceText: isNaN(_missionPlannedDistance) ? "-.-" : beeCopter.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(_missionPlannedDistance).toFixed(0) + " " + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString
+    property string _missionMaxTelemetryText: isNaN(_missionMaxTelemetry) ? "-.-" : beeCopter.unitsConversion.metersToAppSettingsHorizontalDistanceUnits(_missionMaxTelemetry).toFixed(0) + " " + beeCopter.unitsConversion.appSettingsHorizontalDistanceUnitsString
     property string _batteryChangePointText: _batteryChangePoint < 0 ? qsTr("N/A") : _batteryChangePoint
     property string _batteriesRequiredText: _batteriesRequired < 0 ? qsTr("N/A") : _batteriesRequired
 
@@ -79,7 +79,7 @@ Rectangle {
         return hoursText + ":" + minutesText + ":" + secondsText
     }
 
-    QGCFlickable {
+    beeCopterFlickable {
         anchors.margins: _margins
         anchors.fill: parent
         flickableDirection: Flickable.HorizontalFlick
@@ -94,14 +94,14 @@ Rectangle {
                 rowSpacing: _rowSpacing
                 columnSpacing: _labelToValueSpacing
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("Selected Waypoint")
                     Layout.columnSpan: 8
                     font.pointSize: ScreenTools.smallFontPointSize
                 }
 
-                QGCLabel { text: qsTr("Alt diff:"); font.pointSize: _dataFontSize; }
-                QGCLabel {
+                beeCopterLabel { text: qsTr("Alt diff:"); font.pointSize: _dataFontSize; }
+                beeCopterLabel {
                     text: _altDifferenceText
                     font.pointSize: _dataFontSize
                     Layout.minimumWidth: _mediumValueWidth
@@ -109,8 +109,8 @@ Rectangle {
 
                 Item { width: 1; height: 1 }
 
-                QGCLabel { text: qsTr("Azimuth:"); font.pointSize: _dataFontSize; }
-                QGCLabel {
+                beeCopterLabel { text: qsTr("Azimuth:"); font.pointSize: _dataFontSize; }
+                beeCopterLabel {
                     text: _azimuthText
                     font.pointSize: _dataFontSize
                     Layout.minimumWidth: _smallValueWidth
@@ -118,15 +118,15 @@ Rectangle {
 
                 Item { width: 1; height: 1 }
 
-                QGCLabel { text: qsTr("Dist prev WP:"); font.pointSize: _dataFontSize; }
-                QGCLabel {
+                beeCopterLabel { text: qsTr("Dist prev WP:"); font.pointSize: _dataFontSize; }
+                beeCopterLabel {
                     text: _distanceText
                     font.pointSize: _dataFontSize
                     Layout.minimumWidth: _largeValueWidth
                 }
 
-                QGCLabel { text: qsTr("Gradient:"); font.pointSize: _dataFontSize; }
-                QGCLabel {
+                beeCopterLabel { text: qsTr("Gradient:"); font.pointSize: _dataFontSize; }
+                beeCopterLabel {
                     text: _gradientText
                     font.pointSize: _dataFontSize
                     Layout.minimumWidth: _mediumValueWidth
@@ -134,8 +134,8 @@ Rectangle {
 
                 Item { width: 1; height: 1 }
 
-                QGCLabel { text: qsTr("Heading:"); font.pointSize: _dataFontSize; }
-                QGCLabel {
+                beeCopterLabel { text: qsTr("Heading:"); font.pointSize: _dataFontSize; }
+                beeCopterLabel {
                     text: _headingText
                     font.pointSize: _dataFontSize
                     Layout.minimumWidth: _smallValueWidth
@@ -147,14 +147,14 @@ Rectangle {
                 rowSpacing: _rowSpacing
                 columnSpacing: _labelToValueSpacing
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("Total Mission")
                     Layout.columnSpan: 5
                     font.pointSize: ScreenTools.smallFontPointSize
                 }
 
-                QGCLabel { text: qsTr("Distance:"); font.pointSize: _dataFontSize; }
-                QGCLabel {
+                beeCopterLabel { text: qsTr("Distance:"); font.pointSize: _dataFontSize; }
+                beeCopterLabel {
                     text: _missionPlannedDistanceText
                     font.pointSize: _dataFontSize
                     Layout.minimumWidth: _largeValueWidth
@@ -162,15 +162,15 @@ Rectangle {
 
                 Item { width: 1; height: 1 }
 
-                QGCLabel { text: qsTr("Max telem dist:"); font.pointSize: _dataFontSize; }
-                QGCLabel {
+                beeCopterLabel { text: qsTr("Max telem dist:"); font.pointSize: _dataFontSize; }
+                beeCopterLabel {
                     text: _missionMaxTelemetryText
                     font.pointSize: _dataFontSize
                     Layout.minimumWidth: _largeValueWidth
                 }
 
-                QGCLabel { text: qsTr("Time:"); font.pointSize: _dataFontSize; }
-                QGCLabel {
+                beeCopterLabel { text: qsTr("Time:"); font.pointSize: _dataFontSize; }
+                beeCopterLabel {
                     text: getMissionTime()
                     font.pointSize: _dataFontSize
                     Layout.minimumWidth: _largeValueWidth
@@ -183,14 +183,14 @@ Rectangle {
                 columnSpacing: _labelToValueSpacing
                 visible: _batteryInfoAvailable
 
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("Battery")
                     Layout.columnSpan: 3
                     font.pointSize: ScreenTools.smallFontPointSize
                 }
 
-                QGCLabel { text: qsTr("Batteries required:"); font.pointSize: _dataFontSize; }
-                QGCLabel {
+                beeCopterLabel { text: qsTr("Batteries required:"); font.pointSize: _dataFontSize; }
+                beeCopterLabel {
                     text: _batteriesRequiredText
                     font.pointSize: _dataFontSize
                     Layout.minimumWidth: _mediumValueWidth

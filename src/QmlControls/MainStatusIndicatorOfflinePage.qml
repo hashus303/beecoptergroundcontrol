@@ -2,18 +2,18 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
 ToolIndicatorPage {
     id:         control
     showExpand: true
 
-    property var    linkConfigs:            QGroundControl.linkManager.linkConfigurations
+    property var    linkConfigs:            beeCopter.linkManager.linkConfigurations
     property bool   noLinks:                true
     property var    editingConfig:          null
-    property var    autoConnectSettings:    QGroundControl.settingsManager.autoConnectSettings
+    property var    autoConnectSettings:    beeCopter.settingsManager.autoConnectSettings
 
     Component.onCompleted: {
         for (var i = 0; i < linkConfigs.count; i++) {
@@ -29,7 +29,7 @@ ToolIndicatorPage {
         SettingsGroupLayout {
             heading: qsTr("Select Link to Connect")
 
-            QGCLabel {
+            beeCopterLabel {
                 text:       qsTr("No Links Configured")
                 visible:    noLinks
             }
@@ -37,7 +37,7 @@ ToolIndicatorPage {
             Repeater {
                 model: linkConfigs
 
-                delegate: QGCButton {
+                delegate: beeCopterButton {
                     Layout.fillWidth:   true
                     text:               object.name + (object.link ? " (" + qsTr("Connected") + ")" : "")
                     visible:            !object.dynamic
@@ -45,7 +45,7 @@ ToolIndicatorPage {
                     autoExclusive:      true
 
                     onClicked: {
-                        QGroundControl.linkManager.createConnectedLink(object)
+                        beeCopter.linkManager.createConnectedLink(object)
                         mainWindow.closeIndicatorDrawer()
                     }
                 }

@@ -2,13 +2,13 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     height: _itemHeight
     width:  _totalSlots * _itemWidth
-    color:  qgcPal.textField
+    color:  beeCopterPal.textField
 
     property Fact   fact:               undefined
     property int    digitCount:         4           ///< The minimum number of digits to show for each value
@@ -35,8 +35,8 @@ Rectangle {
     property var    _model:                 fact.valueSliderModel()
     property var    _fact:                  fact
 
-    QGCPalette { id: qgcPal; colorGroupEnabled: parent.enabled }
-    QGCPalette { id: qgcPalDisabled; colorGroupEnabled: false }
+    beeCopterPalette { id: beeCopterPal; colorGroupEnabled: parent.enabled }
+    beeCopterPalette { id: beeCopterPalDisabled; colorGroupEnabled: false }
 
     function firstVisibleIndex() {
         return valueListView.contentX / _itemWidth
@@ -74,7 +74,7 @@ Rectangle {
         }
     }
 
-    QGCListView {
+    beeCopterListView {
         id:             valueListView
         anchors.fill:   parent
         orientation:    ListView.Horizontal
@@ -82,13 +82,13 @@ Rectangle {
         clip:           true
         model:          _model
 
-        delegate: QGCLabel {
+        delegate: beeCopterLabel {
             width:                  _itemWidth
             height:                 _itemHeight
             verticalAlignment:      Text.AlignVCenter
             horizontalAlignment:    Text.AlignHCenter
             text:                   value + " " + _units
-            color:                  qgcPal.textFieldText
+            color:                  beeCopterPal.textFieldText
 
             MouseArea {
                 anchors.fill:   parent
@@ -118,7 +118,7 @@ Rectangle {
         id:         leftOverlay
         width:      _itemWidth * _prevIncrementSlots
         height:     _itemHeight
-        color:      qgcPal.textField
+        color:      beeCopterPal.textField
         opacity:    0.5
     }
 
@@ -126,7 +126,7 @@ Rectangle {
         width:          _itemWidth * _nextIncrementSlots
         height:         _itemHeight
         anchors.right:  parent.right
-        color:          qgcPal.textField
+        color:          beeCopterPal.textField
         opacity:        0.5
     }
 
@@ -136,7 +136,7 @@ Rectangle {
         width:          _itemWidth + (_borderWidth * 2)
         height:         _itemHeight + (_borderWidth * 2)
         border.width:   _borderWidth
-        border.color:   qgcPal.brandingBlue
+        border.color:   beeCopterPal.brandingBlue
         color:          "transparent"
 
         readonly property int _borderWidth: 3

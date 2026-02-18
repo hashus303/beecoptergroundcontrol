@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QGCPalette.h"
+#include "beeCopterPalette.h"
 #include "Common.h"
 
 #include <QtCore/QObject>
@@ -45,7 +45,7 @@ private:
 
     QSize                   _imageSize;                 ///< size of the image requested, used to scale click positions
     QList<ImagePosition>    _actuatorImagePositions{};  ///< highlighted actuators image positions
-    QGCPalette              _palette;
+    beeCopterPalette              _palette;
 };
 
 } // namespace GeometryImage

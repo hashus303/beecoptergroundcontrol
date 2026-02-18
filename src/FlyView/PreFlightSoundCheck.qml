@@ -1,11 +1,11 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 PreFlightCheckButton {
     name:                   qsTr("Sound output")
-    manualText:             qsTr("QGC audio output enabled. System audio output enabled, too?")
-    telemetryTextFailure:   qsTr("QGC audio output is disabled. Please enable it under application settings->general to hear audio warnings!")
-    telemetryFailure:       QGroundControl.settingsManager.appSettings.audioMuted.rawValue
+    manualText:             qsTr("beeCopter audio output enabled. System audio output enabled, too?")
+    telemetryTextFailure:   qsTr("beeCopter audio output is disabled. Please enable it under application settings->general to hear audio warnings!")
+    telemetryFailure:       beeCopter.settingsManager.appSettings.audioMuted.rawValue
 }

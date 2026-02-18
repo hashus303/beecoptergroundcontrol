@@ -1,11 +1,11 @@
 #include "SerialLink.h"
-#include "QGCLoggingCategory.h"
-#include "QGCSerialPortInfo.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterSerialPortInfo.h"
 #include <QtCore/QSettings>
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 
-QGC_LOGGING_CATEGORY(SerialLinkLog, "Comms.SerialLink")
+beeCopter_LOGGING_CATEGORY(SerialLinkLog, "Comms.SerialLink")
 
 namespace {
     constexpr int CONNECT_TIMEOUT_MS = 1000;
@@ -227,7 +227,7 @@ void SerialWorker::connectToPort()
 
     _port->setPortName(_serialConfig->portName());
 
-    const QGCSerialPortInfo portInfo(*_port);
+    const beeCopterSerialPortInfo portInfo(*_port);
     if (portInfo.isBootloader()) {
         qCWarning(SerialLinkLog) << "Not connecting to bootloader" << _port->portName();
         emit errorOccurred(tr("Not connecting to a bootloader"));

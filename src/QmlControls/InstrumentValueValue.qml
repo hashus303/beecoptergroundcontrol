@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ColumnLayout {
     property var    instrumentValueData:            null
@@ -21,11 +21,11 @@ ColumnLayout {
     property real   _width:                         0
     property real   _height:                        0
 
-    QGCLabel {
+    beeCopterLabel {
         id:                 label
         Layout.alignment:   Qt.AlignVCenter
         font.pointSize:     _fontSize
-        color:              instrumentValueData.isValidColor(instrumentValueData.currentColor) ? instrumentValueData.currentColor : qgcPal.text
+        color:              instrumentValueData.isValidColor(instrumentValueData.currentColor) ? instrumentValueData.currentColor : beeCopterPal.text
         text:               valueText()
 
         function valueText() {

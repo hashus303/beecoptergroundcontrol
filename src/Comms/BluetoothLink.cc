@@ -1,7 +1,7 @@
 #include "BluetoothLink.h"
 
-#include "QGCLoggingCategory.h"
-#include "QGCNetworkHelper.h"
+#include "beeCopterLoggingCategory.h"
+#include "beeCopterNetworkHelper.h"
 
 #include <QtBluetooth/QBluetoothHostInfo>
 #include <QtBluetooth/QLowEnergyConnectionParameters>
@@ -10,8 +10,8 @@
 #include <QtCore/QThread>
 #include <QtCore/QVariantMap>
 
-QGC_LOGGING_CATEGORY(BluetoothLinkLog, "Comms.BluetoothLink")
-QGC_LOGGING_CATEGORY(BluetoothLinkVerboseLog, "Comms.BluetoothLink:verbose")
+beeCopter_LOGGING_CATEGORY(BluetoothLinkLog, "Comms.BluetoothLink")
+beeCopter_LOGGING_CATEGORY(BluetoothLinkVerboseLog, "Comms.BluetoothLink:verbose")
 
 /*===========================================================================*/
 
@@ -275,7 +275,7 @@ QString BluetoothConfiguration::settingsTitle() const
 
 bool BluetoothConfiguration::isBluetoothAvailable()
 {
-    return QGCNetworkHelper::isBluetoothAvailable();
+    return beeCopterNetworkHelper::isBluetoothAvailable();
 }
 
 QVariantList BluetoothConfiguration::devicesModel() const

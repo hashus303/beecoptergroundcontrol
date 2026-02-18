@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Column {
     property var channel
@@ -34,7 +34,7 @@ Column {
 
     signal actuatorValueChanged(real value, real sliderValue)
 
-    QGCSlider {
+    beeCopterSlider {
         id:                         channelSlider
         orientation:                Qt.Vertical
         from:               snap ? channel.min - snapRange : channel.min
@@ -80,7 +80,7 @@ Column {
         }
     }
 
-    QGCLabel {
+    beeCopterLabel {
         id: channelLabel
         anchors.horizontalCenter: parent.horizontalCenter
         text:                     channel.label

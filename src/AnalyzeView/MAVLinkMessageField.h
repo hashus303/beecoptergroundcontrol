@@ -8,11 +8,11 @@
 
 Q_DECLARE_LOGGING_CATEGORY(MAVLinkMessageFieldLog)
 
-class QGCMAVLinkMessage;
+class beeCopterMAVLinkMessage;
 class MAVLinkChartController;
 class QAbstractSeries;
 
-class QGCMAVLinkMessageField : public QObject
+class beeCopterMAVLinkMessageField : public QObject
 {
     Q_OBJECT
     // QML_ELEMENT
@@ -26,8 +26,8 @@ class QGCMAVLinkMessageField : public QObject
     Q_PROPERTY(const QAbstractSeries    *series     READ series     NOTIFY seriesChanged)
 
 public:
-    QGCMAVLinkMessageField(const QString &name, const QString &type, QGCMAVLinkMessage *parent = nullptr);
-    ~QGCMAVLinkMessageField();
+    beeCopterMAVLinkMessageField(const QString &name, const QString &type, beeCopterMAVLinkMessage *parent = nullptr);
+    ~beeCopterMAVLinkMessageField();
 
     QString name() const { return _name;  }
     QString label() const;
@@ -56,7 +56,7 @@ signals:
 private:
     QString _type;
     QString _name;
-    QGCMAVLinkMessage *_msg = nullptr;
+    beeCopterMAVLinkMessage *_msg = nullptr;
 
     QString _value;
     bool _selectable = true;

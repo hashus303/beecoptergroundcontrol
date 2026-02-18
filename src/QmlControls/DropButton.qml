@@ -1,12 +1,12 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     id: _root
-    z:  QGroundControl.zOrderWidgets
+    z:  beeCopter.zOrderWidgets
 
     signal          clicked()
     property alias  buttonImage:        roundButton.buttonImage
@@ -142,7 +142,7 @@ Item {
         arrowCanvas.requestPaint()
     } // function - _calcPositions
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     MouseArea {
         x:          _viewportMaxLeft
@@ -156,7 +156,7 @@ Item {
         }
     }
 
-    QGCRoundButton {
+    beeCopterRoundButton {
         id:             roundButton
         radius:         parent.width / 2
         onClicked:  {
@@ -209,7 +209,7 @@ Item {
                 context.lineTo(dropItemHolderRect.x, dropItemHolderRect.y)
 
                 context.closePath()
-                context.fillStyle = qgcPal.windowShade
+                context.fillStyle = beeCopterPal.windowShade
                 context.fill()
             }
         } // Canvas - arrowCanvas

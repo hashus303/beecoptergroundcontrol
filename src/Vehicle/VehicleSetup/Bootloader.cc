@@ -1,14 +1,14 @@
 #include "Bootloader.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 #include "FirmwareImage.h"
-#include "QGC.h"
+#include "beeCopter.h"
 
 #include <QtCore/QElapsedTimer>
 #include <QtCore/QFile>
 #include <QtCore/QThread>
 
-QGC_LOGGING_CATEGORY(FirmwareUpgradeLog, "VehicleSetup.FirmwareUpgrade")
-QGC_LOGGING_CATEGORY(FirmwareUpgradeVerboseLog, "VehicleSetup.FirmwareUpgrade:verbose")
+beeCopter_LOGGING_CATEGORY(FirmwareUpgradeLog, "VehicleSetup.FirmwareUpgrade")
+beeCopter_LOGGING_CATEGORY(FirmwareUpgradeVerboseLog, "VehicleSetup.FirmwareUpgrade:verbose")
 
 /// This class manages interactions with the bootloader
 Bootloader::Bootloader(bool sikRadio, QObject *parent)
@@ -392,7 +392,7 @@ bool Bootloader::_binProgram(const FirmwareImage* image)
         bytesSent += bytesToSend;
 
         // Calculate the CRC now so we can test it after the board is flashed.
-        _imageCRC = QGC::crc32((uint8_t *)imageBuf, bytesToSend, _imageCRC);
+        _imageCRC = beeCopter::crc32((uint8_t *)imageBuf, bytesToSend, _imageCRC);
 
         emit updateProgress(bytesSent, imageSize);
     }
@@ -401,7 +401,7 @@ bool Bootloader::_binProgram(const FirmwareImage* image)
     // We calculate the CRC using the entire flash size, filling the remainder with 0xFF.
     while (bytesSent < _boardFlashSize) {
         const uint8_t fill = 0xFF;
-        _imageCRC = QGC::crc32(&fill, 1, _imageCRC);
+        _imageCRC = beeCopter::crc32(&fill, 1, _imageCRC);
         bytesSent++;
     }
 

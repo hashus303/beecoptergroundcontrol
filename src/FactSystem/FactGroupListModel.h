@@ -1,7 +1,7 @@
 #pragma once
 
 #include "QmlObjectListModel.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 #include "FactGroupWithId.h"
 
 #include <QList>

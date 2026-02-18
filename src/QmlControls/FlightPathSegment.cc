@@ -1,8 +1,8 @@
 #include "FlightPathSegment.h"
-#include "QGC.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopter.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(FlightPathSegmentLog, "Plan.FlightPathSegment")
+beeCopter_LOGGING_CATEGORY(FlightPathSegmentLog, "Plan.FlightPathSegment")
 
 FlightPathSegment::FlightPathSegment(SegmentType segmentType, const QGeoCoordinate& coord1, double amslCoord1Alt, const QGeoCoordinate& coord2, double amslCoord2Alt, bool queryTerrainData, QObject* parent)
     : QObject           (parent)
@@ -45,7 +45,7 @@ void FlightPathSegment::setCoordinate2(const QGeoCoordinate &coordinate)
 
 void FlightPathSegment::setCoord1AMSLAlt(double alt)
 {
-    if (!QGC::fuzzyCompare(alt, _coord1AMSLAlt)) {
+    if (!beeCopter::fuzzyCompare(alt, _coord1AMSLAlt)) {
         _coord1AMSLAlt = alt;
         emit coord1AMSLAltChanged();
         _updateTerrainCollision();
@@ -54,7 +54,7 @@ void FlightPathSegment::setCoord1AMSLAlt(double alt)
 
 void FlightPathSegment::setCoord2AMSLAlt(double alt)
 {
-    if (!QGC::fuzzyCompare(alt, _coord2AMSLAlt)) {
+    if (!beeCopter::fuzzyCompare(alt, _coord2AMSLAlt)) {
         _coord2AMSLAlt = alt;
         emit coord2AMSLAltChanged();
         _updateTerrainCollision();
@@ -98,11 +98,11 @@ void FlightPathSegment::_terrainDataReceived(bool success, const TerrainPathQuer
 {
     qCDebug(FlightPathSegmentLog) << this << "_terrainDataReceived" << success << pathHeightInfo.heights.count();
     if (success) {
-        if (!QGC::fuzzyCompare(pathHeightInfo.distanceBetween, _distanceBetween)) {
+        if (!beeCopter::fuzzyCompare(pathHeightInfo.distanceBetween, _distanceBetween)) {
             _distanceBetween = pathHeightInfo.distanceBetween;
             emit distanceBetweenChanged(_distanceBetween);
         }
-        if (!QGC::fuzzyCompare(pathHeightInfo.finalDistanceBetween, _finalDistanceBetween)) {
+        if (!beeCopter::fuzzyCompare(pathHeightInfo.finalDistanceBetween, _finalDistanceBetween)) {
             _finalDistanceBetween = pathHeightInfo.finalDistanceBetween;
             emit finalDistanceBetweenChanged(_finalDistanceBetween);
         }
@@ -127,7 +127,7 @@ void FlightPathSegment::_updateTotalDistance(void)
         newTotalDistance = _coord1.distanceTo(_coord2);
     }
 
-    if (!QGC::fuzzyCompare(newTotalDistance, _totalDistance)) {
+    if (!beeCopter::fuzzyCompare(newTotalDistance, _totalDistance)) {
         _totalDistance = newTotalDistance;
         emit totalDistanceChanged(_totalDistance);
     }

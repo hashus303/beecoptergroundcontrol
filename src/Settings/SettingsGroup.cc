@@ -1,11 +1,11 @@
 #include "SettingsGroup.h"
-#include "QGCCorePlugin.h"
+#include "beeCopterCorePlugin.h"
 
 #include <QtQml/QQmlEngine>
 
 SettingsGroup::SettingsGroup(const QString& name, const QString& settingsGroup, QObject* parent)
     : QObject       (parent)
-    , _visible      (QGCCorePlugin::instance()->overrideSettingsGroupVisibility(name))
+    , _visible      (beeCopterCorePlugin::instance()->overrideSettingsGroupVisibility(name))
     , _name         (name)
     , _settingsGroup(settingsGroup)
 {

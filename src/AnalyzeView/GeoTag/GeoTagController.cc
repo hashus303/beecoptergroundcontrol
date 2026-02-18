@@ -2,8 +2,8 @@
 #include "DataFlashParser.h"
 #include "ExifParser.h"
 #include "GeoTagImageModel.h"
-#include "QGCFileHelper.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterFileHelper.h"
+#include "beeCopterLoggingCategory.h"
 #include "ULogParser.h"
 
 #include <QtConcurrent/QtConcurrent>
@@ -16,7 +16,7 @@
 #include <QtCore/QMutexLocker>
 #include <QtCore/QSet>
 
-QGC_LOGGING_CATEGORY(GeoTagControllerLog, "AnalyzeView.GeoTagController")
+beeCopter_LOGGING_CATEGORY(GeoTagControllerLog, "AnalyzeView.GeoTagController")
 
 namespace {
 
@@ -204,7 +204,7 @@ GeoTagController::~GeoTagController()
 
 void GeoTagController::setLogFile(const QString &file)
 {
-    const QString path = QGCFileHelper::toLocalPath(file);
+    const QString path = beeCopterFileHelper::toLocalPath(file);
 
     if (path.isEmpty()) {
         _setErrorMessage(tr("Empty Filename."));
@@ -227,7 +227,7 @@ void GeoTagController::setLogFile(const QString &file)
 
 void GeoTagController::setImageDirectory(const QString &dir)
 {
-    const QString path = QGCFileHelper::toLocalPath(dir);
+    const QString path = beeCopterFileHelper::toLocalPath(dir);
 
     if (path.isEmpty()) {
         _setErrorMessage(tr("Invalid Directory."));
@@ -246,8 +246,8 @@ void GeoTagController::setImageDirectory(const QString &dir)
     }
 
     if (_saveDirectory.isEmpty()) {
-        const QString taggedPath = QGCFileHelper::joinPath(_imageDirectory, QStringLiteral("TAGGED"));
-        if (QGCFileHelper::exists(taggedPath)) {
+        const QString taggedPath = beeCopterFileHelper::joinPath(_imageDirectory, QStringLiteral("TAGGED"));
+        if (beeCopterFileHelper::exists(taggedPath)) {
             _setErrorMessage(tr("Images have already been tagged. Existing images will be removed."));
             return;
         }
@@ -258,7 +258,7 @@ void GeoTagController::setImageDirectory(const QString &dir)
 
 void GeoTagController::setSaveDirectory(const QString &dir)
 {
-    const QString path = QGCFileHelper::toLocalPath(dir);
+    const QString path = beeCopterFileHelper::toLocalPath(dir);
 
     if (path.isEmpty()) {
         _setErrorMessage(tr("Invalid Directory."));
@@ -366,12 +366,12 @@ void GeoTagController::startTagging()
         return;
     }
 
-    if (!QGCFileHelper::exists(_imageDirectory)) {
+    if (!beeCopterFileHelper::exists(_imageDirectory)) {
         _setErrorMessage(tr("Cannot find the image directory."));
         return;
     }
 
-    if (!_saveDirectory.isEmpty() && !QGCFileHelper::exists(_saveDirectory)) {
+    if (!_saveDirectory.isEmpty() && !beeCopterFileHelper::exists(_saveDirectory)) {
         _setErrorMessage(tr("Cannot find the save directory."));
         return;
     }
@@ -592,7 +592,7 @@ void GeoTagController::_startTagImages()
 {
     const bool preview = _previewMode;
     const QString outputDir = _saveDirectory.isEmpty()
-        ? QGCFileHelper::joinPath(_imageDirectory, QStringLiteral("TAGGED"))
+        ? beeCopterFileHelper::joinPath(_imageDirectory, QStringLiteral("TAGGED"))
         : _saveDirectory;
 
     QString errorMsg;
@@ -882,13 +882,13 @@ bool GeoTagController::_calibrate(QString &errorMsg)
 bool GeoTagController::_validateOutputDirectory(const QString &outputDir, QString &errorMsg)
 {
     const qint64 requiredSpace = _estimateOutputSize();
-    if (!QGCFileHelper::hasSufficientDiskSpace(outputDir, requiredSpace)) {
+    if (!beeCopterFileHelper::hasSufficientDiskSpace(outputDir, requiredSpace)) {
         errorMsg = tr("Geotagging failed. Insufficient disk space. Need approximately %1 MB.")
                    .arg(requiredSpace / (1024 * 1024));
         return false;
     }
 
-    if (!QGCFileHelper::ensureDirectoryExists(outputDir)) {
+    if (!beeCopterFileHelper::ensureDirectoryExists(outputDir)) {
         errorMsg = tr("Geotagging failed. Couldn't create output directory: %1").arg(outputDir);
         return false;
     }
@@ -976,8 +976,8 @@ GeoTagController::TagResult GeoTagController::_tagImage(const TagTask &task)
             return result;
         }
 
-        const QString outputPath = QGCFileHelper::joinPath(task.outputDir, result.fileName);
-        if (!QGCFileHelper::atomicWrite(outputPath, imageBuffer)) {
+        const QString outputPath = beeCopterFileHelper::joinPath(task.outputDir, result.fileName);
+        if (!beeCopterFileHelper::atomicWrite(outputPath, imageBuffer)) {
             result.errorMessage = tr("Geotagging failed. Couldn't save image: %1").arg(outputPath);
             return result;
         }
@@ -1004,7 +1004,7 @@ QByteArray GeoTagController::_readImageCached(const QString &path, QString *erro
 
     // Read from disk (outside lock to allow parallel reads)
     QString error;
-    QByteArray data = QGCFileHelper::readFile(path, &error);
+    QByteArray data = beeCopterFileHelper::readFile(path, &error);
 
     if (data.isEmpty()) {
         if (errorString) {

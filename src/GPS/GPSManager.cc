@@ -1,10 +1,10 @@
 #include "GPSManager.h"
 #include "GPSRtk.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QApplicationStatic>
 
-QGC_LOGGING_CATEGORY(GPSManagerLog, "GPS.GPSManager")
+beeCopter_LOGGING_CATEGORY(GPSManagerLog, "GPS.GPSManager")
 
 Q_APPLICATION_STATIC(GPSManager, _gpsManager);
 

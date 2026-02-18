@@ -1,17 +1,17 @@
 import QtQuick
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     implicitWidth:  mainLayout.width + (_margins * 2)
     implicitHeight: mainLayout.height + (_margins * 2)
-    color:          qgcPal.window
+    color:          beeCopterPal.window
     radius:         ScreenTools.defaultBorderRadius
     visible:        false
 
-    property var    _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    property var    _activeVehicle: beeCopter.multiVehicleManager.activeVehicle
     property real   _margins:       ScreenTools.defaultFontPixelWidth / 2
     property real   _totalBlocks:   _activeVehicle ? _activeVehicle.terrain.blocksPending.rawValue + _activeVehicle.terrain.blocksLoaded.rawValue : 0
     property real   _blocksLoaded:  _activeVehicle ? _activeVehicle.terrain.blocksLoaded.rawValue : 0
@@ -44,7 +44,7 @@ Rectangle {
         onTriggered:    parent.visible = false
     }
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
     ColumnLayout {
         id:                 mainLayout
@@ -53,7 +53,7 @@ Rectangle {
         anchors.left:       parent.left
         spacing:            _margins
 
-        QGCLabel {
+        beeCopterLabel {
             Layout.alignment:   Qt.AlignHCenter
             text:               qsTr("Terrain Load Progress")
             font.pointSize:     ScreenTools.smallFontPointSize
@@ -71,7 +71,7 @@ Rectangle {
                 color:          "green"
                 width:         parent.width * _pctComplete
 
-                QGCLabel {
+                beeCopterLabel {
                     anchors.centerIn:   parent
                     text:               qsTr("Done")
                     visible:            _blocksPending == 0

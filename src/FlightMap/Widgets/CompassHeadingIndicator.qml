@@ -1,7 +1,7 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Canvas {
     id:                 control
@@ -13,16 +13,16 @@ Canvas {
     property real heading
     property bool simplified:    false
 
-    property var _qgcPal: QGroundControl.globalPalette
+    property var _beeCopterPal: beeCopter.globalPalette
 
     Connections {
-        target:                 _qgcPal
+        target:                 _beeCopterPal
         function onGlobalThemeChanged() { control.requestPaint() }
     }
 
     onPaint: {
         var ctx = getContext("2d")
-        ctx.strokeStyle = simplified ? "#EE3424" : _qgcPal.text
+        ctx.strokeStyle = simplified ? "#EE3424" : _beeCopterPal.text
         ctx.fillStyle = "#EE3424"
         ctx.lineWidth = 1
         ctx.beginPath()

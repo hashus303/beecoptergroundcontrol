@@ -1,6 +1,6 @@
 #include "ActuatorTesting.h"
 #include "Common.h"
-#include "QGCApplication.h"
+#include "beeCopterApplication.h"
 
 using namespace ActuatorTesting;
 
@@ -144,7 +144,7 @@ void ActuatorTest::ackHandler(MAV_RESULT commandResult, Vehicle::MavCmdResultFai
             } else {
                 message = tr("Actuator test command failed");
             }
-            qgcApp()->showAppMessage(message);
+            beeCopterApp()->showAppMessage(message);
             _hadFailure = true;
             emit hadFailureChanged();
         }

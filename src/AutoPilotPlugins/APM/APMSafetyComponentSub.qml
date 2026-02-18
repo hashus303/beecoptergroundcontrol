@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:                 safetyPage
@@ -19,7 +19,7 @@ SetupPage {
 
             FactPanelController { id: controller; }
 
-            QGCPalette { id: ggcPal; colorGroupEnabled: true }
+            beeCopterPalette { id: ggcPal; colorGroupEnabled: true }
 
             property bool _firmware34:       globals.activeVehicle.versionCompare(3, 5, 0) < 0
 
@@ -53,7 +53,7 @@ SetupPage {
             Column {
                 spacing: _margins / 2
 
-                QGCLabel {
+                beeCopterLabel {
                     id:         failsafeLabel
                     text:       qsTr("Failsafe Actions")
                     font.bold:   true
@@ -77,7 +77,7 @@ SetupPage {
                         Row {
                             spacing: _margins / 2
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 id:                     gcsEnableLabel
                                 width:                  failsafeSettings._labelWidth
                                 anchors.verticalCenter: gcsEnableCombo.verticalCenter
@@ -96,7 +96,7 @@ SetupPage {
                         Row {
                             spacing: _margins / 2
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 id:                     leakEnableLabel
                                 width:                  failsafeSettings._labelWidth
                                 anchors.verticalCenter: leakEnableCombo.verticalCenter
@@ -111,7 +111,7 @@ SetupPage {
                                 indexModel:             false
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:                   qsTr("Detector Pin:")
                                 width:                  failsafeSettings._labelWidth
                                 anchors.verticalCenter: leakEnableCombo.verticalCenter
@@ -126,7 +126,7 @@ SetupPage {
                                 indexModel:             false
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:                   qsTr("Logic when Dry:")
                                 width:                  failsafeSettings._labelWidth
                                 visible:                leakEnableCombo.currentIndex != 0
@@ -146,7 +146,7 @@ SetupPage {
                             spacing: _margins / 2
                             visible: !_firmware34
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 id:                     batteryEnableLabel
                                 width:                  failsafeSettings._labelWidth
                                 anchors.verticalCenter: batteryEnableCombo.verticalCenter
@@ -162,7 +162,7 @@ SetupPage {
                                 indexModel:         false
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:                   qsTr("Power module not set up")
                                 width:                  failsafeSettings._labelWidth
                                 color:                  ggcPal.warningText
@@ -170,7 +170,7 @@ SetupPage {
                                 visible:                !_batteryDetected
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:                   qsTr("Voltage:")
                                 width:                  failsafeSettings._labelWidth
                                 anchors.verticalCenter: batteryEnableCombo.verticalCenter
@@ -184,7 +184,7 @@ SetupPage {
                                 fact:                   _failsafeBatteryVoltage
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:                   qsTr("Remaining Capacity:")
                                 width:                  failsafeSettings._labelWidth
                                 anchors.verticalCenter: batteryEnableCombo.verticalCenter
@@ -203,7 +203,7 @@ SetupPage {
                             spacing: _margins / 2
                             visible: !_firmware34
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 id:                     ekfEnableLabel
                                 width:                  failsafeSettings._labelWidth
                                 anchors.verticalCenter: ekfEnableCombo.verticalCenter
@@ -218,7 +218,7 @@ SetupPage {
                                 indexModel:         false
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text: "Threshold:"
                                 width:              failsafeSettings._labelWidth
                                 visible:            ekfEnableCombo.currentIndex != 0
@@ -237,7 +237,7 @@ SetupPage {
                             spacing: _margins / 2
                             visible: !_firmware34
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 id:                     pilotEnableLabel
                                 width:                  failsafeSettings._labelWidth
                                 anchors.verticalCenter: pilotEnableCombo.verticalCenter
@@ -252,7 +252,7 @@ SetupPage {
                                 indexModel:         false
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:                   qsTr("Timeout:")
                                 width:                  failsafeSettings._labelWidth
                                 anchors.verticalCenter: pilotEnableCombo.verticalCenter
@@ -272,7 +272,7 @@ SetupPage {
                         Row {
                             spacing: _margins / 2
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 id:                     temperatureEnableLabel
                                 width:                  failsafeSettings._labelWidth
                                 anchors.verticalCenter: temperatureEnableCombo.verticalCenter
@@ -287,7 +287,7 @@ SetupPage {
                                 indexModel:         false
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Threshold:")
                                 width:              failsafeSettings._labelWidth
                                 visible:            temperatureEnableCombo.currentIndex != 0
@@ -305,7 +305,7 @@ SetupPage {
                         Row {
                             spacing: _margins / 2
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 id:                     pressureEnableLabel
                                 width:                  failsafeSettings._labelWidth
                                 anchors.verticalCenter: pressureEnableCombo.verticalCenter
@@ -320,7 +320,7 @@ SetupPage {
                                 indexModel:         false
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:               qsTr("Threshold:")
                                 width:              failsafeSettings._labelWidth
                                 visible:            pressureEnableCombo.currentIndex != 0
@@ -341,7 +341,7 @@ SetupPage {
             Column {
                 spacing: _margins / 2
 
-                QGCLabel {
+                beeCopterLabel {
                     text:           _armingCheck ? qsTr("Arming Checks") : qsTr("Skip Arming Checks")
                     font.bold:      true
                 }
@@ -367,12 +367,12 @@ SetupPage {
                             fact:               _armingCheck ? _armingCheck : _armingSkipCheck
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             id:             armingCheckWarning
                             anchors.left:   parent.left
                             anchors.right:  parent.right
                             wrapMode:       Text.WordWrap
-                            color:          qgcPal.warningText
+                            color:          beeCopterPal.warningText
                             text:            qsTr("Warning: Turning off arming checks can lead to loss of Vehicle control.")
                             visible:        _armingCheck ? _armingCheck.value != 1 : _armingSkipCheck.value != 0
                         }

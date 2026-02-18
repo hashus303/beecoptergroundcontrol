@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 Item {
     anchors.fill:   parent

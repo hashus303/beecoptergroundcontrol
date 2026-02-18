@@ -1,10 +1,10 @@
 #include "MAVLinkSystem.h"
 #include "MAVLinkMessage.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(MAVLinkSystemLog, "AnalyzeView.MAVLinkSystem")
+beeCopter_LOGGING_CATEGORY(MAVLinkSystemLog, "AnalyzeView.MAVLinkSystem")
 
-QGCMAVLinkSystem::QGCMAVLinkSystem(quint8 id, QObject *parent)
+beeCopterMAVLinkSystem::beeCopterMAVLinkSystem(quint8 id, QObject *parent)
     : QObject(parent)
     , _systemID(id)
     , _messages(new QmlObjectListModel(this))
@@ -12,15 +12,15 @@ QGCMAVLinkSystem::QGCMAVLinkSystem(quint8 id, QObject *parent)
     qCDebug(MAVLinkSystemLog) << "New Vehicle:" << id;
 }
 
-QGCMAVLinkSystem::~QGCMAVLinkSystem()
+beeCopterMAVLinkSystem::~beeCopterMAVLinkSystem()
 {
     _messages->clearAndDeleteContents();
 }
 
-QGCMAVLinkMessage *QGCMAVLinkSystem::findMessage(uint32_t id, uint8_t compId)
+beeCopterMAVLinkMessage *beeCopterMAVLinkSystem::findMessage(uint32_t id, uint8_t compId)
 {
     for (int i = 0; i < _messages->count(); i++) {
-        QGCMAVLinkMessage *const msg = qobject_cast<QGCMAVLinkMessage*>(_messages->get(i));
+        beeCopterMAVLinkMessage *const msg = qobject_cast<beeCopterMAVLinkMessage*>(_messages->get(i));
         if(msg) {
             if((msg->id() == id) && (msg->compId() == compId)) {
                 return msg;
@@ -31,10 +31,10 @@ QGCMAVLinkMessage *QGCMAVLinkSystem::findMessage(uint32_t id, uint8_t compId)
     return nullptr;
 }
 
-int QGCMAVLinkSystem::findMessage(const QGCMAVLinkMessage *message)
+int beeCopterMAVLinkSystem::findMessage(const beeCopterMAVLinkMessage *message)
 {
     for (int i = 0; i < _messages->count(); i++) {
-        const QGCMAVLinkMessage *const msg = qobject_cast<const QGCMAVLinkMessage*>(_messages->get(i));
+        const beeCopterMAVLinkMessage *const msg = qobject_cast<const beeCopterMAVLinkMessage*>(_messages->get(i));
         if (msg && (msg == message)) {
             return i;
         }
@@ -43,10 +43,10 @@ int QGCMAVLinkSystem::findMessage(const QGCMAVLinkMessage *message)
     return -1;
 }
 
-void QGCMAVLinkSystem::_resetSelection()
+void beeCopterMAVLinkSystem::_resetSelection()
 {
     for (int i = 0; i < _messages->count(); i++) {
-        QGCMAVLinkMessage *const msg = qobject_cast<QGCMAVLinkMessage*>(_messages->get(i));
+        beeCopterMAVLinkMessage *const msg = qobject_cast<beeCopterMAVLinkMessage*>(_messages->get(i));
         if (msg && msg->selected()) {
             msg->setSelected(false);
             emit msg->selectedChanged();
@@ -54,7 +54,7 @@ void QGCMAVLinkSystem::_resetSelection()
     }
 }
 
-void QGCMAVLinkSystem::setSelected(int sel)
+void beeCopterMAVLinkSystem::setSelected(int sel)
 {
     if (sel >= _messages->count()) {
         return;
@@ -63,18 +63,18 @@ void QGCMAVLinkSystem::setSelected(int sel)
     _selected = sel;
     emit selectedChanged();
     _resetSelection();
-    QGCMAVLinkMessage *const msg = qobject_cast<QGCMAVLinkMessage*>(_messages->get(sel));
+    beeCopterMAVLinkMessage *const msg = qobject_cast<beeCopterMAVLinkMessage*>(_messages->get(sel));
     if(msg && !msg->selected()) {
         msg->setSelected(true);
         emit msg->selectedChanged();
     }
 }
 
-QGCMAVLinkMessage *QGCMAVLinkSystem::selectedMsg()
+beeCopterMAVLinkMessage *beeCopterMAVLinkSystem::selectedMsg()
 {
-    QGCMAVLinkMessage *selectedMsg = nullptr;
+    beeCopterMAVLinkMessage *selectedMsg = nullptr;
     if (_messages->count()) {
-        selectedMsg = qobject_cast<QGCMAVLinkMessage*>(_messages->get(_selected));
+        selectedMsg = qobject_cast<beeCopterMAVLinkMessage*>(_messages->get(_selected));
     }
 
     return selectedMsg;
@@ -82,8 +82,8 @@ QGCMAVLinkMessage *QGCMAVLinkSystem::selectedMsg()
 
 static bool messages_sort(const QObject *a, const QObject *b)
 {
-    const QGCMAVLinkMessage *const aa = qobject_cast<const QGCMAVLinkMessage*>(a);
-    const QGCMAVLinkMessage *const bb = qobject_cast<const QGCMAVLinkMessage*>(b);
+    const beeCopterMAVLinkMessage *const aa = qobject_cast<const beeCopterMAVLinkMessage*>(a);
+    const beeCopterMAVLinkMessage *const bb = qobject_cast<const beeCopterMAVLinkMessage*>(b);
     if (!aa || !bb) {
         return false;
     }
@@ -95,11 +95,11 @@ static bool messages_sort(const QObject *a, const QObject *b)
     return (aa->name() < bb->name());
 }
 
-void QGCMAVLinkSystem::append(QGCMAVLinkMessage *message)
+void beeCopterMAVLinkSystem::append(beeCopterMAVLinkMessage *message)
 {
-    QGCMAVLinkMessage *selectedMsg = nullptr;
+    beeCopterMAVLinkMessage *selectedMsg = nullptr;
     if (_messages->count()) {
-        selectedMsg = qobject_cast<QGCMAVLinkMessage*>(_messages->get(_selected));
+        selectedMsg = qobject_cast<beeCopterMAVLinkMessage*>(_messages->get(_selected));
     } else {
         message->setSelected(true);
     }
@@ -121,7 +121,7 @@ void QGCMAVLinkSystem::append(QGCMAVLinkMessage *message)
     }
 }
 
-void QGCMAVLinkSystem::_checkCompID(const QGCMAVLinkMessage *message)
+void beeCopterMAVLinkSystem::_checkCompID(const beeCopterMAVLinkMessage *message)
 {
     if (_compIDsStr.isEmpty()) {
         _compIDsStr << tr("Comp All");

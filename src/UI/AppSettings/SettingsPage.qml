@@ -3,16 +3,16 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 Item {
     id: root
 
     default property alias contentItem: mainLayout.data
 
-    QGCFlickable {
+    beeCopterFlickable {
         anchors.fill:   parent
         contentWidth:   mainLayout.width
         contentHeight:  mainLayout.height

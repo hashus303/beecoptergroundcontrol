@@ -2,8 +2,8 @@ import QtQuick
 import QtLocation
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Marker for displaying a camera trigger on the map
 MapQuickItem {
@@ -26,7 +26,7 @@ MapQuickItem {
             anchors.verticalCenter:   parent.verticalCenter
             height:                   width * 0.6
             width:                    parent.width * 0.6
-            color:                    qgcPal.window
+            color:                    beeCopterPal.window
             radius:                   4
 
             // Little rectangle on top indicating viewfinder
@@ -36,7 +36,7 @@ MapQuickItem {
                 anchors.bottom:           cameraIconFrameRectangle.top
                 width:                    cameraIconFrameRectangle.width * 0.5
                 height:                   cameraIconFrameRectangle.height * 0.3
-                color:                    qgcPal.window
+                color:                    beeCopterPal.window
                 radius:                   2
             }
         }

@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 ColumnLayout {
     spacing: _rowSpacing
@@ -12,7 +12,7 @@ ColumnLayout {
         // No need
     }
 
-    QGCLabel {
+    beeCopterLabel {
         Layout.preferredWidth: _secondColumnWidth
         Layout.fillWidth:       true
         font.pointSize:         ScreenTools.smallFontPointSize
@@ -23,8 +23,8 @@ ColumnLayout {
     RowLayout {
         spacing: _colSpacing
 
-        QGCLabel { text: qsTr("Port") }
-        QGCTextField {
+        beeCopterLabel { text: qsTr("Port") }
+        beeCopterTextField {
             id:                     portField
             text:                   subEditConfig.localPort.toString()
             focus:                  true
@@ -34,7 +34,7 @@ ColumnLayout {
         }
     }
 
-    QGCLabel { text: qsTr("Server Addresses (optional)") }
+    beeCopterLabel { text: qsTr("Server Addresses (optional)") }
 
     Repeater {
         model: subEditConfig.hostList
@@ -42,12 +42,12 @@ ColumnLayout {
         delegate: RowLayout {
             spacing: _colSpacing
 
-            QGCLabel {
+            beeCopterLabel {
                 Layout.preferredWidth:  _secondColumnWidth
                 text:                   modelData
             }
 
-            QGCButton {
+            beeCopterButton {
                 text:       qsTr("Remove")
                 onClicked:  subEditConfig.removeHost(modelData)
             }
@@ -57,12 +57,12 @@ ColumnLayout {
     RowLayout {
         spacing: _colSpacing
 
-        QGCTextField {
+        beeCopterTextField {
             id:                     hostField
             Layout.preferredWidth:  _secondColumnWidth
             placeholderText:        qsTr("Example: 127.0.0.1:14550")
         }
-        QGCButton {
+        beeCopterButton {
             text:       qsTr("Add Server")
             enabled:    hostField.text !== ""
             onClicked: {

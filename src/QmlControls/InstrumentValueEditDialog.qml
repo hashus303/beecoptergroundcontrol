@@ -3,19 +3,19 @@ import QtQuick.Dialogs
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.FactControls
 
-QGCPopupDialog {
+beeCopterPopupDialog {
     id:         root
     title:      qsTr("Telemetry Display")
     buttons:    Dialog.Close
 
     property var instrumentValueData
 
-    QGCPalette { id: qgcPal;        colorGroupEnabled: parent.enabled }
-    QGCPalette { id: qgcPalDisable; colorGroupEnabled: false }
+    beeCopterPalette { id: beeCopterPal;        colorGroupEnabled: parent.enabled }
+    beeCopterPalette { id: beeCopterPalDisable; colorGroupEnabled: false }
 
     Loader {
         sourceComponent: instrumentValueData.fact ? editorComponent : noFactComponent
@@ -24,7 +24,7 @@ QGCPopupDialog {
     Component {
         id: noFactComponent
 
-        QGCLabel {
+        beeCopterLabel {
             text: qsTr("Valuec requires a connected vehicle for setup.")
         }
     }
@@ -84,7 +84,7 @@ QGCPopupDialog {
                         RowLayout {
                             Layout.fillWidth:  true
 
-                            QGCRadioButton {
+                            beeCopterRadioButton {
                                 id:                     iconRadio
                                 text:                   qsTr("Icon")
                                 Layout.fillWidth:       true
@@ -102,10 +102,10 @@ QGCPopupDialog {
                                 Rectangle {
                                     width:      height
                                     height:     changeIconBtn.height
-                                    color:      qgcPal.windowShade
+                                    color:      beeCopterPal.windowShade
                                     opacity:    iconRadio.checked ? 1 : .3
 
-                                    QGCColoredImage {
+                                    beeCopterColoredImage {
                                         id:                 valueIcon
                                         anchors.centerIn:   parent
                                         height:             ScreenTools.defaultFontPixelHeight
@@ -115,10 +115,10 @@ QGCPopupDialog {
                                         fillMode:           Image.PreserveAspectFit
                                         mipmap:             true
                                         smooth:             true
-                                        color:              valueIcon.status === Image.Error ? "red" : qgcPal.text
+                                        color:              valueIcon.status === Image.Error ? "red" : beeCopterPal.text
                                     }
                                 }
-                                QGCButton {
+                                beeCopterButton {
                                     id:         changeIconBtn
                                     text:       qsTr("Change")
                                     enabled:    iconRadio.checked
@@ -133,7 +133,7 @@ QGCPopupDialog {
                         RowLayout {
                             Layout.fillWidth: true
 
-                            QGCRadioButton {
+                            beeCopterRadioButton {
                                 id:                     textRadio
                                 text:                   qsTr("Text")
                                 Layout.fillWidth:       true
@@ -145,7 +145,7 @@ QGCPopupDialog {
                                 }
                             }
 
-                            QGCTextField {
+                            beeCopterTextField {
                                 enabled:                textRadio.checked
                                 Layout.minimumWidth:    iconOptionInputs.width
                                 text:                   textRadio.checked
@@ -163,7 +163,7 @@ QGCPopupDialog {
                         onActivated:    (index) => { instrumentValueData.factValueGrid.fontSize = index }
                     }
 
-                    QGCCheckBoxSlider {
+                    beeCopterCheckBoxSlider {
                         Layout.fillWidth: true
                         text:       qsTr("Show Units")
                         checked:    instrumentValueData.showUnits
@@ -183,12 +183,12 @@ QGCPopupDialog {
                         Layout.fillWidth:   true
                         spacing:            ScreenTools.defaultFontPixelWidth * 2
 
-                        QGCLabel {
+                        beeCopterLabel {
                             Layout.fillWidth:       true
                             text:                   qsTr("Type")
                         }
 
-                        QGCComboBox {
+                        beeCopterComboBox {
                             id:                 rangeTypeCombo
                             model:              instrumentValueData.rangeTypeNames
                             currentIndex:       instrumentValueData.rangeType
@@ -275,7 +275,7 @@ QGCPopupDialog {
                 id:         mainColumn
                 spacing:    ScreenTools.defaultFontPixelHeight / 2
 
-                QGCLabel {
+                beeCopterLabel {
                     width:      rowLayout.width
                     text:       qsTr("Specify the color you want to apply based on value ranges. The color will be applied to the icon if available, otherwise to the value itself.")
                     wrapMode:   Text.WordWrap
@@ -292,14 +292,14 @@ QGCPopupDialog {
                         Repeater {
                             model: instrumentValueData.rangeValues.length
 
-                            QGCColoredImage {
+                            beeCopterColoredImage {
                                 width:      ScreenTools.implicitTextFieldHeight
                                 height:     width
                                 fillMode:   Image.PreserveAspectFit
-                                color:      QGroundControl.globalPalette.text
+                                color:      beeCopter.globalPalette.text
                                 source:     "/res/TrashDelete.svg"
 
-                                QGCMouseArea {
+                                beeCopterMouseArea {
                                     fillItem:   parent
                                     onClicked:  instrumentValueData.removeRangeValue(index)
                                 }
@@ -314,7 +314,7 @@ QGCPopupDialog {
                         Repeater {
                             model: instrumentValueData.rangeValues.length
 
-                            QGCTextField {
+                            beeCopterTextField {
                                 text:               instrumentValueData.rangeValues[index]
                                 onEditingFinished:  updateRangeValue(index, text)
                             }
@@ -326,7 +326,7 @@ QGCPopupDialog {
                         Repeater {
                             model: instrumentValueData.rangeColors
 
-                            QGCCheckBox {
+                            beeCopterCheckBox {
                                 height:     ScreenTools.implicitTextFieldHeight
                                 checked:    instrumentValueData.isValidColor(instrumentValueData.rangeColors[index])
                                 onClicked:  updateColorValue(index, checked ? "green" : instrumentValueData.invalidColor())
@@ -342,8 +342,8 @@ QGCPopupDialog {
                             Rectangle {
                                 width:          ScreenTools.implicitTextFieldHeight
                                 height:         width
-                                border.color:   qgcPal.text
-                                color:          instrumentValueData.isValidColor(modelData) ? modelData : qgcPal.text
+                                border.color:   beeCopterPal.text
+                                color:          instrumentValueData.isValidColor(modelData) ? modelData : beeCopterPal.text
 
                                 MouseArea {
                                     anchors.fill: parent
@@ -357,7 +357,7 @@ QGCPopupDialog {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:       qsTr("Add Row")
                     onClicked:  instrumentValueData.addRangeValue()
                 }
@@ -388,7 +388,7 @@ QGCPopupDialog {
                 id:         mainColumn
                 spacing:    ScreenTools.defaultFontPixelHeight / 2
 
-                QGCLabel {
+                beeCopterLabel {
                     width:      rowLayout.width
                     text:       qsTr("Specify the icon you want to display based on value ranges.")
                     wrapMode:   Text.WordWrap
@@ -405,14 +405,14 @@ QGCPopupDialog {
                         Repeater {
                             model: instrumentValueData.rangeValues.length
 
-                            QGCColoredImage {
+                            beeCopterColoredImage {
                                 width:      ScreenTools.implicitTextFieldHeight
                                 height:     width
                                 fillMode:   Image.PreserveAspectFit
-                                color:      QGroundControl.globalPalette.text
+                                color:      beeCopter.globalPalette.text
                                 source:     "/res/TrashDelete.svg"
 
-                                QGCMouseArea {
+                                beeCopterMouseArea {
                                     fillItem:   parent
                                     onClicked:  instrumentValueData.removeRangeValue(index)
                                 }
@@ -427,7 +427,7 @@ QGCPopupDialog {
                         Repeater {
                             model: instrumentValueData.rangeValues.length
 
-                            QGCTextField {
+                            beeCopterTextField {
                                 text:               instrumentValueData.rangeValues[index]
                                 onEditingFinished:  updateRangeValue(index, text)
                             }
@@ -440,7 +440,7 @@ QGCPopupDialog {
                         Repeater {
                             model: instrumentValueData.rangeIcons
 
-                            QGCColoredImage {
+                            beeCopterColoredImage {
                                 height:             ScreenTools.implicitTextFieldHeight
                                 width:              height
                                 source:             "/InstrumentValueIcons/" + modelData
@@ -448,7 +448,7 @@ QGCPopupDialog {
                                 fillMode:           Image.PreserveAspectFit
                                 mipmap:             true
                                 smooth:             true
-                                color:              qgcPal.text
+                                color:              beeCopterPal.text
 
                                 MouseArea {
                                     anchors.fill:   parent
@@ -462,7 +462,7 @@ QGCPopupDialog {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:       qsTr("Add Row")
                     onClicked:  instrumentValueData.addRangeValue()
                 }
@@ -493,7 +493,7 @@ QGCPopupDialog {
                 id:         mainColumn
                 spacing:    ScreenTools.defaultFontPixelHeight / 2
 
-                QGCLabel {
+                beeCopterLabel {
                     width:      rowLayout.width
                     text:       qsTr("Specify the icon opacity you want based on value ranges.")
                     wrapMode:   Text.WordWrap
@@ -510,14 +510,14 @@ QGCPopupDialog {
                         Repeater {
                             model: instrumentValueData.rangeValues.length
 
-                            QGCColoredImage {
+                            beeCopterColoredImage {
                                 width:      ScreenTools.implicitTextFieldHeight
                                 height:     width
                                 fillMode:   Image.PreserveAspectFit
-                                color:      QGroundControl.globalPalette.text
+                                color:      beeCopter.globalPalette.text
                                 source:     "/res/TrashDelete.svg"
 
-                                QGCMouseArea {
+                                beeCopterMouseArea {
                                     fillItem:   parent
                                     onClicked:  instrumentValueData.removeRangeValue(index)
                                 }
@@ -532,7 +532,7 @@ QGCPopupDialog {
                         Repeater {
                             model: instrumentValueData.rangeValues
 
-                            QGCTextField {
+                            beeCopterTextField {
                                 text:               modelData
                                 onEditingFinished:  updateRangeValue(index, text)
                             }
@@ -545,7 +545,7 @@ QGCPopupDialog {
                         Repeater {
                             model: instrumentValueData.rangeOpacities
 
-                            QGCTextField {
+                            beeCopterTextField {
                                 text:               modelData
                                 onEditingFinished:  updateOpacityValue(index, text)
                             }
@@ -553,7 +553,7 @@ QGCPopupDialog {
                     }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:       qsTr("Add Row")
                     onClicked:  instrumentValueData.addRangeValue()
                 }
@@ -564,7 +564,7 @@ QGCPopupDialog {
     Component {
         id: iconPickerDialog
 
-        QGCPopupDialog {
+        beeCopterPopupDialog {
             title:      qsTr("Select Icon")
             buttons:    Dialog.Close
 
@@ -583,11 +583,11 @@ QGCPopupDialog {
                     Rectangle {
                         height: ScreenTools.minTouchPixels
                         width:  height
-                        color:  currentSelection ? qgcPal.text  : qgcPal.window
+                        color:  currentSelection ? beeCopterPal.text  : beeCopterPal.window
 
                         property bool currentSelection: icon == modelData
 
-                        QGCColoredImage {
+                        beeCopterColoredImage {
                             anchors.centerIn:   parent
                             height:             parent.height * 0.75
                             width:              height
@@ -596,7 +596,7 @@ QGCPopupDialog {
                             fillMode:           Image.PreserveAspectFit
                             mipmap:             true
                             smooth:             true
-                            color:              currentSelection ? qgcPal.window : qgcPal.text
+                            color:              currentSelection ? beeCopterPal.window : beeCopterPal.text
 
                             MouseArea {
                                 anchors.fill:   parent

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FactPanelController.h"
-#include "QGCMAVLink.h"
+#include "beeCopterMAVLink.h"
 
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QObject>
@@ -105,7 +105,7 @@ signals:
     void resetStatusTextArea();
     void waitingForCancelChanged();
     void setupNeededChanged();
-    void calibrationComplete(QGCMAVLink::CalibrationType calType);
+    void calibrationComplete(beeCopterMAVLink::CalibrationType calType);
     void compass1CalSucceededChanged(bool compass1CalSucceeded);
     void compass2CalSucceededChanged(bool compass2CalSucceeded);
     void compass3CalSucceededChanged(bool compass3CalSucceeded);
@@ -154,7 +154,7 @@ private:
 
     bool _showOrientationCalArea = false;
 
-    QGCMAVLink::CalibrationType _calTypeInProgress = QGCMAVLink::CalibrationNone;
+    beeCopterMAVLink::CalibrationType _calTypeInProgress = beeCopterMAVLink::CalibrationNone;
 
     uint8_t _rgCompassCalProgress[3];
     bool _rgCompassCalComplete[3];

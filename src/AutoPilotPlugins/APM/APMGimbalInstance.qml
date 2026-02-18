@@ -1,10 +1,10 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
-import QGroundControl.AutoPilotPlugins.APM
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
+import beeCopter.AutoPilotPlugins.APM
 
 ColumnLayout {
     property int instance: 1
@@ -159,7 +159,7 @@ ColumnLayout {
                     ColumnLayout {
                         spacing: verticalSpacing
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text: modelData.axisLabel
                         }
 
@@ -241,13 +241,13 @@ ColumnLayout {
                     RowLayout {
                         spacing: horizontalSpacing
 
-                        QGCRadioButton {
+                        beeCopterRadioButton {
                             text: qsTr("Angle Control")
                             checked: !(_rcRateFact.rawValue > 0)
                             onClicked: _rcRateFact.rawValue = 0
                         }
 
-                        QGCRadioButton {
+                        beeCopterRadioButton {
                             text: qsTr("Rate Control")
                             checked: _rcRateFact.rawValue > 0
                             onClicked: _rcRateFact.rawValue = 90
@@ -285,7 +285,7 @@ ColumnLayout {
                             Layout.fillWidth: false
                             spacing: horizontalSpacing
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text: modelData.axisLabel
                             }
 
@@ -375,7 +375,7 @@ ColumnLayout {
     Component {
         id: rebootRequiredComponent
 
-        QGCLabel {
+        beeCopterLabel {
             text: qsTr("Gimbal settings will be available after rebooting the vehicle.")
             visible: gimbalParams.typeFact.rawValue !== 0
         }

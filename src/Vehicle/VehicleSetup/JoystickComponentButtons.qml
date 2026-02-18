@@ -3,10 +3,10 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.VehicleSetup
-import QGroundControl.FactControls
+import beeCopter
+import beeCopter.Controls
+import beeCopter.VehicleSetup
+import beeCopter.FactControls
 
 ColumnLayout {
     spacing: ScreenTools.defaultFontPixelHeight / 2
@@ -16,7 +16,7 @@ ColumnLayout {
 
     property int _maxButtons: 64
 
-    QGCLabel {
+    beeCopterLabel {
         Layout.preferredWidth: parent.width
         wrapMode: Text.WordWrap
         text: qsTr("Multiple buttons that have the same action must be pressed simultaneously to invoke the action.")
@@ -46,14 +46,14 @@ ColumnLayout {
             id: assignedButtonModel
         }
 
-        QGCComboBox {
+        beeCopterComboBox {
             id: buttonIndexCombo
             model: joystick.buttonCount
 
             onActivated: (index) => { buttonAssignmentRow.selectedButtonIndex = index }
         }
 
-        QGCComboBox {
+        beeCopterComboBox {
             id: buttonActionCombo
             model: joystick.assignableActionTitles
             sizeToContents: true
@@ -72,7 +72,7 @@ ColumnLayout {
             Connections { target: buttonAssignmentRow; function onSelectedButtonIndexChanged() { buttonActionCombo._findCurrentButtonAction() } }
         }
 
-        QGCCheckBox {
+        beeCopterCheckBox {
             text: qsTr("Repeat")
             checked: joystick.getButtonRepeat(buttonAssignmentRow.selectedButtonIndex)
             enabled: {
@@ -96,15 +96,15 @@ ColumnLayout {
 
         Repeater {
             model: buttonAssignmentRow._assignedButtonModel
-            QGCLabel { text: buttonIndex }
+            beeCopterLabel { text: buttonIndex }
         }
         Repeater {
             model: buttonAssignmentRow._assignedButtonModel
-            QGCLabel { text: buttonAction }
+            beeCopterLabel { text: buttonAction }
         }
         Repeater {
             model: buttonAssignmentRow._assignedButtonModel
-            QGCLabel { text: repeat ? "Repeat" : "" }
+            beeCopterLabel { text: repeat ? "Repeat" : "" }
         }
     }
 
@@ -116,16 +116,16 @@ ColumnLayout {
 
         Row {
             spacing: ScreenTools.defaultFontPixelWidth
-            QGCLabel {
+            beeCopterLabel {
                 horizontalAlignment: Text.AlignHCenter
                 width: ScreenTools.defaultFontPixelHeight * 1.5
                 text: qsTr("#")
             }
-            QGCLabel {
+            beeCopterLabel {
                 width: ScreenTools.defaultFontPixelWidth * 26
                 text: qsTr("Function: ")
             }
-            QGCLabel {
+            beeCopterLabel {
                 width: ScreenTools.defaultFontPixelWidth * 26
                 visible: globals.activeVehicle.supportsJSButton
                 text: qsTr("Shift Function: ")
@@ -150,26 +150,26 @@ ColumnLayout {
                     width: ScreenTools.defaultFontPixelHeight * 1.5
                     height: width
                     border.width: 1
-                    border.color: qgcPal.text
-                    color: pressed ? qgcPal.buttonHighlight : qgcPal.button
+                    border.color: beeCopterPal.text
+                    color: pressed ? beeCopterPal.buttonHighlight : beeCopterPal.button
 
 
-                    QGCLabel {
+                    beeCopterLabel {
                         anchors.fill: parent
-                        color: pressed ? qgcPal.buttonHighlightText : qgcPal.buttonText
+                        color: pressed ? beeCopterPal.buttonHighlightText : beeCopterPal.buttonText
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         text: modelData
                     }
                 }
 
-                QGCComboBox {
+                beeCopterComboBox {
                     id: buttonActionCombo
                     width: ScreenTools.defaultFontPixelWidth * 26
                     property Fact fact: controller.parameterExists(-1, parameterName) ? controller.getParameterFact(-1, parameterName) : null
                     property Fact fact_shift: controller.parameterExists(-1, parameterShiftName) ? controller.getParameterFact(-1, parameterShiftName) : null
                     property var factOptions: fact ? fact.enumStrings : [];
-                    property var qgcActions: joystick.assignableActionTitles.filter(
+                    property var beeCopterActions: joystick.assignableActionTitles.filter(
                         function (s) {
                             return [
                                 s.includes("Camera"),
@@ -182,20 +182,20 @@ ColumnLayout {
                         }
                     )
 
-                    model: [...qgcActions, ...factOptions]
-                    property var isFwAction: currentIndex >= qgcActions.length
+                    model: [...beeCopterActions, ...factOptions]
+                    property var isFwAction: currentIndex >= beeCopterActions.length
                     sizeToContents: true
 
                     function _findCurrentButtonAction() {
-                        // Find the index in the dropdown of the current action, checks FW and QGC actions
+                        // Find the index in the dropdown of the current action, checks FW and beeCopter actions
                         if (joystick) {
                             if (fact && fact.value > 0) {
                                 // This is a firmware function
-                                currentIndex = qgcActions.length + fact.enumIndex
-                                // For sanity reasons, make sure qgc is set to "no action" if the firmware is set to do something
+                                currentIndex = beeCopterActions.length + fact.enumIndex
+                                // For sanity reasons, make sure beeCopter is set to "no action" if the firmware is set to do something
                                 joystick.setButtonAction(modelData, "No Action")
                             } else {
-                                // If there is not firmware function, check QGC ones
+                                // If there is not firmware function, check beeCopter ones
                                 currentIndex = find(joystick.buttonActions[modelData])
                             }
                         }
@@ -206,18 +206,18 @@ ColumnLayout {
                     onActivated: function (optionIndex) {
                         var func = textAt(optionIndex)
                         if (factOptions.indexOf(func) > -1) {
-                            // This is a FW action, set parameter to the action and set QGC's handler to No Action
+                            // This is a FW action, set parameter to the action and set beeCopter's handler to No Action
                             fact.enumStringValue = func
                             joystick.setButtonAction(modelData, "No Action")
                         } else {
-                            // This is a QGC action, set parameters to Disabled and QGC to the desired action
+                            // This is a beeCopter action, set parameters to Disabled and beeCopter to the desired action
                             joystick.setButtonAction(modelData, func)
                             fact.value = 0
                             fact_shift.value = 0
                         }
                     }
                 }
-                QGCCheckBox {
+                beeCopterCheckBox {
                     id: repeatCheck
                     text: qsTr("Repeat")
                     enabled: currentAssignableAction && joystick.calibrated && currentAssignableAction.canRepeat
@@ -247,13 +247,13 @@ ColumnLayout {
                     sizeToContents: true
                 }
 
-                QGCLabel {
-                    text: qsTr("QGC functions do not support shift actions")
+                beeCopterLabel {
+                    text: qsTr("beeCopter functions do not support shift actions")
                     width: ScreenTools.defaultFontPixelWidth * 15
                     visible: hasFirmwareSupport && !buttonActionCombo.isFwAction
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                QGCLabel {
+                beeCopterLabel {
                     text: qsTr("No firmware support")
                     width: ScreenTools.defaultFontPixelWidth * 15
                     visible: !hasFirmwareSupport

@@ -1,16 +1,16 @@
 # ============================================================================
 # Compression Utilities Unit Tests
-# Tests for QGCCompression (format detection, ZIP, GZIP, XZ)
+# Tests for beeCopterCompression (format detection, ZIP, GZIP, XZ)
 # ============================================================================
 
 target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE
-        QGCArchiveModelTest.cc
-        QGCArchiveModelTest.h
-        QGCCompressionTest.cc
-        QGCCompressionTest.h
-        QGCStreamingDecompressionTest.cc
-        QGCStreamingDecompressionTest.h
+        beeCopterArchiveModelTest.cc
+        beeCopterArchiveModelTest.h
+        beeCopterCompressionTest.cc
+        beeCopterCompressionTest.h
+        beeCopterStreamingDecompressionTest.cc
+        beeCopterStreamingDecompressionTest.h
 )
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
@@ -29,10 +29,10 @@ set(_COMPRESSION_TEST_FILES
 )
 
 # Optional format test files
-if(QGC_ENABLE_BZIP2)
+if(beeCopter_ENABLE_BZIP2)
     list(APPEND _COMPRESSION_TEST_FILES manifest.json.bz2)
 endif()
-if(QGC_ENABLE_LZ4)
+if(beeCopter_ENABLE_LZ4)
     list(APPEND _COMPRESSION_TEST_FILES manifest.json.lz4)
 endif()
 

@@ -4,8 +4,8 @@
 #include "FactMetaData.h"
 #include "FirmwarePlugin.h"
 #include "FirmwarePluginManager.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "Vehicle.h"
 
 #include <QtCore/QJsonDocument>
@@ -14,7 +14,7 @@
 #include <QtCore/QRegularExpressionMatch>
 #include <QtCore/QDir>
 
-QGC_LOGGING_CATEGORY(CompInfoParamLog, "ComponentInformation.CompInfoParam")
+beeCopter_LOGGING_CATEGORY(CompInfoParamLog, "ComponentInformation.CompInfoParam")
 
 CompInfoParam::CompInfoParam(uint8_t compId_, Vehicle* vehicle_, QObject* parent)
     : CompInfo(COMP_METADATA_TYPE_PARAMETER, compId_, vehicle_, parent)
@@ -136,11 +136,11 @@ FactMetaData* CompInfoParam::factMetaDataForName(const QString& name, FactMetaDa
 
 FirmwarePlugin* CompInfoParam::_anyVehicleTypeFirmwarePlugin(MAV_AUTOPILOT firmwareType)
 {
-    const QGCMAVLink::FirmwareClass_t firmwareClass = QGCMAVLink::firmwareClass(firmwareType);
-    const QList<QGCMAVLink::VehicleClass_t> supportedClasses = FirmwarePluginManager::instance()->supportedVehicleClasses(firmwareClass);
+    const beeCopterMAVLink::FirmwareClass_t firmwareClass = beeCopterMAVLink::firmwareClass(firmwareType);
+    const QList<beeCopterMAVLink::VehicleClass_t> supportedClasses = FirmwarePluginManager::instance()->supportedVehicleClasses(firmwareClass);
     MAV_TYPE anySupportedVehicleType;
     if (!supportedClasses.isEmpty()) {
-        anySupportedVehicleType = QGCMAVLink::vehicleClassToMavType(supportedClasses[0]);
+        anySupportedVehicleType = beeCopterMAVLink::vehicleClassToMavType(supportedClasses[0]);
     } else {
         anySupportedVehicleType = MAV_TYPE_GENERIC;
     }
@@ -237,7 +237,7 @@ QString CompInfoParam::_parameterMetaDataFile(Vehicle* vehicle, MAV_AUTOPILOT fi
         }
 
         QString metaDataFile;
-        if (cacheHit && !qgcApp()->runningUnitTests()) {
+        if (cacheHit && !beeCopterApp()->runningUnitTests()) {
             majorVersion = cacheMajorVersion;
             minorVersion = cacheMinorVersion;
             metaDataFile = cacheFile.fileName();
@@ -260,7 +260,7 @@ void CompInfoParam::_cachePX4MetaDataFile(const QString& metaDataFile)
     plugin->_getParameterMetaDataVersionInfo(metaDataFile, newMajorVersion, newMinorVersion);
     if (newMajorVersion != 1) {
         newMajorVersion = 1;
-        qgcApp()->showAppMessage(tr("Internal Error: Parameter MetaData major must be 1"));
+        beeCopterApp()->showAppMessage(tr("Internal Error: Parameter MetaData major must be 1"));
     }
     qCDebug(CompInfoParamLog) << "ParameterManager::cacheMetaDataFile file:major;minor" << metaDataFile << newMajorVersion << newMinorVersion;
 

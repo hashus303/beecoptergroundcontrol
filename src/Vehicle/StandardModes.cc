@@ -1,8 +1,8 @@
 #include "StandardModes.h"
 #include "Vehicle.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
-QGC_LOGGING_CATEGORY(StandardModesLog, "Vehicle.StandardModes")
+beeCopter_LOGGING_CATEGORY(StandardModesLog, "Vehicle.StandardModes")
 
 static void requestMessageResultHandler(void *resultHandlerData, MAV_RESULT result,
                                         [[maybe_unused]] Vehicle::RequestMessageResultHandlerFailureCode_t failureCode,

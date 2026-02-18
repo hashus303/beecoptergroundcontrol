@@ -16,8 +16,8 @@
 #include "ScriptingComponent.h"
 #include "JoystickComponent.h"
 #include "ParameterManager.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "Vehicle.h"
 #include "VehicleComponent.h"
 #ifdef QT_DEBUG
@@ -25,19 +25,19 @@
 #include "ArduCopterFirmwarePlugin.h"
 #include "ArduRoverFirmwarePlugin.h"
 #endif
-#ifndef QGC_NO_SERIAL_LINK
-#include "QGCSerialPortInfo.h"
+#ifndef beeCopter_NO_SERIAL_LINK
+#include "beeCopterSerialPortInfo.h"
 #include "SerialLink.h"
 #endif
 
-QGC_LOGGING_CATEGORY(APMAutoPilotPluginLog, "AutoPilotPlugins.APM.apmautopilotplugin")
+beeCopter_LOGGING_CATEGORY(APMAutoPilotPluginLog, "AutoPilotPlugins.APM.apmautopilotplugin")
 
 APMAutoPilotPlugin::APMAutoPilotPlugin(Vehicle *vehicle, QObject *parent)
     : AutoPilotPlugin(vehicle, parent)
 {
     // qCDebug(APMAutoPilotPluginLog) << Q_FUNC_INFO << this;
 
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
     (void) connect(vehicle->parameterManager(), &ParameterManager::parametersReadyChanged, this, &APMAutoPilotPlugin::_checkForBadCubeBlack);
 #endif
 }
@@ -180,7 +180,7 @@ QString APMAutoPilotPlugin::prerequisiteSetup(VehicleComponent *component) const
     return QString();
 }
 
-#ifndef QGC_NO_SERIAL_LINK
+#ifndef beeCopter_NO_SERIAL_LINK
 void APMAutoPilotPlugin::_checkForBadCubeBlack(bool parametersReady)
 {
     if (!parametersReady) {
@@ -201,7 +201,7 @@ void APMAutoPilotPlugin::_checkForBadCubeBlack(bool parametersReady)
         return;
     }
 
-    if (!QGCSerialPortInfo(*serialLink->port()).isBlackCube()) {
+    if (!beeCopterSerialPortInfo(*serialLink->port()).isBlackCube()) {
         return;
     }
 
@@ -214,7 +214,7 @@ void APMAutoPilotPlugin::_checkForBadCubeBlack(bool parametersReady)
     if (paramMgr->parameterExists(-1, paramAcc3) && (paramMgr->getParameter(-1, paramAcc3)->rawValue().toInt() == 0) &&
         paramMgr->parameterExists(-1, paramGyr3) && (paramMgr->getParameter(-1, paramGyr3)->rawValue().toInt() == 0) &&
         paramMgr->parameterExists(-1, paramEnableMask) && (paramMgr->getParameter(-1, paramEnableMask)->rawValue().toInt() >= 7)) {
-        qgcApp()->showAppMessage(tr(
+        beeCopterApp()->showAppMessage(tr(
             "WARNING: The flight board you are using has a critical service bulletin against it which advises against flying. "
             "For details see: https://discuss.cubepilot.org/t/sb-0000002-critical-service-bulletin-for-cubes-purchased-between-january-2019-to-present-do-not-fly/406"
         ));

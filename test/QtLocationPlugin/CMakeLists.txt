@@ -7,16 +7,16 @@ target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE
         MapProviderTest.cc
         MapProviderTest.h
-        QGCMapEngineManagerArchiveTest.cc
-        QGCMapEngineManagerArchiveTest.h
-        QGCCachedTileSetTest.cc
-        QGCCachedTileSetTest.h
-        QGCCacheWorkerTest.cc
-        QGCCacheWorkerTest.h
-        QGCTileCacheDatabaseTest.cc
-        QGCTileCacheDatabaseTest.h
-        QGCTileSetTest.cc
-        QGCTileSetTest.h
+        beeCopterMapEngineManagerArchiveTest.cc
+        beeCopterMapEngineManagerArchiveTest.h
+        beeCopterCachedTileSetTest.cc
+        beeCopterCachedTileSetTest.h
+        beeCopterCacheWorkerTest.cc
+        beeCopterCacheWorkerTest.h
+        beeCopterTileCacheDatabaseTest.cc
+        beeCopterTileCacheDatabaseTest.h
+        beeCopterTileSetTest.cc
+        beeCopterTileSetTest.h
         UrlFactoryTest.cc
         UrlFactoryTest.h
 )

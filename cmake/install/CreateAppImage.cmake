@@ -6,7 +6,7 @@
 # TODO: Implement go-appimage, update information with GitHub Releases, signing
 #
 
-message(STATUS "QGC: Creating AppImage...")
+message(STATUS "beeCopter: Creating AppImage...")
 
 set(APPDIR_PATH "${CMAKE_BINARY_DIR}/AppDir")
 set(APPIMAGE_PATH "${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}-${CMAKE_SYSTEM_PROCESSOR}.AppImage")
@@ -21,7 +21,7 @@ function(download_tool VAR URL)
     set(_dest "${CMAKE_BINARY_DIR}/tools/${_name}")
     if(NOT EXISTS "${_dest}")
         file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/tools")
-        message(STATUS "QGC: Downloading ${_name} to ${_dest}")
+        message(STATUS "beeCopter: Downloading ${_name} to ${_dest}")
         file(DOWNLOAD "${URL}" "${_dest}" STATUS _status TLS_VERIFY ON)
         list(GET _status 0 _result)
         if(NOT _result EQUAL 0)
@@ -36,7 +36,7 @@ endfunction()
 # Download Required Tools
 # ============================================================================
 
-message(STATUS "QGC: Downloading AppImage build tools...")
+message(STATUS "beeCopter: Downloading AppImage build tools...")
 
 download_tool(LINUXDEPLOY https://github.com/linuxdeploy/linuxdeploy/releases/download/1-alpha-20251107-1/linuxdeploy-${CMAKE_SYSTEM_PROCESSOR}.AppImage)
 download_tool(APPIMAGETOOL https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-${CMAKE_SYSTEM_PROCESSOR}.AppImage)
@@ -50,13 +50,13 @@ endif()
 # Bundle Runtime Dependencies
 # ============================================================================
 
-message(STATUS "QGC: Bundling runtime dependencies with linuxdeploy...")
+message(STATUS "beeCopter: Bundling runtime dependencies with linuxdeploy...")
 
 execute_process(
     COMMAND "${LINUXDEPLOY_PATH}"
             --appdir "${APPDIR_PATH}"
             --executable "${APPDIR_PATH}/usr/bin/${CMAKE_PROJECT_NAME}"
-            --desktop-file "${APPDIR_PATH}/usr/share/applications/${QGC_PACKAGE_NAME}.desktop"
+            --desktop-file "${APPDIR_PATH}/usr/share/applications/${beeCopter_PACKAGE_NAME}.desktop"
             --custom-apprun "${CMAKE_BINARY_DIR}/AppRun"
             --icon-file "${APPDIR_PATH}/usr/share/icons/hicolor/256x256/apps/${CMAKE_PROJECT_NAME}.png"
     COMMAND_ECHO STDOUT
@@ -67,7 +67,7 @@ execute_process(
 # Build Final AppImage
 # ============================================================================
 
-message(STATUS "QGC: Building AppImage package...")
+message(STATUS "beeCopter: Building AppImage package...")
 
 set(ENV{ARCH} ${CMAKE_SYSTEM_PROCESSOR})
 set(ENV{VERSION} ${CMAKE_PROJECT_VERSION})
@@ -78,24 +78,24 @@ execute_process(
     COMMAND_ERROR_IS_FATAL ANY
 )
 
-message(STATUS "QGC: AppImage created successfully: ${APPIMAGE_PATH}")
+message(STATUS "beeCopter: AppImage created successfully: ${APPIMAGE_PATH}")
 
 # ============================================================================
 # Validation & Linting
 # ============================================================================
 
 if(EXISTS "${APPIMAGELINT_PATH}")
-    message(STATUS "QGC: Running AppImage linter...")
+    message(STATUS "beeCopter: Running AppImage linter...")
     execute_process(
         COMMAND "${APPIMAGELINT_PATH}" "${APPIMAGE_PATH}"
         RESULT_VARIABLE LINT_RESULT
         COMMAND_ECHO STDOUT
     )
     if(NOT LINT_RESULT EQUAL 0)
-        message(WARNING "QGC: AppImageLint reported issues - see output above")
+        message(WARNING "beeCopter: AppImageLint reported issues - see output above")
     else()
-        message(STATUS "QGC: AppImage passed validation")
+        message(STATUS "beeCopter: AppImage passed validation")
     endif()
 else()
-    message(STATUS "QGC: AppImageLint not available, skipping validation")
+    message(STATUS "beeCopter: AppImageLint not available, skipping validation")
 endif()

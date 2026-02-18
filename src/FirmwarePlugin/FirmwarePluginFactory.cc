@@ -1,10 +1,10 @@
 #include "FirmwarePluginFactory.h"
 #include "FirmwarePlugin.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QGlobalStatic>
 
-QGC_LOGGING_CATEGORY(FirmwarePluginFactoryLog, "FirmwarePlugin.FirmwarePluginFactory");
+beeCopter_LOGGING_CATEGORY(FirmwarePluginFactoryLog, "FirmwarePlugin.FirmwarePluginFactory");
 
 /*===========================================================================*/
 

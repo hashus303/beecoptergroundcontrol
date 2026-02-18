@@ -1,4 +1,4 @@
-if(NOT QGC_DISABLE_APM_PLUGIN_FACTORY)
+if(NOT beeCopter_DISABLE_APM_PLUGIN_FACTORY)
     target_sources(${CMAKE_PROJECT_NAME}
         PRIVATE
             APMFirmwarePluginFactory.cc
@@ -6,7 +6,7 @@ if(NOT QGC_DISABLE_APM_PLUGIN_FACTORY)
     )
 endif()
 
-if(NOT QGC_DISABLE_APM_PLUGIN)
+if(NOT beeCopter_DISABLE_APM_PLUGIN)
     target_sources(${CMAKE_PROJECT_NAME}
         PRIVATE
             APM.h
@@ -84,7 +84,7 @@ set_source_files_properties("${ArduPilotParams_SOURCE_DIR}/Sub-4.1/apm.pdef.xml"
 set_source_files_properties("${ArduPilotParams_SOURCE_DIR}/Sub-4.5/apm.pdef.xml" PROPERTIES QT_RESOURCE_ALIAS "FirmwarePlugin/APM/APMParameterFactMetaData.Sub.4.5.xml")
 set_source_files_properties("${ArduPilotParams_SOURCE_DIR}/Sub-4.7/apm.pdef.xml" PROPERTIES QT_RESOURCE_ALIAS "FirmwarePlugin/APM/APMParameterFactMetaData.Sub.4.7.xml")
 
-qt_add_resources(${CMAKE_PROJECT_NAME} "qgcresources_apm_params"
+qt_add_resources(${CMAKE_PROJECT_NAME} "beeCopterresources_apm_params"
     PREFIX "/"
     FILES
         "${ArduPilotParams_SOURCE_DIR}/Plane-4.0/apm.pdef.xml"
@@ -120,7 +120,7 @@ qt_add_resources(${CMAKE_PROJECT_NAME} "qgcresources_apm_params"
 qt_add_library(APMFirmwareModule STATIC)
 
 qt_add_qml_module(APMFirmwareModule
-    URI QGroundControl.FirmwarePlugin.APM
+    URI beeCopter.FirmwarePlugin.APM
     VERSION 1.0
     RESOURCE_PREFIX /qml
     QML_FILES

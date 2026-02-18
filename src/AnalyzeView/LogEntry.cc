@@ -1,12 +1,12 @@
 #include "LogEntry.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QtMath>
 
-QGC_LOGGING_CATEGORY(LogEntryLog, "AnalyzeView.QGCLogEntry")
+beeCopter_LOGGING_CATEGORY(LogEntryLog, "AnalyzeView.beeCopterLogEntry")
 
-LogDownloadData::LogDownloadData(QGCLogEntry * const logEntry)
+LogDownloadData::LogDownloadData(beeCopterLogEntry * const logEntry)
     : ID(logEntry->id())
     , entry(logEntry)
 {
@@ -43,7 +43,7 @@ bool LogDownloadData::chunkEquals(const bool val) const
 
 /*===========================================================================*/
 
-QGCLogEntry::QGCLogEntry(uint logId, const QDateTime &dateTime, uint logSize, bool received, QObject *parent)
+beeCopterLogEntry::beeCopterLogEntry(uint logId, const QDateTime &dateTime, uint logSize, bool received, QObject *parent)
     : QObject(parent)
     , _logID(logId)
     , _logSize(logSize)
@@ -53,12 +53,12 @@ QGCLogEntry::QGCLogEntry(uint logId, const QDateTime &dateTime, uint logSize, bo
     // qCDebug(LogEntryLog) << Q_FUNC_INFO << this;
 }
 
-QGCLogEntry::~QGCLogEntry()
+beeCopterLogEntry::~beeCopterLogEntry()
 {
     // qCDebug(LogEntryLog) << Q_FUNC_INFO << this;
 }
 
-QString QGCLogEntry::sizeStr() const
+QString beeCopterLogEntry::sizeStr() const
 {
-    return qgcApp()->bigSizeToString(_logSize);
+    return beeCopterApp()->bigSizeToString(_logSize);
 }

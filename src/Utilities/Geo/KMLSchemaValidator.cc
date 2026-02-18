@@ -1,11 +1,11 @@
 #include "KMLSchemaValidator.h"
 #include "KMLDomDocument.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QFile>
 #include <QtXml/QDomDocument>
 
-QGC_LOGGING_CATEGORY(KMLSchemaValidatorLog, "Utilities.KMLSchemaValidator")
+beeCopter_LOGGING_CATEGORY(KMLSchemaValidatorLog, "Utilities.KMLSchemaValidator")
 
 namespace {
     // XSD namespace
@@ -190,7 +190,7 @@ void KMLSchemaValidator::validateElement(const QDomElement &element, ValidationR
             result.addError(QString("Invalid altitudeMode value: '%1'. Valid values: %2")
                            .arg(value, validEnumValues("altitudeModeEnumType").join(", ")));
         } else if (value != "absolute" && !value.isEmpty()) {
-            result.addWarning(QString("altitudeMode '%1' - QGC treats coordinates as absolute (AMSL)").arg(value));
+            result.addWarning(QString("altitudeMode '%1' - beeCopter treats coordinates as absolute (AMSL)").arg(value));
         }
     } else if (tagName == "colorMode") {
         const QString value = element.text();

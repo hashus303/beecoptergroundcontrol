@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 SetupPage {
     id:             powerPage
@@ -37,14 +37,14 @@ SetupPage {
 
             property string _restartRequired: qsTr("Requires vehicle reboot")
 
-            QGCPalette { id: ggcPal; colorGroupEnabled: true }
+            beeCopterPalette { id: ggcPal; colorGroupEnabled: true }
 
             // Battery1 Monitor settings only - used when only monitor param is available
             Column {
                 spacing: _margins / 2
                 visible: !_batt1MonitorEnabled || !_batt1ParamsAvailable
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("Battery 1")
                     font.bold:   true
                 }
@@ -65,7 +65,7 @@ SetupPage {
                             id:                 batt1MonitorRow
                             spacing:            ScreenTools.defaultFontPixelWidth
 
-                            QGCLabel { text: qsTr("Battery1 monitor:") }
+                            beeCopterLabel { text: qsTr("Battery1 monitor:") }
                             FactComboBox {
                                 id:         monitor1Combo
                                 fact:       _batt1Monitor
@@ -74,12 +74,12 @@ SetupPage {
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       _restartRequired
                             visible:    _showBatt1Reboot
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             text:       qsTr("Reboot vehicle")
                             visible:    _showBatt1Reboot
                             onClicked:  controller.vehicle.rebootVehicle()
@@ -94,7 +94,7 @@ SetupPage {
                 spacing:    _margins / 2
                 visible:    _batt1MonitorEnabled && _batt1ParamsAvailable
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("Battery 1")
                     font.bold:   true
                 }
@@ -131,7 +131,7 @@ SetupPage {
                 spacing: _margins / 2
                 visible: !_batt2MonitorEnabled || !_batt2ParamsAvailable
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("Battery 2")
                     font.bold:   true
                 }
@@ -152,7 +152,7 @@ SetupPage {
                             id:                 batt2MonitorRow
                             spacing:            ScreenTools.defaultFontPixelWidth
 
-                            QGCLabel { text: qsTr("Battery2 monitor:") }
+                            beeCopterLabel { text: qsTr("Battery2 monitor:") }
                             FactComboBox {
                                 id:         monitor2Combo
                                 fact:       _batt2Monitor
@@ -161,12 +161,12 @@ SetupPage {
                             }
                         }
 
-                        QGCLabel {
+                        beeCopterLabel {
                             text:       _restartRequired
                             visible:    _showBatt2Reboot
                         }
 
-                        QGCButton {
+                        beeCopterButton {
                             text:       qsTr("Reboot vehicle")
                             visible:    _showBatt2Reboot
                             onClicked:  controller.vehicle.rebootVehicle()
@@ -181,7 +181,7 @@ SetupPage {
                 spacing:    _margins / 2
                 visible:    _batt2MonitorEnabled && _batt2ParamsAvailable
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("Battery 2")
                     font.bold:   true
                 }
@@ -217,7 +217,7 @@ SetupPage {
                 spacing:    _margins / 2
                 visible:    _escCalibrationAvailable
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("ESC Calibration")
                     font.bold:   true
                 }
@@ -236,15 +236,15 @@ SetupPage {
                         Column {
                             spacing: _margins
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 text:   qsTr("WARNING: Remove props prior to calibration!")
-                                color:  qgcPal.warningText
+                                color:  beeCopterPal.warningText
                             }
 
                             Row {
                                 spacing: _margins
 
-                                QGCButton {
+                                beeCopterButton {
                                     text: qsTr("Calibrate")
                                     enabled:    _escCalibration && _escCalibration.rawValue === 0
                                     onClicked:  if(_escCalibration) _escCalibration.rawValue = 3
@@ -252,15 +252,15 @@ SetupPage {
 
                                 Column {
                                     enabled: _escCalibration && _escCalibration.rawValue === 3
-                                    QGCLabel { text:   _escCalibration ? (_escCalibration.rawValue === 3 ? qsTr("Now perform these steps:") : qsTr("Click Calibrate to start, then:")) : "" }
-                                    QGCLabel { text:   qsTr("- Disconnect USB and battery so flight controller powers down") }
-                                    QGCLabel { text:   qsTr("- Connect the battery") }
-                                    QGCLabel { text:   qsTr("- The arming tone will be played (if the vehicle has a buzzer attached)") }
-                                    QGCLabel { text:   qsTr("- If using a flight controller with a safety button press it until it displays solid red") }
-                                    QGCLabel { text:   qsTr("- You will hear a musical tone then two beeps") }
-                                    QGCLabel { text:   qsTr("- A few seconds later you should hear a number of beeps (one for each battery cell you're using)") }
-                                    QGCLabel { text:   qsTr("- And finally a single long beep indicating the end points have been set and the ESC is calibrated") }
-                                    QGCLabel { text:   qsTr("- Disconnect the battery and power up again normally") }
+                                    beeCopterLabel { text:   _escCalibration ? (_escCalibration.rawValue === 3 ? qsTr("Now perform these steps:") : qsTr("Click Calibrate to start, then:")) : "" }
+                                    beeCopterLabel { text:   qsTr("- Disconnect USB and battery so flight controller powers down") }
+                                    beeCopterLabel { text:   qsTr("- Connect the battery") }
+                                    beeCopterLabel { text:   qsTr("- The arming tone will be played (if the vehicle has a buzzer attached)") }
+                                    beeCopterLabel { text:   qsTr("- If using a flight controller with a safety button press it until it displays solid red") }
+                                    beeCopterLabel { text:   qsTr("- You will hear a musical tone then two beeps") }
+                                    beeCopterLabel { text:   qsTr("- A few seconds later you should hear a number of beeps (one for each battery cell you're using)") }
+                                    beeCopterLabel { text:   qsTr("- And finally a single long beep indicating the end points have been set and the ESC is calibrated") }
+                                    beeCopterLabel { text:   qsTr("- Disconnect the battery and power up again normally") }
                                 }
                             }
                         }
@@ -296,7 +296,7 @@ SetupPage {
                 sensorCombo.currentIndex = sensorModel.count - 1
             }
 
-            QGCPalette { id: qgcPal; colorGroupEnabled: true }
+            beeCopterPalette { id: beeCopterPal; colorGroupEnabled: true }
 
             ListModel {
                 id: sensorModel
@@ -357,7 +357,7 @@ SetupPage {
                 rowSpacing:     _margins
                 columnSpacing:  _margins
 
-                QGCLabel { text: qsTr("Battery monitor:") }
+                beeCopterLabel { text: qsTr("Battery monitor:") }
 
                 FactComboBox {
                     id:         monitorCombo
@@ -366,7 +366,7 @@ SetupPage {
                     sizeToContents: true
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.row:     1
                     Layout.column:  0
                     text:           qsTr("Battery capacity:")
@@ -378,7 +378,7 @@ SetupPage {
                     fact:   battCapacity
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.row:     2
                     Layout.column:  0
                     text:           qsTr("Minimum arming voltage:")
@@ -390,13 +390,13 @@ SetupPage {
                     fact:   armVoltMin
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.row:     3
                     Layout.column:  0
                     text:           qsTr("Power sensor:")
                 }
 
-                QGCComboBox {
+                beeCopterComboBox {
                     id:                     sensorCombo
                     Layout.minimumWidth:    _fieldWidth
                     model:                  sensorModel
@@ -415,7 +415,7 @@ SetupPage {
                     }
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.row:     4
                     Layout.column:  0
                     text:           qsTr("Current pin:")
@@ -430,7 +430,7 @@ SetupPage {
                     sizeToContents:         true
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.row:     5
                     Layout.column:  0
                     text:           qsTr("Voltage pin:")
@@ -445,7 +445,7 @@ SetupPage {
                     sizeToContents:         true
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.row:     6
                     Layout.column:  0
                     text:           qsTr("Voltage multiplier:")
@@ -458,13 +458,13 @@ SetupPage {
                     visible:    _showAdvanced
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:       qsTr("Calculate")
                     visible:    _showAdvanced
                     onClicked:  calcVoltageMultiplierDlgComponent.createObject(mainWindow, { vehicleVoltageFact: vehicleVoltage, battVoltMultFact: battVoltMult }).open()
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.columnSpan:  3
                     Layout.fillWidth:   true
                     font.pointSize:     ScreenTools.smallFontPointSize
@@ -473,7 +473,7 @@ SetupPage {
                     visible:            _showAdvanced
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("Amps per volt:")
                     visible:    _showAdvanced
                 }
@@ -484,13 +484,13 @@ SetupPage {
                     visible:    _showAdvanced
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text:       qsTr("Calculate")
                     visible:    _showAdvanced
                     onClicked:  calcAmpsPerVoltDlgComponent.createObject(mainWindow, { vehicleCurrentFact: vehicleCurrent, battAmpPerVoltFact: battAmpPerVolt }).open()
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.columnSpan:  3
                     Layout.fillWidth:   true
                     font.pointSize:     ScreenTools.smallFontPointSize
@@ -499,7 +499,7 @@ SetupPage {
                     visible:            _showAdvanced
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     text:       qsTr("Amps Offset:")
                     visible:    _showAdvanced
                 }
@@ -510,7 +510,7 @@ SetupPage {
                     visible:    _showAdvanced
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.columnSpan:  3
                     Layout.fillWidth:   true
                     font.pointSize:     ScreenTools.smallFontPointSize
@@ -526,7 +526,7 @@ SetupPage {
     Component {
         id: calcVoltageMultiplierDlgComponent
 
-        QGCPopupDialog {
+        beeCopterPopupDialog {
             title:      qsTr("Calculate Voltage Multiplier")
             buttons:    Dialog.Close
 
@@ -536,7 +536,7 @@ SetupPage {
             ColumnLayout {
                 spacing: ScreenTools.defaultFontPixelHeight
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.preferredWidth:  gridLayout.width
                     wrapMode:               Text.WordWrap
                     text:                   qsTr("Measure battery voltage using an external voltmeter and enter the value below. Click Calculate to set the new adjusted voltage multiplier.")
@@ -546,19 +546,19 @@ SetupPage {
                     id:         gridLayout
                     columns:    2
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text: qsTr("Measured voltage:")
                     }
-                    QGCTextField { id: measuredVoltage }
+                    beeCopterTextField { id: measuredVoltage }
 
-                    QGCLabel { text: qsTr("Vehicle voltage:") }
+                    beeCopterLabel { text: qsTr("Vehicle voltage:") }
                     FactLabel { fact: vehicleVoltageFact }
 
-                    QGCLabel { text: qsTr("Voltage multiplier:") }
+                    beeCopterLabel { text: qsTr("Voltage multiplier:") }
                     FactLabel { fact: battVoltMultFact }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text: qsTr("Calculate And Set")
 
                     onClicked:  {
@@ -579,7 +579,7 @@ SetupPage {
     Component {
         id: calcAmpsPerVoltDlgComponent
 
-        QGCPopupDialog {
+        beeCopterPopupDialog {
             title:      qsTr("Calculate Amps per Volt")
             buttons:    Dialog.Close
 
@@ -589,7 +589,7 @@ SetupPage {
             ColumnLayout {
                 spacing: ScreenTools.defaultFontPixelHeight
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.preferredWidth:  gridLayout.width
                     wrapMode:               Text.WordWrap
                     text:                   qsTr("Measure current draw using an external current meter and enter the value below. Click Calculate to set the new amps per volt value.")
@@ -599,19 +599,19 @@ SetupPage {
                     id:         gridLayout
                     columns:    2
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text: qsTr("Measured current:")
                     }
-                    QGCTextField { id: measuredCurrent }
+                    beeCopterTextField { id: measuredCurrent }
 
-                    QGCLabel { text: qsTr("Vehicle current:") }
+                    beeCopterLabel { text: qsTr("Vehicle current:") }
                     FactLabel { fact: vehicleCurrentFact }
 
-                    QGCLabel { text: qsTr("Amps per volt:") }
+                    beeCopterLabel { text: qsTr("Amps per volt:") }
                     FactLabel { fact: battAmpPerVoltFact }
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text: qsTr("Calculate And Set")
 
                     onClicked:  {

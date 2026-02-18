@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 /// Base view control for all Setup pages
 Item {
@@ -36,7 +36,7 @@ Item {
         }
     }
 
-    QGCFlickable {
+    beeCopterFlickable {
         anchors.fill:   parent
         contentWidth:   Math.max(availableWidth, pageLoader.x + pageLoader.item.width)
         contentHeight:  Math.max(availableHeight, pageLoader.y + pageLoader.item.height)
@@ -49,7 +49,7 @@ Item {
             layoutDirection:    Qt.RightToLeft
             visible:            showAdvanced || (pageDescription !== "" && !ScreenTools.isShortScreen)
 
-            QGCCheckBox {
+            beeCopterCheckBox {
                 id:         advancedCheckBox
                 text:       qsTr("Advanced")
                 visible:    showAdvanced
@@ -59,14 +59,14 @@ Item {
                 spacing:            _margins
                 Layout.fillWidth:   true
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     font.pointSize:     ScreenTools.largeFontPointSize
                     text:               !setupView.enabled ? _pageTitle + "<font color=\"red\">" + qsTr(" (Disabled while the vehicle is %1)").arg(_disableReason) + "</font>" : _pageTitle
                     visible:            !ScreenTools.isShortScreen
                 }
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
                     wrapMode:           Text.WordWrap
                     text:               pageDescription

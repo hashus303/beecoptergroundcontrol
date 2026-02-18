@@ -1,9 +1,9 @@
 #include "DataFlashUtility.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <cstring>
 
-QGC_LOGGING_CATEGORY(DataFlashUtilityLog, "Utilities.DataFlashUtility")
+beeCopter_LOGGING_CATEGORY(DataFlashUtilityLog, "Utilities.DataFlashUtility")
 
 namespace DataFlashUtility
 {

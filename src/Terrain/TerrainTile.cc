@@ -1,10 +1,10 @@
 #include "TerrainTile.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterLoggingCategory.h"
 
 #include <QtCore/QtNumeric>
 #include <QtPositioning/QGeoCoordinate>
 
-QGC_LOGGING_CATEGORY(TerrainTileLog, "Terrain.terraintile");
+beeCopter_LOGGING_CATEGORY(TerrainTileLog, "Terrain.terraintile");
 
 TerrainTile::TerrainTile(const QByteArray &byteArray)
 {

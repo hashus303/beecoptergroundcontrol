@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     property int    axisValue:          0
@@ -12,7 +12,7 @@ Item {
     property bool   mapped:             false
     property bool   reversed:           false
 
-    property color  __barColor:         qgcPal.windowShade
+    property color  __barColor:         beeCopterPal.windowShade
 
     // Bar
     Rectangle {
@@ -43,7 +43,7 @@ Item {
         anchors.horizontalCenter:   parent.horizontalCenter
         width:                      ScreenTools.defaultFontPixelWidth / 2
         height:                     parent.height
-        color:                      qgcPal.window
+        color:                      beeCopterPal.window
     }
 
     // Indicator
@@ -53,14 +53,14 @@ Item {
         height:                 parent.height * 0.75
         x:                      (reversed ? (parent.width - _indicatorPosition) : _indicatorPosition) - (width / 2)
         radius:                 width / 2
-        color:                  qgcPal.text
+        color:                  beeCopterPal.text
         visible:                mapped
 
         property real _percentAxisValue:    ((axisValue + 32768.0) / (32768.0 * 2))
         property real _indicatorPosition:   parent.width * _percentAxisValue
     }
 
-    QGCLabel {
+    beeCopterLabel {
         anchors.fill:           parent
         horizontalAlignment:    Text.AlignHCenter
         verticalAlignment:      Text.AlignVCenter
@@ -79,7 +79,7 @@ Item {
 
     // Axis value debugger
     /*
-    QGCLabel {
+    beeCopterLabel {
         anchors.fill: parent
         text: axisValue
     }

@@ -1,7 +1,7 @@
 {
     "version":                      1,
-    "vendorName":                   "QGC MockLink Vendor",
-    "modelName":                    "QGC MockLink Model",
+    "vendorName":                   "beeCopter MockLink Vendor",
+    "modelName":                    "beeCopter MockLink Model",
     "firmwareVersion":              "1.0.0",
     "hardwareVersion":              "1.0.0",
 	"metadataTypes": [

@@ -1,4 +1,4 @@
-if(NOT QGC_DISABLE_PX4_PLUGIN_FACTORY)
+if(NOT beeCopter_DISABLE_PX4_PLUGIN_FACTORY)
     target_sources(${CMAKE_PROJECT_NAME}
         PRIVATE
             PX4FirmwarePluginFactory.cc
@@ -6,7 +6,7 @@ if(NOT QGC_DISABLE_PX4_PLUGIN_FACTORY)
     )
 endif()
 
-if(NOT QGC_DISABLE_PX4_PLUGIN)
+if(NOT beeCopter_DISABLE_PX4_PLUGIN)
     target_sources(${CMAKE_PROJECT_NAME}
         PRIVATE
             px4_custom_mode.h
@@ -41,7 +41,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_
 qt_add_library(PX4FirmwareModule STATIC)
 
 qt_add_qml_module(PX4FirmwareModule
-    URI QGroundControl.FirmwarePlugin.PX4
+    URI beeCopter.FirmwarePlugin.PX4
     VERSION 1.0
     RESOURCE_PREFIX /qml
     QML_FILES

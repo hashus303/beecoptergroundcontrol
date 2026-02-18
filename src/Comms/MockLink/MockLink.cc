@@ -3,8 +3,8 @@
 #include "MockLinkCamera.h"
 #include "MockLinkFTP.h"
 #include "MockLinkWorker.h"
-#include "QGCApplication.h"
-#include "QGCLoggingCategory.h"
+#include "beeCopterApplication.h"
+#include "beeCopterLoggingCategory.h"
 #include "FirmwarePlugin.h"
 
 #include <QtCore/QFile>
@@ -14,8 +14,8 @@
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 
-QGC_LOGGING_CATEGORY(MockLinkLog, "Comms.MockLink.MockLink")
-QGC_LOGGING_CATEGORY(MockLinkVerboseLog, "Comms.MockLink.MockLink:verbose")
+beeCopter_LOGGING_CATEGORY(MockLinkLog, "Comms.MockLink.MockLink")
+beeCopter_LOGGING_CATEGORY(MockLinkVerboseLog, "Comms.MockLink.MockLink:verbose")
 
 std::atomic<int> MockLink::_nextVehicleSystemId{128};
 
@@ -183,7 +183,7 @@ void MockLink::run1HzTasks()
         _mockLinkCamera->sendCameraHeartbeats();
     }
 
-    if (!qgcApp()->runningUnitTests()) {
+    if (!beeCopterApp()->runningUnitTests()) {
         // Sending RC Channels during unit test breaks RC tests which does it's own RC simulation
         _sendRCChannels();
     }
@@ -1330,7 +1330,7 @@ void MockLink::_respondWithAutopilotVersion()
     };
     FlightVersion flightVersion;
 
-#ifndef QGC_NO_ARDUPILOT_DIALECT
+#ifndef beeCopter_NO_ARDUPILOT_DIALECT
     if (_firmwareType == MAV_AUTOPILOT_ARDUPILOTMEGA) {
         if (_vehicleType == MAV_TYPE_SUBMARINE ) {
             flightVersion.parts.major = 4;
@@ -1348,7 +1348,7 @@ void MockLink::_respondWithAutopilotVersion()
         flightVersion.parts.minor = 4;
         flightVersion.parts.patch = 1;
         flightVersion.parts.type = FIRMWARE_VERSION_TYPE_DEV;
-#ifndef QGC_NO_ARDUPILOT_DIALECT
+#ifndef beeCopter_NO_ARDUPILOT_DIALECT
     }
 #endif
 
@@ -1710,7 +1710,7 @@ void MockLink::_handleLogRequestData(const mavlink_message_t &msg)
     mavlink_log_request_data_t request{};
     mavlink_msg_log_request_data_decode(&msg, &request);
 
-#ifdef QGC_UNITTEST_BUILD
+#ifdef beeCopter_UNITTEST_BUILD
     if (_logDownloadFilename.isEmpty()) {
         _logDownloadFilename = _createRandomFile(_logDownloadFileSize);
     }

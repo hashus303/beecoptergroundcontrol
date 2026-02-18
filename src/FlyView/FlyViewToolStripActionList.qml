@@ -1,8 +1,8 @@
 import QtQml.Models
 
-import QGroundControl
-import QGroundControl.Controls
-import QGroundControl.Viewer3D
+import beeCopter
+import beeCopter.Controls
+import beeCopter.Viewer3D
 
 ToolStripActionList {
     id: _root

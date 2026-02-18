@@ -1,13 +1,13 @@
 import QtQuick
 import QtCharts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Rectangle {
     id:         root
     radius:     ScreenTools.defaultFontPixelWidth * 0.5
-    color:      qgcPal.window
+    color:      beeCopterPal.window
     opacity:    0.80
     clip:       true
 
@@ -22,11 +22,11 @@ Rectangle {
     property real _minAMSLAltitude:         isNaN(terrainProfile.minAMSLAlt) ? 0 : terrainProfile.minAMSLAlt
     property real _maxAMSLAltitude:         isNaN(terrainProfile.maxAMSLAlt) ? 100 : terrainProfile.maxAMSLAlt
     property real _missionTotalDistance:    isNaN(missionController.missionTotalDistance) ? 100 : missionController.missionTotalDistance
-    property var  _unitsConversion:         QGroundControl.unitsConversion
+    property var  _unitsConversion:         beeCopter.unitsConversion
 
-    QGCPalette { id: qgcPal }
+    beeCopterPalette { id: beeCopterPal }
 
-    QGCLabel {
+    beeCopterLabel {
         id:                     titleLabel
         anchors.top:            parent.bottom
         width:                  parent.height
@@ -37,7 +37,7 @@ Rectangle {
         transformOrigin:        Item.TopLeft
     }
 
-    QGCFlickable {
+    beeCopterFlickable {
         id:                 terrainProfileFlickable
         anchors.top:        parent.top
         anchors.bottom:     parent.bottom
@@ -68,9 +68,9 @@ Rectangle {
                     lineVisible:                true
                     labelsFont.family:          ScreenTools.fixedFontFamily
                     labelsFont.pointSize:       ScreenTools.smallFontPointSize
-                    labelsColor:                qgcPal.text
+                    labelsColor:                beeCopterPal.text
                     tickCount:                  5
-                    gridLineColor:              applyOpacity(qgcPal.text, 0.25)
+                    gridLineColor:              applyOpacity(beeCopterPal.text, 0.25)
                 }
 
                 ValueAxis {
@@ -80,9 +80,9 @@ Rectangle {
                     lineVisible:                true
                     labelsFont.family:          ScreenTools.fixedFontFamily
                     labelsFont.pointSize:       ScreenTools.smallFontPointSize
-                    labelsColor:                qgcPal.text
+                    labelsColor:                beeCopterPal.text
                     tickCount:                  4
-                    gridLineColor:              applyOpacity(qgcPal.text, 0.25)
+                    gridLineColor:              applyOpacity(beeCopterPal.text, 0.25)
                 }
 
                 LineSeries {
@@ -116,7 +116,7 @@ Rectangle {
                             id:         simpleItem
                             height:     terrainProfile.height
                             width:      1
-                            color:      qgcPal.text
+                            color:      beeCopterPal.text
                             x:          (object.distanceFromStart * terrainProfile.pixelsPerMeter)
                             visible:    object.isSimpleItem || object.isSingleItem
 
@@ -135,7 +135,7 @@ Rectangle {
                             id:         complexItemEntry
                             height:     terrainProfile.height
                             width:      1
-                            color:      qgcPal.text
+                            color:      beeCopterPal.text
                             x:          (object.distanceFromStart * terrainProfile.pixelsPerMeter)
                             visible:    complexItem.visible
 
@@ -153,7 +153,7 @@ Rectangle {
                             id:         complexItemExit
                             height:     terrainProfile.height
                             width:      1
-                            color:      qgcPal.text
+                            color:      beeCopterPal.text
                             x:          ((object.distanceFromStart + object.complexDistance) * terrainProfile.pixelsPerMeter)
                             visible:    complexItem.visible
 
@@ -177,12 +177,12 @@ Rectangle {
                             opacity:        0.5
                             visible:        !object.isSimpleItem && !object.isSingleItem
 
-                            QGCMouseArea {
+                            beeCopterMouseArea {
                                 anchors.fill:   parent
                                 onClicked:      root.setCurrentSeqNum(object.sequenceNumber)
                             }
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 id:                         patternNameLabel
                                 anchors.horizontalCenter:   parent.horizontalCenter
                                 text:                       complexItem.visible ? object.patternName : ""

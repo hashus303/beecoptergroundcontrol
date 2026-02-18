@@ -1,7 +1,7 @@
 import QtQuick
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 Item {
     // The following properties must be passed in from the Loader
@@ -10,7 +10,7 @@ Item {
 
     id: virtualJoysticks
 
-    property var   _activeVehicle:            QGroundControl.multiVehicleManager.activeVehicle
+    property var   _activeVehicle:            beeCopter.multiVehicleManager.activeVehicle
     property bool  _initialConnectComplete:   _activeVehicle ? _activeVehicle.initialConnectComplete : false
     property real  leftYAxisValue:            autoCenterThrottle ? height / 2 : height
     property var   calibration:               false
@@ -19,7 +19,7 @@ Item {
 
     Timer {
         interval:   40  // 25Hz, same as real joystick rate
-        running:    QGroundControl.settingsManager.appSettings.virtualJoystick.value
+        running:    beeCopter.settingsManager.appSettings.virtualJoystick.value
         repeat:     true
         onTriggered: {
             if (_activeVehicle && _initialConnectComplete) {

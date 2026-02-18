@@ -3,19 +3,19 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
-import QGroundControl.QGCMapEngineManager
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
+import beeCopter.beeCopterMapEngineManager
 
 Item {
     id: root
 
-    property var    _settingsManager:               QGroundControl.settingsManager
+    property var    _settingsManager:               beeCopter.settingsManager
     property var    _appSettings:                   _settingsManager.appSettings
     property var    _mapsSettings:                  _settingsManager.mapsSettings
-    property var    _mapEngineManager:              QGroundControl.mapEngineManager
-    property bool   _currentlyImportOrExporting:    _mapEngineManager.importAction === QGCMapEngineManager.ImportAction.ActionExporting || _mapEngineManager.importAction === QGCMapEngineManager.ImportAction.ActionImporting
+    property var    _mapEngineManager:              beeCopter.mapEngineManager
+    property bool   _currentlyImportOrExporting:    _mapEngineManager.importAction === beeCopterMapEngineManager.ImportAction.ActionExporting || _mapEngineManager.importAction === beeCopterMapEngineManager.ImportAction.ActionImporting
     property real   _largeTextFieldWidth:           ScreenTools.defaultFontPixelWidth * 30
 
     property Fact   _mapProviderFact:   _settingsManager.flightMapSettings.mapProvider
@@ -34,7 +34,7 @@ Item {
         anchors.fill: parent
 
         Component.onCompleted: {
-            QGroundControl.mapEngineManager.loadTileSets()
+            beeCopter.mapEngineManager.loadTileSets()
         }
 
         Connections {
@@ -94,7 +94,7 @@ Item {
             headingDescription: qsTr("Download map tiles for use when offline")
 
             Repeater {
-                model: QGroundControl.mapEngineManager.tileSets
+                model: beeCopter.mapEngineManager.tileSets
 
                 OfflineMapInfo {
                     tileSet:    object
@@ -113,10 +113,10 @@ Item {
             LabelledButton {
                 label:      qsTr("Import Map Tiles")
                 buttonText: qsTr("Import")
-                visible:    QGroundControl.corePlugin.options.showOfflineMapImport
+                visible:    beeCopter.corePlugin.options.showOfflineMapImport
                 enabled:    !_currentlyImportOrExporting
                 onClicked: {
-                    _mapEngineManager.importAction = QGCMapEngineManager.ImportAction.ActionNone
+                    _mapEngineManager.importAction = beeCopterMapEngineManager.ImportAction.ActionNone
                     importDialogComponent.createObject(mainWindow).open()
                 }
             }
@@ -124,7 +124,7 @@ Item {
             LabelledButton {
                 label:      qsTr("Export Map Tiles")
                 buttonText: qsTr("Export")
-                visible:    QGroundControl.corePlugin.options.showOfflineMapExport
+                visible:    beeCopter.corePlugin.options.showOfflineMapExport
                 enabled:    !_currentlyImportOrExporting
                 onClicked:  exportDialogComponent.createObject(mainWindow).open()
             }
@@ -133,9 +133,9 @@ Item {
                 spacing: ScreenTools.defaultFontPixelWidth
                 visible: _currentlyImportOrExporting
 
-                QGCLabel {
+                beeCopterLabel {
                     Layout.fillWidth:   true
-                    text:               _mapEngineManager.importAction === QGCMapEngineManager.ImportAction.ActionExporting ? qsTr("Exporting") : qsTr("Importing")
+                    text:               _mapEngineManager.importAction === beeCopterMapEngineManager.ImportAction.ActionExporting ? qsTr("Exporting") : qsTr("Importing")
                     font.bold:          true
                 }
                 ProgressBar {
@@ -225,7 +225,7 @@ Item {
             }
         }
 
-        QGCFileDialog {
+        beeCopterFileDialog {
             id:             fileDialog
             folder:         _appSettings.missionSavePath
             nameFilters:    [ qsTr("Tile Sets (*.%1)").arg(defaultSuffix) ]
@@ -245,7 +245,7 @@ Item {
         Component {
             id: exportDialogComponent
 
-            QGCPopupDialog {
+            beeCopterPopupDialog {
                 title:      qsTr("Export Selected Tile Sets")
                 buttons:    Dialog.Ok | Dialog.Cancel
 
@@ -261,7 +261,7 @@ Item {
                     Repeater {
                         model: _mapEngineManager.tileSets
 
-                        QGCCheckBox {
+                        beeCopterCheckBox {
                             text:       object.name
                             checked:    object.selected
                             onClicked:  object.selected = checked
@@ -274,7 +274,7 @@ Item {
         Component {
             id: importDialogComponent
 
-            QGCPopupDialog {
+            beeCopterPopupDialog {
                 title:      qsTr("Import TileSets")
                 buttons:    Dialog.Ok | Dialog.Cancel
 
@@ -287,12 +287,12 @@ Item {
                 ColumnLayout {
                     spacing: ScreenTools.defaultFontPixelWidth / 2
 
-                    QGCRadioButton {
+                    beeCopterRadioButton {
                         text:           qsTr("Append to existing sets")
                         checked:        !_mapEngineManager.importReplace
                         onClicked:      _mapEngineManager.importReplace = !checked
                     }
-                    QGCRadioButton {
+                    beeCopterRadioButton {
                         text:           qsTr("Replace existing sets")
                         checked:        _mapEngineManager.importReplace
                         onClicked:      _mapEngineManager.importReplace = checked
@@ -304,7 +304,7 @@ Item {
         Component {
             id: errorDialogComponent
 
-            QGCSimpleMessageDialog {
+            beeCopterSimpleMessageDialog {
                 title:      qsTr("Error Message")
                 text:       _mapEngineManager.errorMessage
                 buttons:    Dialog.Close

@@ -1,11 +1,11 @@
 import QtQuick
 import QtQuick.Controls
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 /// Works just like a regular button but it can have a red indicator on the right side displayed
-QGCButton {
+beeCopterButton {
     property bool indicatorGreen: false ///< true: no indicator shown, false: red indicator shown
 
     Rectangle {

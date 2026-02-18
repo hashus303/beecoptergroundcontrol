@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.FactControls
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.FactControls
+import beeCopter.Controls
 
 Item {
     id: root
@@ -31,7 +31,7 @@ Item {
         id:         controller
     }
 
-    QGCFlickable {
+    beeCopterFlickable {
         anchors.fill:   parent
         clip:           true
         contentWidth:   column2.x + column2.width
@@ -49,7 +49,7 @@ Item {
                     id:     flightModeSettingsColumn
                     spacing: _margins
 
-                    QGCLabel {
+                    beeCopterLabel {
                         id:             flightModeLabel
                         text:           qsTr("Flight Mode Settings")
                         font.bold:      true
@@ -59,7 +59,7 @@ Item {
                         id:                 flightModeSettings
                         width:              flightModeColumn.width + (_margins * 2)
                         height:             flightModeColumn.height + ScreenTools.defaultFontPixelHeight
-                        color:              qgcPal.windowShade
+                        color:              beeCopterPal.windowShade
 
                         GridLayout {
                             id:                 flightModeColumn
@@ -71,7 +71,7 @@ Item {
                             columnSpacing:      rowSpacing
                             flow:               GridLayout.TopToBottom
 
-                            QGCLabel {
+                            beeCopterLabel {
                                 Layout.fillWidth:   true
                                 text:               qsTr("Mode Channel")
                             }
@@ -79,10 +79,10 @@ Item {
                             Repeater {
                                 model:  6
 
-                                QGCLabel {
+                                beeCopterLabel {
                                     Layout.fillWidth:   true
                                     text:               qsTr("Flight Mode %1").arg(modelData + 1)
-                                    color:              (controller.activeFlightMode - 1) == index ? "yellow" : qgcPal.text
+                                    color:              (controller.activeFlightMode - 1) == index ? "yellow" : beeCopterPal.text
                                 }
                             }
 
@@ -111,7 +111,7 @@ Item {
                     id:         column2
                     spacing:    _margins
 
-                    QGCLabel {
+                    beeCopterLabel {
                         text:           qsTr("Switch Settings")
                         font.bold:      true
                     }
@@ -120,7 +120,7 @@ Item {
                         id:     switchSettingsRect
                         width:  switchSettingsGrid.width + (_margins * 2)
                         height: switchSettingsGrid.height + ScreenTools.defaultFontPixelHeight
-                        color:  qgcPal.windowShade
+                        color:  beeCopterPal.windowShade
 
                         GridLayout {
                             id:                 switchSettingsGrid
@@ -149,10 +149,10 @@ Item {
                                                                         (thValue >= 0 ?
                                                                              (controller.rcChannelValues[swChannel] > thPWM) :
                                                                              (controller.rcChannelValues[swChannel] <= thPWM))
-                                    QGCLabel {
+                                    beeCopterLabel {
                                         text:               swFact.shortDescription
                                         Layout.fillWidth:   true
-                                        color:              swActive ? "yellow" : qgcPal.text
+                                        color:              swActive ? "yellow" : beeCopterPal.text
                                     }
 
                                     FactComboBox {

@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import QGroundControl
-import QGroundControl.Controls
+import beeCopter
+import beeCopter.Controls
 
 AnalyzePage {
     id: root
@@ -94,7 +94,7 @@ AnalyzePage {
                 }
             }
 
-            QGCFlickable {
+            beeCopterFlickable {
                 id: flickable
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -110,9 +110,9 @@ AnalyzePage {
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhMultiLine
                     text: "> "
                     focus: true
-                    color: qgcPal.text
-                    selectedTextColor: qgcPal.windowShade
-                    selectionColor: qgcPal.text
+                    color: beeCopterPal.text
+                    selectedTextColor: beeCopterPal.windowShade
+                    selectionColor: beeCopterPal.text
                     font.pointSize: ScreenTools.defaultFontPointSize
                     font.family: ScreenTools.fixedFontFamily
 
@@ -125,7 +125,7 @@ AnalyzePage {
                         }
                     }
 
-                    background: Rectangle { color: qgcPal.windowShade }
+                    background: Rectangle { color: beeCopterPal.windowShade }
 
                     Keys.onPressed: (event) => {
                         // ignore tabs
@@ -229,7 +229,7 @@ AnalyzePage {
                 Layout.fillWidth: true
                 visible: _separateCommandInput
 
-                QGCTextField {
+                beeCopterTextField {
                     id: commandInput
                     Layout.fillWidth: true
                     placeholderText:  qsTr("Enter Commands here...")
@@ -244,7 +244,7 @@ AnalyzePage {
 
                 }
 
-                QGCButton {
+                beeCopterButton {
                     text: qsTr("Send")
                     onClicked: commandInput.sendCommand()
                 }
